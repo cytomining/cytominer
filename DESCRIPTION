@@ -13,3 +13,4 @@ Imports: gplots,
     tidyr,
     stringr,
     magrittr
+Suggests: testthat
