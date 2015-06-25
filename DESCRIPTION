@@ -1,0 +1,15 @@
+Package: pertminr
+Type: Package
+Title: Mining patterns in perturbation data
+Version: 0.1
+Date: 2015-06-25
+Author: Shantanu Singh
+Maintainer: <shsingh@broadinstitute.org>
+Description: Mine patterns in perturbation data
+License: MIT
+LazyData: TRUE
+Imports: gplots,
+    ggplot2,
+    tidyr,
+    stringr,
+    magrittr
