@@ -4,15 +4,15 @@
 \alias{compute_similarity}
 \title{Similarity between two vectors}
 \usage{
-compute_similarity(x, y)
+compute_similarity(D1, D2, grouping_cols = NULL, method = "spearman")
 }
 \arguments{
-\item{x}{vector}
+\item{D1}{data.frame}
 
-\item{y}{vector of the same length as x}
+\item{D2}{same dimensions as \code{D1}}
 }
 \value{
-Similarity between x and y
+Similarity between D1 and D2
 }
 \description{
 Function to measure similarity between two vectors
