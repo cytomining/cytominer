@@ -4,20 +4,22 @@
 \alias{compute_similarity}
 \title{Similarity between two vectors}
 \usage{
-compute_similarity(D1, D2, grouping_cols = NULL, method = "spearman")
+compute_similarity(D1, D2, grouping_cols = NULL, method = "spearman",
+  melt = F)
 }
 \arguments{
 \item{D1}{data.frame}
 
 \item{D2}{same dimensions as \code{D1}}
+
+\item{grouping_cols}{list columns to be used as metadata}
+
+\item{melt}{If True, return the similarity matrix as a melted data frame}
 }
 \value{
-Similarity between D1 and D2
+Similarity between \code{D1} and \code{D2}
 }
 \description{
 Function to measure similarity between two vectors
-}
-\examples{
-compute_similarity(c(1,2,3,4,5), c(1,2,4,3,5))
 }
 
