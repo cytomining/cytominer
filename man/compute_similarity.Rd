@@ -2,7 +2,7 @@
 % Please edit documentation in R/compute_similarity.R
 \name{compute_similarity}
 \alias{compute_similarity}
-\title{Similarity between two vectors}
+\title{Similarity between two sets of vectors}
 \usage{
 compute_similarity(D1, D2, grouping_cols = NULL, method = "spearman",
   melt = F)
@@ -14,12 +14,12 @@ compute_similarity(D1, D2, grouping_cols = NULL, method = "spearman",
 
 \item{grouping_cols}{list columns to be used as metadata}
 
-\item{melt}{If True, return the similarity matrix as a melted data frame}
+\item{melt}{If True, return the similarity matrix as a melted data frame, joined with grouping columns}
 }
 \value{
 Similarity between \code{D1} and \code{D2}
 }
 \description{
-Function to measure similarity between two vectors
+Function to measure similarity between two sets of vectors
 }
 

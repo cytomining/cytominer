@@ -1,12 +1,11 @@
-#' Similarity between two vectors
+#' Similarity between two sets of vectors
 #'
-#' Function to measure similarity between two vectors
+#' Function to measure similarity between two sets of vectors
 #'
 #' @param D1 data.frame
 #' @param D2 same dimensions as \code{D1}
 #' @param grouping_cols list columns to be used as metadata
-#' @param melt If True, return the similarity matrix as a melted data frame,
-#'             joined with grouping columns
+#' @param melt If True, return the similarity matrix as a melted data frame, joined with grouping columns
 #'
 #' @return Similarity between \code{D1} and \code{D2}
 #'
