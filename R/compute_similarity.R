@@ -23,7 +23,7 @@ compute_similarity <- function(D1,
 
   testthat::expect_true(all(names(D1_mat)==names(D1_mat)))
 
-  sim_mat <- cor(t(D1_mat), t(D2_mat))
+  sim_mat <- cor(t(D1_mat), t(D2_mat), method = method)
 
   if (!melt) {
     return(sim_mat)
