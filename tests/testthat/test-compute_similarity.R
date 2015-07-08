@@ -60,7 +60,7 @@ test_that("Melted similarity matrix is valid", {
                                      names(cmat_melt)), collapse = ",")
   )
   expect_equal(
-    dplyr::semi_join(cmat_melt,
+    dplyr::inner_join(cmat_melt,
                      format_pair_query(cmp, names(cmat_melt)))$value,
     0.4313986,
     tol = 1e-05
