@@ -10,7 +10,7 @@ feat(...)
 \method{feat}{profile.data}(P, ...)
 }
 \arguments{
-\item{...}{}
+\item{...}{object from which to extract featdata}
 
 \item{P}{profile.data object}
 }
