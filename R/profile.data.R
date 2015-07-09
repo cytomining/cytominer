@@ -32,7 +32,7 @@ profile.data <- function(cf, use_csv = F) {
     digest_val <- readLines(fdig)
     testthat::expect_equal(digest_val, digest::digest(data))
   } else {
-    data <- data.frame(read.csv(fcsv, header = TRUE))
+    data <- data.frame(read.csv(fcsv, header = TRUE, stringsAsFactors = F))
     saveRDS(data, file = frda)
     writeLines(digest::digest(data), fdig)
   }
