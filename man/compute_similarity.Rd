@@ -15,7 +15,7 @@ compute_similarity(...)
   melt = F, ...)
 }
 \arguments{
-\item{...}{}
+\item{...}{Arguments to be passed to methods}
 
 \item{D1}{data.frame}
 

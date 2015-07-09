@@ -4,7 +4,8 @@
 #'
 #' @param method type of similarity method
 #' @param melt If True, return the similarity matrix as a melted data frame, joined with grouping columns
-#' @param ...
+#' @param ... Arguments to be passed to methods
+#'
 compute_similarity <- function(...) UseMethod("compute_similarity")
 
 #' @describeIn compute_similarity Measure similarity between data frames
