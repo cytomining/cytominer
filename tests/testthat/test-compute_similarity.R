@@ -76,24 +76,6 @@ test_that("Melted similarity matrix is valid: data.frame", {
 
 
 
-# Load cpseedseq dataset as a profile.data object
-cfg_fname <-
-  system.file("extdata",
-              "well-summary-profile_mean-median-robust_std-untreated_norm.yml",
-              package = "pertminr")
-cpseedseq_prf <- profile.data(cfg_fname)
-
-cpseedseq_prf <- process_metadata(cpseedseq_prf,
-                                  strip_cellprofiler_db_tags = T)
-
-cpseedseq_prf$metadata <- cpseedseq_prf$metadata[
-  cpseedseq_prf$metadata$Plate %in%
-    c(38034, 38003, 37983),
-  ]
-
-cpseedseq_prf$featdata <- cpseedseq_prf$featdata[
-  rownames(cpseedseq_prf$featdata) %in% rownames(cpseedseq_prf$metadata),
-  ]
 
 cmat_prf <- compute_similarity(cpseedseq_prf,
                                data.frame(GeneSymbol = "HDAC1"),
