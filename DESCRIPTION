@@ -6,12 +6,10 @@ Date: 2015-06-25
 Author: Shantanu Singh
 Maintainer: <shsingh@broadinstitute.org>
 Description: Mine patterns in perturbation data
-License: MIT
+Depends: R (>= 3.1.0)
+License: MIT + file LICENSE
 LazyData: TRUE
-Imports: gplots,
-    ggplot2,
-    tidyr,
-    stringr,
+Imports: tidyr,
     magrittr,
     digest,
     dplyr,
