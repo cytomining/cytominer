@@ -10,6 +10,8 @@ rotate_platemap(...)
 \method{rotate_platemap}{profile.data}(P, ...)
 }
 \arguments{
+\item{...}{Arguments to be passed to methods}
+
 \item{P}{profile.data generated from a 384-well plate experiment
 and containing 'Well' in the metdata}
 }
