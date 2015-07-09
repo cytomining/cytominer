@@ -24,3 +24,17 @@ test_that("Processing metadata has expected behavior", {
     "profile.data"
   )
 })
+
+test_that("process_metadata returns a valid profile.data object", {
+  expect_is(process_metadata(P, strip_cellprofiler_db_tags = T),
+            "profile.data")
+})
+
+P <- process_metadata(P, strip_cellprofiler_db_tags = T)
+P$metadata <- dplyr::filter(P$metadata, Plate %in% c(38034, 38003, 37983))
+
+test_that("post_filter_metadata returns a valid profile.data object", {
+  expect_is(post_filter_metadata(P), "profile.data")
+})
+
+P <- post_filter_metadata(P)
