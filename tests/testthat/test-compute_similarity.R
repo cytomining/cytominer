@@ -35,7 +35,9 @@ test_that("Similarity matrix for test dataset is valid: data.frame", {
   expect_true(
     min(cmat) >= -1
   )
-
+  expect_true(
+    all(dim(cmat) == c(33, 33))
+  )
 })
 
 
@@ -76,11 +78,23 @@ test_that("Melted similarity matrix is valid: data.frame", {
 
 
 
+# Perform similar tests on cpseedseq_prf dataset
 
 cmat_prf <- compute_similarity(cpseedseq_prf,
                                data.frame(GeneSymbol = "HDAC1"),
                                data.frame(GeneSymbol = "HDAC2"),
                                melt = F)
+test_that("Similarity matrix for test dataset is valid: profile.data", {
+  expect_true(
+    max(cmat_prf) <= 1
+  )
+  expect_true(
+    min(cmat_prf) >= -1
+  )
+  expect_true(
+    all(dim(cmat_prf) == c(33, 33))
+  )
+})
 
 cmat_prf_melt <- compute_similarity(cpseedseq_prf,
                                     data.frame(GeneSymbol = "HDAC1"),
@@ -94,15 +108,7 @@ names(cmat_melt_s) <- gsub("Metadata_", "", names(cmat_melt_s))
 sel <- c("Plate.x", "Well.x", "Plate.y", "Well.y", "value")
 
 
-test_that("Similarity matrix for test dataset is valid: profile.data", {
-  expect_true(
-    max(cmat_prf) <= 1
-  )
-  expect_true(
-    min(cmat_prf) >= -1
-  )
 
-})
 
 
 test_that("format_pair_query gives expected output: profile.data", {
