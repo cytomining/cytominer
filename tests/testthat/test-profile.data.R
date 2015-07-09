@@ -31,7 +31,7 @@ test_that("process_metadata returns a valid profile.data object", {
 })
 
 P <- process_metadata(P, strip_cellprofiler_db_tags = T)
-P$metadata <- dplyr::filter(P$metadata, Plate %in% c(38034, 38003, 37983))
+P$metadata %<>% dplyr::filter(Plate %in% c(38034, 38003, 37983))
 
 test_that("post_filter_metadata returns a valid profile.data object", {
   expect_is(post_filter_metadata(P), "profile.data")

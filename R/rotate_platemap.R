@@ -10,7 +10,7 @@ rotate_platemap <- function(...) UseMethod("rotate_platemap")
 #' @param P profile.data generated from a 384-well plate experiment
 #' and containing 'Well' in the metdata
 #'
-#' @importFrom dplyr '%>%'
+#' @importFrom dplyr %>%
 
 rotate_platemap.profile.data <- function(P, ...) {
   testthat::expect_false("WellRow" %in% names(meta(P)))

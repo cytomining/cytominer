@@ -6,7 +6,8 @@
 #' @param ... Arguments to be passed to methods
 #'
 #' @return profile.data, after filtering featdata
-#' @importFrom dplyr '%>%'
+#' @importFrom dplyr %>%
+#' @importFrom magrittr %<>%
 
 post_filter_metadata <- function(...) UseMethod("post_filter_metadata")
 
@@ -19,7 +20,7 @@ post_filter_metadata.profile.data <- function(P, ...) {
   testthat::expect_equal(length(setdiff(P$metadata$xid, P$featdata$xid)), 0)
 
   xid_l <- P$metadata$xid
-  P$featdata <- dplyr::filter(P$featdata, xid %in% xid_l)
+  P$featdata %<>% dplyr::filter(xid %in% xid_l)
 
   testthat::expect_true(setequal(P$metadata$xid, P$featdata$xid))
   P
