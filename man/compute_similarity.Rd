@@ -2,19 +2,36 @@
 % Please edit documentation in R/compute_similarity.R
 \name{compute_similarity}
 \alias{compute_similarity}
+\alias{compute_similarity.data.frame}
+\alias{compute_similarity.profile.data}
 \title{Similarity between two sets of vectors}
 \usage{
-compute_similarity(D1, D2, grouping_cols = NULL, method = "spearman",
-  melt = F)
+compute_similarity(...)
+
+\method{compute_similarity}{data.frame}(D1, D2, grouping_cols = NULL,
+  method = "spearman", melt = F, ...)
+
+\method{compute_similarity}{profile.data}(P, key1, key2, method = "spearman",
+  melt = F, ...)
 }
 \arguments{
+\item{...}{}
+
 \item{D1}{data.frame}
 
 \item{D2}{same dimensions as \code{D1}}
 
 \item{grouping_cols}{list columns to be used as metadata}
 
+\item{method}{type of similarity method}
+
 \item{melt}{If True, return the similarity matrix as a melted data frame, joined with grouping columns}
+
+\item{P}{profile.data object}
+
+\item{key1}{first key}
+
+\item{key2}{second key}
 }
 \value{
 Similarity between \code{D1} and \code{D2}
@@ -22,4 +39,11 @@ Similarity between \code{D1} and \code{D2}
 \description{
 Function to measure similarity between two sets of vectors
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{data.frame}: Measure similarity between data frames
+
+\item \code{profile.data}: Measure similarity between profile.data
+objects
+}}
 

@@ -2,24 +2,34 @@
 #'
 #' Function to measure similarity between two sets of vectors
 #'
+#' @param method type of similarity method
+#' @param melt If True, return the similarity matrix as a melted data frame, joined with grouping columns
+#' @param ...
+compute_similarity <- function(...) UseMethod("compute_similarity")
+
+#' @describeIn compute_similarity Measure similarity between data frames
+#'
 #' @param D1 data.frame
 #' @param D2 same dimensions as \code{D1}
 #' @param grouping_cols list columns to be used as metadata
-#' @param melt If True, return the similarity matrix as a melted data frame, joined with grouping columns
 #'
 #' @return Similarity between \code{D1} and \code{D2}
 #'
-compute_similarity <- function(D1,
-                               D2,
-                               grouping_cols = NULL,
-                               method = "spearman",
-                               melt = F) {
+compute_similarity.data.frame <- function(D1,
+                                          D2,
+                                          grouping_cols = NULL,
+                                          method = "spearman",
+                                          melt = F,
+                                          ...) {
 
   testthat::expect_true(all(grouping_cols %in% names(D1)))
   testthat::expect_true(all(grouping_cols %in% names(D2)))
 
   D1_mat <- as.matrix(D1[,setdiff(names(D1), grouping_cols)])
   D2_mat <- as.matrix(D2[,setdiff(names(D2), grouping_cols)])
+
+  testthat::expect_is(D1_mat, "matrix")
+  testthat::expect_is(D2_mat, "matrix")
 
   testthat::expect_true(all(names(D1_mat)==names(D1_mat)))
 
@@ -50,4 +60,41 @@ compute_similarity <- function(D1,
   }
 
 }
+
+#' @describeIn compute_similarity Measure similarity between profile.data
+#' objects
+#'
+#' @param P profile.data object
+#' @param key1 first key
+#' @param key2 second key
+
+compute_similarity.profile.data <- function(P, key1, key2,
+                                            method = "spearman",
+                                            melt = F,
+                                            ...) {
+
+  testthat::expect_is(P, "profile.data")
+  testthat::expect_equal(length(setdiff(names(key1), names(P$metadata))), 0)
+  testthat::expect_equal(length(setdiff(names(key2), names(P$metadata))), 0)
+
+  test_and_process_key <- function(key) {
+    for (v in names(key)) {
+      if (is.factor(P$metadata[, v])) {
+        testthat::expect_true(key[, v] %in% levels(P$metadata[, v]))
+        key[, v] <- factor(key[, v], levels = levels(P$metadata[, v]))
+      }
+    }
+    key
+  }
+  key1 <- test_and_process_key(key1)
+  key2 <- test_and_process_key(key2)
+
+  D1 <- merge_by_xid(dplyr::inner_join(P$metadata, key1, by = names(key1)),
+                                   P$featdata)
+  D2 <- merge_by_xid(dplyr::inner_join(P$metadata, key2, by = names(key2)),
+                                   P$featdata)
+
+  return(compute_similarity.data.frame(D1, D2, names(P$metadata), method, melt))
+}
+
 
