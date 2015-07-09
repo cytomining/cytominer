@@ -12,5 +12,9 @@ Imports: gplots,
     ggplot2,
     tidyr,
     stringr,
-    magrittr
-Suggests: testthat
+    magrittr,
+    digest,
+    dplyr,
+    reshape2,
+    yaml,
+    testthat
