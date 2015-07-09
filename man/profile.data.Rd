@@ -4,10 +4,12 @@
 \alias{profile.data}
 \title{Constructor for profile.data S3 class}
 \usage{
-\method{profile}{data}(cf)
+\method{profile}{data}(cf, use_csv = F)
 }
 \arguments{
 \item{cf}{YAML configuration file}
+
+\item{use_csv}{If TRUE, force loading of CSV file even if binary exists}
 }
 \value{
 profile.data object

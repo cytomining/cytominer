@@ -8,7 +8,7 @@
 profile.data <- function(cf, use_csv = F) {
 
   # Load the configuration file
-  expect_true(file.exists(cf))
+  testthat::expect_true(file.exists(cf))
   cfg <- yaml::yaml.load_file(cf)
   cfg$cwd <- dirname(cf)
 
@@ -37,7 +37,7 @@ profile.data <- function(cf, use_csv = F) {
     writeLines(digest::digest(data), fdig)
   }
 
-  # get the index of featdata metadata columns
+  # get the index of featdata and metadata columns
   testthat::expect_true(!is.null(cfg$feat_start))
   testthat::expect_is(cfg$feat_start, "integer")
   testthat::expect_more_than(cfg$feat_start, 1)
@@ -46,8 +46,19 @@ profile.data <- function(cf, use_csv = F) {
   metadata <- data[,metadata_cids]
   featdata <- data[,featdata_cids]
 
-  # Use row.names as an index so that featdata and metadata can be linked
-  expect_true(all(row.names(data)==seq(nrow(data))))
+  testthat::expect_equal(ncol(featdata) + ncol(metadata), ncol(data))
+
+  # add an idx column to metadata and featdata
+  # idx for a row is a hash of the metadata in that row
+  # this means that rows with identical metadata are not allowed
+  # upon creation of the profile.data object
+
+  testthat::expect_false("xid" %in% colnames(data))
+  metadata$xid <- sapply(tidyr::unite_(metadata,
+                                       "xid",
+                                       from = names(metadata))$xid,
+                         digest::digest, USE.NAMES = F)
+  featdata$xid <- metadata$xid
 
   # Create profile.data object
   obj <- list(cfg = cfg,
