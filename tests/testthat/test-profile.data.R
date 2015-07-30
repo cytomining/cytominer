@@ -18,6 +18,10 @@ test_that("Sample dataset has expected structure", {
   expect_is(feat(P), "data.frame")
 })
 
+test_that("Features in sample dataset are all numeric", {
+  expect_true(is.numeric(as.matrix(feat(P))))
+})
+
 test_that("Processing metadata has expected behavior", {
   expect_is(
     process_metadata(P, strip_cellprofiler_db_tags = T),
