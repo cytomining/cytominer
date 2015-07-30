@@ -90,6 +90,9 @@ compute_similarity.profile.data <- function(P, key1, key2,
   key1 <- test_and_process_key(key1)
   key2 <- test_and_process_key(key2)
 
+  futile.logger::flog.debug("key1 = %s", jsonlite::toJSON(key1))
+  futile.logger::flog.debug("key2 = %s", jsonlite::toJSON(key2))
+
   D1 <- merge_by_xid(dplyr::inner_join(P$metadata, key1, by = names(key1)),
                                    P$featdata)
   D2 <- merge_by_xid(dplyr::inner_join(P$metadata, key2, by = names(key2)),

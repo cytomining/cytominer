@@ -16,4 +16,5 @@ Imports: tidyr,
     reshape2,
     yaml,
     testthat,
-    futile.logger
+    futile.logger,
+    jsonlite
