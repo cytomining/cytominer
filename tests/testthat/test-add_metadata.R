@@ -5,7 +5,7 @@ metadata_fname <-
               "clone_search_hairpins.csv",
               package = "pertminr")
 
-metadata <- read.csv(metadata_fname)
+metadata <- read.csv(metadata_fname, stringsAsFactors = F)
 metadata %<>% dplyr::rename(shRNA_CloneID = Clone.ID)
 
 test_that("Adding new metadata works as expected", {
