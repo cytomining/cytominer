@@ -46,6 +46,9 @@ profile.data <- function(cf, use_csv = F) {
   metadata <- data[,metadata_cids]
   featdata <- data[,featdata_cids]
 
+  futile.logger::flog.debug("%s metadata columns", NCOL(metadata))
+  futile.logger::flog.debug("%s featdata columns", NCOL(featdata))
+
   testthat::expect_equal(ncol(featdata) + ncol(metadata), ncol(data))
 
   # add an idx column to metadata and featdata

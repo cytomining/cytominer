@@ -15,4 +15,5 @@ Imports: tidyr,
     dplyr,
     reshape2,
     yaml,
-    testthat
+    testthat,
+    futile.logger
