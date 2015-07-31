@@ -4,6 +4,7 @@
 #'
 #' @param method type of similarity method
 #' @param melt If True, return the similarity matrix as a melted data frame, joined with grouping columns
+#' @param return_index If True, return the similarity matrix along with row and col metadata
 #' @param ... Arguments to be passed to methods
 #'
 compute_similarity <- function(...) UseMethod("compute_similarity")
@@ -21,10 +22,12 @@ compute_similarity.data.frame <- function(D1,
                                           grouping_cols = NULL,
                                           method = "spearman",
                                           melt = F,
+                                          return_index = F
                                           ...) {
 
   testthat::expect_true(all(grouping_cols %in% names(D1)))
   testthat::expect_true(all(grouping_cols %in% names(D2)))
+  testthat::expect_false(melt & return_index)
 
   D1_mat <- as.matrix(D1[,setdiff(names(D1), grouping_cols)])
   D2_mat <- as.matrix(D2[,setdiff(names(D2), grouping_cols)])
@@ -39,8 +42,16 @@ compute_similarity.data.frame <- function(D1,
 
   sim_mat <- cor(t(D1_mat), t(D2_mat), method = method)
 
-  if (!melt) {
+  if (!melt & !return_index) {
+    futile.logger::flog.debug("Returning %dx%d similarity matrix",
+                              nrow(sim_mat), ncol(sim_mat))
     return(sim_mat)
+  } else if (!melt & return_index) {
+    sim_mat_obj <- sim.mat(sim_mat, D1[,grouping_cols], D2[,grouping_cols])
+
+    futile.logger::flog.debug("Returning %dx%d similarity matrix along with metadata",
+                              nrow(sim_mat), ncol(sim_mat))
+    return(sim_mat_obj)
   } else {
     testthat::expect_false("Var1" %in% grouping_cols)
     testthat::expect_false("Var2" %in% grouping_cols)
@@ -94,6 +105,7 @@ compute_similarity.data.frame <- function(D1,
 compute_similarity.profile.data <- function(P, key1, key2,
                                             method = "spearman",
                                             melt = F,
+                                            return_index = F
                                             ...) {
 
   testthat::expect_is(P, "profile.data")
@@ -125,7 +137,12 @@ compute_similarity.profile.data <- function(P, key1, key2,
 
   futile.logger::flog.debug("Querying on key2 gives %d rows", nrow(D2))
 
-  return(compute_similarity.data.frame(D1, D2, names(P$metadata), method, melt))
+  return(compute_similarity.data.frame(D1, D2,
+                                       grouping_col = names(P$metadata),
+                                       method = method,
+                                       melt = melt,
+                                       return_index = return_index)
+         )
 }
 
 
