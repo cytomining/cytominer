@@ -20,8 +20,13 @@ process_metadata.profile.data <- function(P, strip_cellprofiler_db_tags = T) {
   testthat::expect_is(P$cfg$mapping$metadata_tag, "character")
 
   metadata_names <- names(P$metadata)
+
+  # remove the tag, e.g. Image_Metadata_, from the column name
   metadata_names <- gsub(P$cfg$mapping$metadata_tag,
                          '', metadata_names)
+
+  # remove the dbname, e.g. MultipleHairpin_2013_03_07_Analysis_Per_Image,
+  # from the column name
   metadata_names <- gsub(paste(P$cfg$mapping$dbname, "", sep="."),
                          '', metadata_names)
   testthat::expect_equal(length(metadata_names), length(names(P$metadata)))

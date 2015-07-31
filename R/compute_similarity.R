@@ -34,6 +34,9 @@ compute_similarity.data.frame <- function(D1,
 
   testthat::expect_true(all(names(D1_mat)==names(D1_mat)))
 
+  futile.logger::flog.debug("Computing %s between D1 (n=%d) and D2 (n=%d) ...",
+                            method, nrow(D1), nrow(D2))
+
   sim_mat <- cor(t(D1_mat), t(D2_mat), method = method)
 
   if (!melt) {
@@ -43,20 +46,39 @@ compute_similarity.data.frame <- function(D1,
     testthat::expect_false("Var2" %in% grouping_cols)
     colnames(sim_mat) <- seq(NCOL(sim_mat))
     row.names(sim_mat) <- seq(NROW(sim_mat))
+
+    futile.logger::flog.debug("Melting %dx%d similarity matrix ...", nrow(sim_mat), nrow(sim_mat))
+
     sim_mat_m <- reshape2::melt(sim_mat)
     sim_mat_m_nrow <- nrow(sim_mat_m)
     testthat::expect_true(setequal(names(sim_mat_m), c("Var1", "Var2", "value")))
+
+    futile.logger::flog.debug("Melted similarity matrix has %d rows", nrow(sim_mat_m))
+
     D1_grouping_cols <- D1[,grouping_cols]
     D2_grouping_cols <- D2[,grouping_cols]
     names(D1_grouping_cols) <- paste(names(D1_grouping_cols), "x", sep = ".")
     names(D2_grouping_cols) <- paste(names(D2_grouping_cols), "y", sep = ".")
     D1_grouping_cols$Var1 <- seq(NROW(D1))
     D2_grouping_cols$Var2 <- seq(NROW(D2))
+
+    futile.logger::flog.debug("Binding %d columns of metadata to similarity matrix with %d rows ...",
+                              ncol(D1_grouping_cols),
+                              nrow(sim_mat_m))
     sim_mat_m <- dplyr::inner_join(sim_mat_m, D1_grouping_cols, by = c("Var1"))
+
+    futile.logger::flog.debug("Binding %d columns of metadata to similarity matrix with %d rows ...",
+                              ncol(D2_grouping_cols),
+                              nrow(sim_mat_m))
     sim_mat_m <- dplyr::inner_join(sim_mat_m, D2_grouping_cols, by = c("Var2"))
+
     sim_mat_m$Var1 <- NULL
     sim_mat_m$Var2 <- NULL
     testthat::expect_equal(nrow(sim_mat_m), sim_mat_m_nrow)
+
+    futile.logger::flog.debug("Returning %dx%d melted similarity matrix",
+                              nrow(sim_mat_m), ncol(sim_mat_m))
+
     return(sim_mat_m)
   }
 
@@ -95,8 +117,13 @@ compute_similarity.profile.data <- function(P, key1, key2,
 
   D1 <- merge_by_xid(dplyr::inner_join(P$metadata, key1, by = names(key1)),
                                    P$featdata)
+
+  futile.logger::flog.debug("Querying on key1 gives %d rows", nrow(D1))
+
   D2 <- merge_by_xid(dplyr::inner_join(P$metadata, key2, by = names(key2)),
                                    P$featdata)
+
+  futile.logger::flog.debug("Querying on key2 gives %d rows", nrow(D2))
 
   return(compute_similarity.data.frame(D1, D2, names(P$metadata), method, melt))
 }
