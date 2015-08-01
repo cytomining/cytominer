@@ -17,4 +17,5 @@ Imports: tidyr,
     yaml,
     testthat,
     futile.logger,
-    jsonlite
+    jsonlite,
+    stringr
