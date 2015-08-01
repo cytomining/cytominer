@@ -41,5 +41,6 @@ query_n.sim.mat <- function(S, query_frame, return_all_cols = F, ...) {
     }
   }
   res <- do.call("rbind", res)
+  return(res)
 
 }
