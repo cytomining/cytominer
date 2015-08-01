@@ -1,9 +1,10 @@
 #' Constructor for sim.mat S3 class
 #'
-#' @param cf YAML configuration file
-#' @param use_csv If TRUE, force loading of CSV file even if binary exists
+#' @param smat Similarity matrix
+#' @param row_meta data.frame col metadata
+#' @param col_meta data.frame col metadata
 #'
-#' @return profile.data object
+#' @return sim.mat object
 
 sim.mat <- function(smat, row_meta, col_meta) {
   # Create sim.mat object

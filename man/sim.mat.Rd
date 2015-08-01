@@ -7,12 +7,14 @@
 sim.mat(smat, row_meta, col_meta)
 }
 \arguments{
-\item{cf}{YAML configuration file}
+\item{smat}{Similarity matrix}
 
-\item{use_csv}{If TRUE, force loading of CSV file even if binary exists}
+\item{row_meta}{data.frame col metadata}
+
+\item{col_meta}{data.frame col metadata}
 }
 \value{
-profile.data object
+sim.mat object
 }
 \description{
 Constructor for sim.mat S3 class
