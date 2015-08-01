@@ -15,6 +15,11 @@ query.sim.mat <- function(S, query_frame, ...) {
   testthat::expect_is(S, "sim.mat")
   testthat::expect_is(query_frame, "data.frame")
 
+  # impose that the query be only one row because the logic is more
+  # complicated with multiple rows
+  # TODO: remove this constraint
+  testthat::expect_equal(nrow(query_frame), 1)
+
   # get colnames of row and col portions of the query
   row_q_names_ <- stringr::str_subset(names(query_frame), ".x$")
   col_q_names_ <- stringr::str_subset(names(query_frame), ".y$")
@@ -61,8 +66,8 @@ query.sim.mat <- function(S, query_frame, ...) {
 
   if (nrow(full_res) > 0) {
     full_res %<>% dplyr::rowwise() %>% dplyr::mutate(value = smat(S)[Var1.x, Var2.y])
-    futile.logger::flog.debug("Final query result = \n%s",
-                              paste(capture.output(full_res), collapse="\n"))
+#     futile.logger::flog.debug("Final query result = \n%s",
+#                               paste(capture.output(full_res), collapse="\n"))
   }
 
   return (full_res)
