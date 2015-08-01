@@ -10,31 +10,34 @@ query <- function(S, query_frame, ...)
 
 #' @describeIn query Query sim.mat object
 #'
+#' @param return_all_cols If True, returns all columns of the query result,
+#' else returns only the columns that were present in the query
 
-query.sim.mat <- function(S, query_frame, ...) {
+query.sim.mat <- function(S, query_frame, return_all_cols = F, ...) {
   testthat::expect_is(S, "sim.mat")
   testthat::expect_is(query_frame, "data.frame")
 
   # impose that the query be only one row because the logic is more
   # complicated with multiple rows
   # TODO: remove this constraint
-  testthat::expect_equal(nrow(query_frame), 1)
+  testthat::expect_equal(nrow(query_frame), 1,
+                         info  = "query be only one row because the logic is more complicated with multiple rows")
 
   # get colnames of row and col portions of the query
   row_q_names_ <- stringr::str_subset(names(query_frame), ".x$")
   col_q_names_ <- stringr::str_subset(names(query_frame), ".y$")
-  expect_true(setequal(c(row_q_names_, col_q_names_), names(query_frame)))
+  testthat::expect_true(setequal(c(row_q_names_, col_q_names_), names(query_frame)))
 
   # strip out .x and .y
   row_q_names <- stringr::str_replace(row_q_names_, ".x", "")
   col_q_names <- stringr::str_replace(col_q_names_, ".y", "")
 
   # test
-  expect_true(all(row_q_names %in% names(row_meta(S))),
-              info = paste(names(row_meta(S)), row_q_names, collapse=","))
+  testthat::expect_true(all(row_q_names %in% names(row_meta(S))),
+                        info = paste(names(row_meta(S)), row_q_names, collapse=","))
 
-  expect_true(all(col_q_names %in% names(col_meta(S))),
-              info = paste(names(col_meta(S)), col_q_names, collapse=","))
+  testthat::expect_true(all(col_q_names %in% names(col_meta(S))),
+                        info = paste(names(col_meta(S)), col_q_names, collapse=","))
 
   # extract the row query
   futile.logger::flog.debug("Extracting row query...")
@@ -73,9 +76,11 @@ query.sim.mat <- function(S, query_frame, ...) {
   # col results are present.
   full_res <- dplyr::left_join(full_res, col_res)
 
-  # Preserve only a few columns of the full_res. Var1.x and Var2.y store the i,j
-  # index of the similarity matrix corresponding to the result
-  full_res %<>% dplyr::select_(.dots = c(names(query_frame), "Var1.x", "Var2.y"))
+  if (!return_all_cols) {
+    # Preserve only a few columns of the full_res. Var1.x and Var2.y store the i,j
+    # index of the similarity matrix corresponding to the result
+    full_res %<>% dplyr::select_(.dots = c(names(query_frame), "Var1.x", "Var2.y"))
+  }
   futile.logger::flog.debug("Query result frame has %d rows", nrow(full_res))
 
   # Rows in query with no match in  will have NA values in either the columns
@@ -89,7 +94,11 @@ query.sim.mat <- function(S, query_frame, ...) {
     # full_res matrix
     futile.logger::flog.debug("Appending values from smat...")
     smat_ <- smat(S)
-    full_res %<>% dplyr::rowwise() %>% dplyr::mutate(value = smat_[Var1.x, Var2.y])
+    full_res %<>%
+      dplyr::rowwise() %>%
+      dplyr::mutate(value = smat_[Var1.x, Var2.y]) %>%
+      dplyr::select(-Var1.x, -Var2.y) %>%
+      dplyr::ungroup()
     futile.logger::flog.debug("Finished appending values from smat.")
     full_res_str <- paste(capture.output(full_res), collapse="\n")
     #futile.logger::flog.debug("Final query result = \n%s", full_res_str)

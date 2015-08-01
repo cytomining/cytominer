@@ -7,7 +7,7 @@
 \usage{
 query(S, query_frame, ...)
 
-\method{query}{sim.mat}(S, query_frame, ...)
+\method{query}{sim.mat}(S, query_frame, return_all_cols = F, ...)
 }
 \arguments{
 \item{S}{sim.mat object}
@@ -15,6 +15,9 @@ query(S, query_frame, ...)
 \item{query_frame}{data.frame with query in each row}
 
 \item{...}{additional parameters}
+
+\item{return_all_cols}{If True, returns all columns of the query result,
+else returns only the columns that were present in the query}
 }
 \description{
 Query sim.mat
