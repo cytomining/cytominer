@@ -138,7 +138,7 @@ compute_similarity.profile.data <- function(P, key1, key2,
   futile.logger::flog.debug("Querying on key2 gives %d rows", nrow(D2))
 
   return(compute_similarity.data.frame(D1, D2,
-                                       grouping_col = names(P$metadata),
+                                       grouping_cols = names(P$metadata),
                                        method = method,
                                        melt = melt,
                                        return_index = return_index)
