@@ -22,9 +22,13 @@ hdac2 <-
                           c("HDAC2"),])
 
 metadata_cols <- stringr::str_subset(names(cpseedseq), "Metadata_")
-cmat <- compute_similarity(hdac1, hdac2, grouping_cols = metadata_cols, melt = F)
-cmat_melt <- compute_similarity(hdac1, hdac2, grouping_cols = metadata_cols, melt = T)
 
+cmat <- compute_similarity(hdac1, hdac2,
+                           grouping_cols = metadata_cols,
+                           melt = F)
+cmat_melt <- compute_similarity(hdac1, hdac2,
+                                grouping_cols = metadata_cols,
+                                melt = T)
 test_that("Similarity matrix for test dataset is valid: data.frame", {
   expect_true(
     all(dim(cmat) == c(NROW(hdac1),NROW(hdac2)))
