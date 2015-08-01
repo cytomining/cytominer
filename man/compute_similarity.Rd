@@ -9,10 +9,10 @@
 compute_similarity(...)
 
 \method{compute_similarity}{data.frame}(D1, D2, grouping_cols = NULL,
-  method = "spearman", melt = F, ...)
+  method = "spearman", melt = F, return_index = F, ...)
 
 \method{compute_similarity}{profile.data}(P, key1, key2, method = "spearman",
-  melt = F, ...)
+  melt = F, return_index = F, ...)
 }
 \arguments{
 \item{...}{Arguments to be passed to methods}
@@ -26,6 +26,8 @@ compute_similarity(...)
 \item{method}{type of similarity method}
 
 \item{melt}{If True, return the similarity matrix as a melted data frame, joined with grouping columns}
+
+\item{return_index}{If True, return the similarity matrix along with row and col metadata}
 
 \item{P}{profile.data object}
 

@@ -22,7 +22,7 @@ compute_similarity.data.frame <- function(D1,
                                           grouping_cols = NULL,
                                           method = "spearman",
                                           melt = F,
-                                          return_index = F
+                                          return_index = F,
                                           ...) {
 
   testthat::expect_true(all(grouping_cols %in% names(D1)))
@@ -105,7 +105,7 @@ compute_similarity.data.frame <- function(D1,
 compute_similarity.profile.data <- function(P, key1, key2,
                                             method = "spearman",
                                             melt = F,
-                                            return_index = F
+                                            return_index = F,
                                             ...) {
 
   testthat::expect_is(P, "profile.data")
