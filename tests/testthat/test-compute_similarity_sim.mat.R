@@ -90,3 +90,17 @@ test_that("sim.mat similarity matrix returns correct values", {
   )
 
 })
+
+test_that("sim.mat similarity matrix returns correct values - more complex cases", {
+
+  expect_equal(nrow(
+    query(compute_similarity(cpseedseq_prf,
+                             data.frame(Plate = 37983),
+                             data.frame(Plate = 38003),
+                             return_index = T),
+          data.frame(Plate.x = 37983,
+                     Plate.y = 38003))),
+    384*384
+  )
+
+})
