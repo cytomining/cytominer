@@ -87,7 +87,10 @@ query.sim.mat <- function(S, query_frame, ...) {
   if (nrow(full_res) > 0) {
     # Now look up the i,j values in the simililarity matrix and append it to the
     # full_res matrix
-    full_res %<>% dplyr::rowwise() %>% dplyr::mutate(value = smat(S)[Var1.x, Var2.y])
+    futile.logger::flog.debug("Appending values from smat...")
+    smat_ <- smat(S)
+    full_res %<>% dplyr::rowwise() %>% dplyr::mutate(value = smat_[Var1.x, Var2.y])
+    futile.logger::flog.debug("Finished appending values from smat.")
     full_res_str <- paste(capture.output(full_res), collapse="\n")
     #futile.logger::flog.debug("Final query result = \n%s", full_res_str)
   }
