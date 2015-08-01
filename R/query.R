@@ -59,10 +59,10 @@ query.sim.mat <- function(S, query_frame, return_all_cols = F, ...) {
   # returned.
 
   futile.logger::flog.debug("Querying on rows...")
-  row_res <- dplyr::left_join(row_q, S$row_meta)
+  row_res <- dplyr::left_join(row_q, S$row_meta, by = row_q_names)
 
   futile.logger::flog.debug("Querying on cols...")
-  col_res <- dplyr::left_join(col_q, S$col_meta)
+  col_res <- dplyr::left_join(col_q, S$col_meta, by = col_q_names)
 
   # Merge the row and col results
   # start with the query frame
@@ -71,12 +71,16 @@ query.sim.mat <- function(S, query_frame, return_all_cols = F, ...) {
   # corresponding suffix in the query frame
   names(row_res) <- paste(names(row_res), "x", sep = ".")
   names(col_res) <- paste(names(col_res), "y", sep = ".")
+  expect_true(all(row_q_names_ %in% names(row_res)))
+  expect_true(all(col_q_names_ %in% names(col_res)))
+  expect_true(all(row_q_names_ %in% names(full_res)))
+  expect_true(all(col_q_names_ %in% names(full_res)))
   # now do a left join of the query frame (stored in full_res) with the row
   # result so that all the row results are present
-  full_res <- dplyr::left_join(full_res, row_res)
+  full_res <- dplyr::left_join(full_res, row_res, by = row_q_names_)
   # next do a left join on of the full_res with the col result so that all the
   # col results are present.
-  full_res <- dplyr::left_join(full_res, col_res)
+  full_res <- dplyr::left_join(full_res, col_res, by = col_q_names_)
 
   if (!return_all_cols) {
     # Preserve only a few columns of the full_res. Var1.x and Var2.y store the i,j
