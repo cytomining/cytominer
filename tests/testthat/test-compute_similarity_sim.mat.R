@@ -91,16 +91,40 @@ test_that("sim.mat similarity matrix returns correct values", {
 
 })
 
-test_that("sim.mat similarity matrix returns correct values - more complex cases", {
+cmat_obj_large <- compute_similarity(cpseedseq_prf,
+                                     data.frame(Plate = 37983),
+                                     data.frame(Plate = 38003),
+                                     return_index = T)
 
+cmat_prf_melt_large <- compute_similarity(cpseedseq_prf,
+                                    data.frame(Plate = 37983),
+                                    data.frame(Plate = 38003),
+                                    melt = T)
+
+cmat_prf_melt_large_sample <-
+  cmat_prf_melt_large %>%
+  dplyr::select(Plate.x, Well.x, Plate.y, Well.y, value) %>%
+  dplyr::sample_n(500)
+
+cmat_prf_melt_large_sample_query <-
+  cmat_prf_melt_large_sample %>% dplyr::select(-value)
+
+test_that("sim.mat similarity matrix returns correct values - large sim.mat", {
+  skip("Skipping because it is too slow")
   expect_equal(nrow(
-    query(compute_similarity(cpseedseq_prf,
-                             data.frame(Plate = 37983),
-                             data.frame(Plate = 38003),
-                             return_index = T),
+    query(cmat_obj_large,
           data.frame(Plate.x = 37983,
                      Plate.y = 38003))),
     384*384
   )
+})
+
+test_that("sim.mat similarity matrix returns correct values - compare with a reference", {
+
+  expect_equal(
+    query_n(cmat_obj_large, cmat_prf_melt_large_sample_query) %>%
+      dplyr::arrange(Plate.x, Well.x, Plate.y, Well.y),
+    cmat_prf_melt_large_sample %>%
+      dplyr::arrange(Plate.x, Well.x, Plate.y, Well.y))
 
 })
