@@ -3,7 +3,7 @@
 #' @param S sim.mat object
 #' @param query_frame data.frame with query in each row
 #' @param ... additional parameters
-
+#'
 query <- function(S, query_frame, ...)
   UseMethod("query")
 
@@ -12,7 +12,9 @@ query <- function(S, query_frame, ...)
 #'
 #' @param return_all_cols If True, returns all columns of the query result,
 #' else returns only the columns that were present in the query
-
+#'
+#' @return data.frame of query result. The similarity value is stored in "value"
+#'
 query.sim.mat <- function(S, query_frame, return_all_cols = F, ...) {
   testthat::expect_is(S, "sim.mat")
   testthat::expect_is(query_frame, "data.frame")

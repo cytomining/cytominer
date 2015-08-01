@@ -15,6 +15,8 @@ query_n <- function(S, query_frame, ...)
 #' @param return_all_cols If True, returns all columns of the query result,
 #' else returns only the columns that were present in the query
 #'
+#' @return data.frame with query result
+#'
 query_n.sim.mat <- function(S, query_frame, return_all_cols = F, ...) {
   testthat::expect_is(S, "sim.mat")
   testthat::expect_is(query_frame, "data.frame")

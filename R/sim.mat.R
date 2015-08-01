@@ -5,6 +5,7 @@
 #' @param col_meta data.frame col metadata
 #'
 #' @return sim.mat object
+#'
 
 sim.mat <- function(smat, row_meta, col_meta) {
   # Create sim.mat object

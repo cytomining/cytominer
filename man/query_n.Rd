@@ -19,6 +19,9 @@ query_n(S, query_frame, ...)
 \item{return_all_cols}{If True, returns all columns of the query result,
 else returns only the columns that were present in the query}
 }
+\value{
+data.frame with query result
+}
 \description{
 This is a wrapper for query() that accepts multiple rows in the query frame
 }
