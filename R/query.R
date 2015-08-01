@@ -48,26 +48,48 @@ query.sim.mat <- function(S, query_frame, ...) {
 
   # get the row and col query result
   # (don't use row_meta() and col_meta() because we want the index)
+  # left_join: return all rows from x, and all columns from x and y. Rows in x
+  # with no match in y will have NA values in the new columns. If there are
+  # multiple matches between x and y, all combinations of the matches are
+  # returned.
+
   futile.logger::flog.debug("Querying on rows...")
   row_res <- dplyr::left_join(row_q, S$row_meta)
-  names(row_res) <- paste(names(row_res), "x", sep = ".")
 
   futile.logger::flog.debug("Querying on cols...")
   col_res <- dplyr::left_join(col_q, S$col_meta)
-  names(col_res) <- paste(names(col_res), "y", sep = ".")
 
+  # Merge the row and col results
+  # start with the query frame
   full_res <- query_frame
+  # rename the row and col result colnames so that the end with the
+  # corresponding suffix in the query frame
+  names(row_res) <- paste(names(row_res), "x", sep = ".")
+  names(col_res) <- paste(names(col_res), "y", sep = ".")
+  # now do a left join of the query frame (stored in full_res) with the row
+  # result so that all the row results are present
   full_res <- dplyr::left_join(full_res, row_res)
+  # next do a left join on of the full_res with the col result so that all the
+  # col results are present.
   full_res <- dplyr::left_join(full_res, col_res)
+
+  # Preserve only a few columns of the full_res. Var1.x and Var2.y store the i,j
+  # index of the similarity matrix corresponding to the result
   full_res %<>% dplyr::select_(.dots = c(names(query_frame), "Var1.x", "Var2.y"))
   futile.logger::flog.debug("Query result frame has %d rows", nrow(full_res))
+
+  # Rows in query with no match in  will have NA values in either the columns
+  # corresponding to either or both of the row result col result.
+  # Drop these rows
   full_res %<>% na.omit()
   futile.logger::flog.debug("Final query result has %d rows", nrow(full_res))
 
   if (nrow(full_res) > 0) {
+    # Now look up the i,j values in the simililarity matrix and append it to the
+    # full_res matrix
     full_res %<>% dplyr::rowwise() %>% dplyr::mutate(value = smat(S)[Var1.x, Var2.y])
-#     futile.logger::flog.debug("Final query result = \n%s",
-#                               paste(capture.output(full_res), collapse="\n"))
+    full_res_str <- paste(capture.output(full_res), collapse="\n")
+    #futile.logger::flog.debug("Final query result = \n%s", full_res_str)
   }
 
   return (full_res)
