@@ -1,0 +1,22 @@
+version                : 1.0
+flag_microplate_dataset: True
+feat_start             : 9
+control_type_name      : CTRL
+plate_names            : [37983,38002,38003,38004,38005,38006,38030,38034]
+plate_names_abbrev     : [P1,P2,P3,P4,P5,P6,P7,P8]
+exclude_cols           : [Children, Location, Euler]
+qc_file                : qc.csv
+exclude_nt             : False
+dataset_tag            : TAK004_U2OS_96H
+mapping:
+ dbname: MultipleHairpin_2013_03_07_Analysis_Per_Image
+ metadata_tag:  Image_Metadata_
+ cast_as_factor: False
+ explicit_mappings:
+  ASSAY_WELL_ROLE: Type
+  GeneSymbol: Gene
+  IE: IE|
+  Target_Sequence: TargetSeq
+  shRNA_CloneID: Treatment 
+auto_treatment_synonym: 'Gene'
+
