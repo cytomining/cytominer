@@ -21,10 +21,11 @@ add_metadata.profile.data <- function(P, metadata, join_cols, ...) {
 
   # TODO: This throws a warning "joining character vector and factor, coercing
   # into character vector"
-  metadata_1 <- dplyr::left_join(meta(P), metadata, by = join_cols)
+  metadata_1 <- dplyr::left_join(P$metadata, metadata, by = join_cols)
   testthat::expect_equal(nrow(metadata_1), nrow(meta(P)))
-  testthat::expect_true(all(names(meta(P)) %in% names(metadata_1)),
+  testthat::expect_true(all(names(P$metadata) %in% names(metadata_1)),
                         info = setdiff(names(meta(P)), names(metadata_1)))
   P$metadata <- metadata_1
+
   P
 }

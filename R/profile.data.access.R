@@ -8,8 +8,8 @@ feat  <- function(...) UseMethod("feat")
 
 #' @describeIn meta
 #' @param P profile.data object
-meta.profile.data <- function(P, ...) P$metadata[, names(P$metadata) != "xid"]
+meta.profile.data <- function(P, ...) P$metadata[names(P$metadata) != "xid"]
 
 #' @describeIn feat
 #' @param P profile.data object
-feat.profile.data <- function(P, ...) P$featdata[, names(P$featdata) != "xid"]
+feat.profile.data <- function(P, ...) P$featdata[names(P$featdata) != "xid"]

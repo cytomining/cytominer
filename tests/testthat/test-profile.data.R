@@ -41,4 +41,3 @@ test_that("post_filter_metadata returns a valid profile.data object", {
   expect_is(post_filter_metadata(P), "profile.data")
 })
 
-P <- post_filter_metadata(P)
