@@ -43,8 +43,8 @@ profile.data <- function(cf, use_csv = F) {
   testthat::expect_more_than(cfg$feat_start, 1)
   metadata_cids <- seq(cfg$feat_start - 1)
   featdata_cids <- seq(cfg$feat_start, ncol(data))
-  metadata <- data[,metadata_cids]
-  featdata <- data[,featdata_cids]
+  metadata <- data[metadata_cids]
+  featdata <- data[featdata_cids]
 
   futile.logger::flog.debug("%s metadata columns", NCOL(metadata))
   futile.logger::flog.debug("%s featdata columns", NCOL(featdata))
