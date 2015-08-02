@@ -26,7 +26,7 @@ compute_similarity_within_group.profile.data <-function (P, grp, method = "spear
     dplyr::distinct() %>%
     dplyr::arrange_(.dots = grp)
 
-  testthat::expect_more_than(nrow(grp_l), 1)
+  testthat::expect_more_than(nrow(grp_l), 0)
 
   futile.logger::flog.debug("Groups = %s", jsonlite::toJSON(grp_l))
 
