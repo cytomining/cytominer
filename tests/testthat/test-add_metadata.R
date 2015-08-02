@@ -19,4 +19,7 @@ test_that("Adding new metadata works as expected", {
 
   expect_true(all(names(metadata) %in% names(meta(cpseedseq_prf_1))))
   expect_equal(nrow(meta(cpseedseq_prf)), nrow(meta(cpseedseq_prf_1)))
+  expect_true("xid" %in% names(cpseedseq_prf$metadata))
+  expect_true("xid" %in% names(cpseedseq_prf_1$metadata))
+
 })
