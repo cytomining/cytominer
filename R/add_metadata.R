@@ -19,6 +19,8 @@ add_metadata.profile.data <- function(P, metadata, join_cols, ...) {
                             join_cols)
   testthat::expect_equal(length(common_columns), 0)
 
+  # TODO: This throws a warning "joining character vector and factor, coercing
+  # into character vector"
   metadata_1 <- dplyr::left_join(meta(P), metadata, by = join_cols)
   testthat::expect_equal(nrow(metadata_1), nrow(meta(P)))
   testthat::expect_true(all(names(meta(P)) %in% names(metadata_1)),

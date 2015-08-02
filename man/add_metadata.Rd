@@ -7,7 +7,7 @@
 \usage{
 add_metadata(P, ...)
 
-\method{add_metadata}{profile.data}(P, metadata, join_columns, ...)
+\method{add_metadata}{profile.data}(P, metadata, join_cols, ...)
 }
 \arguments{
 \item{P}{profile.data}
@@ -16,7 +16,7 @@ add_metadata(P, ...)
 
 \item{metadata}{data.frame with new metadata columns}
 
-\item{join_columns}{columns on which to join}
+\item{join_cols}{columns on which to join}
 }
 \description{
 Add metadata
