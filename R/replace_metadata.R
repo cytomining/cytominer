@@ -26,7 +26,7 @@ replace_metadata.profile.data <- function(P, meta_new, key_cols, ...) {
                            nrow(), 0)
 
   # Get the columns corresponding to the values
-  val_cols = setdiff(names(meta_new), key_cols)
+  val_cols <- setdiff(names(meta_new), key_cols)
   testthat::expect_more_than(length(val_cols), 0)
 
   # Prune the original metadata down to only the columns that are in

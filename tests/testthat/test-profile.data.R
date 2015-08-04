@@ -20,8 +20,8 @@ test_that("Sample dataset has expected structure", {
   expect_equal(nrow(meta(P)), nrow(feat(P)))
   expect_equal(nrow(full(P)), nrow(feat(P)))
   expect_equal(ncol(full(P)), ncol(feat(P)) + ncol(meta(P)))
-  expect_true('xid' %in% names(full(P, keep_xid = T)))
-  expect_false('xid' %in% names(full(P, keep_xid = F)))
+  expect_true("xid" %in% names(full(P, keep_xid = T)))
+  expect_false("xid" %in% names(full(P, keep_xid = F)))
 })
 
 test_that("Features in sample dataset are all numeric", {
@@ -46,4 +46,3 @@ P$metadata %<>% dplyr::filter(Plate %in% c(38034, 38003, 37983))
 test_that("post_filter_metadata returns a valid profile.data object", {
   expect_is(post_filter_metadata(P), "profile.data")
 })
-

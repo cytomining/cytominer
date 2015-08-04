@@ -27,4 +27,3 @@ full.profile.data <- function(P, keep_xid = F, ...) {
     return(merge_by_xid(P$metadata, P$featdata) %>% dplyr::select(-xid))
   }
 }
-

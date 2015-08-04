@@ -21,4 +21,3 @@ col_meta.sim.mat <- function(S, ...) S$col_meta[, names(S$col_meta) != "Var2"]
 #' @describeIn smat
 #' @param S sim.mat object
 smat.sim.mat <- function(S, ...) S$smat
-

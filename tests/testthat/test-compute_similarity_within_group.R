@@ -64,4 +64,3 @@ test_that("compute_similarity_within_group returns correct values", {
 
   expect_equal(nrow(query_res), 1)
 })
-

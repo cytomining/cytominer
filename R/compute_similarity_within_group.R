@@ -14,7 +14,7 @@ compute_similarity_within_group <-
 
 #' @describeIn compute_similarity_within_group
 
-compute_similarity_within_group.profile.data <-function (P, grp, method = "spearman") {
+compute_similarity_within_group.profile.data <- function (P, grp, method = "spearman") {
 
   testthat::expect_is(P, "profile.data")
   testthat::expect_is(grp, "character")
@@ -55,6 +55,6 @@ compute_similarity_within_group.profile.data <-function (P, grp, method = "spear
 
   }
   futile.logger::flog.debug("sim_l = %.2f Mb",
-                            pryr::object_size(sim_l)/(1024**2))
+                            pryr::object_size(sim_l) / (1024 ** 2))
   return(sim_l)
 }

@@ -44,7 +44,8 @@ query_set.list <- function(S_l, query_frame, return_all_cols = F, ...) {
   }
 
   res <- do.call("rbind", res)
-  futile.logger::flog.debug("Query across all sets returned %d rows in total", nrow(res))
+  futile.logger::flog.debug("Query across all sets returned %d rows in total",
+                            nrow(res))
 
   return(res)
 

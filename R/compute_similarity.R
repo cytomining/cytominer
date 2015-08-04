@@ -35,7 +35,7 @@ compute_similarity.data.frame <- function(D1,
   testthat::expect_is(D1_mat, "matrix")
   testthat::expect_is(D2_mat, "matrix")
 
-  testthat::expect_true(all(names(D1_mat)==names(D1_mat)))
+  testthat::expect_true(all(names(D1_mat) == names(D1_mat)))
 
   futile.logger::flog.debug("Computing %s between D1 (n=%d) and D2 (n=%d) ...",
                             method, nrow(D1), nrow(D2))
@@ -50,7 +50,7 @@ compute_similarity.data.frame <- function(D1,
     sim_mat_obj <- sim.mat(sim_mat, D1[,grouping_cols], D2[,grouping_cols])
 
     futile.logger::flog.debug("Returning %dx%d similarity matrix along with metadata",
-                              nrow(sim_mat), ncol(sim_mat))
+      nrow(sim_mat), ncol(sim_mat))
     return(sim_mat_obj)
   } else {
     testthat::expect_false("Var1" %in% grouping_cols)
@@ -58,13 +58,16 @@ compute_similarity.data.frame <- function(D1,
     colnames(sim_mat) <- seq(NCOL(sim_mat))
     row.names(sim_mat) <- seq(NROW(sim_mat))
 
-    futile.logger::flog.debug("Melting %dx%d similarity matrix ...", nrow(sim_mat), nrow(sim_mat))
+    futile.logger::flog.debug("Melting %dx%d similarity matrix ...",
+                               nrow(sim_mat), nrow(sim_mat))
 
     sim_mat_m <- reshape2::melt(sim_mat)
     sim_mat_m_nrow <- nrow(sim_mat_m)
-    testthat::expect_true(setequal(names(sim_mat_m), c("Var1", "Var2", "value")))
+    testthat::expect_true(setequal(names(sim_mat_m),
+                                   c("Var1", "Var2", "value")))
 
-    futile.logger::flog.debug("Melted similarity matrix has %d rows", nrow(sim_mat_m))
+    futile.logger::flog.debug("Melted similarity matrix has %d rows",
+                              nrow(sim_mat_m))
 
     D1_grouping_cols <- D1[,grouping_cols]
     D2_grouping_cols <- D2[,grouping_cols]
@@ -144,5 +147,3 @@ compute_similarity.profile.data <- function(P, key1, key2,
                                        return_index = return_index)
          )
 }
-
-

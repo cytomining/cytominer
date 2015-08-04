@@ -142,7 +142,3 @@ test_that("Melted similarity matrix is valid: profile.data", {
                       format_pair_query(cmp_prf, names(cmat_prf_melt)))$value,
     0.4313986, tol = 1e-05)
 })
-
-
-
-

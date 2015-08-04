@@ -86,7 +86,7 @@ test_that("sim.mat similarity matrix returns correct values", {
     query(cmat_obj,
           data.frame(Plate.x = 37983,
                      Plate.y = 38003, stringsAsFactors = F))),
-    11*11
+    11 * 11
   )
 
 })
@@ -115,7 +115,7 @@ test_that("sim.mat similarity matrix returns correct values - large sim.mat", {
     query(cmat_obj_large,
           data.frame(Plate.x = 37983,
                      Plate.y = 38003, stringsAsFactors = F))),
-    384*384
+    384 * 384
   )
 })
 
