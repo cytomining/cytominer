@@ -123,8 +123,8 @@ test_that("sim.mat similarity matrix returns correct values - compare with a ref
 
   expect_equal(
     query_n(cmat_obj_large, cmat_prf_melt_large_sample_query) %>%
-      dplyr::arrange(Plate.x, Well.x, Plate.y, Well.y),
+      dplyr::arrange(Plate.x, Well.x, Plate.y, Well.y) %>% as.data.frame(),
     cmat_prf_melt_large_sample %>%
-      dplyr::arrange(Plate.x, Well.x, Plate.y, Well.y))
+      dplyr::arrange(Plate.x, Well.x, Plate.y, Well.y) %>% as.data.frame())
 
 })

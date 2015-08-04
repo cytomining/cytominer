@@ -36,11 +36,12 @@ query_n.sim.mat <- function(S, query_frame, return_all_cols = F, ...) {
   }
 
   if (!flag_res_names_equal) {
+    futile.logger::flog.debug("Query results have different columns.")
     for(i in seq(nrow*query_frame)) {
       res[i] <- res[i]["value"]
     }
   }
-  res <- do.call("rbind", res)
+  res %<>% dplyr::bind_rows()
   return(res)
 
 }
