@@ -16,6 +16,10 @@ P <- profile.data(cfg_fname)
 test_that("Sample dataset has expected structure", {
   expect_is(meta(P), "data.frame")
   expect_is(feat(P), "data.frame")
+  expect_is(full(P), "data.frame")
+  expect_equal(nrow(meta(P)), nrow(feat(P)))
+  expect_equal(nrow(full(P)), nrow(feat(P)))
+  expect_equal(ncol(full(P)), ncol(feat(P)) + ncol(meta(P)))
 })
 
 test_that("Features in sample dataset are all numeric", {
