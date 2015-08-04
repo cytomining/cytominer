@@ -85,13 +85,13 @@ test_that("Melted similarity matrix is valid: data.frame", {
 # Perform similar tests on cpseedseq_prf dataset
 
 cmat_prf <- compute_similarity(cpseedseq_prf,
-                               data.frame(GeneSymbol = "HDAC1"),
-                               data.frame(GeneSymbol = "HDAC2"),
+                               data.frame(GeneSymbol = "HDAC1", stringsAsFactors = F),
+                               data.frame(GeneSymbol = "HDAC2", stringsAsFactors = F),
                                melt = F)
 
 cmat_prf_melt <- compute_similarity(cpseedseq_prf,
-                                    data.frame(GeneSymbol = "HDAC1"),
-                                    data.frame(GeneSymbol = "HDAC2"),
+                                    data.frame(GeneSymbol = "HDAC1", stringsAsFactors = F),
+                                    data.frame(GeneSymbol = "HDAC2", stringsAsFactors = F),
                                     melt = T)
 
 cmat_melt_s <- cmat_melt

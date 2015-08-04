@@ -1,13 +1,13 @@
 context("Measure similarity between vectors using sim.mat")
 
 cmp_prf <- list(
-  data.frame(Well = "n10", Plate = 38034),
-  data.frame(Well = "m24", Plate = 38034))
+  data.frame(Well = "n10", Plate = 38034, stringsAsFactors = F),
+  data.frame(Well = "m24", Plate = 38034, stringsAsFactors = F))
 
 # this returns a sim.mat object
 cmat_obj <- compute_similarity(cpseedseq_prf,
-                               data.frame(GeneSymbol = "HDAC1"),
-                               data.frame(GeneSymbol = "HDAC2"),
+                               data.frame(GeneSymbol = "HDAC1", stringsAsFactors = F),
+                               data.frame(GeneSymbol = "HDAC2", stringsAsFactors = F),
                                return_index = T)
 
 test_that("Similarity matrix for test dataset is valid: sim.mat", {
@@ -59,14 +59,14 @@ test_that("sim.mat similarity matrix returns correct values", {
   expect_is(
     query(cmat_obj,
           data.frame(shRNA_CloneID.x = "TRCN0000004815",
-                     shRNA_CloneID.y = "TRCN0000197086")),
+                     shRNA_CloneID.y = "TRCN0000197086", stringsAsFactors = F)),
     "data.frame"
   )
 
   expect_equal(
     query(cmat_obj,
           data.frame(shRNA_CloneID.x = "TRCN0000004815",
-                     shRNA_CloneID.y = "TRCN0000197086"))$value,
+                     shRNA_CloneID.y = "TRCN0000197086", stringsAsFactors = F))$value,
     c(0.7573881, 0.7337659,
       0.6907641, 0.7675434,
       0.7014778, 0.6333144,
@@ -78,27 +78,27 @@ test_that("sim.mat similarity matrix returns correct values", {
   expect_equal(nrow(
     query(cmat_obj,
           data.frame(shRNA_CloneID.x = "TRCN0000004815",
-                     shRNA_CloneID.y = "dummy"))),
+                     shRNA_CloneID.y = "dummy", stringsAsFactors = F))),
     0
   )
 
   expect_equal(nrow(
     query(cmat_obj,
           data.frame(Plate.x = 37983,
-                     Plate.y = 38003))),
+                     Plate.y = 38003, stringsAsFactors = F))),
     11*11
   )
 
 })
 
 cmat_obj_large <- compute_similarity(cpseedseq_prf,
-                                     data.frame(Plate = 37983),
-                                     data.frame(Plate = 38003),
+                                     data.frame(Plate = 37983, stringsAsFactors = F),
+                                     data.frame(Plate = 38003, stringsAsFactors = F),
                                      return_index = T)
 
 cmat_prf_melt_large <- compute_similarity(cpseedseq_prf,
-                                    data.frame(Plate = 37983),
-                                    data.frame(Plate = 38003),
+                                    data.frame(Plate = 37983, stringsAsFactors = F),
+                                    data.frame(Plate = 38003, stringsAsFactors = F),
                                     melt = T)
 
 cmat_prf_melt_large_sample <-
@@ -114,7 +114,7 @@ test_that("sim.mat similarity matrix returns correct values - large sim.mat", {
   expect_equal(nrow(
     query(cmat_obj_large,
           data.frame(Plate.x = 37983,
-                     Plate.y = 38003))),
+                     Plate.y = 38003, stringsAsFactors = F))),
     384*384
   )
 })
