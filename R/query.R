@@ -100,20 +100,35 @@ query.sim.mat <- function(S,
     # next do a left join on of the full_res with the col result so that all the
     # col results are present.
     full_res <- dplyr::left_join(full_res, col_res, by = col_q_names_)
+
+    # Rename the Var* variables
+    full_res %<>% dplyr::rename(Var1 = Var1.x, Var2 = Var2.y)
+
+    if (!return_all_cols) {
+      # Preserve only a few columns of the full_res. Var1.x and Var2.y store the i,j
+      # index of the similarity matrix corresponding to the result
+      full_res %<>% dplyr::select_(.dots = c(names(query_frame), "Var1", "Var2"))
+    }
+    futile.logger::flog.debug("Query result frame has %d rows", nrow(full_res))
+
+    # Rows in query with no match in  will have NA values in either the columns
+    # corresponding to either or both of the row result col result.
+    # Drop these rows
+    full_res %<>% na.omit()
+    futile.logger::flog.debug("Final query result has %d rows", nrow(full_res))
   }
 
-  if (!return_all_cols) {
-    # Preserve only a few columns of the full_res. Var1.x and Var2.y store the i,j
-    # index of the similarity matrix corresponding to the result
-    full_res %<>% dplyr::select_(.dots = c(names(query_frame), "Var1.x", "Var2.y"))
-  }
-  futile.logger::flog.debug("Query result frame has %d rows", nrow(full_res))
+  if (!is.null(equality_join_cols)) {
+    # all the columns should be present in both, row_meta and col_meta
+    testthat::expect_true(all(equality_join_cols %in% names(row_meta(S))))
+    testthat::expect_true(all(equality_join_cols %in% names(col_meta(S))))
 
-  # Rows in query with no match in  will have NA values in either the columns
-  # corresponding to either or both of the row result col result.
-  # Drop these rows
-  full_res %<>% na.omit()
-  futile.logger::flog.debug("Final query result has %d rows", nrow(full_res))
+    # do the join
+    full_res <- dplyr::inner_join(row_meta(S), col_meta(S),
+                                  by = equality_join_cols)
+    futile.logger::flog.debug("Final query result has %d rows", nrow(full_res))
+  }
+
 
   if (nrow(full_res) > 0) {
     # Now look up the i,j values in the simililarity matrix and append it to the
@@ -122,11 +137,11 @@ query.sim.mat <- function(S,
     smat_ <- smat(S)
     full_res %<>%
       dplyr::rowwise() %>%
-      dplyr::mutate(value = smat_[Var1.x, Var2.y]) %>%
-      dplyr::select(-Var1.x, -Var2.y) %>%
+      dplyr::mutate(value = smat_[Var1, Var2]) %>%
+      dplyr::select(-Var1, -Var2) %>%
       dplyr::ungroup()
     futile.logger::flog.debug("Finished appending values from smat.")
-    full_res_str <- paste(capture.output(full_res), collapse="\n")
+    #full_res_str <- paste(capture.output(full_res), collapse="\n")
     #futile.logger::flog.debug("Final query result = \n%s", full_res_str)
   }
 
