@@ -20,6 +20,12 @@ process_metadata.profile.data <- function(P, strip_cellprofiler_db_tags = T) {
   testthat::expect_is(P$cfg$mapping$metadata_tag, "character")
 
   metadata_names <- names(P$metadata)
+  metadata_names1 <- make.names(metadata_names, unique=T)
+  if(metadata_names1 != metadata_names) {
+    futile.logger::flog.debug("New metadata names after converting to valid names = %s",
+                              stringr::str_c(metadata_names1, collapse = ","))
+    metadata_names <- metadata_names1
+  }
 
   # remove the tag, e.g. Image_Metadata_, from the column name
   metadata_names <- gsub(P$cfg$mapping$metadata_tag,
