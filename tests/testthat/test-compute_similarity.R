@@ -25,10 +25,12 @@ metadata_cols <- stringr::str_subset(names(cpseedseq), "Metadata_")
 # Compute similarity between two sets
 cmat <- compute_similarity(hdac1, hdac2,
                            grouping_cols = metadata_cols,
-                           melt = F)
+                           melt = F,
+                           method = "spearman")
 cmat_melt <- compute_similarity(hdac1, hdac2,
                                 grouping_cols = metadata_cols,
-                                melt = T)
+                                melt = T,
+                                method = "spearman")
 
 test_that("Similarity matrix for test dataset is valid: data.frame", {
   expect_true(
@@ -87,11 +89,13 @@ test_that("Melted similarity matrix is valid: data.frame", {
 cmat_prf <- compute_similarity(cpseedseq_prf,
                                data.frame(GeneSymbol = "HDAC1", stringsAsFactors = F),
                                data.frame(GeneSymbol = "HDAC2", stringsAsFactors = F),
+                               method = "spearman",
                                melt = F)
 
 cmat_prf_melt <- compute_similarity(cpseedseq_prf,
                                     data.frame(GeneSymbol = "HDAC1", stringsAsFactors = F),
                                     data.frame(GeneSymbol = "HDAC2", stringsAsFactors = F),
+                                    method = "spearman",
                                     melt = T)
 
 cmat_melt_s <- cmat_melt

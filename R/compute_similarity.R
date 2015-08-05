@@ -20,7 +20,7 @@ compute_similarity <- function(...) UseMethod("compute_similarity")
 compute_similarity.data.frame <- function(D1,
                                           D2,
                                           grouping_cols = NULL,
-                                          method = "spearman",
+                                          method = "pearson",
                                           melt = F,
                                           return_index = F,
                                           ...) {
@@ -47,7 +47,10 @@ compute_similarity.data.frame <- function(D1,
                               nrow(sim_mat), ncol(sim_mat))
     return(sim_mat)
   } else if (!melt & return_index) {
-    sim_mat_obj <- sim.mat(sim_mat, D1[,grouping_cols], D2[,grouping_cols])
+    sim_mat_obj <- sim.mat(sim_mat,
+                           row_meta = D1[,grouping_cols],
+                           col_meta = D2[,grouping_cols],
+                           metric = sim.metric(data.frame(name=method)))
 
     futile.logger::flog.debug("Returning %dx%d similarity matrix along with metadata",
       nrow(sim_mat), ncol(sim_mat))
@@ -106,7 +109,7 @@ compute_similarity.data.frame <- function(D1,
 #' @param key2 second key
 
 compute_similarity.profile.data <- function(P, key1, key2,
-                                            method = "spearman",
+                                            method = "pearson",
                                             melt = F,
                                             return_index = F,
                                             ...) {

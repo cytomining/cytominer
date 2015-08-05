@@ -4,7 +4,7 @@
 \alias{sim.mat}
 \title{Constructor for sim.mat S3 class}
 \usage{
-sim.mat(smat, row_meta, col_meta)
+sim.mat(smat, row_meta, col_meta, metric)
 }
 \arguments{
 \item{smat}{Similarity matrix}

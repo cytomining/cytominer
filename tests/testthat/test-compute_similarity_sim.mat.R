@@ -8,7 +8,8 @@ cmp_prf <- list(
 cmat_obj <- compute_similarity(cpseedseq_prf,
                                data.frame(GeneSymbol = "HDAC1", stringsAsFactors = F),
                                data.frame(GeneSymbol = "HDAC2", stringsAsFactors = F),
-                               return_index = T)
+                               return_index = T,
+                               method = "spearman")
 
 test_that("Similarity matrix for test dataset is valid: sim.mat", {
 
@@ -27,6 +28,9 @@ test_that("Similarity matrix for test dataset is valid: sim.mat", {
   )
   expect_true(
     all(dim(cmat_obj$smat) == c(33, 33))
+  )
+  expect_true(
+    metric(cmat_obj)$name == "spearman"
   )
 })
 
@@ -94,12 +98,14 @@ test_that("sim.mat similarity matrix returns correct values", {
 cmat_obj_large <- compute_similarity(cpseedseq_prf,
                                      data.frame(Plate = 37983, stringsAsFactors = F),
                                      data.frame(Plate = 38003, stringsAsFactors = F),
-                                     return_index = T)
+                                     return_index = T,
+                                     method = "spearman")
 
 cmat_prf_melt_large <- compute_similarity(cpseedseq_prf,
                                     data.frame(Plate = 37983, stringsAsFactors = F),
                                     data.frame(Plate = 38003, stringsAsFactors = F),
-                                    melt = T)
+                                    melt = T,
+                                    method = "spearman")
 
 cmat_prf_melt_large_sample <-
   cmat_prf_melt_large %>%

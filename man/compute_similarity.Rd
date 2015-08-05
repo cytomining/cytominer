@@ -9,9 +9,9 @@
 compute_similarity(...)
 
 \method{compute_similarity}{data.frame}(D1, D2, grouping_cols = NULL,
-  method = "spearman", melt = F, return_index = F, ...)
+  method = "pearson", melt = F, return_index = F, ...)
 
-\method{compute_similarity}{profile.data}(P, key1, key2, method = "spearman",
+\method{compute_similarity}{profile.data}(P, key1, key2, method = "pearson",
   melt = F, return_index = F, ...)
 }
 \arguments{

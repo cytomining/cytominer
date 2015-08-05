@@ -10,6 +10,10 @@ col_meta  <- function(...) UseMethod("col_meta")
 #' @param ... object from which to extract similarity matrix
 smat  <- function(...) UseMethod("smat")
 
+#' Access metric
+#' @param ... object from which to extract metric
+metric  <- function(...) UseMethod("metric")
+
 #' @describeIn row_meta
 #' @param S sim.mat object
 row_meta.sim.mat <- function(S, ...) S$row_meta[, names(S$row_meta) != "Var1"]
@@ -21,3 +25,7 @@ col_meta.sim.mat <- function(S, ...) S$col_meta[, names(S$col_meta) != "Var2"]
 #' @describeIn smat
 #' @param S sim.mat object
 smat.sim.mat <- function(S, ...) S$smat
+
+#' @describeIn metric
+#' @param S sim.mat object
+metric.sim.mat <- function(S, ...) S$metric
