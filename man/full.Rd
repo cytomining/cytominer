@@ -13,6 +13,8 @@ full(...)
 \item{...}{object from which to extract merged featdata and metadata}
 
 \item{P}{profile.data object}
+
+\item{keep_xid}{if True, don't exclude xid in the result}
 }
 \description{
 Access merged featdata and metadata

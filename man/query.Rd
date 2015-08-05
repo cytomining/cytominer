@@ -3,7 +3,7 @@
 \name{query}
 \alias{query}
 \alias{query.sim.mat}
-\title{Query sim.mat}
+\title{Query a similarity matrix}
 \usage{
 query(S, query_frame, equality_join_cols, ...)
 
@@ -19,22 +19,24 @@ query(S, query_frame, equality_join_cols, ...)
 
 \item{...}{additional parameters}
 
-\item{return_all_cols}{If True, returns all columns of the query result,
-else returns only the columns that were present in the query}
+\item{return_all_cols}{If True, returns all columns of the query
+result, else returns only the columns that were present in the query}
 }
 \value{
-data.frame of query result. The similarity value is stored in "value"
+data.frame of query result. The similarity value is stored in
+\code{value}
 }
 \description{
-Query sim.mat
+Query a similarity matrix
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{sim.mat}: Query sim.mat object
+\item \code{sim.mat}: Query a similarity matrix
 
 Query can specified either by specifying a query frame or by specifying
 columns that will tested for equality. This function will be rewritten once
-this https://github.com/hadley/dplyr/issues/557#issuecomment-127762110 is
-implemented in dplyr
+this feature
+'\url{https://github.com/hadley/dplyr/issues/557#issuecomment-127762110}
+is implemented in \code{dplyr}
 }}
 

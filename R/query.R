@@ -1,9 +1,9 @@
 #' Query a similarity matrix
 #'
-#' @param \code{S} sim.mat object
-#' @param \code{query_frame} data.frame with query in each row
-#' @param \code{equality_join_cols} list of column that should be equal
-#' @param \code{...} additional parameters
+#' @param S sim.mat object
+#' @param query_frame data.frame with query in each row
+#' @param equality_join_cols list of column that should be equal
+#' @param ... additional parameters
 #'
 query <- function(S, query_frame, equality_join_cols, ...)
   UseMethod("query")
@@ -17,7 +17,7 @@ query <- function(S, query_frame, equality_join_cols, ...)
 #' '\url{https://github.com/hadley/dplyr/issues/557#issuecomment-127762110}
 #' is implemented in \code{dplyr}
 #'
-#' @param \code{return_all_cols} If True, returns all columns of the query
+#' @param return_all_cols If True, returns all columns of the query
 #' result, else returns only the columns that were present in the query
 #'
 #' @return data.frame of query result. The similarity value is stored in

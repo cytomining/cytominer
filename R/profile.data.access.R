@@ -20,6 +20,7 @@ feat.profile.data <- function(P, ...) P$featdata[names(P$featdata) != "xid"]
 
 #' @describeIn full
 #' @param P profile.data object
+#' @param keep_xid if True, don't exclude xid in the result
 full.profile.data <- function(P, keep_xid = F, ...) {
   if(keep_xid) {
     return(merge_by_xid(P$metadata, P$featdata))

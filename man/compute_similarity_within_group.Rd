@@ -8,7 +8,7 @@
 compute_similarity_within_group(P, grp, method, ...)
 
 \method{compute_similarity_within_group}{profile.data}(P, grp,
-  method = "spearman")
+  method = "pearson")
 }
 \arguments{
 \item{P}{profile.data}
