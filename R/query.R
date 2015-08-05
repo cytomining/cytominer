@@ -131,6 +131,8 @@ query.sim.mat <- function(S,
 
     # do the join. Don't use row_meta() and col_meta() because Var1 and Var2
     # are needed
+    futile.logger::flog.debug("Querying by joining on %s",
+                              stringr::str_c(equality_join_cols, collapse = ","))
     full_res <- dplyr::inner_join(S$row_meta, S$col_meta,
                                   by = equality_join_cols)
     futile.logger::flog.debug("Final query result has %d rows", nrow(full_res))
