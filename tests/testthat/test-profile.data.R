@@ -46,3 +46,13 @@ P$metadata %<>% dplyr::filter(Plate %in% c(38034, 38003, 37983))
 test_that("post_filter_metadata returns a valid profile.data object", {
   expect_is(post_filter_metadata(P), "profile.data")
 })
+
+P %<>% post_filter_metadata()
+
+test_that("Constructing profile.data using imetadata and ifeatdata works", {
+  P0 <- profile.data(imetadata = meta(P), ifeatdata = feat(P))
+  expect_equal(P$metadata  %>% dplyr::arrange(xid),
+               P0$metadata %>% dplyr::arrange(xid))
+  expect_equal(P$featdata  %>% dplyr::arrange(xid),
+               P0$featdata %>% dplyr::arrange(xid))
+})

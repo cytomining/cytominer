@@ -5,51 +5,67 @@
 #'
 #' @return profile.data object
 
-profile.data <- function(cf, use_csv = F) {
+profile.data <- function(cf = NULL,
+                         use_csv = F,
+                         imetadata = NULL,
+                         ifeatdata = NULL) {
 
-  # Load the configuration file
-  testthat::expect_true(file.exists(cf))
-  cfg <- yaml::yaml.load_file(cf)
-  cfg$cwd <- dirname(cf)
+  testthat::expect_true(xor(is.null(cf),
+                            is.null(imetadata) & is.null(ifeatdata)))
+  if (!is.null(cf)) {
+    # Load the configuration file
+    testthat::expect_true(file.exists(cf))
+    cfg <- yaml::yaml.load_file(cf)
+    cfg$cwd <- dirname(cf)
 
-  # construct names of associated files
-  cf_name <- sapply(strsplit(basename(cf),"\\."),
-                    function(x) paste(x[1:(length(x) - 1)], collapse = "."))
-  cfg$profile_file <- paste(cf_name, "csv", sep = ".")
-  cfg$profile_file_binary <- paste(cf_name, "rda", sep = ".")
-  cfg$digest_file <- paste(cf_name, "digest", sep = ".")
+    # construct names of associated files
+    cf_name <- sapply(strsplit(basename(cf),"\\."),
+                      function(x) paste(x[1:(length(x) - 1)], collapse = "."))
+    cfg$profile_file <- paste(cf_name, "csv", sep = ".")
+    cfg$profile_file_binary <- paste(cf_name, "rda", sep = ".")
+    cfg$digest_file <- paste(cf_name, "digest", sep = ".")
 
-  frda <- file.path(cfg$cwd, cfg$profile_file_binary)
-  fcsv <- file.path(cfg$cwd, cfg$profile_file)
-  fdig <- file.path(cfg$cwd, cfg$digest_file)
+    frda <- file.path(cfg$cwd, cfg$profile_file_binary)
+    fcsv <- file.path(cfg$cwd, cfg$profile_file)
+    fdig <- file.path(cfg$cwd, cfg$digest_file)
 
-  # Read binary file, or if it doesn't exist, then csv.
-  # Save binary file if it doesn't exist
-  # Do checksum comparison to make sure its the right binary
+    # Read binary file, or if it doesn't exist, then csv.
+    # Save binary file if it doesn't exist
+    # Do checksum comparison to make sure its the right binary
 
-  if (file.exists(frda) & !use_csv) {
-    data <- readRDS(frda)
-    digest_val <- readLines(fdig)
-    testthat::expect_equal(digest_val, digest::digest(data))
-  } else {
-    data <- data.frame(read.csv(fcsv, header = TRUE, stringsAsFactors = F))
-    saveRDS(data, file = frda)
-    writeLines(digest::digest(data), fdig)
+    if (file.exists(frda) & !use_csv) {
+      data <- readRDS(frda)
+      digest_val <- readLines(fdig)
+      testthat::expect_equal(digest_val, digest::digest(data))
+    } else {
+      data <- data.frame(read.csv(fcsv, header = TRUE, stringsAsFactors = F))
+      saveRDS(data, file = frda)
+      writeLines(digest::digest(data), fdig)
+    }
+
+    # get the index of featdata and metadata columns
+    testthat::expect_true(!is.null(cfg$feat_start))
+    testthat::expect_is(cfg$feat_start, "integer")
+    testthat::expect_more_than(cfg$feat_start, 1)
+    metadata_cids <- seq(cfg$feat_start - 1)
+    featdata_cids <- seq(cfg$feat_start, ncol(data))
+    metadata <- data[metadata_cids]
+    featdata <- data[featdata_cids]
+    testthat::expect_equal(ncol(featdata) + ncol(metadata), ncol(data))
   }
 
-  # get the index of featdata and metadata columns
-  testthat::expect_true(!is.null(cfg$feat_start))
-  testthat::expect_is(cfg$feat_start, "integer")
-  testthat::expect_more_than(cfg$feat_start, 1)
-  metadata_cids <- seq(cfg$feat_start - 1)
-  featdata_cids <- seq(cfg$feat_start, ncol(data))
-  metadata <- data[metadata_cids]
-  featdata <- data[featdata_cids]
+  if (!is.null(imetadata) & !is.null(ifeatdata)) {
+    testthat::expect_is(imetadata, "data.frame")
+    testthat::expect_is(ifeatdata, "data.frame")
+    metadata <- imetadata %>% as.data.frame() # in case it is tbl_df
+    featdata <- ifeatdata %>% as.data.frame() # in case it is tbl_df
+    cfg <- NULL
+  }
 
   futile.logger::flog.debug("%s metadata columns", NCOL(metadata))
   futile.logger::flog.debug("%s featdata columns", NCOL(featdata))
 
-  testthat::expect_equal(ncol(featdata) + ncol(metadata), ncol(data))
+  testthat::expect_equal(nrow(metadata), nrow(featdata))
 
   # add an idx column to metadata and featdata
   # idx for a row is a hash of the metadata in that row
