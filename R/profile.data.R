@@ -34,29 +34,32 @@ profile.data <- function(cf = NULL,
     # Do checksum comparison to make sure its the right binary
 
     if (file.exists(frda) & !use_csv) {
-      data <- readRDS(frda)
+      data0 <- readRDS(frda)
       digest_val <- readLines(fdig)
-      testthat::expect_equal(digest_val, digest::digest(data))
+      testthat::expect_equal(digest_val, digest::digest(data0))
     } else {
-      data <- data.frame(read.csv(fcsv, header = TRUE, stringsAsFactors = F))
-      saveRDS(data, file = frda)
-      writeLines(digest::digest(data), fdig)
+      data0 <- data.frame(read.csv(fcsv, header = TRUE, stringsAsFactors = F))
+      saveRDS(data0, file = frda)
+      writeLines(digest::digest(data0), fdig)
     }
+    testthat::expect_false("xid" %in% colnames(data0))
 
     # get the index of featdata and metadata columns
     testthat::expect_true(!is.null(cfg$feat_start))
     testthat::expect_is(cfg$feat_start, "integer")
     testthat::expect_more_than(cfg$feat_start, 1)
     metadata_cids <- seq(cfg$feat_start - 1)
-    featdata_cids <- seq(cfg$feat_start, ncol(data))
-    metadata <- data[metadata_cids]
-    featdata <- data[featdata_cids]
-    testthat::expect_equal(ncol(featdata) + ncol(metadata), ncol(data))
+    featdata_cids <- seq(cfg$feat_start, ncol(data0))
+    metadata <- data0[metadata_cids]
+    featdata <- data0[featdata_cids]
+    testthat::expect_equal(ncol(featdata) + ncol(metadata), ncol(data0))
   }
 
   if (!is.null(imetadata) & !is.null(ifeatdata)) {
     testthat::expect_is(imetadata, "data.frame")
     testthat::expect_is(ifeatdata, "data.frame")
+    testthat::expect_false("xid" %in% colnames(imetadata))
+    testthat::expect_false("xid" %in% colnames(ifeatdata))
     metadata <- imetadata %>% as.data.frame() # in case it is tbl_df
     featdata <- ifeatdata %>% as.data.frame() # in case it is tbl_df
     cfg <- NULL
@@ -72,7 +75,6 @@ profile.data <- function(cf = NULL,
   # this means that rows with identical metadata are not allowed
   # upon creation of the profile.data object
 
-  testthat::expect_false("xid" %in% colnames(data))
   metadata$xid <- sapply(tidyr::unite_(metadata,
                                        "xid",
                                        from = names(metadata))$xid,
