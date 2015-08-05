@@ -1,25 +1,27 @@
-#' Query sim.mat
+#' Query a similarity matrix
 #'
-#' @param S sim.mat object
-#' @param query_frame data.frame with query in each row
-#' @param equality_join_cols list of column that should be equal
-#' @param ... additional parameters
+#' @param \code{S} sim.mat object
+#' @param \code{query_frame} data.frame with query in each row
+#' @param \code{equality_join_cols} list of column that should be equal
+#' @param \code{...} additional parameters
 #'
 query <- function(S, query_frame, equality_join_cols, ...)
   UseMethod("query")
 
 
-#' @describeIn query Query sim.mat object
+#' @describeIn query Query a similarity matrix
 #'
 #' Query can specified either by specifying a query frame or by specifying
 #' columns that will tested for equality. This function will be rewritten once
-#' this https://github.com/hadley/dplyr/issues/557#issuecomment-127762110 is
-#' implemented in dplyr
+#' this feature
+#' '\url{https://github.com/hadley/dplyr/issues/557#issuecomment-127762110}
+#' is implemented in \code{dplyr}
 #'
-#' @param return_all_cols If True, returns all columns of the query result,
-#' else returns only the columns that were present in the query
+#' @param \code{return_all_cols} If True, returns all columns of the query
+#' result, else returns only the columns that were present in the query
 #'
-#' @return data.frame of query result. The similarity value is stored in "value"
+#' @return data.frame of query result. The similarity value is stored in
+#' \code{value}
 #'
 query.sim.mat <- function(S,
                           query_frame = NULL,
@@ -47,7 +49,8 @@ query.sim.mat <- function(S,
     # get colnames of row and col portions of the query
     row_q_names_ <- stringr::str_subset(names(query_frame), ".x$")
     col_q_names_ <- stringr::str_subset(names(query_frame), ".y$")
-    testthat::expect_true(setequal(c(row_q_names_, col_q_names_), names(query_frame)))
+    testthat::expect_true(setequal(c(row_q_names_, col_q_names_),
+                                   names(query_frame)))
 
     # strip out .x and .y
     row_q_names <- stringr::str_replace(row_q_names_, ".x", "")
@@ -55,10 +58,12 @@ query.sim.mat <- function(S,
 
     # test
     testthat::expect_true(all(row_q_names %in% names(row_meta(S))),
-                          info = paste(names(row_meta(S)), row_q_names, collapse=","))
+                          info = paste(names(row_meta(S)),
+                                       row_q_names, collapse=","))
 
     testthat::expect_true(all(col_q_names %in% names(col_meta(S))),
-                          info = paste(names(col_meta(S)), col_q_names, collapse=","))
+                          info = paste(names(col_meta(S)),
+                                       col_q_names, collapse=","))
 
     # extract the row query
     futile.logger::flog.debug("Extracting row query...")
@@ -107,7 +112,8 @@ query.sim.mat <- function(S,
     if (!return_all_cols) {
       # Preserve only a few columns of the full_res. Var1.x and Var2.y store
       # the i,j index of the similarity matrix corresponding to the result
-      full_res %<>% dplyr::select_(.dots = c(names(query_frame), "Var1", "Var2"))
+      full_res %<>% dplyr::select_(.dots =
+                                   c(names(query_frame), "Var1", "Var2"))
     }
     futile.logger::flog.debug("Query result frame has %d rows", nrow(full_res))
 

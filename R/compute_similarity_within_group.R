@@ -14,7 +14,8 @@ compute_similarity_within_group <-
 
 #' @describeIn compute_similarity_within_group
 
-compute_similarity_within_group.profile.data <- function (P, grp, method = "spearman") {
+compute_similarity_within_group.profile.data <- function (P, grp,
+  method = "pearson") {
 
   testthat::expect_is(P, "profile.data")
   testthat::expect_is(grp, "character")
@@ -37,7 +38,8 @@ compute_similarity_within_group.profile.data <- function (P, grp, method = "spea
     grp_i <- grp_l[i, , drop = F]
     testthat::expect_is(grp_i, "data.frame")
     testthat::expect_equal(names(grp_i), names(grp_l))
-    futile.logger::flog.debug("Computing sim.mat for group = %s", jsonlite::toJSON(grp_i))
+    futile.logger::flog.debug("Computing sim.mat for group = %s",
+                               jsonlite::toJSON(grp_i))
 
     futile.logger::flog.debug("grp = %s", jsonlite::toJSON(grp_i))
 

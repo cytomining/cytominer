@@ -5,14 +5,17 @@
 \alias{query.sim.mat}
 \title{Query sim.mat}
 \usage{
-query(S, query_frame, ...)
+query(S, query_frame, equality_join_cols, ...)
 
-\method{query}{sim.mat}(S, query_frame, return_all_cols = F, ...)
+\method{query}{sim.mat}(S, query_frame = NULL, equality_join_cols = NULL,
+  return_all_cols = F, ...)
 }
 \arguments{
 \item{S}{sim.mat object}
 
 \item{query_frame}{data.frame with query in each row}
+
+\item{equality_join_cols}{list of column that should be equal}
 
 \item{...}{additional parameters}
 
@@ -28,5 +31,10 @@ Query sim.mat
 \section{Methods (by class)}{
 \itemize{
 \item \code{sim.mat}: Query sim.mat object
+
+Query can specified either by specifying a query frame or by specifying
+columns that will tested for equality. This function will be rewritten once
+this https://github.com/hadley/dplyr/issues/557#issuecomment-127762110 is
+implemented in dplyr
 }}
 
