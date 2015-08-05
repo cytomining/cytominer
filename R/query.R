@@ -33,7 +33,7 @@ query.sim.mat <- function(S,
   }
   testthat::expect_true(xor(is.null(query_frame), is.null(equality_join_cols)))
   if (!is.null(equality_join_cols)) {
-    testthat::expect_is(equality_join_cols, "list")
+    testthat::expect_is(equality_join_cols, "character")
   }
 
   if (!is.null(query_frame)) {
@@ -42,7 +42,7 @@ query.sim.mat <- function(S,
     # complicated with multiple rows
     # TODO: remove this constraint
     testthat::expect_equal(nrow(query_frame), 1,
-                           info  = "query be only one row because the logic is more complicated with multiple rows")
+                           info = "query be only one row because the logic is more complicated with multiple rows")
 
     # get colnames of row and col portions of the query
     row_q_names_ <- stringr::str_subset(names(query_frame), ".x$")
@@ -105,8 +105,8 @@ query.sim.mat <- function(S,
     full_res %<>% dplyr::rename(Var1 = Var1.x, Var2 = Var2.y)
 
     if (!return_all_cols) {
-      # Preserve only a few columns of the full_res. Var1.x and Var2.y store the i,j
-      # index of the similarity matrix corresponding to the result
+      # Preserve only a few columns of the full_res. Var1.x and Var2.y store
+      # the i,j index of the similarity matrix corresponding to the result
       full_res %<>% dplyr::select_(.dots = c(names(query_frame), "Var1", "Var2"))
     }
     futile.logger::flog.debug("Query result frame has %d rows", nrow(full_res))
@@ -123,8 +123,9 @@ query.sim.mat <- function(S,
     testthat::expect_true(all(equality_join_cols %in% names(row_meta(S))))
     testthat::expect_true(all(equality_join_cols %in% names(col_meta(S))))
 
-    # do the join
-    full_res <- dplyr::inner_join(row_meta(S), col_meta(S),
+    # do the join. Don't use row_meta() and col_meta() because Var1 and Var2
+    # are needed
+    full_res <- dplyr::inner_join(S$row_meta, S$col_meta,
                                   by = equality_join_cols)
     futile.logger::flog.debug("Final query result has %d rows", nrow(full_res))
   }
@@ -133,6 +134,7 @@ query.sim.mat <- function(S,
   if (nrow(full_res) > 0) {
     # Now look up the i,j values in the simililarity matrix and append it to the
     # full_res matrix
+    testthat::expect_true(all(c("Var1", "Var2") %in% names(full_res)))
     futile.logger::flog.debug("Appending values from smat...")
     smat_ <- smat(S)
     full_res %<>%

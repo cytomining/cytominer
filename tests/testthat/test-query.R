@@ -17,17 +17,17 @@ test_that("Querying based on equality of columns", {
                      data.frame(Well.x = "a01", Well.y = "a02"),
                      return_all_cols = T )
 
-  futile.logger::flog.debug("Result = %s", jsonlite::toJSON(query_res))
+  #futile.logger::flog.debug("Result = %s", jsonlite::toJSON(query_res))
   expect_is(query_res, "data.frame")
   expect_equal(nrow(query_res), 9)
 
-  # # query should return 3 rows
-  # query_res <- query(cmat_l[[1]],
-  #                    equality_join_cols = c("Plate"),
-  #                    return_all_cols = T )
-  #
-  # futile.logger::flog.debug("Result = %s", jsonlite::toJSON(query_res))
-  # expect_is(query_res, "data.frame")
-  # expect_equal(nrow(query_res), 3 * 3 * 3)
+  # query should return 3 rows
+  query_res <- query(cmat_l[[1]],
+                     equality_join_cols = c("Plate"),
+                     return_all_cols = T )
+
+  expect_is(query_res, "data.frame")
+  expect_equal(nrow(query_res), 3 * 3 * 3)
+  #futile.logger::flog.debug("Result = %s", jsonlite::toJSON(query_res))
 
 })
