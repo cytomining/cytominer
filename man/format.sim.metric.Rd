@@ -8,6 +8,8 @@
 }
 \arguments{
 \item{s}{sim.metric object}
+
+\item{...}{other arguments}
 }
 \description{
 Format a sim.metric object

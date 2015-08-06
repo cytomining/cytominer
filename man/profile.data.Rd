@@ -11,6 +11,10 @@
 \item{cf}{YAML configuration file}
 
 \item{use_csv}{If TRUE, force loading of CSV file even if binary exists}
+
+\item{imetadata}{data.frame containing metadata}
+
+\item{ifeatdata}{data.frame containing featdata}
 }
 \value{
 profile.data object

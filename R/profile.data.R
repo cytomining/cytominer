@@ -2,6 +2,8 @@
 #'
 #' @param cf YAML configuration file
 #' @param use_csv If TRUE, force loading of CSV file even if binary exists
+#' @param imetadata  data.frame containing metadata
+#' @param ifeatdata  data.frame containing featdata
 #'
 #' @return profile.data object
 
