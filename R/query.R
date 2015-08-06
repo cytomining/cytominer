@@ -34,8 +34,7 @@ query.sim.mat <- function(S,
   if (!is.null(query_frame)) {
     testthat::expect_is(query_frame, "data.frame")
   }
-  testthat::expect_true(!is.null(query_frame) | !is.null(equality_join_cols))
-
+  testthat::expect_true(xor(is.null(query_frame), is.null(equality_join_cols)))
   if (!is.null(equality_join_cols)) {
     testthat::expect_is(equality_join_cols, "character")
     # all the columns should be present in both, row_meta and col_meta
@@ -88,28 +87,10 @@ query.sim.mat <- function(S,
     futile.logger::flog.debug("Querying on cols...")
     col_res <- dplyr::left_join(col_q, S$col_meta, by = col_q_names)
 
-    # if equality_join_cols was specified then keep the intersection of the
-    # row_meta and col_meta
-    if (!is.null(equality_join_cols)) {
-      # row_and_col <-
-      # dplyr::intersect(
-      #   row_res %>% dplyr::select_(.dots = c(equality_join_cols, "xid")),
-      #   col_res %>% dplyr::select_(.dots = c(equality_join_cols, "xid"))
-      #   )
-      # n_r <- nrow(row_res)
-      # n_c <- nrow(col_res)
-      # l_r <- names(row_res) %>% sort()
-      # l_c <- names(col_res) %>% sort()
-      # row_res %<>% dplyr::inner_join(row_res)
-      # col_res %<>% dplyr::inner_join(col_res)
-      # testthat::expect_less_than(nrow(row_res) - 1, n_r)
-      # testthat::expect_less_than(nrow(col_res) - 1, n_c)
-      # testthat::expect_equal(names(row_res) %>% sort(), l_r)
-      # testthat::expect_equal(names(col_res) %>% sort(), l_c)
-    }
-
     # Merge the row and col results
-    # rename the row and col result colnames so that they end with the
+    # start with the query frame
+    full_res <- query_frame
+    # rename the row and col result colnames so that the end with the
     # corresponding suffix in the query frame
     names(row_res) <- paste(names(row_res), "x", sep = ".")
     names(col_res) <- paste(names(col_res), "y", sep = ".")
@@ -117,11 +98,11 @@ query.sim.mat <- function(S,
     expect_true(all(col_q_names_ %in% names(col_res)))
     expect_true(all(row_q_names_ %in% names(full_res)))
     expect_true(all(col_q_names_ %in% names(full_res)))
-    # start with the query frame
-    full_res <- query_frame
-    # left join with the row result so that all the row results are copied
+    # now do a left join of the query frame (stored in full_res) with the row
+    # result so that all the row results are present
     full_res <- dplyr::left_join(full_res, row_res, by = row_q_names_)
-    # left join with the col result so that all the col results are copied
+    # next do a left join on of the full_res with the col result so that all the
+    # col results are present.
     full_res <- dplyr::left_join(full_res, col_res, by = col_q_names_)
 
     # Rename the Var* variables
