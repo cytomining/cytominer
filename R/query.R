@@ -30,11 +30,17 @@ query.sim.mat <- function(S,
                           ...) {
 
   testthat::expect_is(S, "sim.mat")
+  testthat::expect_true(!is.null(query_frame) | !is.null(equality_join_cols))
 
   if (!is.null(query_frame)) {
     testthat::expect_is(query_frame, "data.frame")
+    testthat::expect_true(all(stringr::str_detect(names(query_frame),
+                                                  "\\.[xy]$")))
+    testthat::expect_equal(nrow(query_frame), 1,
+    info = paste0("query should be only one row because the logic is more ",
+                  "complicated with multiple rows"))
   }
-  testthat::expect_true(xor(is.null(query_frame), is.null(equality_join_cols)))
+
   if (!is.null(equality_join_cols)) {
     testthat::expect_is(equality_join_cols, "character")
     # all the columns should be present in both, row_meta and col_meta
@@ -47,28 +53,27 @@ query.sim.mat <- function(S,
     # impose that the query be only one row because the logic is more
     # complicated with multiple rows
     # TODO: remove this constraint
-    testthat::expect_equal(nrow(query_frame), 1,
-    info = paste0("query should be only one row because the logic is more ",
-                  "complicated with multiple rows"))
 
     # get colnames of the row and col parts of the query
-    row_q_names_ <- stringr::str_subset(names(query_frame), ".x$")
-    col_q_names_ <- stringr::str_subset(names(query_frame), ".y$")
+    row_q_names_ <- stringr::str_subset(names(query_frame), "\\.x$")
+    col_q_names_ <- stringr::str_subset(names(query_frame), "\\.y$")
     testthat::expect_true(setequal(c(row_q_names_, col_q_names_),
                                    names(query_frame)))
 
     # strip out .x and .y from the colnames
-    row_q_names <- stringr::str_replace(row_q_names_, ".x", "")
-    col_q_names <- stringr::str_replace(col_q_names_, ".y", "")
+    futile.logger::flog.debug("row_q_names_ = %s", row_q_names_)
+    futile.logger::flog.debug("col_q_names_ = %s", col_q_names_)
+    row_q_names <- stringr::str_replace(row_q_names_, "\\.x$", "")
+    col_q_names <- stringr::str_replace(col_q_names_, "\\.y$", "")
+    futile.logger::flog.debug("row_q_names = %s", row_q_names)
+    futile.logger::flog.debug("col_q_names = %s", col_q_names)
 
     # test that the query colnames exist in the row_meta and col_meta
     testthat::expect_true(all(row_q_names %in% names(row_meta(S))),
-                          info = paste(names(row_meta(S)),
-                                       row_q_names, collapse=","))
+      info = paste(c(names(row_meta(S)), row_q_names), collapse=","))
 
     testthat::expect_true(all(col_q_names %in% names(col_meta(S))),
-                          info = paste(names(col_meta(S)),
-                                       col_q_names, collapse=","))
+        info = paste(c(names(col_meta(S)), col_q_names), collapse=","))
 
     # extract the row query
     row_q <- query_frame[row_q_names_]
@@ -80,7 +85,6 @@ query.sim.mat <- function(S,
 
     # get the row and col query result
     # (don't use row_meta() and col_meta() because we want the index)
-
     futile.logger::flog.debug("Querying on rows...")
     row_res <- dplyr::left_join(row_q, S$row_meta, by = row_q_names)
 
@@ -98,15 +102,23 @@ query.sim.mat <- function(S,
     expect_true(all(col_q_names_ %in% names(col_res)))
     expect_true(all(row_q_names_ %in% names(full_res)))
     expect_true(all(col_q_names_ %in% names(full_res)))
-    # now do a left join of the query frame (stored in full_res) with the row
-    # result so that all the row results are present
+    # left join row result so that all the row results are copied
     full_res <- dplyr::left_join(full_res, row_res, by = row_q_names_)
-    # next do a left join on of the full_res with the col result so that all the
-    # col results are present.
+    # left join col result so that all the col results are copied
     full_res <- dplyr::left_join(full_res, col_res, by = col_q_names_)
 
     # Rename the Var* variables
     full_res %<>% dplyr::rename(Var1 = Var1.x, Var2 = Var2.y)
+
+    # if equality_join_cols was specified then filter
+    if (!is.null(equality_join_cols)) {
+      futile.logger::flog.debug("Before: nrow(full_res) = %d", nrow(full_res))
+      for (jc in equality_join_cols) {
+        # too painful to do this in dplyr!
+        full_res <- full_res[full_res[,paste0(jc, ".x")] == full_res[,paste0(jc, ".y")],]
+      }
+      futile.logger::flog.debug("After: nrow(full_res) = %d", nrow(full_res))
+    }
 
     if (!return_all_cols) {
       # Preserve only a few columns of the full_res. Var1.x and Var2.y store
@@ -133,7 +145,6 @@ query.sim.mat <- function(S,
                                   by = equality_join_cols)
     futile.logger::flog.debug("Final query result has %d rows", nrow(full_res))
   }
-
 
   if (nrow(full_res) > 0) {
     # Now look up the i,j values in the simililarity matrix and append it to the

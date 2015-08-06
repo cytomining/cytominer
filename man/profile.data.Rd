@@ -4,7 +4,8 @@
 \alias{profile.data}
 \title{Constructor for profile.data S3 class}
 \usage{
-\method{profile}{data}(cf, use_csv = F)
+\method{profile}{data}(cf = NULL, use_csv = F, imetadata = NULL,
+  ifeatdata = NULL)
 }
 \arguments{
 \item{cf}{YAML configuration file}

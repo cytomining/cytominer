@@ -1,7 +1,6 @@
 context("Query similarity matrix")
 
 test_that("Querying based on equality of columns - small sim.mat", {
-  skip("For now")
   cpseedseq_prf_sample <- cpseedseq_prf
   cpseedseq_prf_sample$metadata %<>% dplyr::filter(Well %in% c("a01", "a02", "a03"))
   cpseedseq_prf_sample %<>% post_filter_metadata()
@@ -76,5 +75,34 @@ test_that("Querying based on equality of columns - large sim.mat", {
 
   expect_is(query_res, "data.frame")
   expect_equal(nrow(query_res), (11*3*3))
+
+})
+
+test_that("Querying based on equality of columns and query_frame", {
+  cpseedseq_prf$metadata %<>% dplyr::mutate(data_id =
+                                            digest::digest(cpseedseq_prf))
+
+  # query should return 198 rows
+  cpseedseq_prf_sample <- cpseedseq_prf
+  cpseedseq_prf_sample$metadata %<>% dplyr::filter(GeneSymbol %in% c("HDAC1", "HDAC2"))
+  cpseedseq_prf_sample %<>% post_filter_metadata()
+  cpseedseq_prf_sample$metadata %<>%
+    dplyr::mutate(data_id = digest::digest(cpseedseq_prf_sample))
+
+  cmat_l <- compute_similarity_within_group(cpseedseq_prf_sample,
+              c("data_id"))
+  expect_equal(length(cmat_l), 1)
+  query_res <- query(S = cmat_l[[1]],
+                     equality_join_cols = c("Plate"),
+                     query_frame = data.frame(GeneSymbol.x = "HDAC1",
+                                              GeneSymbol.y = "HDAC2",
+                                              stringsAsFactors = F),
+                     return_all_cols = T )
+  expect_is(query_res, "data.frame")
+
+  expect_equal(nrow(query_res), 3*(11**2))
+  expect_equal(query_res %>% dplyr::filter(Plate.x != Plate.y) %>% nrow(), 0)
+  expect_equal(query_res %>% dplyr::filter(GeneSymbol.x != "HDAC1") %>% nrow(), 0)
+  expect_equal(query_res %>% dplyr::filter(GeneSymbol.y != "HDAC2") %>% nrow(), 0)
 
 })
