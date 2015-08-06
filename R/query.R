@@ -30,12 +30,16 @@ query.sim.mat <- function(S,
                           ...) {
 
   testthat::expect_is(S, "sim.mat")
+
   if (!is.null(query_frame)) {
     testthat::expect_is(query_frame, "data.frame")
   }
   testthat::expect_true(xor(is.null(query_frame), is.null(equality_join_cols)))
   if (!is.null(equality_join_cols)) {
     testthat::expect_is(equality_join_cols, "character")
+    # all the columns should be present in both, row_meta and col_meta
+    testthat::expect_true(all(equality_join_cols %in% names(row_meta(S))))
+    testthat::expect_true(all(equality_join_cols %in% names(col_meta(S))))
   }
 
   if (!is.null(query_frame)) {
@@ -44,19 +48,20 @@ query.sim.mat <- function(S,
     # complicated with multiple rows
     # TODO: remove this constraint
     testthat::expect_equal(nrow(query_frame), 1,
-                           info = "query be only one row because the logic is more complicated with multiple rows")
+    info = paste0("query should be only one row because the logic is more ",
+                  "complicated with multiple rows"))
 
-    # get colnames of row and col portions of the query
+    # get colnames of the row and col parts of the query
     row_q_names_ <- stringr::str_subset(names(query_frame), ".x$")
     col_q_names_ <- stringr::str_subset(names(query_frame), ".y$")
     testthat::expect_true(setequal(c(row_q_names_, col_q_names_),
                                    names(query_frame)))
 
-    # strip out .x and .y
+    # strip out .x and .y from the colnames
     row_q_names <- stringr::str_replace(row_q_names_, ".x", "")
     col_q_names <- stringr::str_replace(col_q_names_, ".y", "")
 
-    # test
+    # test that the query colnames exist in the row_meta and col_meta
     testthat::expect_true(all(row_q_names %in% names(row_meta(S))),
                           info = paste(names(row_meta(S)),
                                        row_q_names, collapse=","))
@@ -66,21 +71,15 @@ query.sim.mat <- function(S,
                                        col_q_names, collapse=","))
 
     # extract the row query
-    futile.logger::flog.debug("Extracting row query...")
     row_q <- query_frame[row_q_names_]
     names(row_q) <- row_q_names
 
     # extract the col query
-    futile.logger::flog.debug("Extracting col query...")
     col_q <- query_frame[col_q_names_]
     names(col_q) <- col_q_names
 
     # get the row and col query result
     # (don't use row_meta() and col_meta() because we want the index)
-    # left_join: return all rows from x, and all columns from x and y. Rows in x
-    # with no match in y will have NA values in the new columns. If there are
-    # multiple matches between x and y, all combinations of the matches are
-    # returned.
 
     futile.logger::flog.debug("Querying on rows...")
     row_res <- dplyr::left_join(row_q, S$row_meta, by = row_q_names)
@@ -124,10 +123,7 @@ query.sim.mat <- function(S,
     futile.logger::flog.debug("Final query result has %d rows", nrow(full_res))
   }
 
-  if (!is.null(equality_join_cols)) {
-    # all the columns should be present in both, row_meta and col_meta
-    testthat::expect_true(all(equality_join_cols %in% names(row_meta(S))))
-    testthat::expect_true(all(equality_join_cols %in% names(col_meta(S))))
+  if (is.null(query_frame) & !is.null(equality_join_cols)) {
 
     # do the join. Don't use row_meta() and col_meta() because Var1 and Var2
     # are needed
