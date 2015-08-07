@@ -4,7 +4,7 @@ context("Test rotate_platemap")
 cfg_fname <-
   system.file("extdata",
               "well-summary-profile_mean-median-robust_std-untreated_norm.yml",
-              package = "pertminr")
+              package = "cytominr")
 cpseedseq_prf <- profile.data(cfg_fname)
 
 cpseedseq_prf <- process_metadata(cpseedseq_prf,

@@ -1,4 +1,4 @@
-Package: pertminr
+Package: cytominr
 Type: Package
 Title: Mining patterns in perturbation data
 Version: 0.1

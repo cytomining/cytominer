@@ -3,7 +3,7 @@ context("Test add_metadata")
 metadata_fname <-
   system.file("extdata",
               "clone_search_hairpins.csv",
-              package = "pertminr")
+              package = "cytominr")
 
 metadata <- read.csv(metadata_fname, stringsAsFactors = F)
 metadata %<>% dplyr::rename(shRNA_CloneID = Clone.ID)

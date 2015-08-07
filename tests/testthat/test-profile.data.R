@@ -3,7 +3,7 @@ context("Load and do some basic processing on a profile.data object")
 cfg_fname <-
   system.file("extdata",
               "well-summary-profile_mean-median-robust_std-untreated_norm.yml",
-              package = "pertminr")
+              package = "cytominr")
 
 test_that("Sample dataset loads correctly", {
   skip("Skipping because it is too slow")
