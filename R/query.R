@@ -19,7 +19,8 @@ query <- function(S, query_frame, equality_join_cols, ...)
 #'
 #' @param return_all_cols If True, returns all columns of the query
 #' result, else returns only the columns that were present in the query
-#'
+#' @param rename_value_to_metric If True, rename the column name of the
+#' similarity value to the name of the similarity metric
 #' @return data.frame of query result. The similarity value is stored in
 #' \code{value}
 #'
@@ -27,6 +28,7 @@ query.sim.mat <- function(S,
                           query_frame = NULL,
                           equality_join_cols = NULL,
                           return_all_cols = F,
+                          rename_value_to_metric = F,
                           ...) {
 
   testthat::expect_is(S, "sim.mat")
@@ -150,6 +152,11 @@ query.sim.mat <- function(S,
     # Now look up the i,j values in the simililarity matrix and append it to the
     # full_res matrix
     testthat::expect_true(all(c("Var1", "Var2") %in% names(full_res)))
+
+    # TODO: Handle this error more elegantly
+    testthat::expect_true(!("value" %in% names(full_res)),
+                          "Cannot have value as a column in full_res")
+
     futile.logger::flog.debug("Appending values from smat...")
     smat_ <- smat(S)
     full_res %<>%
@@ -158,6 +165,13 @@ query.sim.mat <- function(S,
       dplyr::select(-Var1, -Var2) %>%
       dplyr::ungroup()
     futile.logger::flog.debug("Finished appending values from smat.")
+    if (rename_value_to_metric) {
+      # TODO: Handle this error more elegantly
+      metric_name <- format(metric(S))
+      testthat::expect_true(!(metric_name %in% names(full_res)),
+                            "Cannot have format(metric(S)) as a column in full_res")
+      full_res %<>% dplyr::rename_(.dots = setNames(list("value"), metric_name))
+    }
     #full_res_str <- paste(capture.output(full_res), collapse="\n")
     #futile.logger::flog.debug("Final query result = \n%s", full_res_str)
   }
