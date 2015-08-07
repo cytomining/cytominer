@@ -114,6 +114,7 @@ query.sim.mat <- function(S,
 
     # if equality_join_cols was specified then filter
     if (!is.null(equality_join_cols)) {
+      futile.logger::flog.debug("Imposing equality constraint...")
       futile.logger::flog.debug("Before: nrow(full_res) = %d", nrow(full_res))
       for (jc in equality_join_cols) {
         # too painful to do this in dplyr!
@@ -133,7 +134,7 @@ query.sim.mat <- function(S,
     # Rows in query with no match in  will have NA values in either the columns
     # corresponding to either or both of the row result col result.
     # Drop these rows
-    full_res %<>% na.omit()
+    full_res %<>% dplyr::filter(!is.na(Var1) & !is.na(Var2))
     futile.logger::flog.debug("Final query result has %d rows", nrow(full_res))
   }
 

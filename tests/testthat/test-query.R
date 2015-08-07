@@ -89,6 +89,8 @@ cmat_l <- compute_similarity_within_group(cpseedseq_prf_sample,
             c("data_id"))
 
 test_that("Querying based on equality of columns and query_frame", {
+  #TODO: Add more tests here because it is a hacky code and changes can break it
+  #TODO: Add a test: some metadata columms have NA in them
   cpseedseq_prf$metadata %<>% dplyr::mutate(data_id =
                                             digest::digest(cpseedseq_prf))
 
