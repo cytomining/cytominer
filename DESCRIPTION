@@ -7,7 +7,7 @@ Author: Shantanu Singh
 Maintainer: <shsingh@broadinstitute.org>
 Description: Mine patterns in perturbation data
 Depends: R (>= 3.1.0)
-License: MIT + file LICENSE
+License: GPLv2 + file LICENSE
 LazyData: TRUE
 Imports: tidyr,
     magrittr,
