@@ -135,6 +135,7 @@ test_that("Adding a column to indicate name of similarity methods works as expec
                      include_sim_name = T)
   metric_name <- format(metric(cmat_l[[1]]))
   expect_false(metric_name %in% names(query_res))
+  expect_true("sim_val" %in% names(query_res))
   expect_true("sim_name" %in% names(query_res))
   expect_equal(unique(query_res$sim_name), metric_name)
   

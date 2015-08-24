@@ -8,7 +8,8 @@
 query(S, query_frame, equality_join_cols, ...)
 
 \method{query}{sim.mat}(S, query_frame = NULL, equality_join_cols = NULL,
-  return_all_cols = F, ...)
+  return_all_cols = F, rename_value_to_metric = F, include_sim_name = F,
+  ...)
 }
 \arguments{
 \item{S}{sim.mat object}
@@ -21,10 +22,16 @@ query(S, query_frame, equality_join_cols, ...)
 
 \item{return_all_cols}{If True, returns all columns of the query
 result, else returns only the columns that were present in the query}
+
+\item{rename_value_to_metric}{If True, rename the column name of the
+similarity value to the name of the similarity metric}
+
+\item{include_sim_name}{If True, include a column indicating the
+name of the similarity metric}
 }
 \value{
 data.frame of query result. The similarity value is stored in
-\code{value}
+\code{sim_val}
 }
 \description{
 Query a similarity matrix

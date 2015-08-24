@@ -24,7 +24,7 @@ query <- function(S, query_frame, equality_join_cols, ...)
 #' @param include_sim_name If True, include a column indicating the
 #' name of the similarity metric
 #' @return data.frame of query result. The similarity value is stored in
-#' \code{value}
+#' \code{sim_val}
 #'
 query.sim.mat <- function(S,
                           query_frame = NULL,
@@ -158,14 +158,14 @@ query.sim.mat <- function(S,
     testthat::expect_true(all(c("Var1", "Var2") %in% names(full_res)))
 
     # TODO: Handle this error more elegantly
-    testthat::expect_true(!("value" %in% names(full_res)),
-                          "Cannot have value as a column in full_res")
-
+    testthat::expect_true(!("sim_val" %in% names(full_res)),
+                          "Cannot have sim_val as a column in full_res")
+    
     futile.logger::flog.debug("Appending values from smat...")
     smat_ <- smat(S)
     full_res %<>%
       dplyr::rowwise() %>%
-      dplyr::mutate(value = smat_[Var1, Var2]) %>%
+      dplyr::mutate(sim_val = smat_[Var1, Var2]) %>%
       dplyr::select(-Var1, -Var2) %>%
       dplyr::ungroup()
     futile.logger::flog.debug("Finished appending values from smat.")
@@ -174,7 +174,7 @@ query.sim.mat <- function(S,
       metric_name <- format(metric(S))
       testthat::expect_true(!(metric_name %in% names(full_res)),
                             "Cannot have format(metric(S)) as a column in full_res")
-      full_res %<>% dplyr::rename_(.dots = setNames(list("value"), metric_name))
+      full_res %<>% dplyr::rename_(.dots = setNames(list("sim_val"), metric_name))
     }
     if (include_sim_name) {
       metric_name <- format(metric(S))

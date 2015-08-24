@@ -77,7 +77,7 @@ test_that("Melted similarity matrix is valid: data.frame", {
   )
   expect_equal(
     dplyr::inner_join(cmat_melt,
-                     format_pair_query(cmp, names(cmat_melt)))$value,
+                     format_pair_query(cmp, names(cmat_melt)))$sim_val,
     0.4313986,
     tol = 1e-05
   )
@@ -100,7 +100,7 @@ cmat_prf_melt <- compute_similarity(cpseedseq_prf,
 
 cmat_melt_s <- cmat_melt
 names(cmat_melt_s) <- gsub("Metadata_", "", names(cmat_melt_s))
-sel <- c("Plate.x", "Well.x", "Plate.y", "Well.y", "value")
+sel <- c("Plate.x", "Well.x", "Plate.y", "Well.y", "sim_val")
 
 test_that("Similarity matrix for test dataset is valid: profile.data", {
   expect_true(
@@ -136,13 +136,13 @@ test_that("Melted similarity matrix is valid: profile.data", {
 
   expect_true(all(
     with(
-      merge(cmat_melt_s[, sel], cmat_prf_melt[,sel], setdiff(sel, "value")),
-      value.x == value.y
+      merge(cmat_melt_s[, sel], cmat_prf_melt[,sel], setdiff(sel, "sim_val")),
+      sim_val.x == sim_val.y
       )
     ))
 
   expect_equal(
     dplyr::inner_join(cmat_prf_melt,
-                      format_pair_query(cmp_prf, names(cmat_prf_melt)))$value,
+                      format_pair_query(cmp_prf, names(cmat_prf_melt)))$sim_val,
     0.4313986, tol = 1e-05)
 })

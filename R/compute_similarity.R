@@ -64,10 +64,10 @@ compute_similarity.data.frame <- function(D1,
     futile.logger::flog.debug("Melting %dx%d similarity matrix ...",
                                nrow(sim_mat), nrow(sim_mat))
 
-    sim_mat_m <- reshape2::melt(sim_mat)
+    sim_mat_m <- reshape2::melt(sim_mat, value.name = "sim_val")
     sim_mat_m_nrow <- nrow(sim_mat_m)
     testthat::expect_true(setequal(names(sim_mat_m),
-                                   c("Var1", "Var2", "value")))
+                                   c("Var1", "Var2", "sim_val")))
 
     futile.logger::flog.debug("Melted similarity matrix has %d rows",
                               nrow(sim_mat_m))

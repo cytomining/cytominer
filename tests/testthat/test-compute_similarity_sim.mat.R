@@ -57,7 +57,7 @@ test_that("sim.mat similarity matrix returns correct values", {
                      format_pair_query(cmp_prf,
                                        c(paste(names(row_meta(cmat_obj)), "x", sep = "."),
                                          paste(names(col_meta(cmat_obj)), "y", sep = "."))
-                     ))$value,
+                     ))$sim_val,
                0.4313986, tol = 1e-05)
 
   expect_is(
@@ -70,7 +70,7 @@ test_that("sim.mat similarity matrix returns correct values", {
   expect_equal(
     query(cmat_obj,
           data.frame(shRNA_CloneID.x = "TRCN0000004815",
-                     shRNA_CloneID.y = "TRCN0000197086", stringsAsFactors = F))$value,
+                     shRNA_CloneID.y = "TRCN0000197086", stringsAsFactors = F))$sim_val,
     c(0.7573881, 0.7337659,
       0.6907641, 0.7675434,
       0.7014778, 0.6333144,
@@ -109,11 +109,11 @@ cmat_prf_melt_large <- compute_similarity(cpseedseq_prf,
 
 cmat_prf_melt_large_sample <-
   cmat_prf_melt_large %>%
-  dplyr::select(Plate.x, Well.x, Plate.y, Well.y, value) %>%
+  dplyr::select(Plate.x, Well.x, Plate.y, Well.y, sim_val) %>%
   dplyr::sample_n(500)
 
 cmat_prf_melt_large_sample_query <-
-  cmat_prf_melt_large_sample %>% dplyr::select(-value)
+  cmat_prf_melt_large_sample %>% dplyr::select(-sim_val)
 
 test_that("sim.mat similarity matrix returns correct values - large sim.mat", {
   skip("Skipping because it is too slow")
