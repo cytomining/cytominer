@@ -21,6 +21,8 @@ query <- function(S, query_frame, equality_join_cols, ...)
 #' result, else returns only the columns that were present in the query
 #' @param rename_value_to_metric If True, rename the column name of the
 #' similarity value to the name of the similarity metric
+#' @param include_sim_name If True, include a column indicating the
+#' name of the similarity metric
 #' @return data.frame of query result. The similarity value is stored in
 #' \code{value}
 #'
@@ -29,6 +31,7 @@ query.sim.mat <- function(S,
                           equality_join_cols = NULL,
                           return_all_cols = F,
                           rename_value_to_metric = F,
+                          include_sim_name = F,
                           ...) {
 
   testthat::expect_is(S, "sim.mat")
@@ -172,6 +175,10 @@ query.sim.mat <- function(S,
       testthat::expect_true(!(metric_name %in% names(full_res)),
                             "Cannot have format(metric(S)) as a column in full_res")
       full_res %<>% dplyr::rename_(.dots = setNames(list("value"), metric_name))
+    }
+    if (include_sim_name) {
+      metric_name <- format(metric(S))
+      full_res %<>% dplyr::mutate(sim_name = metric_name)
     }
     #full_res_str <- paste(capture.output(full_res), collapse="\n")
     #futile.logger::flog.debug("Final query result = \n%s", full_res_str)

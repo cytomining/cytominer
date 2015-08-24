@@ -123,3 +123,20 @@ test_that("Renaming return value works as expected", {
               info = stringr::str_c(c(names(query_res),
                                     metric_name), collapse = ","))
 })
+
+
+test_that("Adding a column to indicate name of similarity methods works as expected", {
+  query_res <- query(S = cmat_l[[1]],
+                     equality_join_cols = c("Plate"),
+                     query_frame = data.frame(GeneSymbol.x = "HDAC1",
+                                              GeneSymbol.y = "HDAC2",
+                                              stringsAsFactors = F),
+                     return_all_cols = F,
+                     include_sim_name = T)
+  metric_name <- format(metric(cmat_l[[1]]))
+  expect_false(metric_name %in% names(query_res))
+  expect_true("sim_name" %in% names(query_res))
+  expect_equal(unique(query_res$sim_name), metric_name)
+  
+})
+
