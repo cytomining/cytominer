@@ -3,12 +3,16 @@ Type: Package
 Title: Mining patterns in perturbation data
 Version: 0.1
 Date: 2015-06-25
-Author: Shantanu Singh
+Author: 
 Maintainer: <shsingh@broadinstitute.org>
+Authors@R: as.person(c(
+    "Allen Goodman <allen.goodman@icloud.com> [aut, cre]",
+    "Shantanu Singh <shsingh@broadinstitute.org> [aut, cre]"
+  ))
 Description: Mine patterns in perturbation data
 Depends:
     R (>= 3.1.0)
-License: GPLv2 + file LICENSE
+License: BSD + file LICENSE
 LazyData: TRUE
 Imports:
     tidyr,
