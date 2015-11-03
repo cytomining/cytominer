@@ -2,14 +2,23 @@
 % Please edit documentation in R/profile.data.access.R
 \name{feat}
 \alias{feat}
+\alias{feat.profile.data}
 \title{Access featdata}
 \usage{
 feat(...)
+
+\method{feat}{profile.data}(P, ...)
 }
 \arguments{
 \item{...}{object from which to extract featdata}
+
+\item{P}{profile.data object}
 }
 \description{
 Access featdata
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{profile.data}: Access featdata
+}}
 

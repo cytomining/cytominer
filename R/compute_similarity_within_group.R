@@ -12,7 +12,7 @@
 compute_similarity_within_group <-
   function(P, grp, method, ...) UseMethod("compute_similarity_within_group")
 
-#' @describeIn compute_similarity_within_group
+#' @describeIn compute_similarity_within_group Similarity between between all pairs of vectors within a group
 
 compute_similarity_within_group.profile.data <- function (P, grp,
   method = "pearson") {

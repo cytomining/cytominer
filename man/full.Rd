@@ -2,14 +2,25 @@
 % Please edit documentation in R/profile.data.access.R
 \name{full}
 \alias{full}
+\alias{full.profile.data}
 \title{Access merged featdata and metadata}
 \usage{
 full(...)
+
+\method{full}{profile.data}(P, keep_xid = F, ...)
 }
 \arguments{
 \item{...}{object from which to extract merged featdata and metadata}
+
+\item{P}{profile.data object}
+
+\item{keep_xid}{if True, don't exclude xid in the result}
 }
 \description{
 Access merged featdata and metadata
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{profile.data}: Access merged featdata and metadata
+}}
 

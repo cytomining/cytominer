@@ -14,18 +14,18 @@ smat  <- function(...) UseMethod("smat")
 #' @param ... object from which to extract metric
 metric  <- function(...) UseMethod("metric")
 
-#' @describeIn row_meta
+#' @describeIn row_meta Access row metadata
 #' @param S sim.mat object
 row_meta.sim.mat <- function(S, ...) S$row_meta[, names(S$row_meta) != "Var1"]
 
-#' @describeIn col_meta
+#' @describeIn col_meta Access col metadata
 #' @param S sim.mat object
 col_meta.sim.mat <- function(S, ...) S$col_meta[, names(S$col_meta) != "Var2"]
 
-#' @describeIn smat
+#' @describeIn smat Access similarity matrix
 #' @param S sim.mat object
 smat.sim.mat <- function(S, ...) S$smat
 
-#' @describeIn metric
+#' @describeIn metric Access metric
 #' @param S sim.mat object
 metric.sim.mat <- function(S, ...) S$metric

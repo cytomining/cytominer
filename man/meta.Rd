@@ -2,14 +2,23 @@
 % Please edit documentation in R/profile.data.access.R
 \name{meta}
 \alias{meta}
+\alias{meta.profile.data}
 \title{Access metadata}
 \usage{
 meta(...)
+
+\method{meta}{profile.data}(P, ...)
 }
 \arguments{
 \item{...}{object from which to extract metadata}
+
+\item{P}{profile.data object}
 }
 \description{
 Access metadata
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{profile.data}: Access metadata
+}}
 

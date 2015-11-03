@@ -2,14 +2,23 @@
 % Please edit documentation in R/sim.mat.access.R
 \name{row_meta}
 \alias{row_meta}
+\alias{row_meta.sim.mat}
 \title{Access row metadata}
 \usage{
 row_meta(...)
+
+\method{row_meta}{sim.mat}(S, ...)
 }
 \arguments{
 \item{...}{object from which to extract row metadata}
+
+\item{S}{sim.mat object}
 }
 \description{
 Access row metadata
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{sim.mat}: Access row metadata
+}}
 

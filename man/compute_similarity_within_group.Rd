@@ -2,9 +2,13 @@
 % Please edit documentation in R/compute_similarity_within_group.R
 \name{compute_similarity_within_group}
 \alias{compute_similarity_within_group}
+\alias{compute_similarity_within_group.profile.data}
 \title{Similarity between between all pairs of vectors within a group}
 \usage{
 compute_similarity_within_group(P, grp, method, ...)
+
+\method{compute_similarity_within_group}{profile.data}(P, grp,
+  method = "pearson")
 }
 \arguments{
 \item{P}{profile.data}
@@ -21,4 +25,8 @@ list of sim.mats, one per group
 \description{
 Function to measure similarity between all pairs of vectors within a group
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{profile.data}: Similarity between between all pairs of vectors within a group
+}}
 

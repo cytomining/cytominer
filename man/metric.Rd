@@ -2,14 +2,23 @@
 % Please edit documentation in R/sim.mat.access.R
 \name{metric}
 \alias{metric}
+\alias{metric.sim.mat}
 \title{Access metric}
 \usage{
 metric(...)
+
+\method{metric}{sim.mat}(S, ...)
 }
 \arguments{
 \item{...}{object from which to extract metric}
+
+\item{S}{sim.mat object}
 }
 \description{
 Access metric
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{sim.mat}: Access metric
+}}
 

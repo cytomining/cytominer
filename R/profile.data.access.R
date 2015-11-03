@@ -10,15 +10,15 @@ feat  <- function(...) UseMethod("feat")
 #' @param ... object from which to extract merged featdata and metadata
 full  <- function(...) UseMethod("full")
 
-#' @describeIn meta
+#' @describeIn meta Access metadata
 #' @param P profile.data object
 meta.profile.data <- function(P, ...) P$metadata[names(P$metadata) != "xid"]
 
-#' @describeIn feat
+#' @describeIn feat Access featdata
 #' @param P profile.data object
 feat.profile.data <- function(P, ...) P$featdata[names(P$featdata) != "xid"]
 
-#' @describeIn full
+#' @describeIn full Access merged featdata and metadata
 #' @param P profile.data object
 #' @param keep_xid if True, don't exclude xid in the result
 full.profile.data <- function(P, keep_xid = F, ...) {
