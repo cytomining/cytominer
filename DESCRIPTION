@@ -6,10 +6,12 @@ Date: 2015-06-25
 Author: Shantanu Singh
 Maintainer: <shsingh@broadinstitute.org>
 Description: Mine patterns in perturbation data
-Depends: R (>= 3.1.0)
+Depends:
+    R (>= 3.1.0)
 License: GPLv2 + file LICENSE
 LazyData: TRUE
-Imports: tidyr,
+Imports:
+    tidyr,
     magrittr,
     digest,
     dplyr,
@@ -20,3 +22,4 @@ Imports: tidyr,
     jsonlite,
     stringr,
     pryr
+RoxygenNote: 5.0.0
