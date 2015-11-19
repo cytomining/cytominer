@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-This vignette shows the proposed workflow of using cytominr to process 
+This vignette shows a proposed workflow of using cytominr to process 
 data from a typical high-thoughput imaging experiment. It is assumed that 
 [CellProfiler](http://cellprofiler.org) is used to process the images, and 
 the [ExportToSpreadsheet](http://cellprofiler.org/CPmanual/ExportToSpreadsheet.html) 
@@ -50,7 +50,7 @@ The csv files are loaded into an SQLite file
 create_db("plate_1/config.json")
 ```
 
-This creates a single large SQLite file per plate 
+This creates a single, large SQLite file per plate (typically 100-400 million measurements)
 
 ```text
 plate_1/backend.sqlite
