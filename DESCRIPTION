@@ -3,10 +3,8 @@ Type: Package
 Title: Mining patterns in perturbation data
 Version: 0.1
 Date: 2015-06-25
-Author: 
-Maintainer: <shsingh@broadinstitute.org>
 Authors@R: as.person(c(
-    "Allen Goodman <allen.goodman@icloud.com> [aut, cre]",
+    "Allen Goodman <allen.goodman@icloud.com> [aut]",
     "Shantanu Singh <shsingh@broadinstitute.org> [aut, cre]"
   ))
 Description: Mine patterns in perturbation data
