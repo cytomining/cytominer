@@ -8,11 +8,11 @@ Authors@R: as.person(c(
     "Shantanu Singh <shsingh@broadinstitute.org> [aut, cre]"
   ))
 Description: Mine patterns in perturbation data
-Depends:
+Depends: 
     R (>= 3.1.0)
 License: BSD + file LICENSE
 LazyData: TRUE
-Imports:
+Imports: 
     tidyr,
     magrittr,
     digest,
@@ -25,3 +25,6 @@ Imports:
     stringr,
     pryr
 RoxygenNote: 5.0.0
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
