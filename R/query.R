@@ -103,10 +103,10 @@ query.sim.mat <- function(S,
     # corresponding suffix in the query frame
     names(row_res) <- paste(names(row_res), "x", sep = ".")
     names(col_res) <- paste(names(col_res), "y", sep = ".")
-    expect_true(all(row_q_names_ %in% names(row_res)))
-    expect_true(all(col_q_names_ %in% names(col_res)))
-    expect_true(all(row_q_names_ %in% names(full_res)))
-    expect_true(all(col_q_names_ %in% names(full_res)))
+    testthat::expect_true(all(row_q_names_ %in% names(row_res)))
+    testthat::expect_true(all(col_q_names_ %in% names(col_res)))
+    testthat::expect_true(all(row_q_names_ %in% names(full_res)))
+    testthat::expect_true(all(col_q_names_ %in% names(full_res)))
     # left join row result so that all the row results are copied
     full_res <- dplyr::left_join(full_res, row_res, by = row_q_names_)
     # left join col result so that all the col results are copied
