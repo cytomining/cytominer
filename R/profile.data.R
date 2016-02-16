@@ -48,7 +48,7 @@ profile.data <- function(cf = NULL,
 
     # get the index of featdata and metadata columns
     testthat::expect_true(!is.null(cfg$feat_start))
-    testthat::expect_is(cfg$feat_start, "integer")
+    cfg$feat_start <- as.integer(cfg$feat_start)
     testthat::expect_more_than(cfg$feat_start, 1)
     metadata_cids <- seq(cfg$feat_start - 1)
     featdata_cids <- seq(cfg$feat_start, ncol(data0))
