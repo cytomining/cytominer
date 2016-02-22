@@ -8,7 +8,6 @@
 #' @return data.frame after normalization
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
-#' @export
 normalize <- function(population, sample, operation = "standardize", ...) {
   if (operation == "linearize") {
     linearize(population, sample)
@@ -17,6 +16,6 @@ normalize <- function(population, sample, operation = "standardize", ...) {
   } else if (operation == "standardize") {
     standardize(population, sample)
   } else {
-    error("unknown operation")
+    stop("unknown operation")
   }
 }
