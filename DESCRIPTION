@@ -24,7 +24,6 @@ Imports:
     stringr,
     pryr
 Suggests:
-    knitr,
-    rmarkdown
+    knitr
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1
