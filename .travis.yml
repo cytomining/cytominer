@@ -1,0 +1,4 @@
+language: r
+sudo: required
+notifications:
+  slack: broadimagingplatform:RwPvnCWzdnITRIlrw4upNh0i
