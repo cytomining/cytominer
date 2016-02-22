@@ -1,4 +1,5 @@
-language: r
+language: R
+cache: packages
 sudo: false
 notifications:
   slack: broadimagingplatform:RwPvnCWzdnITRIlrw4upNh0i
