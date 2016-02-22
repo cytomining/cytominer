@@ -1,4 +1,4 @@
 language: r
-sudo: required
+sudo: false
 notifications:
   slack: broadimagingplatform:RwPvnCWzdnITRIlrw4upNh0i
