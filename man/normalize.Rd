@@ -11,6 +11,8 @@ normalize(population, sample, operation = "standardize", ...)
 
 \item{sample}{sample}
 
+\item{operation}{operation}
+
 \item{...}{Arguments to be passed to methods}
 }
 \value{

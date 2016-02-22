@@ -2,6 +2,7 @@
 #'
 #' @param population population
 #' @param sample sample
+#' @param operation operation
 #' @param ... Arguments to be passed to methods
 #'
 #' @return data.frame after normalization
@@ -9,13 +10,13 @@
 #' @importFrom magrittr %<>%
 #' @export
 normalize <- function(population, sample, operation = "standardize", ...) {
-  if (operation == "linear") {
-
-  } else if (operation == "robust") {
-
+  if (operation == "linearize") {
+    linearize(population, sample)
+  } else if (operation == "robustize") {
+    robustize(population, sample)
   } else if (operation == "standardize") {
     standardize(population, sample)
   } else {
-
+    error("unknown operation")
   }
 }
