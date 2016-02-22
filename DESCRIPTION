@@ -7,3 +7,32 @@ Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
 LazyData: TRUE
+
+Package: cytominr
+Type: Package
+Title: Mining Patterns in Perturbation Data
+Version: 0.1.0
+Authors@R: as.person(c(
+    "Allen Goodman <allen.goodman@icloud.com> [aut]",
+    "Shantanu Singh <shsingh@broadinstitute.org> [aut, cre]"
+  ))
+Description: Mining Patterns in Perturbation Data
+Depends: 
+    R (>= 3.1.0)
+License: BSD + file LICENSE
+LazyData: TRUE
+Imports: 
+    tidyr,
+    magrittr,
+    digest,
+    dplyr,
+    reshape2,
+    yaml,
+    testthat,
+    futile.logger,
+    jsonlite,
+    stringr,
+    pryr
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
