@@ -7,5 +7,5 @@
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 variance_threshold <- function(population, ...) {
-  population[-caret::nearZeroVar(population)]
+  population[-nearZeroVar(population)]
 }
