@@ -12,17 +12,18 @@ Depends:
 License: BSD + file LICENSE
 LazyData: TRUE
 Imports:
-    tidyr,
-    magrittr,
+    caret,
     digest,
     dplyr,
-    reshape2,
-    yaml,
-    testthat,
     futile.logger,
     jsonlite,
+    tidyr,
+    magrittr,
+    pryr,
+    reshape2,
     stringr,
-    pryr
+    testthat,
+    yaml
 Suggests:
     knitr
 VignetteBuilder: knitr
