@@ -12,8 +12,6 @@ Depends:
 License: BSD + file LICENSE
 LazyData: TRUE
 Imports:
-    car,
-    caret,
     digest,
     dplyr,
     futile.logger,
