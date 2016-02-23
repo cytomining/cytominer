@@ -4,12 +4,10 @@
 \alias{transform}
 \title{Transform rows of a data.frame}
 \usage{
-transform(population, sample = NULL, operation = "generalized_log", ...)
+transform(population, operation = "generalized_log", ...)
 }
 \arguments{
 \item{population}{population}
-
-\item{sample}{sample}
 
 \item{operation}{operation}
 
