@@ -7,11 +7,15 @@
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 standardize <- function(population, sample) {
-  mu <- sample %>% dplyr::summarise_each(dplyr::funs(mean))
+  mu <- sample %>% dplyr::summarise_each(dplyr::funs(mean)) %>% dplyr::collect()
 
-  sigma <- sample %>% dplyr::summarise_each(dplyr::funs(sd))
+  sigma <- sample %>% dplyr::summarise_each(dplyr::funs(sd)) %>% dplyr::collect()
 
-  population %>% dplyr::mutate_each(dplyr::funs(. - mu$.)) %>%
-    dplyr::mutate_each(dplyr::funs(. / sigma$.))
+  # population %>%
+  # dplyr::mutate_each(dplyr::funs(. - mu$.)) %>%
+  # dplyr::mutate_each(dplyr::funs(. / sigma$.))
+
+  population %>%
+    scale_dplyr(mu, sigma, vars = names(mu))
+
 }
-
