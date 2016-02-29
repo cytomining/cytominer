@@ -16,6 +16,8 @@ standardize <- function(population, sample) {
   # dplyr::mutate_each(dplyr::funs(. / sigma$.))
 
   population %>%
-    scale_dplyr(mu, sigma, vars = names(mu))
+    scale_dplyr(center = mu,
+                scale = sigma,
+                vars = names(mu))
 
 }
