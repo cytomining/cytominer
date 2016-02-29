@@ -10,6 +10,8 @@
 select <- function(population, operation, ...) {
   if (operation == "variance_threshold") {
     variance_threshold(population)
+  } else if (operation == "correlation_threshold") {
+    correlation_threshold(population)
   } else {
     stop("unknown operation")
   }
