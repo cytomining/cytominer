@@ -16,13 +16,14 @@ Imports:
     dplyr,
     futile.logger,
     jsonlite,
-    tidyr,
+    lazyeval,
     magrittr,
     pryr,
     reshape2,
     RSQLite,
     stringr,
     testthat,
+    tidyr,
     yaml
 Suggests:
     knitr
