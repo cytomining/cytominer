@@ -9,7 +9,7 @@
 #' @importFrom magrittr %<>%
 transform <- function(population, variables, operation = "generalized_log", ...) {
   if (operation == "generalized_log") {
-    generalized_log(population)
+    generalized_log(population, variables, ...)
   } else {
     stop("unknown operation")
   }

@@ -20,9 +20,9 @@ test_that("cytominr", {
     population = measurements %>%
       dplyr::filter(
         well_description %in% c(
-          "A01", 
-          "A02", 
-          "A03", 
+          "A01",
+          "A02",
+          "A03",
           "A04"
         )
       ) %>%
@@ -32,7 +32,7 @@ test_that("cytominr", {
     sample = measurements %>%
       dplyr::filter(
         well_description %in% c(
-          "A01", 
+          "A01",
           "A02"
         )
       ) %>%
@@ -41,11 +41,13 @@ test_that("cytominr", {
       ),
     operation = "standardize"
   )
-  
+
   transformed <- transform(
-    populaton = normalized,
-    operation = "generalized_log"
+    population = normalized,
+    variables = features,
+    operation = "generalized_log",
+    c = 1
   )
-  
-  expect_equal(normalized %>% dplyr::collect() %>% nrow(), 44631)
+
+  expect_equal(transformed %>% dplyr::collect() %>% nrow(), 44631)
 })
