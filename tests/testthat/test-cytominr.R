@@ -51,7 +51,7 @@ test_that('cytominr', {
       .dots = features
     )
 
-  normalized <- cytominr::normalize(
+  normalized <- normalize(
     population = population,
     sample = sample,
     operation = 'standardize'
