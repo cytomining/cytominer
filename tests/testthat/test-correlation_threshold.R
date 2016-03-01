@@ -1,14 +1,13 @@
 test_that("correlation thresholded intensities is valid", {
-  metadata_cols <- c(
-    "plate_barcode",
-    "well_description",
-    "image_description",
-    "object_description",
-    "pattern_description",
-    "channel_description"
-  )
 
-  feat_cols <- c(
+  metadata <- c("plate_barcode",
+                "well_description",
+                "image_description",
+                "object_description",
+                "pattern_description",
+                "channel_description")
+
+  features <- c(
     'Intensity_first_quartile',
     'Intensity_integrated',
     'Intensity_maximum',
@@ -20,19 +19,14 @@ test_that("correlation thresholded intensities is valid", {
     'Intensity_third_quartile'
   )
 
-  population <- fixture_intensities %>% dplyr::select_(.dots = feat_cols)
+  correlation_threshold_intensities <-
+    correlation_threshold(population = fixture_intensities,
+                          variables = features,
+                          sample = fixture_intensities)
 
-  sample <- population
+  a <- correlation_threshold_intensities %>% dplyr::select(-one_of(metadata)) %>% as.matrix()
 
-  correlation_threshold_intensities <- correlation_threshold(
-    population = population,
-    variables = feat_cols,
-    sample = sample
-  )
-
-  a <- correlation_threshold_intensities %>% as.matrix()
-
-  b <- fixture_correlation_threshold_intensities %>% dplyr::select(-one_of(metadata_cols)) %>% as.matrix()
+  b <- fixture_correlation_threshold_intensities %>% dplyr::select(-one_of(metadata)) %>% as.matrix()
 
   expect_equal(a, b)
 })

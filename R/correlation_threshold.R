@@ -11,14 +11,14 @@
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 correlation_threshold <- function(population, variables, sample, cutoff = 0.90, method = 'pearson', verbose = FALSE) {
-  population[-(
-      sample %>%
-      cor(
-        method = method
-      ) %>%
-      findCorrelation(
-        cutoff = cutoff,
-        verbose = verbose
-      )
-  )]
+
+  features_exclude <-
+    sample %>%
+    dplyr::select_(.dots = variables) %>%
+    cor(method = method) %>%
+    findCorrelation(cutoff = cutoff, verbose = verbose)
+
+  population %>%
+    dplyr::select_(.dots = variables[-features_exclude])
+
 }
