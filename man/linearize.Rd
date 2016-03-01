@@ -4,8 +4,8 @@
 \alias{linearize}
 \title{Linearize rows of a data.frame}
 \usage{
-linearize(population, variables, sample, lower_quantile = 0.01,
-  upper_quantile = 0.99)
+linearize(population, variables, sample, lower_quantile = 0.25,
+  upper_quantile = 0.75)
 }
 \arguments{
 \item{population}{population}
