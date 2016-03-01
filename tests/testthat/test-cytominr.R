@@ -1,11 +1,14 @@
 test_that("cytominr", {
-
   fixture <-
     system.file("extdata", "fixture_intensities.sqlite", package = "cytominr")
 
   measurements <-
     dplyr::tbl(src = dplyr::src_sqlite(path = fixture), "measurements")
 
+  metadata <- c("plate_barcode",
+                "well_description",
+                "pattern_description",
+                "channel_description")
   features <-
     c(
       "integrated",
@@ -31,11 +34,19 @@ test_that("cytominr", {
       variables = features
     )
 
+  aggregated <-
+    aggregate(
+      population = transformed,
+      variables = features,
+      grouping_variables = metadata
+    ) %>%
+    dplyr::collect()
+
   selected <-
     select(
-      population = transformed %>% dplyr::collect(),
+      population = transformed ,
       variables = features,
-      sample = transformed %>% dplyr::collect()
+      sample = aggregated
     )
 
   expect_equal(selected %>% dplyr::collect() %>% nrow(), 44631)
