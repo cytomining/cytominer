@@ -20,29 +20,9 @@ test_that("cytominr", {
 
   normalized <-
     normalize(
-      population = measurements %>%
-        dplyr::filter(
-          well_description %in% c(
-            "A01",
-            "A02",
-            "A03",
-            "A04"
-          )
-        ) %>%
-        dplyr::select_(
-          .dots = features
-        ),
+      population = measurements %>% dplyr::filter(well_description %in% c("A01", "A02", "A03", "A04")),
       variables = features,
-      sample = measurements %>%
-        dplyr::filter(
-          well_description %in% c(
-            "A01",
-            "A02"
-          )
-        ) %>%
-        dplyr::select_(
-          .dots = features
-        )
+      sample = measurements %>% dplyr::filter(well_description %in% c("A01","A02"))
     )
 
   transformed <-
@@ -51,12 +31,12 @@ test_that("cytominr", {
       variables = features
     )
 
-  selected <- select(
-    population = transformed %>% dplyr::collect(),
-    variables = features,
-    sample = transformed %>% dplyr::collect(),
-    operation = "variance_threshold"
-  )
+  selected <-
+    select(
+      population = transformed %>% dplyr::collect(),
+      variables = features,
+      sample = transformed %>% dplyr::collect()
+    )
 
   expect_equal(selected %>% dplyr::collect() %>% nrow(), 44631)
 })
