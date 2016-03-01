@@ -8,11 +8,9 @@
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 robustize <- function(population, variables, sample) {
-  mu <- sample %>% dplyr::summarise_each(dplyr::funs(median))
+  μ <- sample %>% dplyr::summarise_each_(dplyr::funs(median), vars = variables) %>% dplyr::collect()
 
-  sigma <- sample %>% dplyr::summarise_each(dplyr::funs(mad))
+  σ <- sample %>% dplyr::summarise_each_(dplyr::funs(mad), vars = variables) %>% dplyr::collect()
 
-  population %>% dplyr::mutate_each(dplyr::funs(. - mu$.)) %>%
-    dplyr::mutate_each(dplyr::funs(. / sigma$.))
+  population %>% scale_dplyr(center = μ, scale = σ, vars = variables)
 }
-
