@@ -2,7 +2,7 @@
 % Please edit documentation in R/correlation_threshold.R
 \name{correlation_threshold}
 \alias{correlation_threshold}
-\title{Select features of a data.frame using correlation threshold}
+\title{Select features using correlation threshold}
 \usage{
 correlation_threshold(population, variables, sample, cutoff = 0.9,
   method = "pearson", verbose = FALSE)
@@ -21,9 +21,9 @@ correlation_threshold(population, variables, sample, cutoff = 0.9,
 \item{verbose}{verbose}
 }
 \value{
-data.frame after feature selection
+object after feature selection
 }
 \description{
-Select features of a data.frame using correlation threshold
+Select features using correlation threshold
 }
 
