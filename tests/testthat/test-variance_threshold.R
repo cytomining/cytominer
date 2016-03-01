@@ -1,22 +1,23 @@
 test_that("variance thresholded shapes is valid", {
 
-  metadata_cols <- c("plate_barcode",
-                     "well_description",
-                     "image_description",
-                     "object_description",
-                     "pattern_description")
+  metadata <- c("plate_barcode",
+                "well_description",
+                "image_description",
+                "object_description",
+                "pattern_description")
 
-  feat_cols <- c("AreaShape_euler_number",
+  features <- c("AreaShape_euler_number",
                  "AreaShape_compactness")
 
   variance_threshold_shapes <-
-    variance_threshold(population = fixture_shapes %>% dplyr::select_(.dots = feat_cols),
-                       variables = feat_cols)
+    variance_threshold(population = fixture_shapes,
+                       variables = features,
+                       sample = fixture_shapes)
 
-  expect_equal(
-    variance_threshold_shapes %>% as.matrix(),
-    fixture_variance_threshold_shapes %>%
-      dplyr::select(-one_of(metadata_cols)) %>%
-      as.matrix()
-  )
+  a <- variance_threshold_shapes %>% dplyr::select(-one_of(metadata)) %>% as.matrix()
+
+  b <- fixture_variance_threshold_shapes %>% dplyr::select(-one_of(metadata)) %>% as.matrix()
+
+  expect_equal(a, b)
+
 })
