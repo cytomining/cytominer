@@ -7,7 +7,7 @@
 #' @return data.frame after transformation
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
-transform <- function(population, operation = "generalized_log", ...) {
+transform <- function(population, variables, operation = "generalized_log", ...) {
   if (operation == "generalized_log") {
     generalized_log(population)
   } else {

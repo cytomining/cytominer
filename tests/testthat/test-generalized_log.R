@@ -11,9 +11,10 @@ test_that("generalized log of intensity is valid", {
                  "Intensity_integrated")
 
   generalized_log_intensitites <-
-    generalized_log(fixture_intensities_small %>%
-                      dplyr::slice(1:4) %>%
-                      dplyr::select_(.dots = feat_cols))
+    generalized_log(
+      population = fixture_intensities_small %>% dplyr::slice(1:4) %>% dplyr::select_(.dots = feat_cols),
+      variables = feat_cols
+    )
 
   expect_equal(
     generalized_log_intensitites %>% as.matrix(),
