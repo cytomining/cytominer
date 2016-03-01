@@ -1,5 +1,9 @@
 test_that('cytominr', {
-  database <- dplyr::src_sqlite(path = '../../inst/extdata/fixture_intensities.sqlite')
+  database <-
+    dplyr::src_sqlite(path =
+                        system.file("extdata", "fixture_intensities.sqlite",
+                                    package = "cytominr")
+                      )
 
   measurements <- dplyr::tbl(database, 'measurements')
 
