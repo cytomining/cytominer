@@ -10,7 +10,7 @@
 #' @importFrom magrittr %<>%
 select <- function(population, variables, operation, ...) {
   if (operation == "variance_threshold") {
-    variance_threshold(population, variables)
+    variance_threshold(population, variables, ...)
   } else if (operation == "correlation_threshold") {
     correlation_threshold(population, variables, ...)
   } else {
