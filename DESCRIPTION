@@ -20,6 +20,7 @@ Imports:
     magrittr,
     pryr,
     reshape2,
+    RSQLite,
     stringr,
     testthat,
     yaml
