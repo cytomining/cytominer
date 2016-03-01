@@ -8,9 +8,9 @@
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 standardize <- function(population, variables, sample) {
-  μ <- sample %>% dplyr::summarise_each(dplyr::funs(mean)) %>% dplyr::collect()
+  μ <- sample %>% dplyr::summarise_each_(dplyr::funs(mean), vars = variables) %>% dplyr::collect()
 
-  σ <- sample %>% dplyr::summarise_each(dplyr::funs(sd)) %>% dplyr::collect()
+  σ <- sample %>% dplyr::summarise_each_(dplyr::funs(sd), vars = variables) %>% dplyr::collect()
 
-  population %>% scale_dplyr(center = μ, scale = σ, vars = names(μ))
+  population %>% scale_dplyr(center = μ, scale = σ, vars = variables)
 }
