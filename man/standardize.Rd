@@ -2,7 +2,7 @@
 % Please edit documentation in R/standardize.R
 \name{standardize}
 \alias{standardize}
-\title{Standardize rows of a data.frame}
+\title{Standardize rows}
 \usage{
 standardize(population, variables, sample)
 }
@@ -14,9 +14,9 @@ standardize(population, variables, sample)
 \item{sample}{sample}
 }
 \value{
-data.frame after normalization
+object after normalization
 }
 \description{
-Standardize rows of a data.frame
+Standardize rows
 }
 

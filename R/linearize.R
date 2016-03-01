@@ -1,4 +1,4 @@
-#' Linearize rows of a data.frame
+#' Linearize rows
 #'
 #' @param population population
 #' @param variables variables
@@ -6,7 +6,7 @@
 #' @param lower_quantile lower_quantile
 #' @param upper_quantile upper_quantile
 #'
-#' @return data.frame after normalization
+#' @return object after normalization
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 linearize <- function(population, variables, sample, lower_quantile = 0.25, upper_quantile = 0.75) {

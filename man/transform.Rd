@@ -2,7 +2,7 @@
 % Please edit documentation in R/transform.R
 \name{transform}
 \alias{transform}
-\title{Transform rows of a data.frame}
+\title{Transform rows}
 \usage{
 transform(population, variables, operation = "generalized_log", ...)
 }
@@ -16,9 +16,9 @@ transform(population, variables, operation = "generalized_log", ...)
 \item{...}{Arguments to be passed to methods}
 }
 \value{
-data.frame after transformation
+object after transformation
 }
 \description{
-Transform rows of a data.frame
+Transform rows
 }
 

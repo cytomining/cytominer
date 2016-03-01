@@ -2,9 +2,9 @@
 % Please edit documentation in R/select.R
 \name{select}
 \alias{select}
-\title{Select columns of a data.frame}
+\title{Select columns}
 \usage{
-select(population, variables, operation, ...)
+select(population, variables, operation = "variance_threshold", ...)
 }
 \arguments{
 \item{population}{population}
@@ -16,9 +16,9 @@ select(population, variables, operation, ...)
 \item{...}{Arguments to be passed to methods}
 }
 \value{
-data.frame after feature selection
+object after feature selection
 }
 \description{
-Select columns of a data.frame
+Select columns
 }
 

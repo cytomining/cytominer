@@ -1,11 +1,11 @@
-#' Select columns of a data.frame
+#' Select columns
 #'
 #' @param population population
 #' @param variables variables
 #' @param operation operation
 #' @param ... Arguments to be passed to methods
 #'
-#' @return data.frame after feature selection
+#' @return object after feature selection
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 select <- function(population, variables, operation = "variance_threshold", ...) {

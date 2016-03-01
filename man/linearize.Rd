@@ -2,7 +2,7 @@
 % Please edit documentation in R/linearize.R
 \name{linearize}
 \alias{linearize}
-\title{Linearize rows of a data.frame}
+\title{Linearize rows}
 \usage{
 linearize(population, variables, sample, lower_quantile = 0.25,
   upper_quantile = 0.75)
@@ -19,9 +19,9 @@ linearize(population, variables, sample, lower_quantile = 0.25,
 \item{upper_quantile}{upper_quantile}
 }
 \value{
-data.frame after normalization
+object after normalization
 }
 \description{
-Linearize rows of a data.frame
+Linearize rows
 }
 

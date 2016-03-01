@@ -2,7 +2,7 @@
 % Please edit documentation in R/variance_threshold.R
 \name{variance_threshold}
 \alias{variance_threshold}
-\title{Select features of a data.frame using variance threshold}
+\title{Select features using variance threshold}
 \usage{
 variance_threshold(population, variables, sample, ...)
 }
@@ -16,9 +16,9 @@ variance_threshold(population, variables, sample, ...)
 \item{...}{Arguments to be passed to methods}
 }
 \value{
-data.frame after feature selection
+object after feature selection
 }
 \description{
-Select features of a data.frame using variance threshold
+Select features using variance threshold
 }
 

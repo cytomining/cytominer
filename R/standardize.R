@@ -1,10 +1,10 @@
-#' Standardize rows of a data.frame
+#' Standardize rows
 #'
 #' @param population population
 #' @param variables variables
 #' @param sample sample
 #'
-#' @return data.frame after normalization
+#' @return object after normalization
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 standardize <- function(population, variables, sample) {

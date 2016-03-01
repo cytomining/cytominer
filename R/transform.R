@@ -1,11 +1,11 @@
-#' Transform rows of a data.frame
+#' Transform rows
 #'
 #' @param population population
 #' @param variables variables
 #' @param operation operation
 #' @param ... Arguments to be passed to methods
 #'
-#' @return data.frame after transformation
+#' @return object after transformation
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 transform <- function(population, variables, operation = "generalized_log", ...) {

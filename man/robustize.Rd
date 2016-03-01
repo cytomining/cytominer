@@ -2,7 +2,7 @@
 % Please edit documentation in R/robustize.R
 \name{robustize}
 \alias{robustize}
-\title{Robustize rows of a data.frame}
+\title{Robustize rows}
 \usage{
 robustize(population, variables, sample)
 }
@@ -14,9 +14,9 @@ robustize(population, variables, sample)
 \item{sample}{sample}
 }
 \value{
-data.frame after normalization
+object after normalization
 }
 \description{
-Robustize rows of a data.frame
+Robustize rows
 }
 
