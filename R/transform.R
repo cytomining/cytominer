@@ -1,6 +1,7 @@
 #' Transform rows of a data.frame
 #'
 #' @param population population
+#' @param variables variables
 #' @param operation operation
 #' @param ... Arguments to be passed to methods
 #'

@@ -11,9 +11,10 @@ test_that("linearized intensity is valid", {
                  "Intensity_integrated")
 
   linearized <-
-    linearize(fixture_intensities %>%
+    linearize(population = fixture_intensities %>%
                 dplyr::select_(.dots = feat_cols),
-              fixture_intensities %>%
+              variables = feat_cols,
+              sample = fixture_intensities %>%
                 dplyr::filter(well_description %in%
                                 c("A01", "A02")) %>%
                 dplyr::select_(.dots = feat_cols)

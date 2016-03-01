@@ -11,14 +11,14 @@ test_that("robustized intensity is valid", {
                  "Intensity_integrated")
 
   robustized <-
-    robustize(fixture_intensities %>%
-                dplyr::select_(.dots = feat_cols),
-              fixture_intensities %>%
-                dplyr::filter(well_description %in%
-                                c("A01", "A02")) %>%
-                dplyr::select_(.dots = feat_cols)
-              )
-
+    robustize(population = fixture_intensities %>%
+               dplyr::select_(.dots = feat_cols),
+             variables = feat_cols,
+             sample = fixture_intensities %>%
+               dplyr::filter(well_description %in%
+                               c("A01", "A02")) %>%
+               dplyr::select_(.dots = feat_cols)
+             )
   expect_equal(
     robustized %>% as.matrix(),
     fixture_robustized_intensities %>%

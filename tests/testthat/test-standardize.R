@@ -11,14 +11,14 @@ test_that("standardized intensity is valid", {
                  "Intensity_integrated")
 
   standardized <-
-    standardize(fixture_intensities %>%
-                dplyr::select_(.dots = feat_cols),
-              fixture_intensities %>%
-                dplyr::filter(well_description %in%
-                                c("A01", "A02")) %>%
-                dplyr::select_(.dots = feat_cols)
-              )
-
+    standardize(population = fixture_intensities %>%
+                  dplyr::select_(.dots = feat_cols),
+                variables = feat_cols,
+                sample = fixture_intensities %>%
+                  dplyr::filter(well_description %in%
+                                  c("A01", "A02")) %>%
+                  dplyr::select_(.dots = feat_cols)
+                )
   expect_equal(
     standardized %>% as.matrix(),
     fixture_standardized_intensities %>%

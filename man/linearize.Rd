@@ -4,10 +4,13 @@
 \alias{linearize}
 \title{Linearize rows of a data.frame}
 \usage{
-linearize(population, sample, lower_quantile = 0.01, upper_quantile = 0.99)
+linearize(population, variables, sample, lower_quantile = 0.01,
+  upper_quantile = 0.99)
 }
 \arguments{
 \item{population}{population}
+
+\item{variables}{variables}
 
 \item{sample}{sample}
 

@@ -29,6 +29,7 @@ test_that("cytominr", {
       dplyr::select_(
         .dots = features
       ),
+    variables = features,
     sample = measurements %>%
       dplyr::filter(
         well_description %in% c(

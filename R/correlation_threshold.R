@@ -1,6 +1,7 @@
 #' Select features of a data.frame using correlation threshold
 #'
 #' @param population population
+#' @param variables variables
 #' @param sample sample
 #' @param cutoff cutoff
 #' @param method method
@@ -9,7 +10,7 @@
 #' @return data.frame after feature selection
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
-correlation_threshold <- function(population, sample, cutoff = 0.90, method = 'pearson', verbose = FALSE) {
+correlation_threshold <- function(population, variables, sample, cutoff = 0.90, method = 'pearson', verbose = FALSE) {
   population[-(
       sample %>%
       cor(

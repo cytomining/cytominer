@@ -4,10 +4,12 @@
 \alias{variance_threshold}
 \title{Select features of a data.frame using variance threshold}
 \usage{
-variance_threshold(population, ...)
+variance_threshold(population, variables, ...)
 }
 \arguments{
 \item{population}{population}
+
+\item{variables}{variables}
 
 \item{...}{Arguments to be passed to methods}
 }

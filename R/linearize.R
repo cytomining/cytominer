@@ -1,6 +1,7 @@
 #' Linearize rows of a data.frame
 #'
 #' @param population population
+#' @param variables variables
 #' @param sample sample
 #' @param lower_quantile lower_quantile
 #' @param upper_quantile upper_quantile
@@ -8,7 +9,7 @@
 #' @return data.frame after normalization
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
-linearize <- function(population, sample, lower_quantile = 0.01, upper_quantile = 0.99) {
+linearize <- function(population, variables, sample, lower_quantile = 0.01, upper_quantile = 0.99) {
   m <-
     sample %>%
     dplyr::summarise_each(dplyr::funs(quantile(., c(lower_quantile))[[1]]))

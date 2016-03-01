@@ -4,10 +4,12 @@
 \alias{generalized_log}
 \title{Generalized log of rows of a data.frame}
 \usage{
-generalized_log(population, c = 1)
+generalized_log(population, variables, c = 1)
 }
 \arguments{
 \item{population}{population}
+
+\item{variables}{variables}
 
 \item{c}{shift}
 }

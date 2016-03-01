@@ -10,8 +10,8 @@ test_that("variance thresholded shapes is valid", {
                  "AreaShape_compactness")
 
   variance_threshold_shapes <-
-    variance_threshold(fixture_shapes %>%
-                         dplyr::select_(.dots = feat_cols))
+    variance_threshold(population = fixture_shapes %>% dplyr::select_(.dots = feat_cols),
+                       variables = feat_cols)
 
   expect_equal(
     variance_threshold_shapes %>% as.matrix(),

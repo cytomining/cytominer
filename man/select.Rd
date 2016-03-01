@@ -4,10 +4,12 @@
 \alias{select}
 \title{Select columns of a data.frame}
 \usage{
-select(population, operation, ...)
+select(population, variables, operation, ...)
 }
 \arguments{
 \item{population}{population}
+
+\item{variables}{variables}
 
 \item{operation}{operation}
 

@@ -4,10 +4,12 @@
 \alias{robustize}
 \title{Robustize rows of a data.frame}
 \usage{
-robustize(population, sample)
+robustize(population, variables, sample)
 }
 \arguments{
 \item{population}{population}
+
+\item{variables}{variables}
 
 \item{sample}{sample}
 }

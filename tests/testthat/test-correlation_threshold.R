@@ -26,6 +26,7 @@ test_that("correlation thresholded intensities is valid", {
 
   correlation_threshold_intensities <- correlation_threshold(
     population = population,
+    variables = feat_cols,
     sample = sample
   )
 
