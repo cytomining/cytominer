@@ -1,10 +1,10 @@
-#' Generalized log of rows of a data.frame
+#' Generalized log of rows
 #'
 #' @param population population
 #' @param variables variables
 #' @param c shift
 #'
-#' @return data.frame after transformation
+#' @return object after transformation
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 generalized_log <- function(population, variables, c = 1) {
@@ -25,11 +25,7 @@ generalized_log <- function(population, variables, c = 1) {
   }
 
   population %>%
-    dplyr::select_(
-      .dots = paste0(variables, '_')
-    )  %>%
-    dplyr::rename_(
-      .dots = setNames(paste0(variables, '_'), variables)
-    )
+    dplyr::select(-one_of(variables))  %>%
+    dplyr::rename_(.dots = setNames(paste0(variables, '_'), variables))
 
 }

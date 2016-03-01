@@ -2,7 +2,7 @@
 % Please edit documentation in R/generalized_log.R
 \name{generalized_log}
 \alias{generalized_log}
-\title{Generalized log of rows of a data.frame}
+\title{Generalized log of rows}
 \usage{
 generalized_log(population, variables, c = 1)
 }
@@ -14,9 +14,9 @@ generalized_log(population, variables, c = 1)
 \item{c}{shift}
 }
 \value{
-data.frame after transformation
+object after transformation
 }
 \description{
-Generalized log of rows of a data.frame
+Generalized log of rows
 }
 
