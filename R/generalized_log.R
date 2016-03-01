@@ -8,6 +8,6 @@
 #' @importFrom magrittr %<>%
 generalized_log <- function(population, c=1) {
   glog <- function(x) log((x + sqrt(x^2 + c^2)) / 2 )
-  population %>%
-    dplyr::mutate_each(dplyr::funs(glog))
+  
+  population %>% dplyr::mutate_each(dplyr::funs(glog))
 }
