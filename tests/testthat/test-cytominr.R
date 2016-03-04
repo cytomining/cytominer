@@ -2,8 +2,8 @@ test_that("cytominr", {
   fixture <-
     system.file("extdata", "fixture_intensities.sqlite", package = "cytominr")
 
-  measurements <-
-    dplyr::tbl(src = dplyr::src_sqlite(path = fixture), "measurements")
+  intensities <-
+    dplyr::tbl(src = dplyr::src_sqlite(path = fixture), "view_intensities")
 
   metadata <- c("plate_barcode",
                 "well_description",
@@ -11,21 +11,21 @@ test_that("cytominr", {
                 "channel_description")
   features <-
     c(
-      "integrated",
-      "maximum",
-      "mean",
-      "median",
-      "median_absolute_deviation",
-      "minimum",
-      "standard_deviation",
-      "third_quartile"
+      "intensity_integrated",
+      "intensity_maximum",
+      "intensity_mean",
+      "intensity_median",
+      "intensity_median_absolute_deviation",
+      "intensity_minimum",
+      "intensity_standard_deviation",
+      "intensity_third_quartile"
     )
 
   normalized <-
     normalize(
-      population = measurements %>% dplyr::filter(well_description %in% c("A01", "A02", "A03", "A04")),
+      population = intensities %>% dplyr::filter(well_description %in% c("A01", "A02", "A03", "A04")),
       variables = features,
-      sample = measurements %>% dplyr::filter(well_description %in% c("A01","A02"))
+      sample = intensities %>% dplyr::filter(well_description %in% c("A01","A02"))
     )
 
   transformed <-
