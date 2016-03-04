@@ -5,7 +5,7 @@ test_that("cytominr", {
   intensities <-
     dplyr::tbl(src = dplyr::src_sqlite(path = fixture), "view_intensities")
 
-  metadata <- c("plate_barcode",
+  metadata <- c("plate_description",
                 "well_description",
                 "pattern_description",
                 "channel_description")
