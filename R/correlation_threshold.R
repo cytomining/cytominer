@@ -18,7 +18,10 @@ correlation_threshold <- function(population, variables, sample, cutoff = 0.90, 
     cor(method = method) %>%
     findCorrelation(cutoff = cutoff, verbose = verbose)
 
+  if(length(features_exclude) > 0)
+    variables <- variables[-features_exclude]
+
   population %>%
-    dplyr::select_(.dots = variables[-features_exclude])
+    dplyr::select(one_of(variables))
 
 }

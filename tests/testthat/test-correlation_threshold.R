@@ -29,4 +29,12 @@ test_that("correlation thresholded intensities is valid", {
   b <- fixture_correlation_threshold_intensities %>% dplyr::select(-one_of(metadata)) %>% as.matrix()
 
   expect_equal(a, b)
+
+  a <- correlation_threshold(population = fixture_intensities,
+                             variables = c("Intensity_first_quartile", "Intensity_integrated"),
+                             sample = fixture_intensities)
+
+  b <- fixture_intensities[c("Intensity_first_quartile", "Intensity_integrated")]
+
+  expect_equal(a, b)
 })
