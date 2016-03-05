@@ -20,4 +20,12 @@ test_that("variance thresholded shapes is valid", {
 
   expect_equal(a, b)
 
+  a <- variance_threshold(population = fixture_shapes,
+                          variables = c("AreaShape_compactness"),
+                          sample = fixture_shapes)
+
+  b <- variance_threshold_shapes["AreaShape_compactness"]
+
+  expect_equal(a, b)
+
 })
