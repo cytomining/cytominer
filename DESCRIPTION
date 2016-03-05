@@ -15,9 +15,11 @@ Imports:
     dplyr,
     lazyeval,
     magrittr,
-    readr,
     testthat
 Suggests:
     knitr
+    readr,
+    stringr,
+    tidyr
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1
