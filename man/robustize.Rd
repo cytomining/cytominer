@@ -4,12 +4,14 @@
 \alias{robustize}
 \title{Robustize rows}
 \usage{
-robustize(population, variables, sample)
+robustize(population, variables, grouping_variables, sample)
 }
 \arguments{
 \item{population}{population}
 
 \item{variables}{variables}
+
+\item{grouping_variables}{grouping_variables}
 
 \item{sample}{sample}
 }

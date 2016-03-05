@@ -4,13 +4,15 @@
 \alias{linearize}
 \title{Linearize rows}
 \usage{
-linearize(population, variables, sample, lower_quantile = 0.25,
-  upper_quantile = 0.75)
+linearize(population, variables, grouping_variables, sample,
+  lower_quantile = 0.25, upper_quantile = 0.75)
 }
 \arguments{
 \item{population}{population}
 
 \item{variables}{variables}
+
+\item{grouping_variables}{grouping_variables}
 
 \item{sample}{sample}
 

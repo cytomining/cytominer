@@ -4,12 +4,15 @@
 \alias{normalize}
 \title{Normalize rows of a data.frame}
 \usage{
-normalize(population, variables, sample, operation = "standardize", ...)
+normalize(population, variables, grouping_variables, sample,
+  operation = "standardize", ...)
 }
 \arguments{
 \item{population}{population}
 
 \item{variables}{variables}
+
+\item{grouping_variables}{grouping_variables}
 
 \item{sample}{sample}
 

@@ -4,12 +4,14 @@
 \alias{standardize}
 \title{Standardize rows}
 \usage{
-standardize(population, variables, sample)
+standardize(population, variables, grouping_variables, sample)
 }
 \arguments{
 \item{population}{population}
 
 \item{variables}{variables}
+
+\item{grouping_variables}{grouping_variables}
 
 \item{sample}{sample}
 }
