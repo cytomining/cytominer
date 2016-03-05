@@ -23,7 +23,8 @@ test_that("aggregated intensities is valid", {
   fixture_aggregated_intensities <-
     fixture_intensities %>%
     dplyr::group_by_(.dots = metadata) %>%
-    dplyr::summarise_each_(dplyr::funs(mean), vars = paste("Intensity", features, sep = "_"))
+    dplyr::summarise_each_(dplyr::funs(mean), vars = paste("Intensity", features, sep = "_")) %>%
+    dplyr::ungroup()
 
   a <- aggregated_intensities %>% dplyr::select(-one_of(metadata)) %>% as.matrix()
 
