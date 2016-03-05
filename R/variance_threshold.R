@@ -19,6 +19,6 @@ variance_threshold <- function(population, variables, sample, ...) {
     variables <- variables[-features_exclude]
 
   population %>%
-    dplyr::select(one_of(variables))
+    dplyr::select_(.dots = variables)
 
 }
