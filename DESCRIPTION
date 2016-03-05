@@ -12,19 +12,11 @@ Depends:
 License: BSD + file LICENSE
 LazyData: TRUE
 Imports:
-    digest,
     dplyr,
-    futile.logger,
-    jsonlite,
     lazyeval,
     magrittr,
-    pryr,
-    reshape2,
-    RSQLite,
-    stringr,
-    testthat,
-    tidyr,
-    yaml
+    readr,
+    testthat
 Suggests:
     knitr
 VignetteBuilder: knitr
