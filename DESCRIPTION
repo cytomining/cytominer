@@ -15,6 +15,7 @@ Imports:
     dplyr,
     lazyeval,
     magrittr,
+    RSQLite,
     testthat
 Suggests:
     knitr,
