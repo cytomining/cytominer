@@ -1,18 +1,16 @@
 test_that("standardized intensity is valid", {
 
-  metadata_cols <- c("plate_barcode",
-                     "well_description",
-                     "image_description",
-                     "object_description",
+  grouping_cols <- c("plate_barcode",
                      "pattern_description",
                      "channel_description")
 
   features <- c("Intensity_first_quartile",
-                 "Intensity_integrated")
+                "Intensity_integrated")
 
   standardized <-
     standardize(population = fixture_intensities,
                 variables = features,
+                grouping_variables = grouping_cols,
                 sample = fixture_intensities %>%
                   dplyr::filter(well_description %in%
                                   c("A01", "A02")))

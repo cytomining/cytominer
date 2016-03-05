@@ -51,12 +51,13 @@ test_that("cytominr", {
     normalize(
       population = debris_removed,
       variables = feature_cols,
+      grouping_variables = group_cols,
       sample =
         debris_removed %>%
         dplyr::inner_join(
           ext_metadata %>% dplyr::filter(Type == "ctrl") %>% dplyr::select(g_well)
         )
-      )
+    )
 
   transformed <-
     transform(

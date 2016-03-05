@@ -2,6 +2,7 @@
 #'
 #' @param population population
 #' @param variables variables
+#' @param grouping_variables grouping_variables
 #' @param sample sample
 #' @param lower_quantile lower_quantile
 #' @param upper_quantile upper_quantile
@@ -9,7 +10,7 @@
 #' @return object after normalization
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
-linearize <- function(population, variables, sample, lower_quantile = 0.25, upper_quantile = 0.75) {
+linearize <- function(population, variables, grouping_variables, sample, lower_quantile = 0.25, upper_quantile = 0.75) {
 
   # TODO: Currently, (0.25, 0.75) are imposed because lower_quartile and
   # upper_quartile are already implemented in sqlite, whereas quantile is not
