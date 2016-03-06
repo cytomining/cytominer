@@ -70,7 +70,7 @@ test_that("cytominr", {
     dplyr::select_(.dots = feature_cols) %>%
     tidyr::gather(key, value) %>%
     dplyr::summarize(value = max(value)),
-    1000* .Machine$double.eps
+    1000 * .Machine$double.eps
   )
 
   transformed <-
