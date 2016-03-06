@@ -2,7 +2,7 @@
 % Please edit documentation in R/normalize.R
 \name{normalize}
 \alias{normalize}
-\title{Normalize rows of a data.frame}
+\title{Normalize rows}
 \usage{
 normalize(population, variables, grouping_variables, sample,
   operation = "standardize", ...)
@@ -21,9 +21,9 @@ normalize(population, variables, grouping_variables, sample,
 \item{...}{Arguments to be passed to methods}
 }
 \value{
-data.frame after normalization
+object after normalization
 }
 \description{
-Normalize rows of a data.frame
+Normalize rows
 }
 
