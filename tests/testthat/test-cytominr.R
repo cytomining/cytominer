@@ -59,6 +59,20 @@ test_that("cytominr", {
         )
     )
 
+  # TODO: this should be moved into a unit test for normalize
+  expect_less_than(
+    normalized %>%
+    dplyr::filter(g_well == "A08") %>%
+    dplyr::group_by_(.dots = c("g_plate", "g_pattern", "g_channel")) %>%
+    dplyr::summarise_each_(dplyr::funs(mean), vars = feature_cols) %>%
+    dplyr::collect() %>%
+    dplyr::ungroup() %>%
+    dplyr::select_(.dots = feature_cols) %>%
+    tidyr::gather(key, value) %>%
+    dplyr::summarize(value = max(value)),
+    1000* .Machine$double.eps
+  )
+
   transformed <-
     transform(
       population = normalized,
