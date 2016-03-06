@@ -6,15 +6,15 @@ test_that("cytominr", {
 
   ext_metadata <- readr::read_csv(system.file("extdata", "metadata.csv", package = "cytominr")) %>% dplyr::rename(g_well = Well)
 
-  dplyr::copy_to(db, ext_metadata)
+  ext_metadata <- dplyr::copy_to(db, ext_metadata)
 
   intensities <-
     dplyr::tbl(src = db, "view_intensities")
 
-  ext_metadata <-
-    dplyr::tbl(src = db, "ext_metadata")
-
-  measurements <- intensities
+  measurements <-
+    intensities %>%
+    dplyr::filter(g_pattern == "Nuclei") %>%
+    dplyr::filter(g_channel %in% c("CellMask", "Hoechst"))
 
   qc_cols <- c("q_debris")
 
@@ -51,7 +51,7 @@ test_that("cytominr", {
     normalize(
       population = debris_removed,
       variables = feature_cols,
-      grouping_variables = group_cols,
+      grouping_variables =  c("g_plate", "g_pattern", "g_channel"),
       sample =
         debris_removed %>%
         dplyr::inner_join(
@@ -80,6 +80,6 @@ test_that("cytominr", {
       sample = aggregated
     )
 
-  # Number of objects in images that have debris = 5616
-  expect_equal(selected %>% dplyr::collect() %>% nrow(), 44649 - 5616)
+  # Number of objects in images that have debris = 1248
+  expect_equal(selected %>% dplyr::collect() %>% nrow(), 9922 - 1248)
 })
