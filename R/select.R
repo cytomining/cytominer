@@ -10,10 +10,18 @@
 #' @importFrom magrittr %<>%
 select <- function(population, variables, operation = "variance_threshold", ...) {
   if (operation == "variance_threshold") {
-    variance_threshold(population, variables, ...)
+    excluded <- variance_threshold(population, variables, ...)
   } else if (operation == "correlation_threshold") {
-    correlation_threshold(population, variables, ...)
+    excluded <- correlation_threshold(population, variables, ...)
+  } else if (operation == "drop_na_columns") {
+    excluded <- cytominr::drop_na_columns(population, variables, ...)
   } else {
     stop("unknown operation")
   }
+
+  variables <-
+    setdiff(x = colnames(population), y = excluded)
+
+  population %>%
+    dplyr::select_(.dots = variables)
 }
