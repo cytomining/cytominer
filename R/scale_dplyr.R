@@ -24,6 +24,6 @@ scale_dplyr <- function(x, center, scale, vars) {
   }
 
   x %>%
-    dplyr::select(-one_of(vars))  %>%
+    dplyr::select_(~-one_of(vars))  %>%
     dplyr::rename_(.dots = setNames(paste0(vars, "_"), vars))
 }

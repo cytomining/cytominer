@@ -9,9 +9,9 @@
 #' @importFrom magrittr %<>%
 drop_na_columns <- function(population, variables, ...) {
   population %>%
-    dplyr::summarise_each_(dplyr::funs(count), vars = variables) %>%
+    dplyr::summarise_each_(dplyr::funs_("count"), vars = variables) %>%
     dplyr::collect() %>%
-    tidyr::gather(feature, count) %>%
-    dplyr::filter(count == 0) %>%
+    tidyr::gather_("feature", "count", variables) %>%
+    dplyr::filter_(~(count == 0)) %>%
     magrittr::extract2("feature")
 }
