@@ -34,7 +34,7 @@ test_that("Remove NA works", {
     )
 
   a <-
-    cytominr::drop_na_columns(
+    drop_na_columns(
       population = normalized,
       variables = feature_cols
     )
