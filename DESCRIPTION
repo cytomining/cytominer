@@ -9,7 +9,7 @@ Authors@R: as.person(c(
 Description: Package for analyzing high-dimensional single-cell data.
 Depends:
     R (>= 3.1.0)
-License: BSD + file LICENSE
+License: file LICENSE
 LazyData: TRUE
 Imports:
     dplyr,
