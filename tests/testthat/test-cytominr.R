@@ -1,5 +1,7 @@
 test_that("cytominr", {
 
+  futile.logger::flog.threshold(futile.logger::INFO)
+
   fixture <-
     system.file("extdata", "fixture_intensities_shapes.sqlite", package = "cytominr")
 
@@ -105,7 +107,8 @@ test_that("cytominr", {
     select(
       population = transformed ,
       variables = feature_cols,
-      sample = aggregated
+      sample = aggregated,
+      operation = "correlation_threshold"
     )
 
   # Number of objects in images that have debris = 1248

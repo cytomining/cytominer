@@ -19,6 +19,14 @@ select <- function(population, variables, operation = "variance_threshold", ...)
     stop("unknown operation")
   }
 
+  if (length(excluded) > 0) {
+    futile.logger::flog.info("excluded:")
+
+    for (e in excluded) {
+      futile.logger::flog.info(paste("\t", e))
+    }
+  }
+
   variables <-
     setdiff(x = colnames(population), y = excluded)
 
