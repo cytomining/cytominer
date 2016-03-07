@@ -14,7 +14,7 @@ select <- function(population, variables, operation = "variance_threshold", ...)
   } else if (operation == "correlation_threshold") {
     excluded <- correlation_threshold(population, variables, ...)
   } else if (operation == "drop_na_columns") {
-    excluded <- cytominr::drop_na_columns(population, variables, ...)
+    excluded <- drop_na_columns(population, variables, ...)
   } else {
     stop("unknown operation")
   }
