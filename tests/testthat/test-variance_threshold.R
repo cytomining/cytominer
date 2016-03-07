@@ -9,14 +9,12 @@ test_that("variance thresholded shapes is valid", {
   features <- c("AreaShape_euler_number",
                  "AreaShape_compactness")
 
-  variance_threshold_shapes <-
-    variance_threshold(population = fixture_shapes,
-                       variables = features,
-                       sample = fixture_shapes)
+  a <- setdiff(colnames(fixture_shapes),
+               variance_threshold(population = fixture_shapes,
+                                  variables = features,
+                                  sample = fixture_shapes))
 
-  a <- variance_threshold_shapes %>% dplyr::select(-one_of(metadata)) %>% as.matrix()
-
-  b <- fixture_variance_threshold_shapes %>% dplyr::select(-one_of(metadata)) %>% as.matrix()
+  b <- fixture_variance_threshold_shapes %>% names()
 
   expect_equal(a, b)
 
@@ -24,8 +22,6 @@ test_that("variance thresholded shapes is valid", {
                           variables = c("AreaShape_compactness"),
                           sample = fixture_shapes)
 
-  b <- variance_threshold_shapes["AreaShape_compactness"]
-
-  expect_equal(a, b)
+  expect_equal(length(a), 0)
 
 })

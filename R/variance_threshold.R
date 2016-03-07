@@ -5,20 +5,16 @@
 #' @param sample sample
 #' @param ... Arguments to be passed to methods
 #'
-#' @return object after feature selection
+#' @return Excluded variables
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 variance_threshold <- function(population, variables, sample, ...) {
 
-  features_exclude <-
+  excluded_indexes <-
     sample %>%
     dplyr::select_(.dots = variables) %>%
     nearZeroVar()
 
-  if(length(features_exclude) > 0)
-    variables <- variables[-features_exclude]
-
-  population %>%
-    dplyr::select_(.dots = variables)
+  variables[excluded_indexes]
 
 }

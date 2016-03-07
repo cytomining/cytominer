@@ -16,7 +16,7 @@ variance_threshold(population, variables, sample, ...)
 \item{...}{Arguments to be passed to methods}
 }
 \value{
-object after feature selection
+Excluded variables
 }
 \description{
 Select features using variance threshold
