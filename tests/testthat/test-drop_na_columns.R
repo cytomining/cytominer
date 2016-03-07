@@ -1,7 +1,4 @@
 test_that("Remove NA works", {
-
-  skip("Not implemented")
-
   fixture <-
     system.file("extdata", "fixture_intensities_shapes.sqlite", package = "cytominr")
 
@@ -36,11 +33,12 @@ test_that("Remove NA works", {
       sample = measurements
     )
 
-  #TODO: SQLite functions that may be useful: ifnull
-  cleaned <-
-    normalized
+  a <-
+    cytominr::drop_na_columns(
+      population = normalized,
+      variables = feature_cols
+    )
 
-  expect_equal(setdiff(colnames(normalized), colnames(cleaned)),
-               "m_shapes_euler_number")
+  expect_equal(a, c("m_shapes_euler_number"))
 
 })
