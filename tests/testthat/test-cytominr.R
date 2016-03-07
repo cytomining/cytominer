@@ -1,4 +1,5 @@
 test_that("cytominr", {
+
   fixture <-
     system.file("extdata", "fixture_intensities_shapes.sqlite", package = "cytominr")
 
