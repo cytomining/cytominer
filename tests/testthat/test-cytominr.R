@@ -105,7 +105,7 @@ test_that("cytominr", {
   # feature selection (default = variance threshold)
   selected <-
     select(
-      population = transformed ,
+      population = transformed,
       variables = feature_cols,
       sample = aggregated,
       operation = "correlation_threshold"

@@ -24,4 +24,3 @@ aggregate <- function(population, variables, grouping_variables, operation="mean
     stop("unknown operation")
   }
 }
-

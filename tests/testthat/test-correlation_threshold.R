@@ -8,15 +8,15 @@ test_that("correlation thresholded intensities is valid", {
                 "channel_description")
 
   features <- c(
-    'Intensity_first_quartile',
-    'Intensity_integrated',
-    'Intensity_maximum',
-    'Intensity_mean',
-    'Intensity_median',
-    'Intensity_median_absolute_deviation',
-    'Intensity_minimum',
-    'Intensity_standard_deviation',
-    'Intensity_third_quartile'
+    "Intensity_first_quartile",
+    "Intensity_integrated",
+    "Intensity_maximum",
+    "Intensity_mean",
+    "Intensity_median",
+    "Intensity_median_absolute_deviation",
+    "Intensity_minimum",
+    "Intensity_standard_deviation",
+    "Intensity_third_quartile"
   )
 
   a <- setdiff(colnames(fixture_intensities),

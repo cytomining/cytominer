@@ -1,7 +1,7 @@
 test_that("scale_dplyr is valid", {
   set.seed(123)
 
-  my_db <- dplyr::src_sqlite(':memory:', create = TRUE)
+  my_db <- dplyr::src_sqlite(":memory:", create = TRUE)
 
   tmp_df <- data.frame(a = rnorm(10), b = rnorm(10))
   smpl <- dplyr::copy_to(my_db,

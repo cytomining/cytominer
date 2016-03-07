@@ -18,12 +18,12 @@ scale_dplyr <- function(x, center, scale, vars) {
                                           m = center[[var]],
                                           s = scale[[var]])
                        ),
-                       paste0(var, '_'))
+                       paste0(var, "_"))
       )
 
   }
 
   x %>%
     dplyr::select(-one_of(vars))  %>%
-    dplyr::rename_(.dots = setNames(paste0(vars, '_'), vars))
+    dplyr::rename_(.dots = setNames(paste0(vars, "_"), vars))
 }

@@ -14,18 +14,18 @@ generalized_log <- function(population, variables, c = 1) {
         .dots = setNames(
           list(
             lazyeval::interp(
-              ~ log((x + (x^2 + c^2)^0.5) / 2),
+              ~ log( (x + ( x ^ 2 + c ^ 2) ^ 0.5 ) / 2 ),
               x = as.name(variable),
               c = c
             )
           ),
-          paste0(variable, '_')
+          paste0(variable, "_")
         )
       )
   }
 
   population %>%
     dplyr::select(-one_of(variables))  %>%
-    dplyr::rename_(.dots = setNames(paste0(variables, '_'), variables))
+    dplyr::rename_(.dots = setNames(paste0(variables, "_"), variables))
 
 }
