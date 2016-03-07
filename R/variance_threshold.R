@@ -13,7 +13,7 @@ variance_threshold <- function(population, variables, sample, ...) {
   excluded_indexes <-
     sample %>%
     dplyr::select_(.dots = variables) %>%
-    nearZeroVar()
+    nzv()
 
   variables[excluded_indexes]
 
