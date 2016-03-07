@@ -10,7 +10,8 @@
 #' @return object after normalization
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
-normalize <- function(population, variables, grouping_variables, sample, operation = "standardize", ...) {
+normalize <- function(population, variables, grouping_variables, sample,
+                      operation = "standardize", ...) {
 
   if (operation == "linearize") {
     stop("Not implemented")
@@ -40,11 +41,11 @@ normalize <- function(population, variables, grouping_variables, sample, operati
                      centering_function = centering_function,
                      scaling_function = scaling_function
     )
-
   }
+
   Reduce(dplyr::union,
          Map(normalize_helper_1, split(groups, seq(nrow(groups))))
-    )
+  )
 
 }
 
@@ -60,7 +61,8 @@ normalize <- function(population, variables, grouping_variables, sample, operati
 #' @return object after normalization
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
-normalize_helper <- function(group, population, variables, sample, centering_function, scaling_function) {
+normalize_helper <- function(group, population, variables, sample,
+                             centering_function, scaling_function) {
 
   sample_group <-
     sample %>%
