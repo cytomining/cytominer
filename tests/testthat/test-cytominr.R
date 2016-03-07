@@ -43,10 +43,11 @@ test_that("cytominr", {
     dplyr::select(one_of(c(group_cols, qc_cols, feature_cols))) %>%
     dplyr::filter(g_well %in% c("A01", "A02", "A03", "A08"))
 
+  # data cleaning
   debris_removed <-
     measurements %>% dplyr::filter(q_debris == 0)
 
-  # the join below will be slow without an index on g_well
+  # normalization (default = standardization)
   normalized <-
     normalize(
       population = debris_removed,
@@ -73,12 +74,14 @@ test_that("cytominr", {
     1000 * .Machine$double.eps
   )
 
+  # tranformation (default = generalized log)
   transformed <-
     transform(
       population = normalized,
       variables = feature_cols
     )
 
+  # aggregation (default = mean)
   aggregated <-
     aggregate(
       population = transformed,
@@ -87,6 +90,7 @@ test_that("cytominr", {
     ) %>%
     dplyr::collect()
 
+  # feature selection (default = variance threshold)
   selected <-
     select(
       population = transformed ,
