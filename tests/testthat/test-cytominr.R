@@ -75,10 +75,19 @@ test_that("cytominr", {
     1000 * .Machine$double.eps
   )
 
+  # drop NA columns because they may arise after normalize
+  cleaned <-
+    select(
+      population = normalized,
+      variables = feature_cols,
+      sample = NULL,
+      operation = "drop_na_columns"
+  )
+
   # tranformation (default = generalized log)
   transformed <-
     transform(
-      population = normalized,
+      population = cleaned,
       variables = feature_cols
     )
 

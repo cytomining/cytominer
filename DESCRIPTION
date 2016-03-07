@@ -13,6 +13,7 @@ License: BSD + file LICENSE
 LazyData: TRUE
 Imports:
     dplyr,
+    futile.logger,
     lazyeval,
     magrittr,
     RSQLite,
