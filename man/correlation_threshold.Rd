@@ -21,7 +21,7 @@ correlation_threshold(population, variables, sample, cutoff = 0.9,
 \item{verbose}{verbose}
 }
 \value{
-object after feature selection
+Excluded variables
 }
 \description{
 Select features using correlation threshold
