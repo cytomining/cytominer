@@ -2,28 +2,28 @@
 % Please edit documentation in R/normalize.R
 \name{normalize}
 \alias{normalize}
-\title{Normalize rows}
+\title{Normalize data}
 \usage{
-normalize(population, variables, grouping_variables, sample,
-  operation = "standardize", ...)
+normalize(population, variables, strata, sample, operation = "standardize",
+  ...)
 }
 \arguments{
-\item{population}{population}
+\item{population}{...}
 
-\item{variables}{variables}
+\item{variables}{...}
 
-\item{grouping_variables}{grouping_variables}
+\item{strata}{...}
 
-\item{sample}{sample}
+\item{sample}{...}
 
-\item{operation}{operation}
+\item{operation}{...}
 
-\item{...}{Arguments to be passed to methods}
+\item{...}{arguments passed to normalization operation}
 }
 \value{
-object after normalization
+normalized data
 }
 \description{
-Normalize rows
+Normalize data
 }
 

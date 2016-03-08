@@ -2,23 +2,23 @@
 % Please edit documentation in R/transform.R
 \name{transform}
 \alias{transform}
-\title{Transform rows}
+\title{Transform data}
 \usage{
 transform(population, variables, operation = "generalized_log", ...)
 }
 \arguments{
-\item{population}{population}
+\item{population}{...}
 
-\item{variables}{variables}
+\item{variables}{...}
 
-\item{operation}{operation}
+\item{operation}{...}
 
-\item{...}{Arguments to be passed to methods}
+\item{...}{arguments passed to transformation operation}
 }
 \value{
-object after transformation
+transformed data
 }
 \description{
-Transform rows
+Transform data
 }
 
