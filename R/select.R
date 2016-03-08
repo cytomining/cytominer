@@ -27,9 +27,6 @@ select <- function(population, variables, operation = "variance_threshold", ...)
     }
   }
 
-  variables <-
-    setdiff(x = colnames(population), y = excluded)
-
   population %>%
-    dplyr::select_(.dots = variables)
+    dplyr::select_(.dots = setdiff(x = colnames(population), y = excluded))
 }
