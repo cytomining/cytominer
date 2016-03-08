@@ -1,15 +1,12 @@
 context("normalize")
 
-test_that("normalize works with sqlite", {
-
+test_that("`normalize' normalizes data", {
   generate_mat <- function(cvec, svec) {
     n <- 30
+
     m <- matrix(runif(n * 2), n, 2) %>% scale(.)
-    cbind(m,
-          m %>%
-            sweep(., 2, svec, FUN = "*") %>%
-            sweep(., 2, cvec, FUN = "+")
-    ) %>% as.data.frame()
+
+    cbind(m, m %>% sweep(., 2, svec, FUN = "*") %>% sweep(., 2, cvec, FUN = "+")) %>% as.data.frame()
   }
 
   dat <-
