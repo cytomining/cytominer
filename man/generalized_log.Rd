@@ -2,21 +2,21 @@
 % Please edit documentation in R/generalized_log.R
 \name{generalized_log}
 \alias{generalized_log}
-\title{Generalized log of rows}
+\title{Generalized log transform data}
 \usage{
 generalized_log(population, variables, c = 1)
 }
 \arguments{
-\item{population}{population}
+\item{population}{...}
 
-\item{variables}{variables}
+\item{variables}{...}
 
-\item{c}{shift}
+\item{c}{...}
 }
 \value{
-object after transformation
+generalized log transformed data
 }
 \description{
-Generalized log of rows
+Generalized log transform data
 }
 

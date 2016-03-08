@@ -1,8 +1,8 @@
 #' Generalized log transform data
 #'
-#' @param population population
-#' @param variables variables
-#' @param c shift
+#' @param population ...
+#' @param variables ...
+#' @param c ...
 #'
 #' @return generalized log transformed data
 #'
