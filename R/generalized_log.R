@@ -8,6 +8,9 @@
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 generalized_log <- function(population, variables, c = 1) {
+
+  column_names <- colnames(population)
+
   for (variable in variables) {
     population %<>%
       dplyr::mutate_(
@@ -26,6 +29,7 @@ generalized_log <- function(population, variables, c = 1) {
 
   population %>%
     dplyr::select_(~-one_of(variables))  %>%
-    dplyr::rename_(.dots = setNames(paste0(variables, "_"), variables))
+    dplyr::rename_(.dots = setNames(paste0(variables, "_"), variables)) %>%
+    dplyr::select_(.dots = column_names)
 
 }

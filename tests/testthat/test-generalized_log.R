@@ -1,25 +1,18 @@
 test_that("generalized log of intensity is valid", {
 
-  metadata_cols <- c("plate_barcode",
-                     "well_description",
-                     "image_description",
-                     "object_description",
-                     "pattern_description",
-                     "channel_description")
+  dat <- data.frame(x = rnorm(5), y = rnorm(5))
 
-  feat_cols <- c("Intensity_first_quartile",
-                 "Intensity_integrated")
-
-  generalized_log_intensitites <-
-    generalized_log(
-      population = fixture_intensities_small %>% dplyr::slice(1:4) %>% dplyr::select_(.dots = feat_cols),
-      variables = feat_cols
-    )
+  glog <- function(x, c=1) log( (x + ( x ^ 2 + c ^ 2) ^ 0.5 ) / 2 )
 
   expect_equal(
-    generalized_log_intensitites %>% as.matrix(),
-    fixture_generalized_log_intensities %>%
-      dplyr::select_(.dots = feat_cols) %>%
-      as.matrix()
-    )
+    generalized_log(population = dat,
+                    variables = c('x', 'y')),
+    glog(dat)
+  )
+
+  expect_equal(
+    generalized_log(population = dat,
+                    variables = c('x')),
+    within(dat, x <- glog(x))
+  )
 })
