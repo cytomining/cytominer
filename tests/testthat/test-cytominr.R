@@ -7,7 +7,9 @@ test_that("cytominr", {
 
   db <- dplyr::src_sqlite(path = fixture)
 
-  ext_metadata <- readr::read_csv(system.file("extdata", "metadata.csv", package = "cytominr")) %>% dplyr::rename(g_well = Well)
+  ext_metadata <-
+    readr::read_csv(system.file("extdata", "metadata.csv", package = "cytominr")) %>%
+    dplyr::rename(g_well = Well)
 
   ext_metadata <- dplyr::copy_to(db, ext_metadata)
 
