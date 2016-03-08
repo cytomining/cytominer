@@ -4,14 +4,12 @@
 \alias{drop_na_columns}
 \title{Select features without NA values}
 \usage{
-drop_na_columns(population, variables, ...)
+drop_na_columns(population, variables)
 }
 \arguments{
-\item{population}{population}
+\item{population}{...}
 
-\item{variables}{variables}
-
-\item{...}{Arguments to be passed to methods}
+\item{variables}{...}
 }
 \value{
 Excluded variables

@@ -15,8 +15,7 @@ test_that("Remove NA works with sqlite", {
 
   expect_equal(
     drop_na_columns(population = dat,
-                    variables = c("x"),
-                    sample = dat),
+                    variables = c("x")),
     character(0)
   )
 
