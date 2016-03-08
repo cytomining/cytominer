@@ -13,7 +13,7 @@ generalized_log <- function(population, variables, c = 1) {
 
   for (variable in variables) {
 
-    object <- list(lazyeval::interp(~log((x + (x^2 + c^2)^0.5 ) / 2), x = as.name(variable), c = c))
+    object <- list(lazyeval::interp(~log( (x + (x ^ 2 + c ^ 2) ^ 0.5 ) / 2), x = as.name(variable), c = c))
 
     name <- paste0(variable, "_")
 
