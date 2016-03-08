@@ -2,25 +2,25 @@
 % Please edit documentation in R/aggregate.R
 \name{aggregate}
 \alias{aggregate}
-\title{Aggregate rows}
+\title{Aggregate data}
 \usage{
-aggregate(population, variables, grouping_variables, operation = "mean", ...)
+aggregate(population, variables, strata, operation = "mean", ...)
 }
 \arguments{
-\item{population}{population}
+\item{population}{...}
 
-\item{variables}{variables}
+\item{variables}{...}
 
-\item{grouping_variables}{grouping_variables}
+\item{strata}{...}
 
-\item{operation}{operation}
+\item{operation}{...}
 
-\item{...}{Arguments to be passed to methods}
+\item{...}{arguments passed to aggregation operation}
 }
 \value{
-data.frame after aggregation
+aggregated data
 }
 \description{
-Aggregate rows
+Aggregate data
 }
 

@@ -1,29 +1,31 @@
-#' Aggregate rows
+#' Aggregate data
 #'
-#' @param population population
-#' @param variables variables
-#' @param grouping_variables grouping_variables
-#' @param operation operation
-#' @param ... Arguments to be passed to methods
+#' @param population ...
+#' @param variables ...
+#' @param strata ...
+#' @param operation ...
+#' @param ... arguments passed to aggregation operation
 #'
-#' @return data.frame after aggregation
+#' @return aggregated data
+#'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
-aggregate <- function(population, variables, grouping_variables,
-                      operation="mean", ...) {
-
-  worker <- function(aggregating_function) {
-    population %>%
-      dplyr::group_by_(.dots = grouping_variables) %>%
-      dplyr::summarise_each_(aggregating_function, vars = variables) %>%
-      dplyr::ungroup()
-  }
+aggregate <- function(population, variables, strata, operation="mean", ...) {
 
   if (operation == "mean") {
-    worker(aggregating_function = dplyr::funs(mean))
+    aggregating_function <- dplyr::funs(mean)
   } else if (operation == "median") {
-    worker(aggregating_function = dplyr::funs(median))
+    aggregating_function <- dplyr::funs(median)
   } else {
-    stop("unknown operation")
+    error <- paste0("undefined operation `", operation, "'")
+
+    futile.logger::flog.error(msg = error)
+
+    stop(error)
   }
+
+  population %>%
+    dplyr::group_by_(.dots = strata) %>%
+    dplyr::summarise_each_(aggregating_function, vars = variables) %>%
+    dplyr::ungroup()
 }

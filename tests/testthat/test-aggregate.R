@@ -1,6 +1,6 @@
 context("aggregate")
 
-test_that("aggregated works with sqlite", {
+test_that("`aggregate` aggregates data", {
 
   dat <-
     rbind(
@@ -14,7 +14,7 @@ test_that("aggregated works with sqlite", {
   expect_equal(
     aggregate(population = dat,
               variables = c("x", "y"),
-              grouping_variables = c("g")) %>%
+              strata = c("g")) %>%
       dplyr::collect(),
     dat %>%
       dplyr::group_by(g) %>%
