@@ -1,44 +1,21 @@
-test_that("Remove NA works", {
-  fixture <-
-    system.file("extdata", "fixture_intensities_shapes.sqlite", package = "cytominr")
+test_that("Remove NA works with sqlite", {
 
-  db <- dplyr::src_sqlite(path = fixture)
+  dat <- data.frame(x = rnorm(5), y = NA)
 
-  shapes <-
-    dplyr::tbl(src = db, "view_shapes")
+  dat <- dplyr::copy_to(dplyr::src_sqlite(":memory:", create = T),
+                        dat)
 
-  measurements <-
-    shapes %>%
-    dplyr::filter(g_pattern == "Nuclei")
+  expect_equal(
+    drop_na_columns(population = dat,
+                    variables = c('x', 'y')),
+    c("y")
+  )
 
-  group_cols <-
-    c("g_plate",
-      "g_well",
-      "g_image",
-      "g_pattern")
-
-  feature_cols <-
-    colnames(measurements) %>%
-    stringr::str_subset("^m_")
-
-  measurements %<>%
-    dplyr::select(one_of(c(group_cols, feature_cols))) %>%
-    dplyr::filter(g_well == "A08")
-
-  normalized <-
-    normalize(
-      population = measurements,
-      variables = feature_cols,
-      grouping_variables =  c("g_plate", "g_pattern"),
-      sample = measurements
-    )
-
-  a <-
-    drop_na_columns(
-      population = normalized,
-      variables = feature_cols
-    )
-
-  expect_equal(a, c("m_shapes_euler_number"))
+  expect_equal(
+    drop_na_columns(population = dat,
+                    variables = c('x'),
+                    sample = dat),
+    character(0)
+  )
 
 })
