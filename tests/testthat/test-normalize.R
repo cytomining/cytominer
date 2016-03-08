@@ -1,6 +1,7 @@
 context("normalize")
 
 test_that("`normalize' normalizes data", {
+  set.seed(123)
   generate_mat <- function(cvec, svec) {
     n <- 30
 
@@ -51,7 +52,7 @@ test_that("`normalize' normalizes data", {
         dplyr::select(x, y) %>%
         as.matrix()
       ),
-    .Machine$double.eps * 10000
+    .Machine$double.eps * 1000000
   )
 
 })
