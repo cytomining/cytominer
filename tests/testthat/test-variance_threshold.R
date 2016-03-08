@@ -1,6 +1,6 @@
-context("variance threshold")
+context("variance_threshold")
 
-test_that("variance threshold works with sqlite", {
+test_that("`variance_threshold` selects variables that have non-trivial variance", {
 
   dat <- data.frame(x = rnorm(30), y = 1)
 

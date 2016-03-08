@@ -1,6 +1,6 @@
-context("correlation threshold")
+context("correlation_threshold")
 
-test_that("correlation threshold works with sqlite", {
+test_that("`correlation_threshold` selects variables that are not highly correlated", {
 
   set.seed(123)
   dat <- data.frame(x = rnorm(30))

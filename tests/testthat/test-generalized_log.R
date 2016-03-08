@@ -1,6 +1,6 @@
-context("generalized log")
+context("generalized_log")
 
-test_that("generalized log works with sqlite", {
+test_that("`generalized_log` generalized_logs data", {
 
   dat <- data.frame(x = rnorm(5), y = rnorm(5))
 

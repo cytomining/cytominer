@@ -1,6 +1,6 @@
 context("drop_na_columns")
 
-test_that("Remove NA works with sqlite", {
+test_that("`drop_na_columns` removes columns have only NAs", {
 
   dat <- data.frame(x = rnorm(5), y = NA)
 
