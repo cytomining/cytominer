@@ -1,11 +1,12 @@
 #' Select columns
 #'
-#' @param population population
-#' @param variables variables
-#' @param operation operation
-#' @param ... Arguments to be passed to methods
+#' @param population ...
+#' @param variables ...
+#' @param operation ...
+#' @param ... arguments passed to selection operation
 #'
-#' @return object after feature selection
+#' @return feature selected data
+#'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 select <- function(population, variables,

@@ -7,16 +7,16 @@
 select(population, variables, operation = "variance_threshold", ...)
 }
 \arguments{
-\item{population}{population}
+\item{population}{...}
 
-\item{variables}{variables}
+\item{variables}{...}
 
-\item{operation}{operation}
+\item{operation}{...}
 
-\item{...}{Arguments to be passed to methods}
+\item{...}{arguments passed to selection operation}
 }
 \value{
-object after feature selection
+feature selected data
 }
 \description{
 Select columns
