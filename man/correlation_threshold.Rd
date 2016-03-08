@@ -5,20 +5,18 @@
 \title{Select features using correlation threshold}
 \usage{
 correlation_threshold(population, variables, sample, cutoff = 0.9,
-  method = "pearson", verbose = FALSE)
+  method = "pearson")
 }
 \arguments{
-\item{population}{population}
+\item{population}{...}
 
-\item{variables}{variables}
+\item{variables}{...}
 
-\item{sample}{sample}
+\item{sample}{...}
 
-\item{cutoff}{cutoff}
+\item{cutoff}{...}
 
-\item{method}{method}
-
-\item{verbose}{verbose}
+\item{method}{...}
 }
 \value{
 Excluded variables

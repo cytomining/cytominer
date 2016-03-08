@@ -1,23 +1,23 @@
 #' Select features using correlation threshold
 #'
-#' @param population population
-#' @param variables variables
-#' @param sample sample
-#' @param cutoff cutoff
-#' @param method method
-#' @param verbose verbose
+#' @param population ...
+#' @param variables ...
+#' @param sample ...
+#' @param cutoff ...
+#' @param method ...
 #'
 #' @return Excluded variables
+#'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 correlation_threshold <- function(population, variables, sample, cutoff = 0.90,
-                                  method = "pearson", verbose = FALSE) {
+                                  method = "pearson") {
 
   excluded_indexes <-
     sample %>%
     dplyr::select_(.dots = variables) %>%
     cor(method = method) %>%
-    findCorrelation(cutoff = cutoff, verbose = verbose)
+    findCorrelation(cutoff = cutoff)
 
   variables[excluded_indexes]
 }
