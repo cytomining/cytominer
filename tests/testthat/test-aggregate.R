@@ -1,35 +1,22 @@
-test_that("aggregated intensities is valid", {
-  metadata <- c("plate_barcode",
-                "well_description",
-                "pattern_description",
-                "channel_description")
-  features <-
-    c(
-      "integrated",
-      "maximum",
-      "mean",
-      "median",
-      "median_absolute_deviation",
-      "minimum",
-      "standard_deviation",
-      "third_quartile"
+test_that("aggregated works with sqlite", {
+
+  dat <-
+    rbind(
+      data.frame(g = "a", x = rnorm(5), y = rnorm(5)),
+      data.frame(g = "b", x = rnorm(5), y = rnorm(5))
     )
 
-  aggregated_intensities <-
-    aggregate(population = fixture_intensities,
-              variables = paste("Intensity", features, sep = "_"),
-              grouping_variables = metadata)
+  dat <- dplyr::copy_to(dplyr::src_sqlite(":memory:", create = T),
+                        dat)
 
-  fixture_aggregated_intensities <-
-    fixture_intensities %>%
-    dplyr::group_by_(.dots = metadata) %>%
-    dplyr::summarise_each_(dplyr::funs(mean), vars = paste("Intensity", features, sep = "_")) %>%
-    dplyr::ungroup()
-
-  a <- aggregated_intensities %>% dplyr::select(-one_of(metadata)) %>% as.matrix()
-
-  b <- fixture_aggregated_intensities %>% dplyr::select(-one_of(metadata)) %>% as.matrix()
-
-  expect_equal(a, b)
+  expect_equal(
+    aggregate(population = dat,
+              variables = c("x", "y"),
+              grouping_variables = c("g")) %>%
+      dplyr::collect(),
+    dat %>%
+      dplyr::group_by(g) %>%
+      dplyr::summarise_each_(dplyr::funs(mean), vars = c("x", "y"))
+  )
 
 })
