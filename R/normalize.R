@@ -12,6 +12,21 @@
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 normalize <- function(population, variables, strata, sample, operation = "standardize", ...) {
+  scale <- function(data, location, dispersion, variables) {
+    for (variable in variables) {
+      object <- list(lazyeval::interp(~ (x - m) / s, x = as.name(variable), m = location[[variable]], s = dispersion[[variable]]))
+
+      name <- paste0(variable, "_")
+
+      data %<>%
+        dplyr::mutate_(.dots = setNames(object = object, nm = name))
+    }
+
+    data %>%
+      dplyr::select_(~-one_of(variables))  %>%
+      dplyr::rename_(.dots = setNames(paste0(variables, "_"), variables))
+  }
+
   if (operation == "robustize") {
     location <- dplyr::funs(median)
 
@@ -21,7 +36,7 @@ normalize <- function(population, variables, strata, sample, operation = "standa
 
     dispersion <- dplyr::funs(sd)
   } else {
-    error <- paste("undefined operation `", operation, "'", sep="")
+    error <- paste0("undefined operation `", operation, "'")
 
     futile.logger::flog.error(msg = error)
 
@@ -54,7 +69,7 @@ normalize <- function(population, variables, strata, sample, operation = "standa
 
         population %>%
           dplyr::inner_join(y = group, by = names(group), copy = TRUE) %>%
-          scale_dplyr(center = location, scale = dispersion, vars = variables)
+          scale(location, dispersion, variables)
         },
       split(x = groups, f = seq(nrow(groups)))
     )
