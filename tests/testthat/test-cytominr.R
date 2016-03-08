@@ -1,6 +1,5 @@
 test_that("cytominr", {
 
-  skip("")
   futile.logger::flog.threshold(futile.logger::INFO)
 
   fixture <-
