@@ -83,6 +83,11 @@ test_that("cytominr", {
     dplyr::summarize(value = max(value)),
     1000 * .Machine$double.eps
   )
+  # calculate frequency of NAs per variable
+  na_frequency <-
+    count_na_rows(
+      population = normalized,
+      variables = feature_cols)
 
   # drop NA columns because they may arise after normalize
   cleaned <-
