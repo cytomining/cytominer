@@ -1,3 +1,5 @@
+context("scale_dlpyr")
+
 test_that("scale_dplyr works with sqlite", {
   set.seed(123)
 

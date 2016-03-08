@@ -14,13 +14,13 @@ test_that("normalize works with sqlite", {
 
   dat <-
     dplyr::bind_rows(
-      generate_mat(rnorm(2), rnorm(2)^2) %>%
+      generate_mat(rnorm(2), rnorm(2) ^ 2) %>%
         dplyr::mutate(g1 = "a", g2 = "x"),
-      generate_mat(rnorm(2), rnorm(2)^2) %>%
+      generate_mat(rnorm(2), rnorm(2) ^ 2) %>%
         dplyr::mutate(g1 = "a", g2 = "y"),
-      generate_mat(rnorm(2), rnorm(2)^2) %>%
+      generate_mat(rnorm(2), rnorm(2) ^ 2) %>%
         dplyr::mutate(g1 = "b", g2 = "x"),
-      generate_mat(rnorm(2), rnorm(2)^2) %>%
+      generate_mat(rnorm(2), rnorm(2) ^ 2) %>%
         dplyr::mutate(g1 = "b", g2 = "y")
     )
   dat %<>% dplyr::mutate(g3 = seq(nrow(dat)))

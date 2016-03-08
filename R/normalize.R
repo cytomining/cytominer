@@ -58,4 +58,3 @@ normalize <- function(population, variables, grouping_variables, sample,
   )
 
 }
-

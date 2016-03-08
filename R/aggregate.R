@@ -9,7 +9,8 @@
 #' @return data.frame after aggregation
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
-aggregate <- function(population, variables, grouping_variables, operation="mean", ...) {
+aggregate <- function(population, variables, grouping_variables,
+                      operation="mean", ...) {
 
   worker <- function(aggregating_function) {
     population %>%

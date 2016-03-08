@@ -8,7 +8,8 @@
 #' @return object after feature selection
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
-select <- function(population, variables, operation = "variance_threshold", ...) {
+select <- function(population, variables,
+                   operation = "variance_threshold", ...) {
   if (operation == "variance_threshold") {
     excluded <- variance_threshold(population, variables, ...)
   } else if (operation == "correlation_threshold") {

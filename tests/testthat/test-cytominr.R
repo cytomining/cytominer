@@ -1,14 +1,18 @@
+context("cytominr integration test")
+
 test_that("cytominr", {
 
-  futile.logger::flog.threshold(futile.logger::INFO)
+  futile.logger::flog.threshold(futile.logger::WARN)
 
   fixture <-
-    system.file("extdata", "fixture_intensities_shapes.sqlite", package = "cytominr")
+    system.file("extdata", "fixture_intensities_shapes.sqlite",
+                package = "cytominr")
 
   db <- dplyr::src_sqlite(path = fixture)
 
   ext_metadata <-
-    readr::read_csv(system.file("extdata", "metadata.csv", package = "cytominr")) %>%
+    readr::read_csv(system.file("extdata", "metadata.csv",
+                                package = "cytominr")) %>%
     dplyr::rename(g_well = Well)
 
   ext_metadata <- dplyr::copy_to(db, ext_metadata)
@@ -52,7 +56,7 @@ test_that("cytominr", {
   debris_removed <-
     measurements %>% dplyr::filter(q_debris == 0)
 
-  # normalization (default = standardization)
+  # normalization (standardization by default)
   normalized <-
     normalize(
       population = debris_removed,
@@ -61,7 +65,8 @@ test_that("cytominr", {
       sample =
         debris_removed %>%
         dplyr::inner_join(
-          ext_metadata %>% dplyr::filter(Type == "ctrl") %>% dplyr::select(g_well)
+          ext_metadata %>% dplyr::filter(Type == "ctrl") %>%
+            dplyr::select(g_well)
         )
     )
 
@@ -88,14 +93,14 @@ test_that("cytominr", {
       operation = "drop_na_columns"
   )
 
-  # tranformation (default = generalized log)
+  # tranformation (generalized log by default)
   transformed <-
     transform(
       population = cleaned,
       variables = feature_cols
     )
 
-  # aggregation (default = mean)
+  # aggregation (mean by default)
   aggregated <-
     aggregate(
       population = transformed,
@@ -104,7 +109,7 @@ test_that("cytominr", {
     ) %>%
     dplyr::collect()
 
-  # feature selection (default = variance threshold)
+  # feature selection (variance threshold by default)
   selected <-
     select(
       population = transformed,

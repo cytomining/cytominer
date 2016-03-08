@@ -11,13 +11,13 @@ test_that("generalized log works with sqlite", {
 
   expect_equal(
     generalized_log(population = dat,
-                    variables = c('x', 'y')) %>% dplyr::collect(),
+                    variables = c("x", "y")) %>% dplyr::collect(),
     glog(dat %>% dplyr::collect())
   )
 
   expect_equal(
     generalized_log(population = dat,
-                    variables = c('x')) %>% dplyr::collect(),
+                    variables = c("x")) %>% dplyr::collect(),
     within(dat %>% dplyr::collect(), x <- glog(x))
   )
 })

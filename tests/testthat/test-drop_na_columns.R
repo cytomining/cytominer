@@ -1,4 +1,4 @@
-context("Remove NA columns")
+context("drop_na_columns")
 
 test_that("Remove NA works with sqlite", {
 
@@ -9,13 +9,13 @@ test_that("Remove NA works with sqlite", {
 
   expect_equal(
     drop_na_columns(population = dat,
-                    variables = c('x', 'y')),
+                    variables = c("x", "y")),
     c("y")
   )
 
   expect_equal(
     drop_na_columns(population = dat,
-                    variables = c('x'),
+                    variables = c("x"),
                     sample = dat),
     character(0)
   )

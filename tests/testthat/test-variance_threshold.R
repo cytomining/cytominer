@@ -9,14 +9,14 @@ test_that("variance threshold works with sqlite", {
 
   expect_equal(
     variance_threshold(population = dat,
-                       variables = c('x', 'y'),
+                       variables = c("x", "y"),
                        sample = dat %>% dplyr::collect()),
     c("y")
   )
 
   expect_equal(
     variance_threshold(population = dat,
-                       variables = c('x'),
+                       variables = c("x"),
                        sample = dat %>% dplyr::collect()),
     character(0)
   )

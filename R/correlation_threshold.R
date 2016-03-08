@@ -10,7 +10,8 @@
 #' @return Excluded variables
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
-correlation_threshold <- function(population, variables, sample, cutoff = 0.90, method = "pearson", verbose = FALSE) {
+correlation_threshold <- function(population, variables, sample, cutoff = 0.90,
+                                  method = "pearson", verbose = FALSE) {
 
   excluded_indexes <-
     sample %>%

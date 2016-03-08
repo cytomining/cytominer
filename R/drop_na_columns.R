@@ -12,6 +12,6 @@ drop_na_columns <- function(population, variables, ...) {
     dplyr::summarise_each_(dplyr::funs_("count"), vars = variables) %>%
     dplyr::collect() %>%
     tidyr::gather_("feature", "count", variables) %>%
-    dplyr::filter_(~(count == 0)) %>%
+    dplyr::filter_( ~ (count == 0) ) %>%
     magrittr::extract2("feature")
 }
