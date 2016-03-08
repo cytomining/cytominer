@@ -1,36 +1,24 @@
 test_that("correlation thresholded intensities is valid", {
 
-  metadata <- c("plate_barcode",
-                "well_description",
-                "image_description",
-                "object_description",
-                "pattern_description",
-                "channel_description")
+  set.seed(123)
+  dat <- data.frame(x = rnorm(30))
+  dat$y <- rnorm(30)/1000
+  dat$z <- dat$x + rnorm(30)/1000
 
-  features <- c(
-    "Intensity_first_quartile",
-    "Intensity_integrated",
-    "Intensity_maximum",
-    "Intensity_mean",
-    "Intensity_median",
-    "Intensity_median_absolute_deviation",
-    "Intensity_minimum",
-    "Intensity_standard_deviation",
-    "Intensity_third_quartile"
+  findCorrelation(cor(dat))
+
+  expect_equal(
+    correlation_threshold(population = dat,
+                          variables = c('x', 'y', 'z'),
+                          sample = dat),
+    c("z")
   )
 
-  a <- setdiff(colnames(fixture_intensities),
-               correlation_threshold(population = fixture_intensities,
-                                     variables = features,
-                                     sample = fixture_intensities))
+  expect_equal(
+    correlation_threshold(population = dat,
+                          variables = c('x', 'y'),
+                          sample = dat),
+    character(0)
+  )
 
-  b <- fixture_correlation_threshold_intensities %>% names()
-
-  expect_equal(a, b)
-
-  a <- correlation_threshold(population = fixture_intensities,
-                             variables = c("Intensity_first_quartile", "Intensity_integrated"),
-                             sample = fixture_intensities)
-
-  expect_equal(length(a), 0)
 })
