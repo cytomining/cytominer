@@ -18,7 +18,11 @@ select <- function(population, variables,
   } else if (operation == "drop_na_columns") {
     excluded <- drop_na_columns(population, variables, ...)
   } else {
-    stop("unknown operation")
+    error <- paste0("undefined operation `", operation, "'")
+
+    futile.logger::flog.error(msg = error)
+
+    stop(error)
   }
 
   if (length(excluded) > 0) {
