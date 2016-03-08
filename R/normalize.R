@@ -1,60 +1,62 @@
-#' Normalize rows
+#' Normalize data
 #'
-#' @param population population
-#' @param variables variables
-#' @param grouping_variables grouping_variables
-#' @param sample sample
-#' @param operation operation
-#' @param ... Arguments to be passed to methods
+#' @param population ...
+#' @param variables ...
+#' @param strata ...
+#' @param sample ...
+#' @param operation ...
+#' @param ... arguments passed to normalization operation
 #'
-#' @return object after normalization
+#' @return normalized data
+#'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
-normalize <- function(population, variables, grouping_variables, sample,
-                      operation = "standardize", ...) {
+normalize <- function(population, variables, strata, sample, operation = "standardize", ...) {
+  if (operation == "robustize") {
+    location <- dplyr::funs(median)
 
-  worker <- function(group) {
+    dispersion <- dplyr::funs(mad)
+  } else if (operation == "standardize") {
+    location <- dplyr::funs(mean)
 
-    sample_group <-
-      sample %>%
-      dplyr::inner_join(group, by = names(group), copy = TRUE)
+    dispersion <- dplyr::funs(sd)
+  } else {
+    error <- paste("undefined operation `", operation, "'", sep="")
 
-    center <-
-      sample_group %>%
-      dplyr::summarise_each_(centering_function, vars = variables) %>%
-      dplyr::collect()
+    futile.logger::flog.error(msg = error)
 
-    scale <-
-      sample_group %>%
-      dplyr::summarise_each_(scaling_function, vars = variables) %>%
-      dplyr::collect()
-
-    population %>%
-      dplyr::inner_join(group, by = names(group), copy = TRUE) %>%
-      scale_dplyr(center = center, scale = scale, vars = variables)
-
+    stop(error)
   }
 
   groups <-
     sample %>%
-    dplyr::select_(.dots = grouping_variables) %>%
+    dplyr::select_(.dots = strata) %>%
     dplyr::distinct() %>%
     dplyr::collect()
 
-  if (operation == "linearize") {
-    stop("Not implemented")
-  } else if (operation == "robustize") {
-    centering_function <- dplyr::funs(median)
-    scaling_function <- dplyr::funs(mad)
-  } else if (operation == "standardize") {
-    centering_function <- dplyr::funs(mean)
-    scaling_function <- dplyr::funs(sd)
-  } else {
-    stop("unknown operation")
-  }
+  Reduce(
+    dplyr::union,
+    Map(
+      f = function(group) {
+        stratum <-
+          sample %>%
+          dplyr::inner_join(y = group, by = names(group), copy = TRUE)
 
-  Reduce(dplyr::union,
-         Map(worker, split(groups, seq(nrow(groups))))
+        location <-
+          stratum %>%
+          dplyr::summarise_each_(funs = location, vars = variables) %>%
+          dplyr::collect()
+
+        dispersion <-
+          stratum %>%
+          dplyr::summarise_each_(funs = dispersion, vars = variables) %>%
+          dplyr::collect()
+
+        population %>%
+          dplyr::inner_join(y = group, by = names(group), copy = TRUE) %>%
+          scale_dplyr(center = location, scale = dispersion, vars = variables)
+        },
+      split(x = groups, f = seq(nrow(groups)))
+    )
   )
-
 }

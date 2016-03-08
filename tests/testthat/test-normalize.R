@@ -42,7 +42,7 @@ test_that("normalize works with sqlite", {
     norm(
       normalize(population = dat,
                 variables = c("x", "y"),
-                grouping_variables = c("g1", "g2"),
+                strata = c("g1", "g2"),
                 sample = dat,
                 operation = "standardize") %>%
         dplyr::collect() %>%

@@ -61,7 +61,7 @@ test_that("cytominr", {
     normalize(
       population = debris_removed,
       variables = feature_cols,
-      grouping_variables =  c("g_plate", "g_pattern", "g_channel"),
+      strata =  c("g_plate", "g_pattern", "g_channel"),
       sample =
         debris_removed %>%
         dplyr::inner_join(
