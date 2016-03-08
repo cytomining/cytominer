@@ -1,46 +1,58 @@
-# TODO: these tests are not great because ideally grouping_cols should have more
-# than one element in order to test it out
+test_that("normalize works with sqlite", {
 
-test_that("standardized intensity is valid", {
+  generate_mat <- function(cvec, svec) {
+    n <- 30
+    m <- matrix(runif(n * 2), n, 2) %>% scale(.)
+    cbind(m,
+          m %>%
+            sweep(., 2, svec, FUN = "*") %>%
+            sweep(., 2, cvec, FUN = "+")
+    ) %>% as.data.frame()
+  }
 
-  grouping_cols <- c("plate_barcode")
+  dat <-
+    dplyr::bind_rows(
+      generate_mat(rnorm(2), rnorm(2)^2) %>%
+        dplyr::mutate(g1 = "a", g2 = "x"),
+      generate_mat(rnorm(2), rnorm(2)^2) %>%
+        dplyr::mutate(g1 = "a", g2 = "y"),
+      generate_mat(rnorm(2), rnorm(2)^2) %>%
+        dplyr::mutate(g1 = "b", g2 = "x"),
+      generate_mat(rnorm(2), rnorm(2)^2) %>%
+        dplyr::mutate(g1 = "b", g2 = "y")
+    )
+  dat %<>% dplyr::mutate(g3 = seq(nrow(dat)))
 
-  features <- c("Intensity_first_quartile",
-                "Intensity_integrated")
+  dat_normalized <-
+    dat %>%
+    dplyr::select(g1, g2, g3, V1, V2) %>%
+    dplyr::rename(x = V1, y = V2)
 
-  standardized <-
-    normalize(population = fixture_intensities,
-              variables = features,
-              grouping_variables = grouping_cols,
-              sample = fixture_intensities %>%
-                dplyr::filter(well_description %in% c("A01", "A02")),
-              operation = "standardize")
+  dat <-
+    dat %>%
+    dplyr::select(g1, g2, g3, V3, V4) %>%
+    dplyr::rename(x = V3, y = V4)
 
+  dat <- dplyr::copy_to(dplyr::src_sqlite(":memory:", create = T),
+                        dat)
 
-  a <- standardized %>% dplyr::select_(.dots = features) %>% as.matrix()
-  b <- fixture_standardized_intensities %>% dplyr::select_(.dots = features) %>% as.matrix()
+  expect_less_than(
+    norm(
+      normalize(population = dat,
+                variables = c("x", "y"),
+                grouping_variables = c("g1", "g2"),
+                sample = dat,
+                operation = "standardize") %>%
+        dplyr::collect() %>%
+        dplyr::arrange(g3) %>%
+        dplyr::select(x, y) %>%
+        as.matrix() -
+      dat_normalized %>%
+        dplyr::arrange(g3) %>%
+        dplyr::select(x, y) %>%
+        as.matrix()
+      ),
+    .Machine$double.eps * 10000
+  )
 
-  expect_equal(a, b)
-})
-
-test_that("robustized intensity is valid", {
-
-  grouping_cols <- c("plate_barcode")
-
-  features <- c("Intensity_first_quartile",
-                "Intensity_integrated")
-
-  robustized <-
-    normalize(population = fixture_intensities,
-              variables = features,
-              grouping_variables = grouping_cols,
-              sample = fixture_intensities %>%
-                dplyr::filter(well_description %in% c("A01", "A02")),
-              operation = "robustize")
-
-
-  a <- robustized %>% dplyr::select_(.dots = features) %>% as.matrix()
-  b <- fixture_robustized_intensities %>% dplyr::select_(.dots = features) %>% as.matrix()
-
-  expect_equal(a, b)
 })
