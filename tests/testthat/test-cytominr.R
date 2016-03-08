@@ -44,7 +44,7 @@ test_that("cytominr", {
 
   measurements %<>%
     dplyr::select(one_of(c(group_cols, qc_cols, feature_cols))) %>%
-    dplyr::filter(g_well %in% c("A01", "A02", "A03", "A08"))
+    dplyr::filter(g_well %in% c("A01", "A02", "A10", "A11"))
 
   # data cleaning
   debris_removed <-
@@ -66,7 +66,7 @@ test_that("cytominr", {
   # TODO: this should be moved into a unit test for normalize
   expect_less_than(
     normalized %>%
-    dplyr::filter(g_well == "A08") %>%
+    dplyr::filter(g_well == "A11") %>%
     dplyr::group_by_(.dots = c("g_plate", "g_pattern", "g_channel")) %>%
     dplyr::summarise_each_(dplyr::funs(mean), vars = feature_cols) %>%
     dplyr::collect() %>%
@@ -111,6 +111,4 @@ test_that("cytominr", {
       operation = "correlation_threshold"
     )
 
-  # Number of objects in images that have debris = 1248
-  expect_equal(selected %>% dplyr::collect() %>% nrow(), 9922 - 1248)
 })
