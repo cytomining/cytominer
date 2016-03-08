@@ -4,16 +4,14 @@
 \alias{variance_threshold}
 \title{Select features using variance threshold}
 \usage{
-variance_threshold(population, variables, sample, ...)
+variance_threshold(population, variables, sample)
 }
 \arguments{
-\item{population}{population}
+\item{population}{...}
 
-\item{variables}{variables}
+\item{variables}{...}
 
-\item{sample}{sample}
-
-\item{...}{Arguments to be passed to methods}
+\item{sample}{...}
 }
 \value{
 Excluded variables

@@ -3,13 +3,12 @@
 #' @param population ...
 #' @param variables ...
 #' @param sample ...
-#' @param ... Arguments to be passed to methods
 #'
 #' @return Excluded variables
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
-variance_threshold <- function(population, variables, sample, ...) {
+variance_threshold <- function(population, variables, sample) {
   near_zero_variance <- function (x) {
     if (is.null(dim(x))) x <- matrix(x, ncol = 1)
 
