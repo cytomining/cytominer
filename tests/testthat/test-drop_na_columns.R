@@ -1,3 +1,5 @@
+context("Remove NA columns")
+
 test_that("Remove NA works with sqlite", {
 
   dat <- data.frame(x = rnorm(5), y = NA)

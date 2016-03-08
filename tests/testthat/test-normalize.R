@@ -1,3 +1,5 @@
+context("normalize")
+
 test_that("normalize works with sqlite", {
 
   generate_mat <- function(cvec, svec) {

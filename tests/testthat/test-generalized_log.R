@@ -1,3 +1,5 @@
+context("generalized log")
+
 test_that("generalized log works with sqlite", {
 
   dat <- data.frame(x = rnorm(5), y = rnorm(5))

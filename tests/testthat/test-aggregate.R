@@ -1,3 +1,5 @@
+context("aggregate")
+
 test_that("aggregated works with sqlite", {
 
   dat <-

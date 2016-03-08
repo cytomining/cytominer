@@ -1,3 +1,5 @@
+context("correlation threshold")
+
 test_that("correlation threshold works with sqlite", {
 
   set.seed(123)
