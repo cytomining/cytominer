@@ -1,4 +1,4 @@
-test_that("generalized log of intensity is valid", {
+test_that("generalized log is valid", {
 
   dat <- data.frame(x = rnorm(5), y = rnorm(5))
 
