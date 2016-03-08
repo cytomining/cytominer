@@ -89,7 +89,6 @@ test_that("cytominr", {
     select(
       population = normalized,
       variables = feature_cols,
-      sample = NULL,
       operation = "drop_na_columns"
   )
 
@@ -105,7 +104,7 @@ test_that("cytominr", {
     aggregate(
       population = transformed,
       variables = feature_cols,
-      grouping_variables = group_cols
+      strata = group_cols
     ) %>%
     dplyr::collect()
 
