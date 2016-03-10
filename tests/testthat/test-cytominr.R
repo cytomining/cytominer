@@ -18,7 +18,8 @@ test_that("cytominr", {
   ext_metadata <- dplyr::copy_to(db, ext_metadata)
 
   intensities <-
-    dplyr::tbl(src = db, "view_intensities")
+    dplyr::tbl(src = db, "view_intensities") %>%
+    dplyr::compute()
 
   measurements <-
     intensities %>%
@@ -56,10 +57,16 @@ test_that("cytominr", {
   debris_removed <-
     measurements %>% dplyr::filter(q_debris == 0)
 
+  na_rows_removed <-
+    drop_na_rows(
+      population = debris_removed,
+      variables = feature_cols
+    )
+
   # normalization (standardization by default)
   normalized <-
     normalize(
-      population = debris_removed,
+      population = na_rows_removed,
       variables = feature_cols,
       strata =  c("g_plate", "g_pattern", "g_channel"),
       sample =
