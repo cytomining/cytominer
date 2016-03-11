@@ -2,7 +2,7 @@ context("cytominr integration test")
 
 test_that("cytominr", {
 
-  futile.logger::flog.threshold(futile.logger::INFO)
+  futile.logger::flog.threshold(futile.logger::WARNING)
 
   fixture <-
     system.file("extdata", "fixture_intensities_shapes.sqlite",
@@ -117,6 +117,7 @@ test_that("cytominr", {
       variables = feature_cols,
       sample = aggregated,
       operation = "correlation_threshold"
-    )
+    ) %>%
+    dplyr::collect()
 
 })
