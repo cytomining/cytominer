@@ -1,6 +1,6 @@
 ---
-title: "Vignette Title"
-author: "Vignette Author"
+title: "Pipeline"
+author: "Allen Goodman and Shantanu Singh"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -9,50 +9,128 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
-
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
-
-## Vignette Info
-
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
-
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+```{r, echo=FALSE, warning=FALSE}
+library(magrittr)
+futile.logger::flog.threshold(futile.logger::WARN)
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+```{r}
+fixture <-
+  system.file("extdata", "fixture_intensities_shapes.sqlite",
+              package = "cytominr")
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+db <- dplyr::src_sqlite(path = fixture)
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+ext_metadata <-
+  readr::read_csv(system.file("extdata", "metadata.csv",
+                              package = "cytominr")) %>%
+  dplyr::rename(g_well = Well)
 
-## More Examples
+ext_metadata <- dplyr::copy_to(db, ext_metadata)
 
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+futile.logger::flog.info("Creating temp table for intensities")
+intensities <-
+  dplyr::tbl(src = db, "view_intensities") %>%
+  dplyr::compute()
+futile.logger::flog.info("Created temp table for intensities")
 
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+measurements <-
+  intensities %>%
+  dplyr::filter(g_well %in% c("A01", "A02", "A10", "A11"))
+
+measurements %>%
+  dplyr::tally() %>%
+  knitr::kable()
+
+qc_cols <- c("q_debris")
+
+group_cols <-
+  c("g_plate",
+    "g_well",
+    "g_image",
+    "g_pattern",
+    "g_channel")
+
+feature_cols <-
+  colnames(measurements) %>%
+  stringr::str_subset("^m_")
+
+measurements %<>%
+  dplyr::select(one_of(c(group_cols, qc_cols, feature_cols)))
+
+# data cleaning
+debris_removed <-
+  measurements %>% dplyr::filter(q_debris == 0)
+
+na_rows_removed <-
+  cytominr:::drop_na_rows(
+    population = debris_removed,
+    variables = feature_cols
+  ) %>%
+  dplyr::compute()
+
+# normalization (standardization by default)
+futile.logger::flog.info("Normalizing")
+normalized <-
+  cytominr::normalize(
+    population = na_rows_removed,
+    variables = feature_cols,
+    strata =  c("g_plate", "g_pattern", "g_channel"),
+    sample =
+      debris_removed %>%
+      dplyr::inner_join(
+        ext_metadata %>% dplyr::filter(Type == "ctrl") %>%
+          dplyr::select(g_well)
+      )
+  )
+futile.logger::flog.info("Normalized")
+
+# calculate frequency of NAs per variable
+na_frequency <-
+  cytominr::count_na_rows(
+    population = normalized,
+    variables = feature_cols)
+
+na_frequency %>%
+  tidyr::gather(feature, na_count) %>%
+  knitr::kable()
+
+# drop NA columns because they may arise after normalize
+cleaned <-
+  cytominr::select(
+    population = normalized,
+    variables = feature_cols,
+    operation = "drop_na_columns"
+)
+
+# tranformation (generalized log by default)
+transformed <-
+  cytominr::transform(
+    population = cleaned,
+    variables = feature_cols
+  )
+
+# aggregation (mean by default)
+aggregated <-
+  cytominr::aggregate(
+    population = transformed,
+    variables = feature_cols,
+    strata = group_cols
+  ) %>%
+  dplyr::collect()
+
+# feature selection (variance threshold by default)
+selected <-
+  cytominr::select(
+    population = transformed,
+    variables = feature_cols,
+    sample = aggregated,
+    operation = "correlation_threshold"
+  ) %>%
+  dplyr::collect()
+
+selected %>%
+  dplyr::glimpse()
+
 ```
 
-Also a quote using `>`:
-
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
