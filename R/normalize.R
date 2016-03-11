@@ -43,6 +43,10 @@ normalize <- function(population, variables, strata, sample, operation = "standa
     stop(error)
   }
 
+  futile.logger::flog.debug("Creating temp table for sample")
+  sample %<>% dplyr::compute()
+  futile.logger::flog.debug("Created temp table for sample")
+
   groups <-
     sample %>%
     dplyr::select_(.dots = strata) %>%
@@ -53,24 +57,33 @@ normalize <- function(population, variables, strata, sample, operation = "standa
     dplyr::union,
     Map(
       f = function(group) {
+        futile.logger::flog.debug(group)
+        futile.logger::flog.debug("\tstratum")
         stratum <-
           sample %>%
-          dplyr::inner_join(y = group, by = names(group), copy = TRUE)
+          dplyr::inner_join(y = group, by = names(group), copy = TRUE) %>%
+          dplyr::compute()
 
+        futile.logger::flog.debug("\tlocation")
         location <-
           stratum %>%
           dplyr::summarise_each_(funs = location, vars = variables) %>%
           dplyr::collect()
 
+        futile.logger::flog.debug("\tdispersion")
         dispersion <-
           stratum %>%
           dplyr::summarise_each_(funs = dispersion, vars = variables) %>%
           dplyr::collect()
 
-        population %>%
+        futile.logger::flog.debug("\tscale")
+        scaled <-
+          population %>%
           dplyr::inner_join(y = group, by = names(group), copy = TRUE) %>%
           scale(location, dispersion, variables)
-        },
+        futile.logger::flog.debug("\tscaled")
+        scaled
+      },
       split(x = groups, f = seq(nrow(groups)))
     )
   )
