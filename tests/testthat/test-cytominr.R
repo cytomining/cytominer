@@ -2,7 +2,7 @@ context("cytominr integration test")
 
 test_that("cytominr", {
 
-  futile.logger::flog.threshold(futile.logger::WARNING)
+  futile.logger::flog.threshold(futile.logger::WARN)
 
   fixture <-
     system.file("extdata", "fixture_intensities_shapes.sqlite",
