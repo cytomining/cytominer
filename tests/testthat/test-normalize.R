@@ -36,7 +36,7 @@ test_that("`normalize' normalizes data", {
   dat <- dplyr::copy_to(dplyr::src_sqlite(":memory:", create = T),
                         dat)
 
-  expect_less_than(
+  expect_lt(
     norm(
       normalize(population = dat,
                 variables = c("x", "y"),
