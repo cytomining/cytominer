@@ -20,6 +20,7 @@ Suggests:
     knitr,
     readr,
     stringr,
+    rmarkdown,
     RSQLite,
     testthat,
     tidyr
