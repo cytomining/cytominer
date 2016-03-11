@@ -25,8 +25,7 @@ test_that("cytominr", {
 
   measurements <-
     intensities %>%
-    dplyr::filter(g_pattern == "Nuclei") %>%
-    dplyr::filter(g_channel %in% c("CellMask", "Hoechst"))
+    dplyr::filter(g_well %in% c("A01", "A02", "A10", "A11"))
 
   qc_cols <- c("q_debris")
 
@@ -52,8 +51,7 @@ test_that("cytominr", {
     stringr::str_subset("^m_")
 
   measurements %<>%
-    dplyr::select(one_of(c(group_cols, qc_cols, feature_cols))) %>%
-    dplyr::filter(g_well %in% c("A01", "A02", "A10", "A11"))
+    dplyr::select(one_of(c(group_cols, qc_cols, feature_cols)))
 
   # data cleaning
   debris_removed <-
@@ -63,7 +61,8 @@ test_that("cytominr", {
     drop_na_rows(
       population = debris_removed,
       variables = feature_cols
-    )
+    ) %>%
+    dplyr::compute()
 
   # normalization (standardization by default)
   futile.logger::flog.info("Normalizing")
