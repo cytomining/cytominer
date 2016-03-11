@@ -2,7 +2,7 @@ context("cytominr integration test")
 
 test_that("cytominr", {
 
-  futile.logger::flog.threshold(futile.logger::WARN)
+  futile.logger::flog.threshold(futile.logger::INFO)
 
   fixture <-
     system.file("extdata", "fixture_intensities_shapes.sqlite",
@@ -17,9 +17,11 @@ test_that("cytominr", {
 
   ext_metadata <- dplyr::copy_to(db, ext_metadata)
 
+  futile.logger::flog.info("Creating temp table for intensities")
   intensities <-
     dplyr::tbl(src = db, "view_intensities") %>%
     dplyr::compute()
+  futile.logger::flog.info("Created temp table for intensities")
 
   measurements <-
     intensities %>%
@@ -64,6 +66,7 @@ test_that("cytominr", {
     )
 
   # normalization (standardization by default)
+  futile.logger::flog.info("Normalizing")
   normalized <-
     normalize(
       population = na_rows_removed,
@@ -76,6 +79,7 @@ test_that("cytominr", {
             dplyr::select(g_well)
         )
     )
+  futile.logger::flog.info("Normalized")
 
   # calculate frequency of NAs per variable
   na_frequency <-
