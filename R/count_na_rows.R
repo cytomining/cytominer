@@ -10,9 +10,9 @@
 count_na_rows <- function(population, variables) {
   nrows <-
     population %>%
-    dplyr::summarise(count = n()) %>%
+    dplyr::tally() %>%
     dplyr::collect() %>%
-    magrittr::extract2("count")
+    magrittr::extract2("n")
 
   nrows - (
     population %>%
