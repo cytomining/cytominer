@@ -9,6 +9,7 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
+#' @export
 transform <- function(population, variables, operation = "generalized_log", ...) {
   if (operation == "generalized_log") {
     generalized_log(population, variables, ...)

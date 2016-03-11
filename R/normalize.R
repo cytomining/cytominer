@@ -11,6 +11,7 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
+#' @export
 normalize <- function(population, variables, strata, sample, operation = "standardize", ...) {
   scale <- function(data, location, dispersion, variables) {
     for (variable in variables) {

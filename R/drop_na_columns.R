@@ -7,6 +7,7 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
+#' @export
 drop_na_columns <- function(population, variables) {
   population %>%
     dplyr::summarise_each_(dplyr::funs_("count"), vars = variables) %>%

@@ -7,6 +7,7 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
+#' @export
 count_na_rows <- function(population, variables) {
   nrows <-
     population %>%

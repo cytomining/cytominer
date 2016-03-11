@@ -8,6 +8,7 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
+#' @export
 variance_threshold <- function(population, variables, sample) {
   near_zero_variance <- function (x) {
     if (is.null(dim(x))) x <- matrix(x, ncol = 1)

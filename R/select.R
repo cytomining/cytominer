@@ -9,6 +9,7 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
+#' @export
 select <- function(population, variables,
                    operation = "variance_threshold", ...) {
   if (operation == "variance_threshold") {

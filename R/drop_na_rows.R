@@ -7,6 +7,7 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
+#' @export
 drop_na_rows <- function(population, variables) {
 
   # Coalesce() must have at least 2 arguments.

@@ -10,6 +10,7 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
+#' @export
 correlation_threshold <- function(population, variables, sample, cutoff = 0.90,
                                   method = "pearson") {
 

@@ -10,6 +10,7 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
+#' @export
 aggregate <- function(population, variables, strata, operation="mean", ...) {
 
   if (operation == "mean") {

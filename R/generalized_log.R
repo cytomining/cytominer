@@ -8,6 +8,7 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
+#' @export
 generalized_log <- function(population, variables, c = 1) {
   column_names <- colnames(population)
 
