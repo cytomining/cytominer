@@ -12,6 +12,7 @@ Depends:
 License: file LICENSE
 LazyData: TRUE
 Imports:
+    dplyr,
     futile.logger,
     lazyeval,
     magrittr
@@ -22,6 +23,5 @@ Suggests:
     RSQLite,
     testthat,
     tidyr
-Remotes: hadley/dplyr
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1
