@@ -85,9 +85,10 @@ measurements %>%
   knitr::kable()
 ```
 
-That actually 9 times the number of cells in this experiment: each compartment
-and each channel gets its own row. Here, we have 3 compartments (cell, nucleus, 
-cytoplasm) and 3 channels (CellMask, Hoechst, Alexa568).
+That actually 9 times the number of cells in this experiment (n = 40): each 
+compartment and each channel gets its own row. Here, we have 3 compartments 
+(cell, nucleus, cytoplasm) and 3 channels (CellMask, Hoechst, Alexa568). 
+So that's 3 x 3 x 40 = 360.
 
 Next, do some setup stuff that we will need later
 
@@ -124,7 +125,7 @@ may be needed)
 
 ```{r}
 na_rows_removed <-
-  cytominr:::drop_na_rows(
+  cytominr::drop_na_rows(
     population = debris_removed,
     variables = feature_cols
   ) %>%
