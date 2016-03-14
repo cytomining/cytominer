@@ -1,18 +1,40 @@
 ---
-title: "Pipeline"
+title: "Introduction to cytominr"
 author: "Allen Goodman and Shantanu Singh"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Introduction to cytominr}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, echo=FALSE, warning=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 library(magrittr)
 futile.logger::flog.threshold(futile.logger::WARN)
 ```
+
+
+Typical morphological profiling datasets have millions of cells 
+and hundreds of features per cells. When working with this data, you must
+
+- clean the data
+
+- normalize the features so that they are comparable across experiments
+
+- transform the features so that their distributions are well-behaved (
+i.e., bring them in line with assumptions we want to make about their 
+disributions) 
+
+- select features based on their quality
+
+- aggregate the single-cell data, if needed
+
+The cytominr package makes these steps fast and easy.
+
+## Load data
+First, load the data, which is stored in a database backend created using 
+https://github.com/0x00B1/persistence.
 
 ```{r}
 fixture <-
@@ -21,6 +43,12 @@ fixture <-
 
 db <- dplyr::src_sqlite(path = fixture)
 
+```
+
+Then load associated metadata if it exists, and copy it to the backend so that
+we can use it later.
+
+```{r}
 ext_metadata <-
   readr::read_csv(system.file("extdata", "metadata.csv",
                               package = "cytominr")) %>%
@@ -28,20 +56,42 @@ ext_metadata <-
 
 ext_metadata <- dplyr::copy_to(db, ext_metadata)
 
-futile.logger::flog.info("Creating temp table for intensities")
+```
+
+Next, select a measurement table that you want to work. Here, we will pick 
+`intensities` but we can easily extend to using multiple or all measurement
+classes if needed by creating new views.
+
+```{r}
 intensities <-
   dplyr::tbl(src = db, "view_intensities") %>%
   dplyr::compute()
-futile.logger::flog.info("Created temp table for intensities")
 
+```
+
+For this example, lets filter the data down to a few wells.
+
+```{r}
 measurements <-
   intensities %>%
   dplyr::filter(g_well %in% c("A01", "A02", "A10", "A11"))
+```
 
+How many rows does this table have?
+
+```{r}
 measurements %>%
   dplyr::tally() %>%
   knitr::kable()
+```
 
+That actually 9 times the number of cells in this experiment: each compartment
+and each channel gets its own row. Here, we have 3 compartments (cell, nucleus, 
+cytoplasm) and 3 channels (CellMask, Hoechst, Alexa568).
+
+Next, do some setup stuff that we will need later
+
+```{r}
 qc_cols <- c("q_debris")
 
 group_cols <-
@@ -58,34 +108,65 @@ feature_cols <-
 measurements %<>%
   dplyr::select(one_of(c(group_cols, qc_cols, feature_cols)))
 
-# data cleaning
+```
+
+## Clean
+
+Let's remove cells that come from images that were marked as having debris
+
+```{r}
 debris_removed <-
   measurements %>% dplyr::filter(q_debris == 0)
+```
 
+Then, remove cells where all the measurements are NA's (TODO: explain why this
+may be needed)
+
+```{r}
 na_rows_removed <-
   cytominr:::drop_na_rows(
     population = debris_removed,
     variables = feature_cols
   ) %>%
   dplyr::compute()
+```
 
-# normalization (standardization by default)
-futile.logger::flog.info("Normalizing")
+### Normalize 
+
+We need to normalize the data so that
+
+- features are on the same scale
+
+- plate-to-plate variation is reduced
+
+The default for doing this is `standardization`. Here, we take all the cells
+from control wells in the experiment (this is where the external metadata gets
+used) and compute normalizations parameters from that (in this case, just the
+mean and s.d.) and then apply it to the whole dataset (i.e. the population)
+
+```{r}
 normalized <-
   cytominr::normalize(
     population = na_rows_removed,
     variables = feature_cols,
     strata =  c("g_plate", "g_pattern", "g_channel"),
     sample =
-      debris_removed %>%
+      na_rows_removed %>%
       dplyr::inner_join(
         ext_metadata %>% dplyr::filter(Type == "ctrl") %>%
           dplyr::select(g_well)
       )
   )
-futile.logger::flog.info("Normalized")
+```
 
-# calculate frequency of NAs per variable
+In some cases, we may have features that have no variance at all (e.g. Euler 
+number). If these features have not already been removed by this stage, the 
+standardization step will results in all values for that feature being NA (
+because s.d. = 0). Lets remove them:
+
+First, count how many cells have NA values per feature:
+
+```{r}
 na_frequency <-
   cytominr::count_na_rows(
     population = normalized,
@@ -95,22 +176,44 @@ na_frequency %>%
   tidyr::gather(feature, na_count) %>%
   knitr::kable()
 
-# drop NA columns because they may arise after normalize
+```
+
+As it turns out, no feature has NA in this example. 
+But lets run this cleaning operation  anyway (no features will be dropped)
+
+```{r}
+
 cleaned <-
   cytominr::select(
     population = normalized,
     variables = feature_cols,
     operation = "drop_na_columns"
 )
+```
 
-# tranformation (generalized log by default)
+## Transform
+
+Tranform the data so that assumptions we may later make about the data
+distribution are satisfied (e.g. Gaussianity). The default here is 
+`generalized_log`. (TODO: explain this further) 
+
+```{r}
 transformed <-
   cytominr::transform(
     population = cleaned,
     variables = feature_cols
   )
+```
 
-# aggregation (mean by default)
+## Select features
+
+Finally, we typically perform feature selection on the data (TODO: explain 
+further). Feature selection is an expensive operation, so we usually want to 
+train the feature selection model on a sample of the dataset. Here, we choose
+to aggregate the data instead of sampling it (i.e. collapse it to per-well
+aggregates)
+
+```{r}
 aggregated <-
   cytominr::aggregate(
     population = transformed,
@@ -118,8 +221,10 @@ aggregated <-
     strata = group_cols
   ) %>%
   dplyr::collect()
+```
 
-# feature selection (variance threshold by default)
+... and then apply feature selection on the per-cell data. 
+```{r}
 selected <-
   cytominr::select(
     population = transformed,
@@ -128,9 +233,11 @@ selected <-
     operation = "correlation_threshold"
   ) %>%
   dplyr::collect()
+```
 
+And now lets take a glimpse at the data!
+```{r}
 selected %>%
   dplyr::glimpse()
-
 ```
 
