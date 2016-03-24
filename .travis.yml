@@ -3,3 +3,5 @@ cache: packages
 sudo: false
 notifications:
   slack: broadimagingplatform:RwPvnCWzdnITRIlrw4upNh0i
+after_success:
+- Rscript -e 'covr::codecov()'
