@@ -1,0 +1,227 @@
+---
+title: "Morphological profiling workflows"
+author: "Cytomining Hackathon attendees"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Morphological profiling workflows}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(magrittr)
+library(dplyr)
+futile.logger::flog.threshold(futile.logger::WARN)
+```
+
+
+## Load data
+First, load the data, which is stored in a database backend 
+
+```{r}
+fixture <- '~/tmp/BBBC021.sqlite'
+
+if (!file.exists(fixture)) {
+  download.file("http://www.broadinstitute.org/~shsingh/BBBC021.sqlite", 
+              destfile = fixture, 
+              method = "curl", 
+              quiet = FALSE, mode = "w",
+              cacheOK = TRUE,
+              extra = getOption("download.file.extra"))
+}
+
+db <- src_sqlite(path = fixture)
+```
+
+
+```{r}
+images <-
+  tbl(src = db, "supplement_Image") 
+
+objects <- 
+  tbl(src = db, "supplement_Object") 
+
+metadata <- 
+  tbl(src = db, "supplement_GroundTruth") %>%
+  rename(Image_Metadata_Compound = compound,
+         Image_Metadata_Concentration = concentration,
+         Image_Metadata_MOA = moa) 
+
+images %<>%
+  inner_join(
+    metadata,
+    by = c("Image_Metadata_Compound", "Image_Metadata_Concentration")
+  )
+
+data <-
+  inner_join(images,
+             objects,
+             by = c("TableNumber", "ImageNumber")
+  ) %>%
+  compute()
+
+```
+
+
+How many rows does this table have?
+
+```{r}
+data %>%
+  dplyr::tally() %>%
+  knitr::kable()
+```
+
+All the code after this belongs to a different dataset but can provide some 
+clues on how to do the analysis
+
+```{r}
+qc_cols <- c("q_debris")
+
+group_cols <-
+  c("g_plate",
+    "g_well",
+    "g_image",
+    "g_pattern",
+    "g_channel")
+
+feature_cols <-
+  colnames(measurements) %>%
+  stringr::str_subset("^m_")
+
+measurements %<>%
+  dplyr::select(one_of(c(group_cols, qc_cols, feature_cols)))
+
+```
+
+## Clean
+
+Let's remove cells that come from images that were marked as having debris
+
+```{r}
+debris_removed <-
+  measurements %>% dplyr::filter(q_debris == 0)
+```
+
+Then, remove cells where all the measurements are NA's (TODO: explain why this
+may be needed)
+
+```{r}
+na_rows_removed <-
+  cytominr::drop_na_rows(
+    population = debris_removed,
+    variables = feature_cols
+  ) %>%
+  dplyr::compute()
+```
+
+### Normalize 
+
+We need to normalize the data so that
+
+- features are on the same scale
+
+- plate-to-plate variation is reduced
+
+The default for doing this is `standardization`. Here, we take all the cells
+from control wells in the experiment (this is where the external metadata gets
+used) and compute normalizations parameters from that (in this case, just the
+mean and s.d.) and then apply it to the whole dataset (i.e. the population)
+
+```{r}
+normalized <-
+  cytominr::normalize(
+    population = na_rows_removed,
+    variables = feature_cols,
+    strata =  c("g_plate", "g_pattern", "g_channel"),
+    sample =
+      na_rows_removed %>%
+      dplyr::inner_join(
+        ext_metadata %>% dplyr::filter(Type == "ctrl") %>%
+          dplyr::select(g_well)
+      )
+  )
+```
+
+In some cases, we may have features that have no variance at all (e.g. Euler 
+number). If these features have not already been removed by this stage, the 
+standardization step will results in all values for that feature being NA (
+because s.d. = 0). Lets remove them:
+
+First, count how many cells have NA values per feature:
+
+```{r}
+na_frequency <-
+  cytominr::count_na_rows(
+    population = normalized,
+    variables = feature_cols)
+
+na_frequency %>%
+  tidyr::gather(feature, na_count) %>%
+  knitr::kable()
+
+```
+
+As it turns out, no feature has NA in this example. 
+But lets run this cleaning operation  anyway (no features will be dropped)
+
+```{r}
+
+cleaned <-
+  cytominr::select(
+    population = normalized,
+    variables = feature_cols,
+    operation = "drop_na_columns"
+)
+```
+
+## Transform
+
+Tranform the data so that assumptions we may later make about the data
+distribution are satisfied (e.g. Gaussianity). The default here is 
+`generalized_log`. (TODO: explain this further) 
+
+```{r}
+transformed <-
+  cytominr::transform(
+    population = cleaned,
+    variables = feature_cols
+  )
+```
+
+## Select features
+
+Finally, we typically perform feature selection on the data (TODO: explain 
+further). Feature selection is an expensive operation, so we usually want to 
+train the feature selection model on a sample of the dataset. Here, we choose
+to aggregate the data instead of sampling it (i.e. collapse it to per-well
+aggregates)
+
+```{r}
+aggregated <-
+  cytominr::aggregate(
+    population = transformed,
+    variables = feature_cols,
+    strata = group_cols
+  ) %>%
+  dplyr::collect()
+```
+
+... and then apply feature selection on the per-cell data. 
+```{r}
+selected <-
+  cytominr::select(
+    population = transformed,
+    variables = feature_cols,
+    sample = aggregated,
+    operation = "correlation_threshold"
+  ) %>%
+  dplyr::collect()
+```
+
+And now lets take a glimpse at the data!
+```{r}
+selected %>%
+  dplyr::glimpse()
+```
+
