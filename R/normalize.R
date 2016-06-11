@@ -24,7 +24,7 @@ normalize <- function(population, variables, strata, sample, operation = "standa
     }
 
     data %>%
-      dplyr::select_(~-dplyr::one_of(variables))  %>%
+      dplyr::select_(~-one_of(variables))  %>%
       dplyr::rename_(.dots = setNames(paste0(variables, "_"), variables))
   }
 
