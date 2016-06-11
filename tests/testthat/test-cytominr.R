@@ -12,7 +12,7 @@ test_that("cytominr", {
 
   ext_metadata <-
     readr::read_csv(system.file("extdata", "metadata.csv",
-                                package = "cytominr")) %>%o
+                                package = "cytominr")) %>%
     dplyr::rename(g_well = Well)
 
   ext_metadata <- dplyr::copy_to(db, ext_metadata)
@@ -51,7 +51,7 @@ test_that("cytominr", {
     stringr::str_subset("^m_")
 
   measurements %<>%
-    dplyr::select(dplyr::one_of(c(group_cols, qc_cols, feature_cols)))
+    dplyr::select(one_of(c(group_cols, qc_cols, feature_cols)))
 
   # data cleaning
   debris_removed <-
