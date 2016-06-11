@@ -107,7 +107,7 @@ feature_cols <-
   stringr::str_subset("^m_")
 
 measurements %<>%
-  dplyr::select(dplyr::one_of(c(group_cols, qc_cols, feature_cols)))
+  dplyr::select(one_of(c(group_cols, qc_cols, feature_cols)))
 
 ```
 
