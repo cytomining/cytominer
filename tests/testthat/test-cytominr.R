@@ -1,6 +1,6 @@
 context("cytominr integration test")
 
-test_that("cytominr", {
+test_that("cytominr can process dataset with a normalized schema", {
 
   futile.logger::flog.threshold(futile.logger::WARN)
 
@@ -125,3 +125,4 @@ test_that("cytominr", {
     dplyr::collect()
 
 })
+
