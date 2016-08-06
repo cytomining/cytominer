@@ -72,7 +72,7 @@ test_that("cytominr", {
       variables = feature_cols,
       strata =  c("g_plate", "g_pattern", "g_channel"),
       sample =
-        debris_removed %>%
+        na_rows_removed %>%
         dplyr::inner_join(
           ext_metadata %>% dplyr::filter(Type == "ctrl") %>%
             dplyr::select(g_well)
