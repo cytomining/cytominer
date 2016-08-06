@@ -158,6 +158,8 @@ normalized <-
           dplyr::select(g_well)
       )
   )
+
+normalized %<>% dplyr::collect()
 ```
 
 In some cases, we may have features that have no variance at all (e.g. Euler 
