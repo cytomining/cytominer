@@ -80,6 +80,10 @@ test_that("cytominr", {
     )
   futile.logger::flog.info("Normalized")
 
+  # not doing this is resulting in "parser stack overflow" likely because
+  # query becomes too long. dplyr::collect and dplyr::collapse don't help here.
+  normalized %<>% dplyr::collect()
+
   # calculate frequency of NAs per variable
   na_frequency <-
     count_na_rows(
