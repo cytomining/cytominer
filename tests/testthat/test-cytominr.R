@@ -51,7 +51,7 @@ test_that("cytominr", {
     stringr::str_subset("^m_")
 
   measurements %<>%
-    dplyr::select(one_of(c(group_cols, qc_cols, feature_cols)))
+    dplyr::select(dplyr::one_of(c(group_cols, qc_cols, feature_cols)))
 
   # data cleaning
   debris_removed <-

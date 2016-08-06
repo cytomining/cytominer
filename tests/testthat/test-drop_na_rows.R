@@ -4,7 +4,7 @@ test_that("`drop_na_rows` removes rows have only NAs", {
 
   dat <-
     data.frame(x = c(1, NA, 3, 4), y = c(1, NA, 3, NA)) %>%
-    dplyr::add_rownames()
+    tibble::rownames_to_column()
 
   dat <- dplyr::copy_to(dplyr::src_sqlite(":memory:", create = T),
                         dat)
