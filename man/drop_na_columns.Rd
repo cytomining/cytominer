@@ -4,12 +4,14 @@
 \alias{drop_na_columns}
 \title{Select features without NA values}
 \usage{
-drop_na_columns(population, variables)
+drop_na_columns(population, variables, cutoff = 0.05)
 }
 \arguments{
 \item{population}{...}
 
 \item{variables}{...}
+
+\item{cutoff}{...}
 }
 \value{
 Excluded variables
