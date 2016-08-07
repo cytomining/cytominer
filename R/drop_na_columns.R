@@ -2,13 +2,14 @@
 #'
 #' @param population ...
 #' @param variables ...
+#' @param cutoff ...
 #'
 #' @return Excluded variables
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @export
-drop_na_columns <- function(population, variables) {
+drop_na_columns <- function(population, variables, cutoff = 0.05) {
   # population %>%
   #   dplyr::summarise_each_(dplyr::funs_("count"), vars = variables) %>%
   #   dplyr::collect() %>%
@@ -27,7 +28,7 @@ drop_na_columns <- function(population, variables) {
     dplyr::summarize_at(variables, dplyr::funs(sum)) %>%
     dplyr::collect() %>%
     tidyr::gather_("feature", "count", variables) %>%
-    dplyr::mutate(count = nrows - count) %>%
-    dplyr::filter_( ~ (count == 0) ) %>%
+    dplyr::mutate(percent = count / nrows) %>%
+    dplyr::filter_( ~ (percent > cutoff) ) %>%
     magrittr::extract2("feature")
 }
