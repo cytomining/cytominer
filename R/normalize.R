@@ -16,6 +16,8 @@
 normalize <- function(population, variables, strata, sample, operation = "standardize", ...) {
   scale <- function(data, location, dispersion, variables) {
     if (is.data.frame(data)) {
+      futile.logger::flog.debug("\t\tUsing base::scale")
+
       dplyr::bind_cols(
         data %>% dplyr::select_(~-dplyr::one_of(variables)),
         data %>%
