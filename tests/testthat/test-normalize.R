@@ -55,4 +55,24 @@ test_that("`normalize' normalizes data", {
     .Machine$double.eps * 1000000
   )
 
+  # test after collecting so that data.frame -specific scale function is tested
+  expect_lt(
+    norm(
+      normalize(population = dat %>% dplyr::collect(),
+                variables = c("x", "y"),
+                strata = c("g1", "g2"),
+                sample = dat,
+                operation = "standardize") %>%
+        dplyr::collect() %>%
+        dplyr::arrange(g3) %>%
+        dplyr::select(x, y) %>%
+        as.matrix() -
+        dat_normalized %>%
+        dplyr::arrange(g3) %>%
+        dplyr::select(x, y) %>%
+        as.matrix()
+    ),
+    .Machine$double.eps * 1000000
+  )
+
 })

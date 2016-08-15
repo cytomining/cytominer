@@ -15,18 +15,30 @@
 #' @export
 normalize <- function(population, variables, strata, sample, operation = "standardize", ...) {
   scale <- function(data, location, dispersion, variables) {
-    for (variable in variables) {
-      object <- list(lazyeval::interp(~ (x - m) / s, x = as.name(variable), m = location[[variable]], s = dispersion[[variable]]))
+    if (is.data.frame(data)) {
+      dplyr::bind_cols(
+        data %>% dplyr::select_(~-dplyr::one_of(variables)),
+        data %>%
+          dplyr::select_(.dots = variables) %>%
+          as.matrix() %>%
+          base::scale(center = as.matrix(location),
+                      scale = as.matrix(dispersion)) %>%
+          tibble::as_data_frame()
+      )
+    } else {
+      for (variable in variables) {
+        object <- list(lazyeval::interp(~ (x - m) / s, x = as.name(variable), m = location[[variable]], s = dispersion[[variable]]))
 
-      name <- paste0(variable, "_")
+        name <- paste0(variable, "_")
 
-      data %<>%
-        dplyr::mutate_(.dots = setNames(object = object, nm = name))
+        data %<>%
+          dplyr::mutate_(.dots = setNames(object = object, nm = name))
+      }
+
+      data %>%
+        dplyr::select_(~-dplyr::one_of(variables))  %>%
+        dplyr::rename_(.dots = setNames(paste0(variables, "_"), variables))
     }
-
-    data %>%
-      dplyr::select_(~-dplyr::one_of(variables))  %>%
-      dplyr::rename_(.dots = setNames(paste0(variables, "_"), variables))
   }
 
   if (operation == "robustize") {
@@ -84,6 +96,7 @@ normalize <- function(population, variables, strata, sample, operation = "standa
           dplyr::inner_join(y = group, by = names(group), copy = TRUE) %>%
           scale(location, dispersion, variables)
         futile.logger::flog.debug("\tscaled")
+
         scaled
       },
       split(x = groups, f = seq(nrow(groups)))
