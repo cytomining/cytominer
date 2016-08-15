@@ -16,7 +16,9 @@
 normalize <- function(population, variables, strata, sample, operation = "standardize", ...) {
   scale <- function(data, location, dispersion, variables) {
     if (is.data.frame(data)) {
-      futile.logger::flog.debug("\t\tUsing base::scale")
+      futile.logger::flog.debug(paste0("\t\tUsing base::scale (data is ",
+                                       paste(class(data), collapse = ","),
+                                       ")"))
 
       dplyr::bind_cols(
         data %>% dplyr::select_(~-dplyr::one_of(variables)),
@@ -28,6 +30,10 @@ normalize <- function(population, variables, strata, sample, operation = "standa
           tibble::as_data_frame()
       )
     } else {
+      futile.logger::flog.debug(paste0("\t\tNot using base::scale (data is ",
+                                       paste(class(data), collapse = ","),
+                                       ")"))
+
       for (variable in variables) {
         object <- list(lazyeval::interp(~ (x - m) / s, x = as.name(variable), m = location[[variable]], s = dispersion[[variable]]))
 
