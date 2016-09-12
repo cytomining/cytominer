@@ -12,18 +12,18 @@ Depends:
 License: file LICENSE
 LazyData: TRUE
 Imports:
-    dplyr,
-    futile.logger,
-    lazyeval,
-    magrittr,
-    tibble
+    dplyr (>= 0.5.0),
+    futile.logger (>= 1.4.3),
+    lazyeval (>= 0.2.0),
+    magrittr (>= 1.5),
+    tibble (>= 1.2)
 Suggests:
-    knitr,
-    readr,
-    stringr,
-    rmarkdown,
-    RSQLite,
-    testthat,
-    tidyr
+    knitr (>= 1.14),
+    readr (>= 1.0.0),
+    stringr (>= 1.1.0),
+    rmarkdown (>= 1.0),
+    RSQLite (>= 1.0.0),
+    testthat (>= 1.0.2),
+    tidyr (>= 0.6.0)
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1
