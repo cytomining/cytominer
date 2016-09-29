@@ -1,18 +1,18 @@
-context("cytominr integration test")
+context("cytominer integration test")
 
-test_that("cytominr can process dataset with a normalized schema", {
+test_that("cytominer can process dataset with a normalized schema", {
 
   futile.logger::flog.threshold(futile.logger::WARN)
 
   fixture <-
     system.file("extdata", "fixture_intensities_shapes.sqlite",
-                package = "cytominr")
+                package = "cytominer")
 
   db <- dplyr::src_sqlite(path = fixture)
 
   ext_metadata <-
     readr::read_csv(system.file("extdata", "metadata.csv",
-                                package = "cytominr")) %>%
+                                package = "cytominer")) %>%
     dplyr::rename(g_well = Well)
 
   ext_metadata <- dplyr::copy_to(db, ext_metadata)
@@ -126,19 +126,19 @@ test_that("cytominr can process dataset with a normalized schema", {
 
 })
 
-test_that("cytominr can process dataset with a CellProfiler schema", {
+test_that("cytominer can process dataset with a CellProfiler schema", {
 
   futile.logger::flog.threshold(futile.logger::WARN)
 
   fixture <-
     system.file("extdata", "fixture_htqc.sqlite",
-                package = "cytominr")
+                package = "cytominer")
 
   db <- dplyr::src_sqlite(path = fixture)
 
   ext_metadata <-
     readr::read_csv(system.file("extdata", "metadata.csv",
-                                package = "cytominr")) %>%
+                                package = "cytominer")) %>%
     dplyr::rename(g_well = Well)
 
   ext_metadata <- dplyr::copy_to(db, ext_metadata)
