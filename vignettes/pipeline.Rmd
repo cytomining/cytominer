@@ -1,10 +1,10 @@
 ---
-title: "Introduction to cytominr"
+title: "Introduction to cytominer"
 author: "Allen Goodman and Shantanu Singh"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction to cytominr}
+  %\VignetteIndexEntry{Introduction to cytominer}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -30,7 +30,7 @@ disributions)
 
 - aggregate the single-cell data, if needed
 
-The cytominr package makes these steps fast and easy.
+The cytominer package makes these steps fast and easy.
 
 ## Load data
 First, load the data, which is stored in a database backend created using 
@@ -39,7 +39,7 @@ https://github.com/0x00B1/persistence.
 ```{r}
 fixture <-
   system.file("extdata", "fixture_intensities_shapes.sqlite",
-              package = "cytominr")
+              package = "cytominer")
 
 db <- dplyr::src_sqlite(path = fixture)
 
@@ -51,7 +51,7 @@ we can use it later.
 ```{r}
 ext_metadata <-
   readr::read_csv(system.file("extdata", "metadata.csv",
-                              package = "cytominr")) %>%
+                              package = "cytominer")) %>%
   dplyr::rename(g_well = Well)
 
 ext_metadata <- dplyr::copy_to(db, ext_metadata)
@@ -125,7 +125,7 @@ may be needed)
 
 ```{r}
 na_rows_removed <-
-  cytominr::drop_na_rows(
+  cytominer::drop_na_rows(
     population = debris_removed,
     variables = feature_cols
   ) %>%
@@ -147,7 +147,7 @@ mean and s.d.) and then apply it to the whole dataset (i.e. the population)
 
 ```{r}
 normalized <-
-  cytominr::normalize(
+  cytominer::normalize(
     population = na_rows_removed,
     variables = feature_cols,
     strata =  c("g_plate", "g_pattern", "g_channel"),
@@ -171,7 +171,7 @@ First, count how many cells have NA values per feature:
 
 ```{r}
 na_frequency <-
-  cytominr::count_na_rows(
+  cytominer::count_na_rows(
     population = normalized,
     variables = feature_cols)
 
@@ -187,7 +187,7 @@ But lets run this cleaning operation  anyway (no features will be dropped)
 ```{r}
 
 cleaned <-
-  cytominr::select(
+  cytominer::select(
     population = normalized,
     variables = feature_cols,
     operation = "drop_na_columns"
@@ -202,7 +202,7 @@ distribution are satisfied (e.g. Gaussianity). The default here is
 
 ```{r}
 transformed <-
-  cytominr::transform(
+  cytominer::transform(
     population = cleaned,
     variables = feature_cols
   )
@@ -218,7 +218,7 @@ aggregates)
 
 ```{r}
 aggregated <-
-  cytominr::aggregate(
+  cytominer::aggregate(
     population = transformed,
     variables = feature_cols,
     strata = group_cols
@@ -229,7 +229,7 @@ aggregated <-
 ... and then apply feature selection on the per-cell data. 
 ```{r}
 selected <-
-  cytominr::select(
+  cytominer::select(
     population = transformed,
     variables = feature_cols,
     sample = aggregated,

@@ -1,4 +1,4 @@
-Package: cytominr
+Package: cytominer
 Type: Package
 Title: Package for analyzing high-dimensional single-cell data
 Version: 0.1.0
