@@ -1,3 +1,4 @@
+utils::globalVariables(c("count"))
 #' Select features without NA values
 #'
 #' @param population ...
