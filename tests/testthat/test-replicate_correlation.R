@@ -19,7 +19,28 @@ test_that("`replicate_correlation` measure correlation between replicates in eac
         cor(y1, y2, method = "pearson"),
         cor(z1, z2, method = "pearson")
         ))
-
+  
+  correlations_batched <- 
+    tibble::data_frame(
+      variable = c('x', 'y', 'z'),
+      b1 = c(
+        cor(x1[1:5], x2[1:5], method = "pearson"),
+        cor(y1[1:5], y2[1:5], method = "pearson"),
+        cor(z1[1:5], z2[1:5], method = "pearson")
+      ),
+      b2 = c(
+        cor(x1[6:10], x2[6:10], method = "pearson"),
+        cor(y1[6:10], y2[6:10], method = "pearson"),
+        cor(z1[6:10], z2[6:10], method = "pearson")
+      )
+    ) %>% 
+    dplyr::rowwise() %>%
+    dplyr::mutate(median = median(c(b1, b2)),
+                  min = min(b1, b2),
+                  max = max(b1, b2)) %>%
+    dplyr::ungroup() %>% 
+    dplyr::select(-b1, -b2)
+  
   batch <- rep(rep(1:2, each=5), 2)
   
   cpd <- rep(1:10, 2)
@@ -54,6 +75,21 @@ test_that("`replicate_correlation` measure correlation between replicates in eac
       dplyr::select_(.dots = c('variable', 'median')) %>%
       dplyr::arrange_(.dots = c('variable')),
     correlations
+  )
+  
+  expect_equal(
+    replicate_correlation(sample = data,
+                          variables = c("x", "y", "z"),
+                          strata = c("cpd"),
+                          replicates = 2,
+                          split_by = "batch",
+                          replicate_by = "replicate_id",
+                          cores = 2) %>%
+      dplyr::arrange_(.dots = c('variable')) %>%
+      as.data.frame(),
+    correlations_batched %>%
+      as.data.frame(),
+    tolerance = 10e-12
   )
   
 })
