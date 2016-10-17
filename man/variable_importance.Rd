@@ -4,11 +4,11 @@
 \alias{variable_importance}
 \title{Measure variable importance}
 \usage{
-variable_importance(population, variables,
-  operation = "replicate_correlation", ...)
+variable_importance(sample, variables, operation = "replicate_correlation",
+  ...)
 }
 \arguments{
-\item{population}{...}
+\item{sample}{...}
 
 \item{variables}{...}
 
