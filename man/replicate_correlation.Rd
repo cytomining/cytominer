@@ -19,6 +19,8 @@ replicate_correlation(sample, variables, strata, replicates,
 \item{replicate_by}{...}
 
 \item{split_by}{...}
+
+\item{cores}{...}
 }
 \value{
 data.frame of variable quality measurements
