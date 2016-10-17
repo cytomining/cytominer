@@ -12,12 +12,14 @@ Depends:
 License: file LICENSE
 LazyData: TRUE
 Imports:
+    doParallel (>= 1.0.10),
     dplyr (>= 0.5.0),
+    foreach (>= 1.4.3),
     futile.logger (>= 1.4.3),
     lazyeval (>= 0.2.0),
     magrittr (>= 1.5),
-    tibble (>= 1.2),
-    foreach (>= 1.4.3)
+    purrr (>= 0.2.2),
+    tibble (>= 1.2)
 Suggests:
     knitr (>= 1.14),
     readr (>= 1.0.0),
