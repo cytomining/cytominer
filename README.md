@@ -10,3 +10,5 @@ Library for mining patterns in perturbation data
 # install.packages("devtools")
 devtools::install_github("cytomining/cytominer", dependencies = TRUE, build_vignettes = TRUE)
 ```
+
+Occasionally, the `Suggests` dependencies [may not get installed](https://github.com/hadley/devtools/issues/1370), depending on your system, so you'd need to install those explicitly.
