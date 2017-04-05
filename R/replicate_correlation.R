@@ -19,13 +19,13 @@ utils::globalVariables(c("n", ".", "variable"))
 #' @export
 #'
 replicate_correlation <-
-  function(sample, variables, strata, replicates, 
-           replicate_by = NULL, 
-           split_by = NULL, 
+  function(sample, variables, strata, replicates,
+           replicate_by = NULL,
+           split_by = NULL,
            cores = NULL) {
-    
+
     doParallel::registerDoParallel(cores = cores)
-    
+
     if (is.null(split_by)) {
       sample %<>% dplyr::mutate(col_split_by = 0)
 

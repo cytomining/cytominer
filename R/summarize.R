@@ -13,12 +13,12 @@
 summarize <- function(population, variables, operation, ...) {
   if (operation == "trajectory") {
     summarized <- trajectory(population, ...)
-    
+
   } else {
     error <- paste0("undefined operation `", operation, "'")
-    
+
     futile.logger::flog.error(msg = error)
-    
+
     stop(error)
   }
 }

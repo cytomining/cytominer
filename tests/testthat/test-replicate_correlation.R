@@ -1,17 +1,17 @@
 context("replicate_correlation")
 
 test_that("`replicate_correlation` measure correlation between replicates in each feature", {
-  
+
   set.seed(123)
-  
+
   x1 <- rnorm(10)
   x2 <- x1 + rnorm(10) / 100
   y1 <- rnorm(10)
   y2 <- y1 + rnorm(10) / 10
   z1 <- rnorm(10)
   z2 <- z1 + rnorm(10) / 1
-  
-  correlations <- 
+
+  correlations <-
     tibble::data_frame(
       variable = c('x', 'y', 'z'),
       median = c(
@@ -19,8 +19,8 @@ test_that("`replicate_correlation` measure correlation between replicates in eac
         cor(y1, y2, method = "pearson"),
         cor(z1, z2, method = "pearson")
         ))
-  
-  correlations_batched <- 
+
+  correlations_batched <-
     tibble::data_frame(
       variable = c('x', 'y', 'z'),
       b1 = c(
@@ -33,20 +33,20 @@ test_that("`replicate_correlation` measure correlation between replicates in eac
         cor(y1[6:10], y2[6:10], method = "pearson"),
         cor(z1[6:10], z2[6:10], method = "pearson")
       )
-    ) %>% 
+    ) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(median = median(c(b1, b2)),
                   min = min(b1, b2),
                   max = max(b1, b2)) %>%
-    dplyr::ungroup() %>% 
+    dplyr::ungroup() %>%
     dplyr::select(-b1, -b2)
-  
+
   batch <- rep(rep(1:2, each=5), 2)
-  
+
   cpd <- rep(1:10, 2)
-  
+
   replicate_id <- rep(1:2, each=10)
-  
+
   data <- data.frame(x = c(x1, x2),
                      y = c(y1, y2),
                      z = c(z1, z2),
@@ -64,7 +64,7 @@ test_that("`replicate_correlation` measure correlation between replicates in eac
       dplyr::arrange_(.dots = c('variable')),
     correlations
   )
-  
+
   expect_equal(
     replicate_correlation(sample = data,
                           variables = c("x", "y", "z"),
@@ -76,7 +76,7 @@ test_that("`replicate_correlation` measure correlation between replicates in eac
       dplyr::arrange_(.dots = c('variable')),
     correlations
   )
-  
+
   expect_equal(
     replicate_correlation(sample = data,
                           variables = c("x", "y", "z"),
@@ -91,5 +91,5 @@ test_that("`replicate_correlation` measure correlation between replicates in eac
       as.data.frame(),
     tolerance = 10e-12
   )
-  
+
 })

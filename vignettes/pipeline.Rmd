@@ -15,7 +15,7 @@ futile.logger::flog.threshold(futile.logger::WARN)
 ```
 
 
-Typical morphological profiling datasets have millions of cells 
+Typical morphological profiling datasets have millions of cells
 and hundreds of features per cells. When working with this data, you must
 
 - clean the data
@@ -23,8 +23,8 @@ and hundreds of features per cells. When working with this data, you must
 - normalize the features so that they are comparable across experiments
 
 - transform the features so that their distributions are well-behaved (
-i.e., bring them in line with assumptions we want to make about their 
-disributions) 
+i.e., bring them in line with assumptions we want to make about their
+disributions)
 
 - select features based on their quality
 
@@ -33,7 +33,7 @@ disributions)
 The cytominer package makes these steps fast and easy.
 
 ## Load data
-First, load the data, which is stored in a database backend created using 
+First, load the data, which is stored in a database backend created using
 https://github.com/0x00B1/persistence.
 
 ```{r}
@@ -58,7 +58,7 @@ ext_metadata <- dplyr::copy_to(db, ext_metadata)
 
 ```
 
-Next, select a measurement table that you want to work. Here, we will pick 
+Next, select a measurement table that you want to work. Here, we will pick
 `intensities` but we can easily extend to using multiple or all measurement
 classes if needed by creating new views.
 
@@ -85,9 +85,9 @@ measurements %>%
   knitr::kable()
 ```
 
-That actually 9 times the number of cells in this experiment (n = 40): each 
-compartment and each channel gets its own row. Here, we have 3 compartments 
-(cell, nucleus, cytoplasm) and 3 channels (CellMask, Hoechst, Alexa568). 
+That actually 9 times the number of cells in this experiment (n = 40): each
+compartment and each channel gets its own row. Here, we have 3 compartments
+(cell, nucleus, cytoplasm) and 3 channels (CellMask, Hoechst, Alexa568).
 So that's 3 x 3 x 40 = 360.
 
 Next, do some setup stuff that we will need later
@@ -132,7 +132,7 @@ na_rows_removed <-
   dplyr::compute()
 ```
 
-### Normalize 
+### Normalize
 
 We need to normalize the data so that
 
@@ -162,8 +162,8 @@ normalized <-
 normalized %<>% dplyr::collect()
 ```
 
-In some cases, we may have features that have no variance at all (e.g. Euler 
-number). If these features have not already been removed by this stage, the 
+In some cases, we may have features that have no variance at all (e.g. Euler
+number). If these features have not already been removed by this stage, the
 standardization step will results in all values for that feature being NA (
 because s.d. = 0). Lets remove them:
 
@@ -181,7 +181,7 @@ na_frequency %>%
 
 ```
 
-As it turns out, no feature has NA in this example. 
+As it turns out, no feature has NA in this example.
 But lets run this cleaning operation  anyway (no features will be dropped)
 
 ```{r}
@@ -197,8 +197,8 @@ cleaned <-
 ## Transform
 
 Tranform the data so that assumptions we may later make about the data
-distribution are satisfied (e.g. Gaussianity). The default here is 
-`generalized_log`. (TODO: explain this further) 
+distribution are satisfied (e.g. Gaussianity). The default here is
+`generalized_log`. (TODO: explain this further)
 
 ```{r}
 transformed <-
@@ -210,8 +210,8 @@ transformed <-
 
 ## Select features
 
-Finally, we typically perform feature selection on the data (TODO: explain 
-further). Feature selection is an expensive operation, so we usually want to 
+Finally, we typically perform feature selection on the data (TODO: explain
+further). Feature selection is an expensive operation, so we usually want to
 train the feature selection model on a sample of the dataset. Here, we choose
 to aggregate the data instead of sampling it (i.e. collapse it to per-well
 aggregates)
@@ -226,7 +226,7 @@ aggregated <-
   dplyr::collect()
 ```
 
-... and then apply feature selection on the per-cell data. 
+... and then apply feature selection on the per-cell data.
 ```{r}
 selected <-
   cytominer::select(
