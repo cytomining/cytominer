@@ -19,4 +19,3 @@ generalized log transformed data
 \description{
 Generalized log transform data
 }
-

@@ -17,4 +17,3 @@ data.frame with frequency of NAs per variable
 \description{
 Frequency of NAs per variable
 }
-
