@@ -26,4 +26,3 @@ normalized data
 \description{
 Normalize data
 }
-

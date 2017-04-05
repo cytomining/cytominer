@@ -19,4 +19,3 @@ Excluded variables
 \description{
 Select features without NA values
 }
-
