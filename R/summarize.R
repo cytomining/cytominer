@@ -12,7 +12,7 @@
 #' @export
 summarize <- function(population, variables, operation, ...) {
   if (operation == "trajectory") {
-    summarized <- trajectory(population, ...)
+    summarized <- tracks(population, ...)
 
   } else {
     error <- paste0("undefined operation `", operation, "'")
