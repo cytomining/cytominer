@@ -49,7 +49,7 @@ test_that("`track` collapse single cell data to track objects", {
   )
   
   track_msd  <- tibble::data_frame(
-    Track_MSD = c(0)
+    Track_MSD = c(1)
   )
   
   track_sectors  <- tibble::data_frame(
