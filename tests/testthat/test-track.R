@@ -1,9 +1,10 @@
 context("track")
-
 test_that("`track` collapse single cell data to track objects", {
   
   # sample data set with one simple tracks
-  # todo: add more tracks
+  # todo: add more tracks to cover different scenarios inlcuding
+  # *invalid tracks
+  # *not te
   data <- tibble::data_frame(
     Metadata_timePoint = c(1:5),
     Location_Center_X = c(1, 2, 3, 4, 5),
@@ -67,7 +68,7 @@ test_that("`track` collapse single cell data to track objects", {
     Track_Speed_Y = c(0) 
   )
 
-  track_data <- cytominer::add_dist(data,'TrackObjects_Label')
+  track_data <- cytominer::displace(data,'TrackObjects_Label')
 
   expect_equal(
     track_data %>%
@@ -77,66 +78,61 @@ test_that("`track` collapse single cell data to track objects", {
     )
   
   expect_equal( 
-    track_data %>% cytominer::get_track_angle(.),
-    track_angle
-  )
-  
-  expect_equal( 
-    track_data %>% cytominer::get_track_angle(.),
+    track_data %>% cytominer::angle(.),
     track_angle
   )
   
   expect_equal( 
     track_data %>% 
-      cytominer::get_track_chemotactic_index(.),
+      cytominer::chemotacticIndex(.),
     track_ci
   )
   
   expect_equal(   
     track_data %>% 
-      cytominer::get_track_directionality(.),
+      cytominer::directionality(.),
     track_directionality
   )
   
   expect_equal( 
     track_data %>% 
-      cytominer::get_track_distance(.),
+      cytominer::distance(.),
     track_distance
   )
   
   expect_equal( 
     track_data %>% 
-      cytominer::get_track_dp(.),
+      cytominer::directionalPersistence(.),
     track_dp
   )
   
   expect_equal( 
     track_data %>% 
-      cytominer::get_track_fmi(.),
+      cytominer::forwardMigrationIndex(.),
     track_fmi
   )
   
   expect_equal( 
     track_data %>% 
-      cytominer::get_track_lifetime(.),
+      cytominer::lifeTime(.),
     track_life_time
   )
   
   expect_equal( 
     track_data %>% 
-      cytominer::get_track_msd(.,2),
+      cytominer::meanSquaredDisplacement(.,2),
     track_msd
   )
   
   expect_equal( 
     track_data %>% 
-      cytominer::get_track_sectors(),
+      cytominer::sectorAnalysis(),
     track_sectors
   )
   
   expect_equal( 
     track_data %>% 
-      cytominer::get_track_speed(),
+      cytominer::speed(),
     track_speed
   )
   
