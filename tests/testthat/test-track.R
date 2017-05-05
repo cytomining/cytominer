@@ -68,7 +68,7 @@ test_that("`track` collapse single cell data to track objects", {
     Track_Speed_Y = c(0) 
   )
 
-  track_data <- cytominer::displace(data,'TrackObjects_Label')
+  track_data <- cytominer:::displace(data,'TrackObjects_Label')
 
   expect_equal(
     track_data %>%
