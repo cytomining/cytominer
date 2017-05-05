@@ -25,7 +25,7 @@ track <- function(population, grouping_variable) {
     directionalPersistence(tracks),
     forwardMigrationIndex(tracks),
     lifeTime(tracks),
-    meanSquaredDisplacement(tracks,tau = 5),
+    meanSquaredDisplacement(tracks,tau = 2),
     sectorAnalysis(tracks),
     speed(tracks)) 
   
