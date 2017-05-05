@@ -3,9 +3,6 @@
 \name{track_helpers}
 \alias{track_helpers}
 \title{track helpers}
-\value{
-
-}
 \description{
 These functions allow you to calculate different migration parameters.
 }

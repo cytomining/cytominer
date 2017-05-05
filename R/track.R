@@ -1,49 +1,83 @@
 #' Compute track statistics
 #'
-#' @param population ...
-#'
-#' @return track statistics
-#'
+#' @param population, single cell data
+#' @param grouping_variable, column name storing the track label
+#' @return track
 #' @importFrom magrittr %>%
-#' @importFrom magrittr %<>%
+#' @examples 
+#'  data <- tibble::data_frame(
+#'    Metadata_timePoint = c(1:5),
+#'    Location_Center_X = c(1, 2, 3, 4, 5),
+#'    Location_Center_Y = c(1, 1, 1, 1, 1),
+#'    TrackObjects_Label = c(rep(1, 5))
+#'  )
+#'  tracks <- cytominer::displace(data,'TrackObjects_Label')
 #' @export
-track <- function(population, group_track, ...) {
+track <- function(population, grouping_variable) {
   # process `population`, which is the data you get from CellProfiler
-  tracks <- add_dist(population, group_track)
+  tracks <- displace(population, grouping_variable)
   
   features <- list(
     angle(tracks),
     chemotacticIndex(tracks),
     directionality(tracks),
     distance(tracks),
-    dp(tracks),
+    directionalPersistence(tracks),
     forwardMigrationIndex(tracks),
     lifeTime(tracks),
-    meanSquaredDisplacement(tracks,t = 5),
+    meanSquaredDisplacement(tracks,tau = 5),
     sectorAnalysis(tracks),
     speed(tracks)) 
   
-  return(Reduce(function(...) merge(..., all = TRUE, by = group_track), features))
+  return(Reduce(function(...) merge(..., all = TRUE, by = grouping_variable), features))
 }
 
+#' Add spatial displacement per frame for each track object
+#'
+#' @param population, data frame storing single cell data 
+#' @param group_variable, column name storing the track label
+#' @return displacement   
+#' @examples 
+#'  data <- tibble::data_frame(
+#'    Metadata_timePoint = c(1:5),
+#'    Location_Center_X = c(1, 2, 3, 4, 5),
+#'    Location_Center_Y = c(1, 1, 1, 1, 1),
+#'    TrackObjects_Label = c(rep(1, 5))
+#'  )
+#'  tracks <- cytominer::displace(data,'TrackObjects_Label')
+#' @importFrom magrittr %>%
 #' @export
-displace <- function(tracks, group_track) {
+displace <- function(population, group_variable) {
   dplyr::right_join(
-    tracks %>%
-      dplyr::select_(.dots = c(group_track, 'Location_Center_X', 'Location_Center_Y','Metadata_timePoint')) %>%
+    population %>%
+      dplyr::select_(.dots = c(group_variable, 'Location_Center_X', 'Location_Center_Y','Metadata_timePoint')) %>%
       dplyr::mutate(Metadata_timePoint2 =  (Metadata_timePoint - 1) ) %>% 
       dplyr::filter(Metadata_timePoint2 != -1) %>%
       dplyr::select(-Metadata_timePoint), 
-    tracks, by = (.dots = c(group_track, "Metadata_timePoint2" = "Metadata_timePoint" ))) %>%
-    dplyr::mutate(Track_dX = Location_Center_X.x - Location_Center_X.y) %>% 
-    dplyr::mutate(Track_dY = Location_Center_Y.x - Location_Center_Y.y) %>% 
-    dplyr::select(-Location_Center_X.x, -Location_Center_Y.x) %>%
-    dplyr::rename(Location_Center_X = Location_Center_X.y) %>%
-    dplyr::rename(Location_Center_Y = Location_Center_Y.y) %>% 
-    dplyr::rename(Metadata_timePoint = Metadata_timePoint2) %>%
-    dplyr::mutate(TrackObjects_Distance_Traveled = sqrt(Track_dX^2 + Track_dY^2)) 
+    population, by = (.dots = c(group_variable, "Metadata_timePoint2" = "Metadata_timePoint" ))) %>%
+      dplyr::mutate(Track_dX = Location_Center_X.x - Location_Center_X.y) %>% 
+      dplyr::mutate(Track_dY = Location_Center_Y.x - Location_Center_Y.y) %>% 
+      dplyr::select(-Location_Center_X.x, -Location_Center_Y.x) %>%
+      dplyr::rename(Location_Center_X = Location_Center_X.y) %>%
+      dplyr::rename(Location_Center_Y = Location_Center_Y.y) %>% 
+      dplyr::rename(Metadata_timePoint = Metadata_timePoint2) %>%
+      dplyr::mutate(TrackObjects_Distance_Traveled = sqrt(Track_dX^2 + Track_dY^2)) 
 }
 
+#' Add spatial displacement per frame for each track object
+#'
+#' @param tracks data frame with single cell data 
+#' @return displacement   
+#' @examples 
+#'  data <- tibble::data_frame(
+#'    Metadata_timePoint = c(1:5),
+#'    Location_Center_X = c(1, 2, 3, 4, 5),
+#'    Location_Center_Y = c(1, 1, 1, 1, 1),
+#'    TrackObjects_Label = c(rep(1, 5))
+#'  )
+#'  tracks <- cytominer::displace(data,'TrackObjects_Label')
+#'  speed <- cytominer::speed(tracks)
+#' @importFrom magrittr %>%
 #' @export
 speed <- function(tracks) {
   tracks %>%
@@ -53,8 +87,25 @@ speed <- function(tracks) {
       Track_Speed_X = sum(Track_dX, na.rm = TRUE) / (n() - 1),
       Track_Speed_Y = sum(Track_dY, na.rm = TRUE) / (n() - 1)) %>%
     dplyr::select(-Track_Length)
+  
 }
 
+#' Computer the forward migration index of a track object
+#'
+#' @param tracks data frame with track objects 
+#' @return forward migration index   
+#' @examples 
+#'  data <- tibble::data_frame(
+#'    Metadata_timePoint = c(1:5),
+#'    Location_Center_X = c(1, 2, 3, 4, 5),
+#'    Location_Center_Y = c(1, 1, 1, 1, 1),
+#'    TrackObjects_Label = c(rep(1, 5))
+#'  )
+#'  tracks <- cytominer::displace(data,'TrackObjects_Label')
+#'  forwardMigrationIndex <- cytominer::forwardMigrationIndex(tracks)
+#'    
+#' @importFrom magrittr %>%
+#' @importFrom utils tail
 #' @export
 forwardMigrationIndex <- function(tracks) {
   s <- tracks %>% 
@@ -67,6 +118,21 @@ forwardMigrationIndex <- function(tracks) {
     dplyr::select(-Track_Integrated_Distance_Traveled, -Track_Displacement_X, -Track_Displacement_Y )
 }
 
+#' Calculate lifeTime of a track object.
+#'
+#' @param tracks data frame with track objects 
+#' @return Calculate life time of each track object
+#' @examples 
+#'  data <- tibble::data_frame(
+#'    Metadata_timePoint = c(1:5),
+#'    Location_Center_X = c(1, 2, 3, 4, 5),
+#'    Location_Center_Y = c(1, 1, 1, 1, 1),
+#'    TrackObjects_Label = c(rep(1, 5))
+#'  )
+#'  tracks <- cytominer::displace(data,'TrackObjects_Label')
+#'  lifeTime <-  cytominer::lifeTime(tracks)
+#'    
+#' @importFrom magrittr %>%
 #' @export
 lifeTime  <- function(tracks) {
   tracks %>%
@@ -76,6 +142,22 @@ lifeTime  <- function(tracks) {
       Track_One_Cell = length(unique(Metadata_timePoint)) == length(Metadata_timePoint) )  
 }
 
+#' Calculate angle of a track object.
+#'
+#' @param tracks data frame with track objects 
+#' @return The angle of each track 
+#' @examples 
+#'  data <- tibble::data_frame(
+#'    Metadata_timePoint = c(1:5),
+#'    Location_Center_X = c(1, 2, 3, 4, 5),
+#'    Location_Center_Y = c(1, 1, 1, 1, 1),
+#'    TrackObjects_Label = c(rep(1, 5))
+#'  )
+#'  tracks <- cytominer::displace(data,'TrackObjects_Label')
+#'  angle <-  cytominer::angle(tracks)
+#'    
+#' @importFrom magrittr %>%
+#' @importFrom utils tail
 #' @export
 angle <- function(tracks) {
   tracks %>% 
@@ -83,6 +165,22 @@ angle <- function(tracks) {
       tail(Location_Center_X, n = 1) - Location_Center_X[1]))
 }
 
+#' Calculate distance traveled and the integrated distance traveled of a track object.
+#'
+#' @param tracks data frame with track objects
+#' @return distance traveled 
+#' @examples 
+#'  data <- tibble::data_frame(
+#'    Metadata_timePoint = c(1:5),
+#'    Location_Center_X = c(1, 2, 3, 4, 5),
+#'    Location_Center_Y = c(1, 1, 1, 1, 1),
+#'    TrackObjects_Label = c(rep(1, 5))
+#'  )
+#'  tracks <- cytominer::displace(data,'TrackObjects_Label')
+#'  distance <-  cytominer::distance(tracks)
+#'    
+#' @importFrom magrittr %>%
+#' @importFrom utils tail
 #' @export
 distance <- function(tracks) {
   tracks %>% 
@@ -91,6 +189,22 @@ distance <- function(tracks) {
           (tail(Location_Center_X, n = 1) - Location_Center_X[1] )^2 )) 
 }
 
+#' Calculate the directionality of a track object.
+#'
+#' @param tracks data frame with track objects
+#'
+#' @return directionality
+#' @examples 
+#'  data <- tibble::data_frame(
+#'    Metadata_timePoint = c(1:5),
+#'    Location_Center_X = c(1, 2, 3, 4, 5),
+#'    Location_Center_Y = c(1, 1, 1, 1, 1),
+#'    TrackObjects_Label = c(rep(1, 5))
+#'  )
+#'  tracks <- cytominer::displace(data,'TrackObjects_Label')
+#'  directionality <-  cytominer::directionality(tracks)
+#'    
+#' @importFrom magrittr %>%
 #' @export
 directionality <- function(tracks) {
   tracks %>% 
@@ -99,40 +213,99 @@ directionality <- function(tracks) {
     dplyr::select(-Track_Distance_Traveled, -Track_Integrated_Distance_Traveled)
 }
 
+#' Calculate the mean squared displacement of a track object.
+#'
+#' @param tracks data frame with track objects
+#' @param tau delta t
+#' @return meanSquaredDisplacement
+#' @examples 
+#'  data <- tibble::data_frame(
+#'    Metadata_timePoint = c(1:5),
+#'    Location_Center_X = c(1, 2, 3, 4, 5),
+#'    Location_Center_Y = c(1, 1, 1, 1, 1),
+#'    TrackObjects_Label = c(rep(1, 5))
+#'  )
+#'  tau <- 2
+#'  tracks <- cytominer::displace(data,'TrackObjects_Label')
+#'  meanSquaredDisplacement <-  cytominer::meanSquaredDisplacement(tracks,tau)
+#'    
+#' @importFrom magrittr %>%
 #' @export
-meanSquaredDisplacement <- function(tracks,t) {
+meanSquaredDisplacement <- function(tracks,tau) {
   tracks %>% 
-    dplyr::summarize(Track_MSD = (Location_Center_X[t] - Location_Center_X[1])^2 +
-        (Location_Center_Y[t] - Location_Center_Y[1])^2)
+    dplyr::summarize(Track_MSD = (Location_Center_X[tau] - Location_Center_X[1])^2 +
+        (Location_Center_Y[tau] - Location_Center_Y[1])^2)
 }
 
+#' Calculate the mean directionalPersistence of a track object.
+#'
+#' @param tracks data frame with track objects
+#' @return directional persistence
+#' @examples 
+#'  data <- tibble::data_frame(
+#'    Metadata_timePoint = c(1:5),
+#'    Location_Center_X = c(1, 2, 3, 4, 5),
+#'    Location_Center_Y = c(1, 1, 1, 1, 1),
+#'    TrackObjects_Label = c(rep(1, 5))
+#'  )
+#'  tracks <- cytominer::displace(data,'TrackObjects_Label')
+#'  directionalPersistence <-  cytominer::directionalPersistence(tracks)
+#'    
+#' @importFrom magrittr %>%
 #' @export
 directionalPersistence <- function(tracks) {
-  tracks %>%
+  directionalPersistence <- tracks %>%
     directionality %>%
     dplyr::mutate(Track_DP = ceiling(3 * Track_Directionality)) %>%
     dplyr::select(-Track_Directionality)
 }
 
+#' Calculate the mean chemotactic index of a track object.
+#'
+#' @param tracks data frame with track objects
+#' @return chemotacticIndex
+#' @examples 
+#' data <- tibble::data_frame(
+#'   Metadata_timePoint = c(1:5),
+#'   Location_Center_X = c(1, 2, 3, 4, 5),
+#'   Location_Center_Y = c(1, 1, 1, 1, 1),
+#'   TrackObjects_Label = c(rep(1, 5))
+#' )
+#'  tracks <- cytominer::displace(data,'TrackObjects_Label')
+#'  chemotacticIndex <-  cytominer::chemotacticIndex(tracks)
+#' @importFrom magrittr %>%
 #' @export
 chemotacticIndex <- function(tracks) {
-  tracks %>% 
+  chemotacticIndex <- tracks %>% 
     angle() %>%
     dplyr::mutate(Track_CI = -cos(Track_Angle) ) %>%
     dplyr::select(-Track_Angle)
 }
 
-
-# returned sector indices
 #
 #   \  3  /
 # 1   \ /   2
 #     / \
 #   /  4  \
+#' perform sector analysis and label each track according to its direction of movement.
 #
+#' @param tracks data frame with track objects
+#' @return sector 
+#' @examples 
+#'  data <- tibble::data_frame(
+#'    Metadata_timePoint = c(1:5),
+#'    Location_Center_X = c(1, 2, 3, 4, 5),
+#'    Location_Center_Y = c(1, 1, 1, 1, 1),
+#'    TrackObjects_Label = c(rep(1, 5))
+#'  )
+#'  tracks <- cytominer::displace(data,'TrackObjects_Label')
+#'  sectorAnalysis <-  cytominer::sectorAnalysis(tracks)
+
+#'    
+#' @importFrom magrittr %>%
 #' @export
 sectorAnalysis <- function(tracks) {
-  tracks %>%
+  sectorAnalysis <- tracks %>%
     angle() %>%
     dplyr::mutate(Track_Positive_Sector     = as.numeric( abs(Track_Angle) > (3 * pi / 4)),
       Track_Negative_Sector     = as.numeric( abs(Track_Angle) < pi / 4),

@@ -2,9 +2,7 @@
 #' 
 #' These functions allow you to calculate different migration parameters. 
 #' 
-#' @param 
 #' @name track_helpers
-#' @return 
 #' 
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%

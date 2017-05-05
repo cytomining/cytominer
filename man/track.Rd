@@ -4,14 +4,25 @@
 \alias{track}
 \title{Compute track statistics}
 \usage{
-track(population, group_track, ...)
+track(population, grouping_variable)
 }
 \arguments{
-\item{population}{...}
+\item{population, }{single cell data}
+
+\item{grouping_variable, }{column name storing the track label}
 }
 \value{
-track statistics
+track
 }
 \description{
 Compute track statistics
+}
+\examples{
+ data <- tibble::data_frame(
+   Metadata_timePoint = c(1:5),
+   Location_Center_X = c(1, 2, 3, 4, 5),
+   Location_Center_Y = c(1, 1, 1, 1, 1),
+   TrackObjects_Label = c(rep(1, 5))
+ )
+ tracks <- cytominer::displace(data,'TrackObjects_Label')
 }
