@@ -11,6 +11,18 @@ test_that("`track` collapse single cell data to track objects", {
     TrackObjects_Label = c(rep(1, 5))
   )
 
+  data2 <- tibble::data_frame(
+    Metadata_timePoint = c(1:5),
+    Location_Center_X = c(1, 2, 3, 4, 5),
+    Location_Center_Y = c(1, 1, 1, 1, 1),
+    TrackObjects_Label = c(rep(1, 5)),
+    Metadata_condition = c('a','a','a','a','a')
+  )
+  
+  data2 <- dplyr::group_by_(data2,.dots = c('TrackObjects_Label', 'Metadata_condition'))
+  f2 <- cytominer::track(data2, c('TrackObjects_Label', 'Metadata_condition'))
+  
+    
   # define results for test data
   distances <- tibble::data_frame(
     TrackObjects_Label = c(1),
@@ -77,7 +89,26 @@ test_that("`track` collapse single cell data to track objects", {
     Track_Speed_X = c(1), 
     Track_Speed_Y = c(0) 
   )
+  
+  vot <- tibble::data_frame(
+    sum_track = as.integer(5),
+    VOT = 1
+  )
+  
+  valid_tracks <- tibble::data_frame(
+    Exp_Tracks = 1,
+    Exp_Valid_Tracks = 1,
+    Exp_Valid_Track_Fraction = 1
+  )
 
+  track_quality <- tibble::data_frame(
+    sum_track = as.integer(5),
+    VOT = 1,
+    Exp_Tracks = 1,
+    Exp_Valid_Tracks = 1,
+    Exp_Valid_Track_Fraction = 1
+  )
+  
   # create test data for track command 
   feature_list <- list(track_angle, 
     track_ci,
@@ -168,5 +199,22 @@ test_that("`track` collapse single cell data to track objects", {
       cytominer::speed(),
     track_speed
   )
+  
+  expect_equivalent(
+    features %>% 
+      cytominer::validObservationTime(.,3),
+    vot
+  )
+  
+  expect_equivalent(
+    f2 %>% 
+      cytominer::validateTracks(.,2),
+    valid_tracks
+  )
+  
+   expect_equivalent(
+     f2 %>% cytominer::assess(.,2),
+     track_quality
+   )
   
 })

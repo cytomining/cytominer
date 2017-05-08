@@ -11,7 +11,8 @@
 #'    Location_Center_Y = c(1, 1, 1, 1, 1),
 #'    TrackObjects_Label = c(rep(1, 5))
 #'  )
-#'  tracks <- cytominer::displace(data,'TrackObjects_Label')
+#'  data <- dplyr::group_by_(data,'TrackObjects_Label')
+#'  tracks <- track(data,'TrackObjects_Label')
 #' @export
 track <- function(population, grouping_variable) {
   # process `population`, which is the data you get from CellProfiler
@@ -314,4 +315,89 @@ sectorAnalysis <- function(tracks) {
     ) %>%
     dplyr::mutate(Track_Sector = Track_Positive_Sector + 2 * Track_Negative_Sector + 3 * Track_Neutral_Sector_Up + 4 * Track_Neutral_Sector_Down) %>%
     dplyr::select(-Track_Angle)
+}
+
+
+#' calculate valid observation time as sum of the length of all 
+#' valid tracks divided by the sum of the length of all tracks 
+#' 
+#' @param tracks data frame with track objects
+#' @param minPathLength minimum length of a valid track
+#' @return validObservationTime
+#' @examples 
+#'  data <- tibble::data_frame(
+#'    Metadata_timePoint = c(1:5),
+#'    Location_Center_X = c(1, 2, 3, 4, 5),
+#'    Location_Center_Y = c(1, 1, 1, 1, 1),
+#'    TrackObjects_Label = c(rep(1, 5))
+#'  )
+#'  data <- dplyr::group_by_(data,'TrackObjects_Label')
+#'  tracks <- track(data,'TrackObjects_Label')
+#'  minPathLength <- 5
+#'  vot <-   validObservationTime(tracks, minPathLength)
+#' @importFrom magrittr %>% 
+#' @export
+validObservationTime <- function(tracks, minPathLength) {
+  validObservationTime <- merge(tracks %>%  
+      dplyr::filter(Track_Length > minPathLength) %>%
+      dplyr::summarise(sum_track_valid = sum(Track_Length)) , 
+    tracks %>% 
+      dplyr::summarise(sum_track = sum(Track_Length))) %>%
+    dplyr::mutate(VOT = (sum_track_valid / sum_track)) %>%
+    dplyr::select(-sum_track_valid)
+}
+
+
+#' Identify valid tracks. Valid tracks are defined as tracks with a life time longer then a predifined value.
+#' 
+#' @param tracks data frame with track objects
+#' @param minPathLength minimum length of a valid track
+#' @return validObservationTime
+#' @examples 
+#'  data <- tibble::data_frame(
+#'    Metadata_timePoint = c(1:5),
+#'    Location_Center_X = c(1, 2, 3, 4, 5),
+#'    Location_Center_Y = c(1, 1, 1, 1, 1),
+#'    TrackObjects_Label = c(rep(1, 5))
+#'  )
+#'  data <- dplyr::group_by_(data,'TrackObjects_Label')
+#'  tracks <- track(data,'TrackObjects_Label')
+#'  minPathLength <- 5
+#'  validateTracks <-   validateTracks(tracks, minPathLength)
+#' @importFrom magrittr %>% 
+#' @export
+validateTracks <- function(tracks, minPathLength){
+  tracks %>%
+    dplyr::mutate(Track_Valid = as.numeric(Track_Length > minPathLength)) %>%
+    dplyr::summarize(
+      Exp_Tracks = n(),
+      Exp_Valid_Tracks = sum(Track_Valid), 
+      Exp_Valid_Track_Fraction = sum(Track_Valid) / n()
+      )
+}
+
+
+#' Assess track quality.
+#' @param tracks data frame with track objects
+#' @param minPathLength minimum length of a valid track
+#' @param trackLabel column name of track index column  
+#' @return validObservationTime
+#' @examples 
+#'  data <- tibble::data_frame(
+#'    Metadata_timePoint = c(1:5),
+#'    Location_Center_X = c(1, 2, 3, 4, 5),
+#'    Location_Center_Y = c(1, 1, 1, 1, 1),
+#'    TrackObjects_Label = c(rep(1, 5))
+#'  )
+#'  trackLabel <- 'TrackObjects_Label'
+#'  data <- dplyr::group_by_(data,trackLabel)
+#'  tracks <- track(data,trackLabel)
+#'  minPathLength <- 5
+#'  trackQuality <- assess(tracks,minPathLength,trackLabel)
+#' @importFrom magrittr %>% 
+#' @export
+assess <- function(tracks, minPathLength, trackLabel) {
+  trackInfo <- list(validObservationTime(tracks, minPathLength),
+    validateTracks(tracks,minPathLength))
+  return(Reduce(function(...) merge(..., all = TRUE, by_ = trackLabel), trackInfo))
 }
