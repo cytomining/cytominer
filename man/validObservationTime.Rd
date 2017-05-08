@@ -29,5 +29,5 @@ valid tracks divided by the sum of the length of all tracks
  data <- dplyr::group_by_(data,'TrackObjects_Label')
  tracks <- track(data,'TrackObjects_Label')
  minPathLength <- 5
- vot <-   validObservationTime(tracks, minPathLength)
+ vot <-   cytominer::validObservationTime(tracks, minPathLength)
 }

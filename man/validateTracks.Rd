@@ -27,5 +27,5 @@ Identify valid tracks. Valid tracks are defined as tracks with a life time longe
  data <- dplyr::group_by_(data,'TrackObjects_Label')
  tracks <- track(data,'TrackObjects_Label')
  minPathLength <- 5
- validateTracks <-   validateTracks(tracks, minPathLength)
+ validateTracks <-   cytominer::validateTracks(tracks, minPathLength)
 }

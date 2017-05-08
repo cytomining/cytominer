@@ -30,5 +30,5 @@ Assess track quality.
  data <- dplyr::group_by_(data,trackLabel)
  tracks <- track(data,trackLabel)
  minPathLength <- 5
- trackQuality <- assess(tracks,minPathLength,trackLabel)
+ trackQuality <- cytominer::assess(tracks,minPathLength,trackLabel)
 }

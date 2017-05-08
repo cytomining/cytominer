@@ -334,7 +334,7 @@ sectorAnalysis <- function(tracks) {
 #'  data <- dplyr::group_by_(data,'TrackObjects_Label')
 #'  tracks <- track(data,'TrackObjects_Label')
 #'  minPathLength <- 5
-#'  vot <-   validObservationTime(tracks, minPathLength)
+#'  vot <-   cytominer::validObservationTime(tracks, minPathLength)
 #' @importFrom magrittr %>% 
 #' @export
 validObservationTime <- function(tracks, minPathLength) {
@@ -363,7 +363,7 @@ validObservationTime <- function(tracks, minPathLength) {
 #'  data <- dplyr::group_by_(data,'TrackObjects_Label')
 #'  tracks <- track(data,'TrackObjects_Label')
 #'  minPathLength <- 5
-#'  validateTracks <-   validateTracks(tracks, minPathLength)
+#'  validateTracks <-   cytominer::validateTracks(tracks, minPathLength)
 #' @importFrom magrittr %>% 
 #' @export
 validateTracks <- function(tracks, minPathLength){
@@ -393,7 +393,7 @@ validateTracks <- function(tracks, minPathLength){
 #'  data <- dplyr::group_by_(data,trackLabel)
 #'  tracks <- track(data,trackLabel)
 #'  minPathLength <- 5
-#'  trackQuality <- assess(tracks,minPathLength,trackLabel)
+#'  trackQuality <- cytominer::assess(tracks,minPathLength,trackLabel)
 #' @importFrom magrittr %>% 
 #' @export
 assess <- function(tracks, minPathLength, trackLabel) {
