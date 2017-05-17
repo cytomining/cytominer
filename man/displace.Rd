@@ -4,12 +4,12 @@
 \alias{displace}
 \title{Add spatial displacement per frame for each track object}
 \usage{
-displace(population, group_variable)
+displace(population, strata)
 }
 \arguments{
 \item{population, }{data frame storing single cell data}
 
-\item{group_variable, }{column name storing the track label}
+\item{strata, }{column name storing the track label}
 }
 \value{
 displacement

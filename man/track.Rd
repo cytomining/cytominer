@@ -4,12 +4,12 @@
 \alias{track}
 \title{Compute track statistics}
 \usage{
-track(population, grouping_variable)
+track(population, strata)
 }
 \arguments{
 \item{population, }{single cell data}
 
-\item{grouping_variable, }{column name storing the track label}
+\item{strata, }{column name storing the track label}
 }
 \value{
 track

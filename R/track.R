@@ -1,7 +1,7 @@
 #' Compute track statistics
 #'
 #' @param population, single cell data
-#' @param grouping_variable, column name storing the track label
+#' @param strata, column name storing the track label
 #' @return track
 #' @importFrom magrittr %>%
 #' @examples 
@@ -14,29 +14,29 @@
 #'  data <- dplyr::group_by_(data,'TrackObjects_Label')
 #'  tracks <- track(data,'TrackObjects_Label')
 #' @export
-track <- function(population, grouping_variable) {
+track <- function(population, strata) {
   # process `population`, which is the data you get from CellProfiler
-  tracks <- displace(population, grouping_variable)
+  tracks <- displace(population, strata)
   
   features <- list(
     angle(tracks),
-    chemotacticIndex(tracks),
+    chemotactic_index(tracks),
     directionality(tracks),
     distance(tracks),
-    directionalPersistence(tracks),
-    forwardMigrationIndex(tracks),
-    lifeTime(tracks),
-    meanSquaredDisplacement(tracks,tau = 2),
-    sectorAnalysis(tracks),
+    directional_persistence(tracks),
+    forward_migration_index(tracks),
+    lifetime(tracks),
+    mean_squared_displacement(tracks, tau = 2),
+    sector_analysis(tracks),
     speed(tracks)) 
   
-  return(Reduce(function(...) merge(..., all = TRUE, by = grouping_variable), features))
+  return(Reduce(function(...) merge(..., all = TRUE, by = strata), features))
 }
 
 #' Add spatial displacement per frame for each track object
 #'
 #' @param population, data frame storing single cell data 
-#' @param group_variable, column name storing the track label
+#' @param strata, column name storing the track label
 #' @return displacement   
 #' @examples 
 #'  data <- tibble::data_frame(
@@ -48,14 +48,14 @@ track <- function(population, grouping_variable) {
 #'  tracks <- cytominer::displace(data,'TrackObjects_Label')
 #' @importFrom magrittr %>%
 #' @export
-displace <- function(population, group_variable) {
+displace <- function(population, strata) {
   dplyr::right_join(
     population %>%
-      dplyr::select_(.dots = c(group_variable, 'Location_Center_X', 'Location_Center_Y','Metadata_timePoint')) %>%
+      dplyr::select_(.dots = c(strata, 'Location_Center_X', 'Location_Center_Y','Metadata_timePoint')) %>%
       dplyr::mutate(Metadata_timePoint2 =  (Metadata_timePoint - 1) ) %>% 
       dplyr::filter(Metadata_timePoint2 != -1) %>%
       dplyr::select(-Metadata_timePoint), 
-    population, by = (.dots = c(group_variable, "Metadata_timePoint2" = "Metadata_timePoint" ))) %>%
+    population, by = (.dots = c(strata, "Metadata_timePoint2" = "Metadata_timePoint" ))) %>%
       dplyr::mutate(Track_dX = Location_Center_X.x - Location_Center_X.y) %>% 
       dplyr::mutate(Track_dY = Location_Center_Y.x - Location_Center_Y.y) %>% 
       dplyr::select(-Location_Center_X.x, -Location_Center_Y.x) %>%
@@ -91,7 +91,7 @@ speed <- function(tracks) {
   
 }
 
-#' Computer the forward migration index of a track object
+#' Compute the forward migration index of a tracked object
 #'
 #' @param tracks data frame with track objects 
 #' @return forward migration index   
@@ -103,12 +103,12 @@ speed <- function(tracks) {
 #'    TrackObjects_Label = c(rep(1, 5))
 #'  )
 #'  tracks <- cytominer::displace(data,'TrackObjects_Label')
-#'  forwardMigrationIndex <- cytominer::forwardMigrationIndex(tracks)
+#'  forward_migration_index <- cytominer::forward_migration_index(tracks)
 #'    
 #' @importFrom magrittr %>%
 #' @importFrom utils tail
 #' @export
-forwardMigrationIndex <- function(tracks) {
+forward_migration_index <- function(tracks) {
   s <- tracks %>% 
     dplyr::summarize(Track_Integrated_Distance_Traveled = sum(TrackObjects_Distance_Traveled, na.rm = TRUE),
       Track_Displacement_X = tail(Location_Center_X, n = 1) - Location_Center_X[1],
@@ -119,7 +119,7 @@ forwardMigrationIndex <- function(tracks) {
     dplyr::select(-Track_Integrated_Distance_Traveled, -Track_Displacement_X, -Track_Displacement_Y )
 }
 
-#' Calculate lifeTime of a track object.
+#' Calculate lifetime of a track object.
 #'
 #' @param tracks data frame with track objects 
 #' @return Calculate life time of each track object
@@ -131,11 +131,11 @@ forwardMigrationIndex <- function(tracks) {
 #'    TrackObjects_Label = c(rep(1, 5))
 #'  )
 #'  tracks <- cytominer::displace(data,'TrackObjects_Label')
-#'  lifeTime <-  cytominer::lifeTime(tracks)
+#'  lifetime <-  cytominer::lifetime(tracks)
 #'    
 #' @importFrom magrittr %>%
 #' @export
-lifeTime  <- function(tracks) {
+lifetime  <- function(tracks) {
   tracks %>%
     dplyr::summarize( 
       Track_Length = n(), 
@@ -218,7 +218,7 @@ directionality <- function(tracks) {
 #'
 #' @param tracks data frame with track objects
 #' @param tau delta t
-#' @return meanSquaredDisplacement
+#' @return mean_squared_displacement
 #' @examples 
 #'  data <- tibble::data_frame(
 #'    Metadata_timePoint = c(1:5),
@@ -228,17 +228,17 @@ directionality <- function(tracks) {
 #'  )
 #'  tau <- 2
 #'  tracks <- cytominer::displace(data,'TrackObjects_Label')
-#'  meanSquaredDisplacement <-  cytominer::meanSquaredDisplacement(tracks,tau)
+#'  mean_squared_displacement <-  cytominer::mean_squared_displacement(tracks,tau)
 #'    
 #' @importFrom magrittr %>%
 #' @export
-meanSquaredDisplacement <- function(tracks,tau) {
+mean_squared_displacement <- function(tracks,tau) {
   tracks %>% 
     dplyr::summarize(Track_MSD = (Location_Center_X[tau] - Location_Center_X[1])^2 +
         (Location_Center_Y[tau] - Location_Center_Y[1])^2)
 }
 
-#' Calculate the mean directionalPersistence of a track object.
+#' Calculate the mean directional_persistence of a track object.
 #'
 #' @param tracks data frame with track objects
 #' @return directional persistence
@@ -250,12 +250,12 @@ meanSquaredDisplacement <- function(tracks,tau) {
 #'    TrackObjects_Label = c(rep(1, 5))
 #'  )
 #'  tracks <- cytominer::displace(data,'TrackObjects_Label')
-#'  directionalPersistence <-  cytominer::directionalPersistence(tracks)
+#'  directional_persistence <-  cytominer::directional_persistence(tracks)
 #'    
 #' @importFrom magrittr %>%
 #' @export
-directionalPersistence <- function(tracks) {
-  directionalPersistence <- tracks %>%
+directional_persistence <- function(tracks) {
+  directional_persistence <- tracks %>%
     directionality %>%
     dplyr::mutate(Track_DP = ceiling(3 * Track_Directionality)) %>%
     dplyr::select(-Track_Directionality)
@@ -264,7 +264,7 @@ directionalPersistence <- function(tracks) {
 #' Calculate the mean chemotactic index of a track object.
 #'
 #' @param tracks data frame with track objects
-#' @return chemotacticIndex
+#' @return chemotactic_index
 #' @examples 
 #' data <- tibble::data_frame(
 #'   Metadata_timePoint = c(1:5),
@@ -273,11 +273,11 @@ directionalPersistence <- function(tracks) {
 #'   TrackObjects_Label = c(rep(1, 5))
 #' )
 #'  tracks <- cytominer::displace(data,'TrackObjects_Label')
-#'  chemotacticIndex <-  cytominer::chemotacticIndex(tracks)
+#'  chemotactic_index <-  cytominer::chemotactic_index(tracks)
 #' @importFrom magrittr %>%
 #' @export
-chemotacticIndex <- function(tracks) {
-  chemotacticIndex <- tracks %>% 
+chemotactic_index <- function(tracks) {
+  chemotactic_index <- tracks %>% 
     angle() %>%
     dplyr::mutate(Track_CI = -cos(Track_Angle) ) %>%
     dplyr::select(-Track_Angle)
@@ -300,13 +300,12 @@ chemotacticIndex <- function(tracks) {
 #'    TrackObjects_Label = c(rep(1, 5))
 #'  )
 #'  tracks <- cytominer::displace(data,'TrackObjects_Label')
-#'  sectorAnalysis <-  cytominer::sectorAnalysis(tracks)
-
+#'  sector_analysis <-  cytominer::sector_analysis(tracks)
 #'    
 #' @importFrom magrittr %>%
 #' @export
-sectorAnalysis <- function(tracks) {
-  sectorAnalysis <- tracks %>%
+sector_analysis <- function(tracks) {
+  sector_analysis <- tracks %>%
     angle() %>%
     dplyr::mutate(Track_Positive_Sector     = as.numeric( abs(Track_Angle) > (3 * pi / 4)),
       Track_Negative_Sector     = as.numeric( abs(Track_Angle) < pi / 4),
@@ -322,8 +321,8 @@ sectorAnalysis <- function(tracks) {
 #' valid tracks divided by the sum of the length of all tracks 
 #' 
 #' @param tracks data frame with track objects
-#' @param minPathLength minimum length of a valid track
-#' @return validObservationTime
+#' @param min_path_length minimum length of a valid track
+#' @return valid_observation_time
 #' @examples 
 #'  data <- tibble::data_frame(
 #'    Metadata_timePoint = c(1:5),
@@ -333,13 +332,13 @@ sectorAnalysis <- function(tracks) {
 #'  )
 #'  data <- dplyr::group_by_(data,'TrackObjects_Label')
 #'  tracks <- track(data,'TrackObjects_Label')
-#'  minPathLength <- 5
-#'  vot <-   cytominer::validObservationTime(tracks, minPathLength)
+#'  min_path_length <- 5
+#'  vot <-   cytominer::valid_observation_time(tracks, min_path_length)
 #' @importFrom magrittr %>% 
 #' @export
-validObservationTime <- function(tracks, minPathLength) {
-  validObservationTime <- merge(tracks %>%  
-      dplyr::filter(Track_Length > minPathLength) %>%
+valid_observation_time <- function(tracks, min_path_length) {
+  valid_observation_time <- merge(tracks %>%  
+      dplyr::filter(Track_Length > min_path_length) %>%
       dplyr::summarise(sum_track_valid = sum(Track_Length)) , 
     tracks %>% 
       dplyr::summarise(sum_track = sum(Track_Length))) %>%
@@ -351,8 +350,8 @@ validObservationTime <- function(tracks, minPathLength) {
 #' Identify valid tracks. Valid tracks are defined as tracks with a life time longer then a predifined value.
 #' 
 #' @param tracks data frame with track objects
-#' @param minPathLength minimum length of a valid track
-#' @return validObservationTime
+#' @param min_path_length minimum length of a valid track
+#' @return valid_observation_time
 #' @examples 
 #'  data <- tibble::data_frame(
 #'    Metadata_timePoint = c(1:5),
@@ -362,13 +361,13 @@ validObservationTime <- function(tracks, minPathLength) {
 #'  )
 #'  data <- dplyr::group_by_(data,'TrackObjects_Label')
 #'  tracks <- track(data,'TrackObjects_Label')
-#'  minPathLength <- 5
-#'  validateTracks <-   cytominer::validateTracks(tracks, minPathLength)
+#'  min_path_length <- 5
+#'  validate_tracks <-   cytominer::validate_tracks(tracks, min_path_length)
 #' @importFrom magrittr %>% 
 #' @export
-validateTracks <- function(tracks, minPathLength){
+validate_tracks <- function(tracks, min_path_length){
   tracks %>%
-    dplyr::mutate(Track_Valid = as.numeric(Track_Length > minPathLength)) %>%
+    dplyr::mutate(Track_Valid = as.numeric(Track_Length > min_path_length)) %>%
     dplyr::summarize(
       Exp_Tracks = n(),
       Exp_Valid_Tracks = sum(Track_Valid), 
@@ -379,9 +378,9 @@ validateTracks <- function(tracks, minPathLength){
 
 #' Assess track quality.
 #' @param tracks data frame with track objects
-#' @param minPathLength minimum length of a valid track
-#' @param trackLabel column name of track index column  
-#' @return validObservationTime
+#' @param min_path_length minimum length of a valid track
+#' @param strata column name of track index column  
+#' @return valid_observation_time
 #' @examples 
 #'  data <- tibble::data_frame(
 #'    Metadata_timePoint = c(1:5),
@@ -389,15 +388,15 @@ validateTracks <- function(tracks, minPathLength){
 #'    Location_Center_Y = c(1, 1, 1, 1, 1),
 #'    TrackObjects_Label = c(rep(1, 5))
 #'  )
-#'  trackLabel <- 'TrackObjects_Label'
-#'  data <- dplyr::group_by_(data,trackLabel)
-#'  tracks <- track(data,trackLabel)
-#'  minPathLength <- 5
-#'  trackQuality <- cytominer::assess(tracks,minPathLength,trackLabel)
+#'  strata <- 'TrackObjects_Label'
+#'  data <- dplyr::group_by_(data,strata)
+#'  tracks <- track(data,strata)
+#'  min_path_length <- 5
+#'  trackQuality <- cytominer::assess(tracks,min_path_length,strata)
 #' @importFrom magrittr %>% 
 #' @export
-assess <- function(tracks, minPathLength, trackLabel) {
-  trackInfo <- list(validObservationTime(tracks, minPathLength),
-    validateTracks(tracks,minPathLength))
-  return(Reduce(function(...) merge(..., all = TRUE, by_ = trackLabel), trackInfo))
+assess <- function(tracks, min_path_length, strata) {
+  track_info <- list(valid_observation_time(tracks, min_path_length),
+    validate_tracks(tracks,min_path_length))
+  return(Reduce(function(...) merge(..., all = TRUE, by_ = strata), track_info))
 }

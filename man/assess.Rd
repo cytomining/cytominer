@@ -4,17 +4,17 @@
 \alias{assess}
 \title{Assess track quality.}
 \usage{
-assess(tracks, minPathLength, trackLabel)
+assess(tracks, min_path_length, strata)
 }
 \arguments{
 \item{tracks}{data frame with track objects}
 
-\item{minPathLength}{minimum length of a valid track}
+\item{min_path_length}{minimum length of a valid track}
 
-\item{trackLabel}{column name of track index column}
+\item{strata}{column name of track index column}
 }
 \value{
-validObservationTime
+valid_observation_time
 }
 \description{
 Assess track quality.
@@ -26,9 +26,9 @@ Assess track quality.
    Location_Center_Y = c(1, 1, 1, 1, 1),
    TrackObjects_Label = c(rep(1, 5))
  )
- trackLabel <- 'TrackObjects_Label'
- data <- dplyr::group_by_(data,trackLabel)
- tracks <- track(data,trackLabel)
- minPathLength <- 5
- trackQuality <- cytominer::assess(tracks,minPathLength,trackLabel)
+ strata <- 'TrackObjects_Label'
+ data <- dplyr::group_by_(data,strata)
+ tracks <- track(data,strata)
+ min_path_length <- 5
+ trackQuality <- cytominer::assess(tracks,min_path_length,strata)
 }

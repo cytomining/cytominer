@@ -121,16 +121,16 @@ test_that("`track` collapse single cell data to track objects", {
     track_sectors,
     track_speed)
   
-  trackLabel <- 'TrackObjects_Label'
-  features <- Reduce(function(...) merge(..., all = TRUE, by = trackLabel), feature_list)
+  strata <- 'TrackObjects_Label'
+  features <- Reduce(function(...) merge(..., all = TRUE, by = strata), feature_list)
 
-  track_data <- cytominer:::displace(data,trackLabel) %>%
-    dplyr::group_by_(trackLabel)
+  track_data <- cytominer:::displace(data,strata) %>%
+    dplyr::group_by_(strata)
 
   # 
   expect_equal(
      track_data %>%
-      track(.,trackLabel),
+      track(.,strata),
       features
    )
   
@@ -148,7 +148,7 @@ test_that("`track` collapse single cell data to track objects", {
   
   expect_equal( 
     track_data %>% 
-      cytominer::chemotacticIndex(.),
+      cytominer::chemotactic_index(.),
     track_ci
   )
   
@@ -166,31 +166,31 @@ test_that("`track` collapse single cell data to track objects", {
   
   expect_equal( 
     track_data %>% 
-      cytominer::directionalPersistence(.),
+      cytominer::directional_persistence(.),
     track_dp
   )
   
   expect_equal( 
     track_data %>% 
-      cytominer::forwardMigrationIndex(.),
+      cytominer::forward_migration_index(.),
     track_fmi
   )
   
   expect_equal( 
     track_data %>% 
-      cytominer::lifeTime(.),
+      cytominer::lifetime(.),
     track_life_time
   )
   
   expect_equal( 
     track_data %>% 
-      cytominer::meanSquaredDisplacement(.,2),
+      cytominer::mean_squared_displacement(.,2),
     track_msd
   )
   
   expect_equal( 
     track_data %>% 
-      cytominer::sectorAnalysis(),
+      cytominer::sector_analysis(),
     track_sectors
   )
   
@@ -202,13 +202,13 @@ test_that("`track` collapse single cell data to track objects", {
   
   expect_equivalent(
     features %>% 
-      cytominer::validObservationTime(.,3),
+      cytominer::valid_observation_time(.,3),
     vot
   )
   
   expect_equivalent(
     f2 %>% 
-      cytominer::validateTracks(.,2),
+      cytominer::validate_tracks(.,2),
     valid_tracks
   )
   
