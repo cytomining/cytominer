@@ -1,6 +1,5 @@
 context("track")
 test_that("`track` collapse single cell data to track objects", {
-  
   # sample data set with one simple tracks
   # todo: add more tracks to cover different scenarios inlcuding
   # *invalid tracks
@@ -10,7 +9,7 @@ test_that("`track` collapse single cell data to track objects", {
     Location_Center_Y = c(1, 1, 1, 1, 1),
     TrackObjects_Label = c(rep(1, 5))
   )
-
+  
   data2 <- tibble::data_frame(
     Metadata_timePoint = c(1:5),
     Location_Center_X = c(1, 2, 3, 4, 5),
@@ -22,7 +21,6 @@ test_that("`track` collapse single cell data to track objects", {
   data2 <- dplyr::group_by_(data2,.dots = c('TrackObjects_Label', 'Metadata_condition'))
   f2 <- cytominer::track(data2, c('TrackObjects_Label', 'Metadata_condition'))
   
-    
   # define results for test data
   distances <- tibble::data_frame(
     TrackObjects_Label = c(1),
@@ -33,6 +31,7 @@ test_that("`track` collapse single cell data to track objects", {
     TrackObjects_Label = c(1),
     Track_Angle = c(0)
   )
+  
   
   track_ci  <- tibble::data_frame(
     TrackObjects_Label = c(1),
@@ -100,7 +99,7 @@ test_that("`track` collapse single cell data to track objects", {
     Exp_Valid_Tracks = 1,
     Exp_Valid_Track_Fraction = 1
   )
-
+  
   track_quality <- tibble::data_frame(
     sum_track = as.integer(5),
     VOT = 1,
@@ -123,23 +122,22 @@ test_that("`track` collapse single cell data to track objects", {
   
   strata <- 'TrackObjects_Label'
   features <- Reduce(function(...) merge(..., all = TRUE, by = strata), feature_list)
-
+  
   track_data <- cytominer:::displace(data,strata) %>%
     dplyr::group_by_(strata)
-
-  # 
+  
   expect_equal(
-     track_data %>%
+    track_data %>%
       track(.,strata),
-      features
-   )
+    features
+  )
   
   expect_equal(
     track_data %>%
       dplyr::select(TrackObjects_Distance_Traveled) %>%
       na.omit(), 
     distances
-    )
+  )
   
   expect_equal( 
     track_data %>% cytominer::angle(.),
@@ -212,9 +210,9 @@ test_that("`track` collapse single cell data to track objects", {
     valid_tracks
   )
   
-   expect_equivalent(
-     f2 %>% cytominer::assess(.,2),
-     track_quality
-   )
+  expect_equivalent(
+    f2 %>% cytominer::assess(.,2),
+    track_quality
+  )
   
 })
