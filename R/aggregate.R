@@ -17,6 +17,8 @@ aggregate <- function(population, variables, strata, operation="mean", ...) {
     aggregating_function <- dplyr::funs(mean)
   } else if (operation == "median") {
     aggregating_function <- dplyr::funs(median)
+  } else if (operation == "sd") {
+    aggregating_function <- dplyr::funs(sd)
   } else {
     error <- paste0("undefined operation `", operation, "'")
 
