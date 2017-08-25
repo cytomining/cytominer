@@ -34,7 +34,7 @@ The cytominer package makes these steps fast and easy.
 
 ## Load data
 First, load the data, which is stored in a database backend created using
-https://github.com/0x00B1/persistence.
+https://github.com/cytomining/cytominer-database.
 
 ```{r}
 fixture <-
@@ -120,8 +120,8 @@ debris_removed <-
   measurements %>% dplyr::filter(q_debris == 0)
 ```
 
-Then, remove cells where all the measurements are NA's (TODO: explain why this
-may be needed)
+Then, remove cells where all the measurements are NA's - this may happen
+if the identified cell mask was too small to measure any of the features.
 
 ```{r}
 na_rows_removed <-
@@ -132,7 +132,7 @@ na_rows_removed <-
   dplyr::compute()
 ```
 
-### Normalize
+## Normalize
 
 We need to normalize the data so that
 
@@ -148,15 +148,17 @@ mean and s.d.) and then apply it to the whole dataset (i.e. the population)
 ```{r}
 normalized <-
   cytominer::normalize(
-    population = na_rows_removed,
+    population = na_rows_removed %>% 
+      dplyr::collect(),
     variables = feature_cols,
     strata =  c("g_plate", "g_pattern", "g_channel"),
     sample =
       na_rows_removed %>%
       dplyr::inner_join(
-        ext_metadata %>% dplyr::filter(Type == "ctrl") %>%
-          dplyr::select(g_well)
-      )
+        ext_metadata %>% 
+          dplyr::filter(Type == "ctrl") %>% 
+          dplyr::select(g_well) 
+      ) %>% dplyr::collect()
   )
 
 normalized %<>% dplyr::collect()
@@ -198,7 +200,7 @@ cleaned <-
 
 Tranform the data so that assumptions we may later make about the data
 distribution are satisfied (e.g. Gaussianity). The default here is
-`generalized_log`. (TODO: explain this further)
+`generalized_log`.
 
 ```{r}
 transformed <-
@@ -210,11 +212,10 @@ transformed <-
 
 ## Select features
 
-Finally, we typically perform feature selection on the data (TODO: explain
-further). Feature selection is an expensive operation, so we usually want to
-train the feature selection model on a sample of the dataset. Here, we choose
-to aggregate the data instead of sampling it (i.e. collapse it to per-well
-aggregates)
+Finally, we typically perform feature selection on the data. Feature selection is 
+an expensive operation, so we usually want to train the feature selection model on 
+a sample of the dataset. Here, we choose to aggregate the data instead of sampling 
+it (i.e. collapse it to per-well aggregates)
 
 ```{r}
 aggregated <-
@@ -226,7 +227,9 @@ aggregated <-
   dplyr::collect()
 ```
 
-... and then apply feature selection on the per-cell data.
+... and then apply feature selection on the per-cell data. Here 
+`correlation_threshold` - a method that reduces the redundancy of features - 
+is used.
 ```{r}
 selected <-
   cytominer::select(
