@@ -76,7 +76,7 @@ normalize <- function(population, variables, strata, sample, operation = "standa
     dplyr::collect()
 
   Reduce(
-    dplyr::union,
+    dplyr::union_all,
     Map(
       f = function(group) {
         futile.logger::flog.debug(group)
@@ -89,13 +89,13 @@ normalize <- function(population, variables, strata, sample, operation = "standa
         futile.logger::flog.debug("\tlocation")
         location <-
           stratum %>%
-          dplyr::summarise_each_(funs = location, vars = variables) %>%
+          dplyr::summarise_at(.funs = location, .vars = variables) %>%
           dplyr::collect()
 
         futile.logger::flog.debug("\tdispersion")
         dispersion <-
           stratum %>%
-          dplyr::summarise_each_(funs = dispersion, vars = variables) %>%
+          dplyr::summarise_at(.funs = dispersion, .vars = variables) %>%
           dplyr::collect()
 
         futile.logger::flog.debug("\tscale")
@@ -107,7 +107,7 @@ normalize <- function(population, variables, strata, sample, operation = "standa
 
         scaled
       },
-      split(x = groups, f = seq(nrow(groups)))
+      split(x = groups, f = seq(nrow(groups)))[1:2]
     )
   )
 }
