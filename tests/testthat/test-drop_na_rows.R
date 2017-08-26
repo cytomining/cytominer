@@ -2,14 +2,15 @@ context("drop_na_rows")
 
 test_that("`drop_na_rows` removes rows have only NAs", {
 
-  dat <-
+  data <-
     data.frame(x = c(1, NA, 3, 4), y = c(1, NA, 3, NA)) %>%
     tibble::rownames_to_column()
 
-  dat <- dplyr::copy_to(dplyr::src_sqlite(":memory:", create = T),
-                        dat)
-
-  dat %<>% dplyr::filter(x != 1)
+  db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  
+  data <- dplyr::copy_to(db, data)
+  
+  data %<>% dplyr::filter(x != 1)
 
   drop_na_rows.data.frame <- function(population, variables) {
     population %>%
@@ -19,25 +20,26 @@ test_that("`drop_na_rows` removes rows have only NAs", {
   }
 
   expect_equal(
-    drop_na_rows(population = dat,
+    drop_na_rows(population = data,
                  variables = c("x", "y")) %>%
       dplyr::collect() %>%
       dplyr::arrange(rowname),
-    dat %>%
+    data %>%
       dplyr::collect() %>%
       drop_na_rows.data.frame(variables = c("x", "y")) %>%
       dplyr::arrange(rowname)
   )
 
   expect_equal(
-    drop_na_rows(population = dat,
+    drop_na_rows(population = data,
                  variables = c("x")) %>%
       dplyr::collect() %>%
       dplyr::arrange(rowname),
-    dat %>%
+    data %>%
       dplyr::collect() %>%
       drop_na_rows.data.frame(variables = c("x")) %>%
       dplyr::arrange(rowname)
   )
 
+  DBI::dbDisconnect(db)
 })
