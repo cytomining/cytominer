@@ -11,7 +11,7 @@ generalized_log(population, variables, offset = 1)
 
 \item{variables}{...}
 
-\item{c}{...}
+\item{offset}{...}
 }
 \value{
 generalized log transformed data
