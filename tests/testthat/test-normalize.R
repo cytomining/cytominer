@@ -2,7 +2,8 @@ context("normalize")
 
 test_that("`normalize' normalizes data", {
   set.seed(123)
-  generate_mat <- function(cvec, svec) {
+  
+  generate_matrix <- function(cvec, svec) {
     n <- 30
 
     m <- matrix(runif(n * 2), n, 2) %>% scale(.)
@@ -10,44 +11,49 @@ test_that("`normalize' normalizes data", {
     cbind(m, m %>% sweep(., 2, svec, FUN = "*") %>% sweep(., 2, cvec, FUN = "+")) %>% as.data.frame()
   }
 
-  dat <-
+  data <-
     dplyr::bind_rows(
-      generate_mat(rnorm(2), rnorm(2) ^ 2) %>%
+      generate_matrix(rnorm(2), rnorm(2) ^ 2) %>%
         dplyr::mutate(g1 = "a", g2 = "x"),
-      generate_mat(rnorm(2), rnorm(2) ^ 2) %>%
+      generate_matrix(rnorm(2), rnorm(2) ^ 2) %>%
         dplyr::mutate(g1 = "a", g2 = "y"),
-      generate_mat(rnorm(2), rnorm(2) ^ 2) %>%
+      generate_matrix(rnorm(2), rnorm(2) ^ 2) %>%
         dplyr::mutate(g1 = "b", g2 = "x"),
-      generate_mat(rnorm(2), rnorm(2) ^ 2) %>%
+      generate_matrix(rnorm(2), rnorm(2) ^ 2) %>%
         dplyr::mutate(g1 = "b", g2 = "y")
     )
-  dat %<>% dplyr::mutate(g3 = seq(nrow(dat)))
+  
+  data %<>% dplyr::mutate(g3 = seq(nrow(data)))
 
-  dat_normalized <-
-    dat %>%
+  data_normalized <-
+    data %>%
     dplyr::select(g1, g2, g3, V1, V2) %>%
     dplyr::rename(x = V1, y = V2)
 
-  dat <-
-    dat %>%
+  data <-
+    data %>%
     dplyr::select(g1, g2, g3, V3, V4) %>%
     dplyr::rename(x = V3, y = V4)
 
-  dat <- dplyr::copy_to(dplyr::src_sqlite(":memory:", create = T),
-                        dat)
+  # The call to dplyr::src_sqlite was not changed to DBI::dbConnect
+  # because it results in an error "no such function: STDEV"
+  # db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  # data <- dplyr::copy_to(db, data)
+  data <- dplyr::copy_to(dplyr::src_sqlite(":memory:", create = T),
+                        data)
 
   expect_lt(
     norm(
-      normalize(population = dat,
+      normalize(population = data,
                 variables = c("x", "y"),
                 strata = c("g1", "g2"),
-                sample = dat,
+                sample = data,
                 operation = "standardize") %>%
         dplyr::collect() %>%
         dplyr::arrange(g3) %>%
         dplyr::select(x, y) %>%
         as.matrix() -
-      dat_normalized %>%
+      data_normalized %>%
         dplyr::arrange(g3) %>%
         dplyr::select(x, y) %>%
         as.matrix()
@@ -58,16 +64,16 @@ test_that("`normalize' normalizes data", {
   # test after collecting so that data.frame -specific scale function is tested
   expect_lt(
     norm(
-      normalize(population = dat %>% dplyr::collect(),
+      normalize(population = data %>% dplyr::collect(),
                 variables = c("x", "y"),
                 strata = c("g1", "g2"),
-                sample = dat,
+                sample = data,
                 operation = "standardize") %>%
         dplyr::collect() %>%
         dplyr::arrange(g3) %>%
         dplyr::select(x, y) %>%
         as.matrix() -
-        dat_normalized %>%
+        data_normalized %>%
         dplyr::arrange(g3) %>%
         dplyr::select(x, y) %>%
         as.matrix()

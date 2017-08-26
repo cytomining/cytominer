@@ -11,6 +11,7 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
+#' @importFrom rlang :=
 #' @importFrom stats cor mad median sd setNames
 #' @export
 normalize <- function(population, variables, strata, sample, operation = "standardize", ...) {
@@ -35,17 +36,18 @@ normalize <- function(population, variables, strata, sample, operation = "standa
                                        ")"))
 
       for (variable in variables) {
-        object <- list(lazyeval::interp(~ (x - m) / s, x = as.name(variable), m = location[[variable]], s = dispersion[[variable]]))
-
-        name <- paste0(variable, "_")
-
+        x <- rlang::sym(variable)
+        
+        m <- location[[variable]]
+        
+        s <- dispersion[[variable]]
+        
         data %<>%
-          dplyr::mutate_(.dots = setNames(object = object, nm = name))
+          dplyr::mutate(!!x := ((!!x) - m) / s )
+        
       }
 
-      data %>%
-        dplyr::select_(~-dplyr::one_of(variables))  %>%
-        dplyr::rename_(.dots = setNames(paste0(variables, "_"), variables))
+      data
     }
   }
 
@@ -76,7 +78,7 @@ normalize <- function(population, variables, strata, sample, operation = "standa
     dplyr::collect()
 
   Reduce(
-    dplyr::union,
+    dplyr::union_all,
     Map(
       f = function(group) {
         futile.logger::flog.debug(group)
@@ -89,13 +91,13 @@ normalize <- function(population, variables, strata, sample, operation = "standa
         futile.logger::flog.debug("\tlocation")
         location <-
           stratum %>%
-          dplyr::summarise_each_(funs = location, vars = variables) %>%
+          dplyr::summarise_at(.funs = location, .vars = variables) %>%
           dplyr::collect()
 
         futile.logger::flog.debug("\tdispersion")
         dispersion <-
           stratum %>%
-          dplyr::summarise_each_(funs = dispersion, vars = variables) %>%
+          dplyr::summarise_at(.funs = dispersion, .vars = variables) %>%
           dplyr::collect()
 
         futile.logger::flog.debug("\tscale")

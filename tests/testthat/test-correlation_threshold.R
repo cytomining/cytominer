@@ -3,25 +3,27 @@ context("correlation_threshold")
 test_that("`correlation_threshold` selects variables that are not highly correlated", {
 
   set.seed(123)
-  dat <- data.frame(x = rnorm(30))
-  dat$y <- rnorm(30) / 1000
-  dat$z <- dat$x + rnorm(30) / 1000
+  data <- data.frame(x = rnorm(30))
+  data$y <- rnorm(30) / 1000
+  data$z <- data$x + rnorm(30) / 1000
 
-  dat <- dplyr::copy_to(dplyr::src_sqlite(":memory:", create = T),
-                        dat)
+  db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  
+  data <- dplyr::copy_to(db, data)
 
   expect_equal(
-    correlation_threshold(population = dat,
+    correlation_threshold(population = data,
                           variables = c("x", "y", "z"),
-                          sample = dat %>% dplyr::collect()),
+                          sample = data %>% dplyr::collect()),
     c("z")
   )
 
   expect_equal(
-    correlation_threshold(population = dat,
+    correlation_threshold(population = data,
                           variables = c("x", "y"),
-                          sample = dat %>% dplyr::collect()),
+                          sample = data %>% dplyr::collect()),
     character(0)
   )
 
+  DBI::dbDisconnect(db)
 })
