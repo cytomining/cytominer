@@ -35,17 +35,18 @@ normalize <- function(population, variables, strata, sample, operation = "standa
                                        ")"))
 
       for (variable in variables) {
-        object <- list(lazyeval::interp(~ (x - m) / s, x = as.name(variable), m = location[[variable]], s = dispersion[[variable]]))
-
-        name <- paste0(variable, "_")
-
+        x <- rlang::sym(variable)
+        
+        m <- location[[variable]]
+        
+        s <- dispersion[[variable]]
+        
         data %<>%
-          dplyr::mutate_(.dots = setNames(object = object, nm = name))
+          dplyr::mutate(!!x := ((!!x) - m) / s )
+        
       }
 
-      data %>%
-        dplyr::select_(~-dplyr::one_of(variables))  %>%
-        dplyr::rename_(.dots = setNames(paste0(variables, "_"), variables))
+      data
     }
   }
 
@@ -107,7 +108,7 @@ normalize <- function(population, variables, strata, sample, operation = "standa
 
         scaled
       },
-      split(x = groups, f = seq(nrow(groups)))[1:2]
+      split(x = groups, f = seq(nrow(groups)))
     )
   )
 }
