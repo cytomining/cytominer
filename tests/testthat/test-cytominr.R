@@ -127,14 +127,13 @@ test_that("cytominer can process dataset with a normalized schema", {
 })
 
 test_that("cytominer can process dataset with a CellProfiler schema", {
-
   futile.logger::flog.threshold(futile.logger::WARN)
 
   fixture <-
     system.file("extdata", "fixture_htqc.sqlite",
                 package = "cytominer")
 
-  db <- dplyr::src_sqlite(path = fixture)
+  db <- DBI::dbConnect(RSQLite::SQLite(), fixture)
 
   ext_metadata <-
     readr::read_csv(system.file("extdata", "metadata.csv",
@@ -160,12 +159,14 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
                                                 image_Metadata_Barcode,
                                                 image_Metadata_Well,
                                                 image_Metadata_isDebris) ,
-                                by = c("TableNumber", "ImageNumber")) %>%
-    dplyr::rename(g_plate = image_Metadata_Barcode,
-                  g_well = image_Metadata_Well,
-                  g_table = TableNumber,
-                  g_image = ImageNumber,
-                  q_debris = image_Metadata_isDebris)
+                                by = c("TableNumber", "ImageNumber")) 
+  
+  # need to rename individually because of https://github.com/tidyverse/dplyr/issues/2860
+  object %<>% dplyr::rename(g_plate = image_Metadata_Barcode)
+  object %<>% dplyr::rename(g_well = image_Metadata_Well)
+  object %<>% dplyr::rename(g_table = TableNumber)
+  object %<>% dplyr::rename(g_image = ImageNumber)
+  object %<>% dplyr::rename(q_debris = image_Metadata_isDebris)
 
   futile.logger::flog.info("Created table for objects")
 
@@ -208,13 +209,17 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
 
   # Coalesce can't handle the large number of columns so skipping the
   # `na_rows_removed` step
-  na_rows_removed <- debris_removed
+  na_rows_removed <- debris_removed 
+
+  # dplyr::collect is forced below for `population` and `sample`
+  # not doing this is resulting in "parser stack overflow" likely because
+  # query becomes too long. dplyr::compute and dplyr::collapse don't help here.
 
   # normalization (standardization by default)
   futile.logger::flog.info("Normalizing")
   normalized <-
     normalize(
-      population = na_rows_removed,
+      population = na_rows_removed %>% dplyr::collect(),
       variables = feature_cols,
       strata =  c("g_plate"),
       sample =
@@ -222,13 +227,9 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
         dplyr::inner_join(
           ext_metadata %>% dplyr::filter(Type == "ctrl") %>%
             dplyr::select(g_well)
-        )
+        ) %>% dplyr::collect()
     )
   futile.logger::flog.info("Normalized")
-
-  # not doing this is resulting in "parser stack overflow" likely because
-  # query becomes too long. dplyr::collect and dplyr::collapse don't help here.
-  normalized %<>% dplyr::collect()
 
   # calculate frequency of NAs per variable
   na_frequency <-
@@ -244,6 +245,10 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
       operation = "drop_na_columns"
     )
 
+  feature_cols <-
+    colnames(cleaned) %>%
+    stringr::str_subset("^Nuclei_|^Cells_|^Cytoplasm_")
+  
   # tranformation (generalized log by default)
   transformed <-
     transform(
@@ -251,7 +256,7 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
       variables = feature_cols
     )
 
-  # aggregation (mean by default)
+  # aggregation (default is mean)
   aggregated <-
     aggregate(
       population = transformed,
@@ -270,4 +275,5 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
     ) %>%
     dplyr::collect()
 
+  DBI::dbDisconnect(db)
 })
