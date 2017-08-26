@@ -8,6 +8,7 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
+#' @importFrom rlang :=
 #' @export
 generalized_log <- function(population, variables, offset = 1) {
   offset <- rlang::enquo(offset)

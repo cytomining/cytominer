@@ -11,6 +11,7 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
+#' @importFrom rlang :=
 #' @importFrom stats cor mad median sd setNames
 #' @export
 normalize <- function(population, variables, strata, sample, operation = "standardize", ...) {
