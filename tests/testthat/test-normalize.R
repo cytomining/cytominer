@@ -35,8 +35,12 @@ test_that("`normalize' normalizes data", {
     dplyr::select(g1, g2, g3, V3, V4) %>%
     dplyr::rename(x = V3, y = V4)
 
+  # The call to dplyr::src_sqlite was not changed to DBI::dbConnect
+  # because it results in an error "no such function: STDEV"
+  # db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  # data <- dplyr::copy_to(db, data)
   data <- dplyr::copy_to(dplyr::src_sqlite(":memory:", create = T),
-                         data)
+                        data)
 
   expect_lt(
     norm(

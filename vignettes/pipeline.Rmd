@@ -41,8 +41,8 @@ fixture <-
   system.file("extdata", "fixture_intensities_shapes.sqlite",
               package = "cytominer")
 
-db <- dplyr::src_sqlite(path = fixture)
-
+db <- DBI::dbConnect(RSQLite::SQLite(), fixture)
+  
 ```
 
 Then load associated metadata if it exists, and copy it to the backend so that
@@ -245,5 +245,10 @@ And now lets take a glimpse at the data!
 ```{r}
 selected %>%
   dplyr::glimpse()
+```
+
+
+```{r}
+  DBI::dbDisconnect(db)
 ```
 

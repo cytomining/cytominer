@@ -2,23 +2,25 @@ context("variance_threshold")
 
 test_that("`variance_threshold` selects variables that have non-trivial variance", {
 
-  dat <- data.frame(x = rnorm(30), y = 1)
+  data <- data.frame(x = rnorm(30), y = 1)
 
-  dat <- dplyr::copy_to(dplyr::src_sqlite(":memory:", create = T),
-                        dat)
-
+  db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  
+  data <- dplyr::copy_to(db, data)
+  
   expect_equal(
-    variance_threshold(population = dat,
+    variance_threshold(population = data,
                        variables = c("x", "y"),
-                       sample = dat %>% dplyr::collect()),
+                       sample = data %>% dplyr::collect()),
     c("y")
   )
 
   expect_equal(
-    variance_threshold(population = dat,
+    variance_threshold(population = data,
                        variables = c("x"),
-                       sample = dat %>% dplyr::collect()),
+                       sample = data %>% dplyr::collect()),
     character(0)
   )
 
+  DBI::dbDisconnect(db)
 })
