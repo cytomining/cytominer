@@ -4,7 +4,7 @@
 \alias{generalized_log}
 \title{Generalized log transform data}
 \usage{
-generalized_log(population, variables, c = 1)
+generalized_log(population, variables, offset = 1)
 }
 \arguments{
 \item{population}{...}
