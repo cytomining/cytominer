@@ -8,7 +8,7 @@ test_that("`aggregate` aggregates data", {
       data.frame(g = "b", x = rnorm(5), y = rnorm(5))
     )
 
-  db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+  db <- dplyr::src_sqlite(":memory:", create = T)
   
   data <- dplyr::copy_to(db, data)
 
@@ -44,6 +44,4 @@ test_that("`aggregate` aggregates data", {
       dplyr::group_by(g) %>%
       dplyr::summarise_at(.funs =c(dplyr::funs(mean), dplyr::funs(sd)), .vars = c("x", "y"))
   )
-
-  DBI::dbDisconnect(db)
 })
