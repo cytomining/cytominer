@@ -15,11 +15,11 @@ drop_na_rows <- function(population, variables) {
   
   if (is.data.frame(population)) {
     population %>%
-      rownames_to_column() %>%
-      gather_("key", "value",variables)  %>%
-      filter(!is.na(value)) %>%
-      spread(key, value) %>%
-      select(-rowname)
+      tibble::rownames_to_column(., var = "rowname_temp") %>%
+      tidyr::gather_("key", "value",variables)  %>%
+      dplyr::filter(!is.na(value)) %>%
+      tidyr::spread(key, value) %>%
+      dplyr::select(-rowname_temp)
   } else { 
     
     # Coalesce() must have at least 2 arguments.
