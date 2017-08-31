@@ -1,8 +1,8 @@
 #' Select features using variance threshold
 #'
-#' @param population ...
-#' @param variables ...
-#' @param sample ...
+#' @param population Data frame with observation and grouping variables (metadata). 
+#' @param variables Vector of column names defining the used features.
+#' @param sample Subpopulation used to calculate the distribution of the given variables.
 #'
 #' @return Excluded variables
 #'

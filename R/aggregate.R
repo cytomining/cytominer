@@ -1,12 +1,21 @@
-#' Aggregate data
+#' Aggregate data based on given grouping.
 #'
-#' @param population ...
-#' @param variables ...
-#' @param strata ...
-#' @param operation ...
-#' @param ... arguments passed to aggregation operation
+#' @param population Data frame with observation and grouping variables (metadata).  
+#' @param variables Vector of column names defining the used features.
+#' @param strata Vector of column names used as grouping variables.
+#' @param operation Data can be aggregated using one of operation = "mean", operation = "median", operation = "mean+sd"
+#' @param ... optional arguments passed to aggregation operation
+#'@examples
+#' population <- tibble::data_frame(
+#'    Metadata_group = c("control", "control","control","control","experiment","experiment","experiment","experiment"),
+#'    Metadata_batch = c("a","a","b","b","a","a","b","b"),
+#'    AreaShape_Area = c(10,12,15,16,8,8,7,7)
+#'  )
+#' variables <- c('AreaShape_Area')
+#' strata <- c('Metadata_group','Metadata_batch')
+#' aggregated = aggregate(population, variables, strata, operation = "mean")
 #'
-#' @return aggregated data
+#' @return Data frame with aggregated data
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%

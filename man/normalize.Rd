@@ -2,27 +2,38 @@
 % Please edit documentation in R/normalize.R
 \name{normalize}
 \alias{normalize}
-\title{Normalize data}
+\title{Normalize a data frame based using a control group.}
 \usage{
 normalize(population, variables, strata, sample, operation = "standardize",
   ...)
 }
 \arguments{
-\item{population}{...}
+\item{population}{Data frame with observation and grouping variables (metadata).}
 
-\item{variables}{...}
+\item{variables}{Vector of column names defining the used features.}
 
-\item{strata}{...}
+\item{strata}{Vector of column names used as grouping variables.}
 
-\item{sample}{...}
+\item{sample}{Data frame used to estimate the distribution of the control group.}
 
-\item{operation}{...}
+\item{operation}{The following methods can be chosen to normalize the data. 1. standardize were the data is normalized using X = (X - mu) / sigma where mu is the estimated mean value of the control data and sigma  or standardize. Default value operation = "standardize".}
 
 \item{...}{arguments passed to normalization operation}
 }
 \value{
-normalized data
+Normalized data as data frame.
 }
 \description{
-Normalize data
+Normalize a data frame based using a control group.
+}
+\examples{
+ population <- tibble::data_frame(
+   Metadata_group = c("control", "control","control","control","experiment","experiment","experiment","experiment"),
+   Metadata_batch = c("a","a","b","b","a","a","b","b"),
+   AreaShape_Area = c(10,12,15,16,8,8,7,7)
+ )
+variables <- c('AreaShape_Area')
+strata <- c('Metadata_batch','Metadata_group')
+sample <- population \%>\% filter(Metadata_group == 'control')
+normalized = cytominer::normalize(population, variables, strata, sample, operation = "standardize")
 }

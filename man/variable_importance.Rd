@@ -8,11 +8,11 @@ variable_importance(sample, variables, operation = "replicate_correlation",
   ...)
 }
 \arguments{
-\item{sample}{...}
+\item{sample}{Poplation used to estimate the importance of each variable.}
 
-\item{variables}{...}
+\item{variables}{Vector of column names defining the used features.}
 
-\item{operation}{...}
+\item{operation}{The operation "replicate_correlation" can be chosen. Default operation = "replicate_correlation".}
 
 \item{...}{arguments passed to variable importance operation}
 }

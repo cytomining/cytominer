@@ -7,11 +7,11 @@
 variance_threshold(population, variables, sample)
 }
 \arguments{
-\item{population}{...}
+\item{population}{Data frame with observation and grouping variables (metadata).}
 
-\item{variables}{...}
+\item{variables}{Vector of column names defining the used features.}
 
-\item{sample}{...}
+\item{sample}{Subpopulation used to calculate the distribution of the given variables.}
 }
 \value{
 Excluded variables

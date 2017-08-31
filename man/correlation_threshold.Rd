@@ -8,18 +8,18 @@ correlation_threshold(population, variables, sample, cutoff = 0.9,
   method = "pearson")
 }
 \arguments{
-\item{population}{...}
+\item{population}{Data frame with observation and grouping variables (metadata).}
 
-\item{variables}{...}
+\item{variables}{Vector of column names defining the used features.}
 
-\item{sample}{...}
+\item{sample}{Subpopulation used to calculate the distribution of the given variables.}
 
-\item{cutoff}{...}
+\item{cutoff}{Threshold is a variable between [0,1] that defines the minimum correlation of a selected feature. Default value 0.90.}
 
-\item{method}{...}
+\item{method}{Defines the method used to calculate the correlation. Method is a character string indicating which correlation coefficient (or covariance) is used. One of "pearson" (default), "kendall", or "spearman": can be abbreviated.}
 }
 \value{
-Excluded variables
+List with excluded features.
 }
 \description{
 Select features using correlation threshold

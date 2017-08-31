@@ -7,15 +7,15 @@
 generalized_log(population, variables, offset = 1)
 }
 \arguments{
-\item{population}{...}
+\item{population}{Data frame with observation and grouping variables (metadata).}
 
-\item{variables}{...}
+\item{variables}{Vector of column names defining the used features.}
 
-\item{offset}{...}
+\item{offset}{Offset parameter for the log transformation. Default offset = 1.}
 }
 \value{
-generalized log transformed data
+Data frame with generalized log transformed values.
 }
 \description{
-Generalized log transform data
+Each variable is log transformed using x = log( (x + sqrt(x ^ 2 + offset ^ 2 )) / 2 ).
 }

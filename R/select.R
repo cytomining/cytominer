@@ -1,8 +1,9 @@
 #' Select columns
 #'
-#' @param population ...
-#' @param variables ...
-#' @param operation ...
+#' @param population Data frame with observation and grouping variables (metadata). 
+#' @param variables  Vector of column names defining the used features. 
+#' @param operation One of 'variance_threshold', 'correlation_threshold', 'drop_na_columns'. 
+#' @param sample (Sub)population used with operation 'correlation_threshold' and 'variance_threshold'. Default sample = NULL.
 #' @param ... arguments passed to selection operation
 #'
 #' @return feature selected data

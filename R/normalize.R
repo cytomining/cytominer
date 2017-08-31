@@ -1,18 +1,29 @@
-#' Normalize data
+#' Normalize a data frame based using a control group.   
 #'
-#' @param population ...
-#' @param variables ...
-#' @param strata ...
-#' @param sample ...
-#' @param operation ...
+#' @param population Data frame with observation and grouping variables (metadata). 
+#' @param variables Vector of column names defining the used features.
+#' @param strata Vector of column names used as grouping variables. 
+#' @param sample Data frame used to estimate the distribution of the control group.
+#' @param operation The following methods can be chosen to normalize the data. 1. standardize were the data is normalized using X = (X - mu) / sigma where mu is the estimated mean value of the control data and sigma  or standardize. Default value operation = "standardize".
 #' @param ... arguments passed to normalization operation
 #'
-#' @return normalized data
+#' @return Normalized data as data frame. 
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @importFrom rlang :=
 #' @importFrom stats cor mad median sd setNames
+#' 
+#' @examples
+#'  population <- tibble::data_frame(
+#'    Metadata_group = c("control", "control","control","control","experiment","experiment","experiment","experiment"),
+#'    Metadata_batch = c("a","a","b","b","a","a","b","b"),
+#'    AreaShape_Area = c(10,12,15,16,8,8,7,7)
+#'  )
+#' variables <- c('AreaShape_Area')
+#' strata <- c('Metadata_batch','Metadata_group')
+#' sample <- population %>% filter(Metadata_group == 'control')
+#' normalized = cytominer::normalize(population, variables, strata, sample, operation = "standardize")
 #' @export
 normalize <- function(population, variables, strata, sample, operation = "standardize", ...) {
   scale <- function(data, location, dispersion, variables) {

@@ -1,8 +1,11 @@
 #' Transform data
 #'
-#' @param population ...
-#' @param variables ...
-#' @param operation ...
+#' Method to transform the valus in the data frame. This is often helpfull 
+#' if the distribution of features does not follow a gaussian distribution. 
+#'
+#' @param population Data frame with observation and grouping variables (metadata).
+#' @param variables Vector of column names defining the used features.
+#' @param operation One of 'generalized log'. Default  operation = "generalized_log".
 #' @param ... arguments passed to transformation operation
 #'
 #' @return transformed data

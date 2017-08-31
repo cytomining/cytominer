@@ -2,24 +2,35 @@
 % Please edit documentation in R/aggregate.R
 \name{aggregate}
 \alias{aggregate}
-\title{Aggregate data}
+\title{Aggregate data based on given grouping.}
 \usage{
 aggregate(population, variables, strata, operation = "mean", ...)
 }
 \arguments{
-\item{population}{...}
+\item{population}{Data frame with observation and grouping variables (metadata).}
 
-\item{variables}{...}
+\item{variables}{Vector of column names defining the used features.}
 
-\item{strata}{...}
+\item{strata}{Vector of column names used as grouping variables.}
 
-\item{operation}{...}
+\item{operation}{Data can be aggregated using one of operation = "mean", operation = "median", operation = "mean+sd"}
 
-\item{...}{arguments passed to aggregation operation}
+\item{...}{optional arguments passed to aggregation operation}
 }
 \value{
-aggregated data
+Data frame with aggregated data
 }
 \description{
-Aggregate data
+Aggregate data based on given grouping.
+}
+\examples{
+population <- tibble::data_frame(
+   Metadata_group = c("control", "control","control","control","experiment","experiment","experiment","experiment"),
+   Metadata_batch = c("a","a","b","b","a","a","b","b"),
+   AreaShape_Area = c(10,12,15,16,8,8,7,7)
+ )
+variables <- c('AreaShape_Area')
+strata <- c('Metadata_group','Metadata_batch')
+aggregated = aggregate(population, variables, strata, operation = "mean")
+
 }

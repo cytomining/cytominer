@@ -7,15 +7,26 @@
 drop_na_columns(population, variables, cutoff = 0.05)
 }
 \arguments{
-\item{population}{...}
+\item{population}{Data frame with observation and grouping variables (metadata).}
 
-\item{variables}{...}
+\item{variables}{Vector of column names defining the used variables.}
 
-\item{cutoff}{...}
+\item{cutoff}{Threshold for the frequency of na values between 0 and 1. All features with a NA frequency > cutoff are selected. Default value cutoff = 0.05.}
 }
 \value{
-Excluded variables
+List with names of the excluded features.
 }
 \description{
 Select features without NA values
+}
+\examples{
+ population <- tibble::data_frame(
+   Metadata_group = c("control", "control","control","control","experiment","experiment","experiment","experiment"),
+   Metadata_batch = c("a","a","b","b","a","a","b","b"),
+   AreaShape_Area = c(10,12,15,16,8,8,7,7),
+   AreaShape_length = c(2,3,NA,NA,4,5,1,5)
+ )
+variables <- c('AreaShape_Area','AreaShape_length')
+na_per_column = drop_na_columns(population, variables)
+
 }

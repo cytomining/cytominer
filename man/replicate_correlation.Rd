@@ -8,19 +8,19 @@ replicate_correlation(sample, variables, strata, replicates,
   replicate_by = NULL, split_by = NULL, cores = NULL)
 }
 \arguments{
-\item{sample}{...}
+\item{sample}{Population used to estimate the correlation.}
 
-\item{variables}{...}
+\item{variables}{Vector of column names defining the used features.}
 
-\item{strata}{...}
+\item{strata}{Vector of grouping variable.}
 
 \item{replicates}{...}
 
-\item{replicate_by}{...}
+\item{replicate_by}{... Default = NULL.}
 
-\item{split_by}{...}
+\item{split_by}{. Default = NULL.}
 
-\item{cores}{...}
+\item{cores}{Number of cpu cores used for parallel computing using doParallel. Default cores = NULL.}
 }
 \value{
 data.frame of variable quality measurements

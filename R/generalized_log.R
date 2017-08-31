@@ -1,10 +1,12 @@
 #' Generalized log transform data
+#' 
+#' Each variable is log transformed using x = log( (x + sqrt(x ^ 2 + offset ^ 2 )) / 2 ).
 #'
-#' @param population ...
-#' @param variables ...
-#' @param offset ...
+#' @param population Data frame with observation and grouping variables (metadata). 
+#' @param variables Vector of column names defining the used features. 
+#' @param offset Offset parameter for the log transformation. Default offset = 1.
 #'
-#' @return generalized log transformed data
+#' @return Data frame with generalized log transformed values.
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%

@@ -7,11 +7,11 @@
 transform(population, variables, operation = "generalized_log", ...)
 }
 \arguments{
-\item{population}{...}
+\item{population}{Data frame with observation and grouping variables (metadata).}
 
-\item{variables}{...}
+\item{variables}{Vector of column names defining the used features.}
 
-\item{operation}{...}
+\item{operation}{One of 'generalized log'. Default  operation = "generalized_log".}
 
 \item{...}{arguments passed to transformation operation}
 }
@@ -19,5 +19,6 @@ transform(population, variables, operation = "generalized_log", ...)
 transformed data
 }
 \description{
-Transform data
+Method to transform the valus in the data frame. This is often helpfull 
+if the distribution of features does not follow a gaussian distribution.
 }
