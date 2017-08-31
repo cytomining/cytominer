@@ -13,9 +13,9 @@
 select <- function(population, variables,
                    operation = "variance_threshold", ...) {
   if (operation == "variance_threshold") {
-    excluded <- variance_threshold(population, variables, ...)
+    excluded <- variance_threshold(variables, ...)
   } else if (operation == "correlation_threshold") {
-    excluded <- correlation_threshold(population, variables, ...)
+    excluded <- correlation_threshold( variables, ...)
   } else if (operation == "drop_na_columns") {
     excluded <- drop_na_columns(population, variables, ...)
   } else {
