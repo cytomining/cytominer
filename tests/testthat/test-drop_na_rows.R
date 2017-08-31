@@ -62,27 +62,5 @@ test_that("`drop_na_rows` removes rows have only NAs", {
       dplyr::arrange(rowname)
   )
   
-  # 
-  # expect_equal(
-  #   drop_na_rows(population = data %>% dplyr::collect(),
-  #     variables = c("x", "y")) %>%
-  #     dplyr::arrange(rowname),
-  #   data %>%
-  #     dplyr::collect() %>%
-  #     drop_na_rows.data.frame(variables = c("x", "y")) %>%
-  #     dplyr::arrange(rowname)
-  # )
-  # 
-  # expect_equal(
-  #   drop_na_rows(population = data,
-  #     variables = c("x")) %>%
-  #     dplyr::collect() %>%
-  #     dplyr::arrange(rowname),
-  #   data %>%
-  #     dplyr::collect() %>%
-  #     drop_na_rows.data.frame(variables = c("x")) %>%
-  #     dplyr::arrange(rowname)
-  # )
-
   DBI::dbDisconnect(db)
 })
