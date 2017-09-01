@@ -1,6 +1,5 @@
 #' Select features using variance threshold
 #'
-#' @param population Data frame with observation and grouping variables (metadata). 
 #' @param variables Vector of column names defining the used features.
 #' @param sample Subpopulation used to calculate the distribution of the given variables.
 #'
@@ -9,7 +8,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @export
-variance_threshold <- function(population, variables, sample) {
+variance_threshold <- function(variables, sample) {
   near_zero_variance <- function (x) {
     if (is.null(dim(x))) x <- matrix(x, ncol = 1)
 

@@ -4,10 +4,9 @@
 \alias{variance_threshold}
 \title{Select features using variance threshold}
 \usage{
-variance_threshold(population, variables, sample)
+variance_threshold(variables, sample)
 }
 \arguments{
-\item{population}{Data frame with observation and grouping variables (metadata).}
 
 \item{variables}{Vector of column names defining the used features.}
 

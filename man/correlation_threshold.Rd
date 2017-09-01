@@ -4,11 +4,9 @@
 \alias{correlation_threshold}
 \title{Select features using correlation threshold}
 \usage{
-correlation_threshold(population, variables, sample, cutoff = 0.9,
-  method = "pearson")
+correlation_threshold(variables, sample, cutoff = 0.9, method = "pearson")
 }
 \arguments{
-\item{population}{Data frame with observation and grouping variables (metadata).}
 
 \item{variables}{Vector of column names defining the used features.}
 
