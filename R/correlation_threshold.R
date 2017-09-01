@@ -1,6 +1,5 @@
 #' Select features using correlation threshold
 #'
-#' @param population ...
 #' @param variables ...
 #' @param sample ...
 #' @param cutoff ...
@@ -11,7 +10,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @export
-correlation_threshold <- function(population, variables, sample, cutoff = 0.90,
+correlation_threshold <- function(variables, sample, cutoff = 0.90,
                                   method = "pearson") {
 
   excluded_indexes <-

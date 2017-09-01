@@ -9,14 +9,14 @@ test_that("`variance_threshold` selects variables that have non-trivial variance
   data <- dplyr::copy_to(db, data)
   
   expect_equal(
-    variance_threshold(population = data,
+    variance_threshold(#population = data,
                        variables = c("x", "y"),
                        sample = data %>% dplyr::collect()),
     c("y")
   )
 
   expect_equal(
-    variance_threshold(population = data,
+    variance_threshold(#population = data,
                        variables = c("x"),
                        sample = data %>% dplyr::collect()),
     character(0)

@@ -1,6 +1,5 @@
 #' Select features using variance threshold
 #'
-#' @param population ...
 #' @param variables ...
 #' @param sample ...
 #'
@@ -9,7 +8,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @export
-variance_threshold <- function(population, variables, sample) {
+variance_threshold <- function(variables, sample) {
   near_zero_variance <- function (x) {
     if (is.null(dim(x))) x <- matrix(x, ncol = 1)
 

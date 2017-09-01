@@ -4,11 +4,9 @@
 \alias{variance_threshold}
 \title{Select features using variance threshold}
 \usage{
-variance_threshold(population, variables, sample)
+variance_threshold(variables, sample)
 }
 \arguments{
-\item{population}{...}
-
 \item{variables}{...}
 
 \item{sample}{...}
