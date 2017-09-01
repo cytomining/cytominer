@@ -119,8 +119,8 @@ test_that("cytominer can process dataset with a normalized schema", {
     select(
       population = transformed,
       variables = feature_cols,
-      sample = aggregated,
-      operation = "correlation_threshold"
+      operation = "correlation_threshold",
+      sample = aggregated
     ) %>%
     dplyr::collect()
 
