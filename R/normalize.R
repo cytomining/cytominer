@@ -15,14 +15,16 @@
 #' @importFrom stats cor mad median sd setNames
 #' 
 #' @examples
-#'  population <- tibble::data_frame(
-#'    Metadata_group = c("control", "control","control","control","experiment","experiment","experiment","experiment"),
+#' library(magrittr)
+#' population <- tibble::data_frame(
+#'    Metadata_group = c("control", "control","control","control",
+#'                       "experiment","experiment","experiment","experiment"),
 #'    Metadata_batch = c("a","a","b","b","a","a","b","b"),
 #'    AreaShape_Area = c(10,12,15,16,8,8,7,7)
 #'  )
 #' variables <- c('AreaShape_Area')
 #' strata <- c('Metadata_batch','Metadata_group')
-#' sample <- population %>% filter(Metadata_group == 'control')
+#' sample <- population %>% dplyr::filter(Metadata_group == 'control')
 #' normalized = cytominer::normalize(population, variables, strata, sample, operation = "standardize")
 #' @export
 normalize <- function(population, variables, strata, sample, operation = "standardize", ...) {

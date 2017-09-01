@@ -4,18 +4,19 @@
 \alias{select}
 \title{Select columns}
 \usage{
-select(population, variables, operation = "variance_threshold", ...)
+select(population, variables, sample = NULL,
+  operation = "variance_threshold", ...)
 }
 \arguments{
 \item{population}{Data frame with observation and grouping variables (metadata).}
 
 \item{variables}{Vector of column names defining the used features.}
 
+\item{sample}{(Sub)population used with operation 'correlation_threshold' and 'variance_threshold'. Default sample = NULL.}
+
 \item{operation}{One of 'variance_threshold', 'correlation_threshold', 'drop_na_columns'.}
 
 \item{...}{arguments passed to selection operation}
-
-\item{sample}{(Sub)population used with operation 'correlation_threshold' and 'variance_threshold'. Default sample = NULL.}
 }
 \value{
 feature selected data

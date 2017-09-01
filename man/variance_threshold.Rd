@@ -7,7 +7,6 @@
 variance_threshold(variables, sample)
 }
 \arguments{
-
 \item{variables}{Vector of column names defining the used features.}
 
 \item{sample}{Subpopulation used to calculate the distribution of the given variables.}

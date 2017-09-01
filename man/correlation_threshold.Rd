@@ -7,7 +7,6 @@
 correlation_threshold(variables, sample, cutoff = 0.9, method = "pearson")
 }
 \arguments{
-
 \item{variables}{Vector of column names defining the used features.}
 
 \item{sample}{Subpopulation used to calculate the distribution of the given variables.}

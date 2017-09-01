@@ -7,7 +7,8 @@
 #' @param ... optional arguments passed to aggregation operation
 #'@examples
 #' population <- tibble::data_frame(
-#'    Metadata_group = c("control", "control","control","control","experiment","experiment","experiment","experiment"),
+#'    Metadata_group = c("control", "control","control","control",
+#'                       "experiment","experiment","experiment","experiment"),
 #'    Metadata_batch = c("a","a","b","b","a","a","b","b"),
 #'    AreaShape_Area = c(10,12,15,16,8,8,7,7)
 #'  )
