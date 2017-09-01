@@ -8,7 +8,11 @@ test_that("`normalize' normalizes data", {
 
     m <- matrix(runif(n * 2), n, 2) %>% scale(.)
 
-    cbind(m, m %>% sweep(., 2, svec, FUN = "*") %>% sweep(., 2, cvec, FUN = "+")) %>% as.data.frame()
+    m %<>% sweep(., 2, svec, FUN = "*") %>% sweep(., 2, cvec, FUN = "+")
+    
+    m[1, 1] <- NA
+    
+    cbind(scale(m), m) %>% as.data.frame()    
   }
 
   data <-
@@ -43,7 +47,7 @@ test_that("`normalize' normalizes data", {
                         data)
 
   expect_lt(
-    norm(
+    mean(abs(
       normalize(population = data,
                 variables = c("x", "y"),
                 strata = c("g1", "g2"),
@@ -56,14 +60,15 @@ test_that("`normalize' normalizes data", {
       data_normalized %>%
         dplyr::arrange(g3) %>%
         dplyr::select(x, y) %>%
-        as.matrix()
+        as.matrix()),
+      na.rm = TRUE
       ),
     .Machine$double.eps * 1000000
   )
 
-  # test after collecting so that data.frame -specific scale function is tested
+  #test after collecting so that data.frame -specific scale function is tested
   expect_lt(
-    norm(
+    mean(abs(
       normalize(population = data %>% dplyr::collect(),
                 variables = c("x", "y"),
                 strata = c("g1", "g2"),
@@ -76,9 +81,11 @@ test_that("`normalize' normalizes data", {
         data_normalized %>%
         dplyr::arrange(g3) %>%
         dplyr::select(x, y) %>%
-        as.matrix()
+        as.matrix()),
+      na.rm = TRUE
     ),
     .Machine$double.eps * 1000000
   )
+  
 
 })

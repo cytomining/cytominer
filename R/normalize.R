@@ -51,14 +51,25 @@ normalize <- function(population, variables, strata, sample, operation = "standa
     }
   }
 
+  sample_is_df <- is.data.frame(sample)
+  
   if (operation == "robustize") {
-    location <- dplyr::funs(median)
+    location <- ifelse(sample_is_df,
+                       dplyr::funs(median(., na.rm = TRUE)),
+                       dplyr::funs(median))
 
-    dispersion <- dplyr::funs(mad)
+    dispersion <- ifelse(sample_is_df,
+                         dplyr::funs(mad(., na.rm = TRUE)),
+                         dplyr::funs(mad))
+    
   } else if (operation == "standardize") {
-    location <- dplyr::funs(mean)
-
-    dispersion <- dplyr::funs(sd)
+    location <- ifelse(sample_is_df,
+                       dplyr::funs(mean(., na.rm = TRUE)),
+                       dplyr::funs(mean))
+    
+    dispersion <- ifelse(sample_is_df,
+                         dplyr::funs(sd(., na.rm = TRUE)),
+                         dplyr::funs(sd))
   } else {
     error <- paste0("undefined operation `", operation, "'")
 
