@@ -3,7 +3,7 @@
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param variables character vector specifying observation variables.
 #' @param strata character vector specifying grouping variables for aggregation.
-#' @param operation  optional character string specifying method for aggregation. This must be one of the strings "mean", "median", "mean+sd".
+#' @param operation optional character string specifying method for aggregation. This must be one of the strings "mean", "median", "mean+sd".
 #' @param ... optional arguments passed to aggregation operation
 #'@examples
 #' population <- tibble::data_frame(
