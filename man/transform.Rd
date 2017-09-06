@@ -11,15 +11,15 @@ transform(population, variables, operation = "generalized_log", ...)
 
 \item{variables}{character vector specifying observation variables.}
 
-\item{operation}{optional character string specifying method for transform. Currenly, only "generalized log" is implemented.}
+\item{operation}{optional character string specifying method for transform. Currenly, only \code{"generalized_log"} is implemented.}
 
 \item{...}{arguments passed to transformation operation.}
 
 \item{population}{Data frame with observation and grouping variables (metadata).}
 }
 \value{
-transformed data of the same class as `population`.
+transformed data of the same class as \code{population}.
 }
 \description{
-Transform observation variables.
+\code{transform} transforms observation variables based on the specified transformation method.
 }
