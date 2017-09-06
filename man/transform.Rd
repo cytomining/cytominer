@@ -11,7 +11,7 @@ transform(population, variables, operation = "generalized_log", ...)
 
 \item{variables}{character vector specifying observation variables.}
 
-\item{operation}{optional character string specifying method for transform. Currenly, only \code{"generalized_log"} is implemented.}
+\item{operation}{optional character string specifying method for transform. Currently, only \code{"generalized_log"} (default) is implemented.}
 
 \item{...}{arguments passed to transformation operation.}
 
