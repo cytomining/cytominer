@@ -1,11 +1,13 @@
-#' Select features using correlation threshold
+#' Remove redundant variables.
+#' 
+#' \code{correlation_threshold} returns list of variables to be excluded so that no two variables have a correlation greater than a specified threshold.
 #'
-#' @param variables Vector of column names defining the used features. 
-#' @param sample Subpopulation used to calculate the distribution of the given variables. 
-#' @param cutoff Threshold is a variable between [0,1] that defines the minimum correlation of a selected feature. Default value 0.90.
-#' @param method Defines the method used to calculate the correlation. Method is a character string indicating which correlation coefficient (or covariance) is used. One of "pearson" (default), "kendall", or "spearman": can be abbreviated. 
+#' @param variables character vector specifying observation variables.
+#' @param sample tbl containing sample used to estimate parameters.
+#' @param cutoff threshold between [0,1] that defines the minimum correlation of a selected feature.
+#' @param method optional character string specifying method for calculating correlation. This must be one of the strings \code{"pearson"} (default), \code{"kendall"}, \code{"spearman"}.
 #'
-#' @return List with excluded features. 
+#' @return character vector specifying observation variables to be excluded.
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
