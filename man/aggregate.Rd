@@ -7,31 +7,31 @@
 aggregate(population, variables, strata, operation = "mean", ...)
 }
 \arguments{
-\item{population}{Data frame with observation and grouping variables (metadata).}
+\item{population}{tbl with grouping (metadata) and observation variables.}
 
-\item{variables}{Vector of column names defining the used features.}
+\item{variables}{character vector specifying observation variables.}
 
-\item{strata}{Vector of column names used as grouping variables.}
+\item{strata}{character vector specifying grouping variables for aggregation.}
 
-\item{operation}{Data can be aggregated using one of operation = "mean", operation = "median", operation = "mean+sd"}
+\item{operation}{optional character string specifying method for aggregation. This must be one of the strings "mean", "median", "mean+sd".}
 
 \item{...}{optional arguments passed to aggregation operation}
 }
 \value{
-Data frame with aggregated data
+aggregated data of the same class as population
 }
 \description{
 Aggregate data based on given grouping.
 }
 \examples{
 population <- tibble::data_frame(
-   Metadata_group = c("control", "control","control","control",
-                      "experiment","experiment","experiment","experiment"),
-   Metadata_batch = c("a","a","b","b","a","a","b","b"),
-   AreaShape_Area = c(10,12,15,16,8,8,7,7)
+   Metadata_group = c("control", "control", "control", "control",
+                      "experiment", "experiment", "experiment", "experiment"),
+   Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
+   AreaShape_Area = c(10, 12, 15, 16, 8, 8, 7, 7)
  )
-variables <- c('AreaShape_Area')
-strata <- c('Metadata_group','Metadata_batch')
-aggregated = aggregate(population, variables, strata, operation = "mean")
+variables <- c("AreaShape_Area")
+strata <- c("Metadata_group", "Metadata_batch")
+aggregate(population, variables, strata, operation = "mean")
 
 }
