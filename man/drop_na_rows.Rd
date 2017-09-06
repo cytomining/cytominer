@@ -17,3 +17,4 @@ data without rows with NA in all variables
 \description{
 Drop rows that are NA in all variables
 }
+

@@ -28,3 +28,4 @@ data.frame of variable quality measurements
 \description{
 Replicate correlation of variables
 }
+
