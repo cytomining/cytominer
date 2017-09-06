@@ -44,6 +44,16 @@ extract_subpopulations <-
       dplyr::ungroup() %>%
       tidyr::spread(key = "Metadata_Type", value = "freq")
     
+    trt_clusters <- population %>% 
+      dplyr::filter(Metadata_Type == "treatment") %>% 
+      dplyr::select(Metadata_Cluster)
+    
+    ctrl_clusters <- population %>% 
+      dplyr::filter(Metadata_Type == "control") %>% 
+      dplyr::select(Metadata_Cluster)
+    
     return(list(subpop_centers = kmeans_outp$centers,
-                subpop_profiles = subpop_profiles))
+                subpop_profiles = subpop_profiles,
+                treatment_clusters = trt_clusters,
+                ctrl_clusters = ctrl_clusters))
   }
