@@ -2,40 +2,40 @@
 % Please edit documentation in R/normalize.R
 \name{normalize}
 \alias{normalize}
-\title{Normalize a data frame based using a control group.}
+\title{Normalize observation variables..}
 \usage{
 normalize(population, variables, strata, sample, operation = "standardize",
   ...)
 }
 \arguments{
-\item{population}{Data frame with observation and grouping variables (metadata).}
+\item{population}{tbl with grouping (metadata) and observation variables.}
 
-\item{variables}{Vector of column names defining the used features.}
+\item{variables}{character vector specifying observation variables.}
 
-\item{strata}{Vector of column names used as grouping variables.}
+\item{strata}{character vector specifying grouping variables for grouping prior to normalization.}
 
-\item{sample}{Data frame used to estimate the distribution of the control group.}
+\item{sample}{tbl containing sample that is used by normalization methods to estimate parameters. \code{sample} has same structure as \code{population}. Typically, \code{sample} corresponds to controls in the experiment.}
 
-\item{operation}{The following methods can be chosen to normalize the data. 1. standardize were the data is normalized using X = (X - mu) / sigma where mu is the estimated mean value of the control data and sigma  or standardize. Default value operation = "standardize".}
+\item{operation}{optional character string specifying method for normalization. This must be one of the strings \code{"standardize"}, \code{"robustize"}.}
 
 \item{...}{arguments passed to normalization operation}
 }
 \value{
-Normalized data as data frame.
+normalized data of the same class as \code{population}.
 }
 \description{
-Normalize a data frame based using a control group.
+\code{normalize} normalizes observation variables based on the specified normalization method.
 }
 \examples{
 library(magrittr)
 population <- tibble::data_frame(
-   Metadata_group = c("control", "control","control","control",
-                      "experiment","experiment","experiment","experiment"),
-   Metadata_batch = c("a","a","b","b","a","a","b","b"),
-   AreaShape_Area = c(10,12,15,16,8,8,7,7)
+   Metadata_group = c("control", "control", "control", "control",
+                      "experiment", "experiment", "experiment", "experiment"),
+   Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
+   AreaShape_Area = c(10, 12, 15, 16, 8, 8, 7, 7)
  )
 variables <- c('AreaShape_Area')
 strata <- c('Metadata_batch')
 sample <- population \%>\% dplyr::filter(Metadata_group == 'control')
-normalized = cytominer::normalize(population, variables, strata, sample, operation = "standardize")
+cytominer::normalize(population, variables, strata, sample, operation = "standardize")
 }
