@@ -13,15 +13,15 @@ aggregate(population, variables, strata, operation = "mean", ...)
 
 \item{strata}{character vector specifying grouping variables for aggregation.}
 
-\item{operation}{optional character string specifying method for aggregation. This must be one of the strings "mean", "median", "mean+sd".}
+\item{operation}{optional character string specifying method for aggregation. This must be one of the strings \code{"mean"}, \code{"median"}, \code{"mean+sd"}.}
 
 \item{...}{optional arguments passed to aggregation operation}
 }
 \value{
-aggregated data of the same class as population.
+aggregated data of the same class as \code{population}.
 }
 \description{
-Aggregate data based on given grouping.
+\code{aggregate} aggregates data based on the specified aggregation method.
 }
 \examples{
 population <- tibble::data_frame(

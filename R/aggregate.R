@@ -1,11 +1,16 @@
 #' Aggregate data based on given grouping.
 #'
+#' \code{aggregate} aggregates data based on the specified aggregation method.
+#'
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param variables character vector specifying observation variables.
 #' @param strata character vector specifying grouping variables for aggregation.
-#' @param operation optional character string specifying method for aggregation. This must be one of the strings "mean", "median", "mean+sd".
+#' @param operation optional character string specifying method for aggregation. This must be one of the strings \code{"mean"}, \code{"median"}, \code{"mean+sd"}.
 #' @param ... optional arguments passed to aggregation operation
-#'@examples
+#'
+#' @return aggregated data of the same class as \code{population}.
+#'
+#' @examples
 #' population <- tibble::data_frame(
 #'    Metadata_group = c("control", "control", "control", "control",
 #'                       "experiment", "experiment", "experiment", "experiment"),
@@ -15,8 +20,6 @@
 #' variables <- c("AreaShape_Area")
 #' strata <- c("Metadata_group", "Metadata_batch")
 #' aggregate(population, variables, strata, operation = "mean")
-#'
-#' @return aggregated data of the same class as population.
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
