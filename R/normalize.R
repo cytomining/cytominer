@@ -23,7 +23,7 @@
 #'    AreaShape_Area = c(10,12,15,16,8,8,7,7)
 #'  )
 #' variables <- c('AreaShape_Area')
-#' strata <- c('Metadata_batch','Metadata_group')
+#' strata <- c('Metadata_batch')
 #' sample <- population %>% dplyr::filter(Metadata_group == 'control')
 #' normalized = cytominer::normalize(population, variables, strata, sample, operation = "standardize")
 #' @export
