@@ -2,7 +2,7 @@
 % Please edit documentation in R/select.R
 \name{select}
 \alias{select}
-\title{Select observation variables}
+\title{Select observation variables.}
 \usage{
 select(population, variables, sample = NULL,
   operation = "variance_threshold", ...)

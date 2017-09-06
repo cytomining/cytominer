@@ -1,4 +1,4 @@
-#' Select observation variables
+#' Select observation variables.
 #'
 #' \code{select} selects observation variables based on the specified variable selection method.
 #'
