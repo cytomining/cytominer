@@ -12,15 +12,15 @@ select(population, variables, sample = NULL,
 
 \item{variables}{character vector specifying observation variables.}
 
-\item{sample}{tbl containing sample that is used by some variable selection methods. `sample` has same structure as `population`.}
+\item{sample}{tbl containing sample that is used by some variable selection methods. \code{sample} has same structure as \code{population}.}
 
-\item{operation}{optional character string specifying method for variable selection. This must be one of the strings "variance_threshold", "correlation_threshold", "drop_na_columns".}
+\item{operation}{optional character string specifying method for variable selection. This must be one of the strings \code{"variance_threshold"}, \code{"correlation_threshold"}, \code{"drop_na_columns"}.}
 
 \item{...}{arguments passed to selection operation.}
 }
 \value{
-variable-selected data of the same class as `population`.
+variable-selected data of the same class as \code{population}.
 }
 \description{
-Select observation variables
+\code{select} selects observation variables based on the specified variable selection method.
 }
