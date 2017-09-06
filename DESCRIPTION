@@ -12,7 +12,6 @@ Depends:
 License: file LICENSE
 LazyData: TRUE
 Imports:
-    DBI (>= 0.7),
     doParallel (>= 1.0.10),
     dbplyr (>= 1.1.0),
     dplyr (>= 0.7.2),
