@@ -2,20 +2,20 @@
 % Please edit documentation in R/generalized_log.R
 \name{generalized_log}
 \alias{generalized_log}
-\title{Generalized log transform data}
+\title{Generalized log transform data.}
 \usage{
 generalized_log(population, variables, offset = 1)
 }
 \arguments{
-\item{population}{Data frame with observation and grouping variables (metadata).}
+\item{population}{tbl with grouping (metadata) and observation variables.}
 
-\item{variables}{Vector of column names defining the used features.}
+\item{variables}{character vector specifying observation variables.}
 
-\item{offset}{Offset parameter for the log transformation. Default offset = 1.}
+\item{offset}{offset parameter for the transformation.}
 }
 \value{
-Data frame with generalized log transformed values.
+transformed data of the same class as \code{population}.
 }
 \description{
-Each variable is log transformed using x = log( (x + sqrt(x ^ 2 + offset ^ 2 )) / 2 ).
+\code{generalized_log} transforms specified observation variables using \eqn{x = log( (x + sqrt(x ^ 2 + offset ^ 2 )) / 2 )}.
 }
