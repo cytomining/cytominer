@@ -1,14 +1,12 @@
-#' Transform data
+#' Transform observation variables.
 #'
-#' Method to transform the valus in the data frame. This is often helpfull 
-#' if the distribution of features does not follow a gaussian distribution. 
-#'
+#' @param population tbl with grouping (metadata) and observation variables.
+#' @param variables character vector specifying observation variables.
+#' @param operation optional character string specifying method for transform. Currenly, only "generalized log" is implemented.
 #' @param population Data frame with observation and grouping variables (metadata).
-#' @param variables Vector of column names defining the used features.
-#' @param operation One of 'generalized log'. Default  operation = "generalized_log".
-#' @param ... arguments passed to transformation operation
+#' @param ... arguments passed to transformation operation.
 #'
-#' @return transformed data
+#' @return transformed data of the same class as `population`.
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%

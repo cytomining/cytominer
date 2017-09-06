@@ -2,23 +2,24 @@
 % Please edit documentation in R/transform.R
 \name{transform}
 \alias{transform}
-\title{Transform data}
+\title{Transform observation variables.}
 \usage{
 transform(population, variables, operation = "generalized_log", ...)
 }
 \arguments{
+\item{population}{tbl with grouping (metadata) and observation variables.}
+
+\item{variables}{character vector specifying observation variables.}
+
+\item{operation}{optional character string specifying method for transform. Currenly, only "generalized log" is implemented.}
+
+\item{...}{arguments passed to transformation operation.}
+
 \item{population}{Data frame with observation and grouping variables (metadata).}
-
-\item{variables}{Vector of column names defining the used features.}
-
-\item{operation}{One of 'generalized log'. Default  operation = "generalized_log".}
-
-\item{...}{arguments passed to transformation operation}
 }
 \value{
-transformed data
+transformed data of the same class as `population`.
 }
 \description{
-Method to transform the valus in the data frame. This is often helpfull 
-if the distribution of features does not follow a gaussian distribution.
+Transform observation variables.
 }
