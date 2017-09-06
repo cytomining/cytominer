@@ -2,25 +2,25 @@
 % Please edit documentation in R/select.R
 \name{select}
 \alias{select}
-\title{Select columns}
+\title{Select observation variables}
 \usage{
 select(population, variables, sample = NULL,
   operation = "variance_threshold", ...)
 }
 \arguments{
-\item{population}{Data frame with observation and grouping variables (metadata).}
+\item{population}{tbl with grouping (metadata) and observation variables.}
 
-\item{variables}{Vector of column names defining the used features.}
+\item{variables}{character vector specifying observation variables.}
 
-\item{sample}{(Sub)population used with operation 'correlation_threshold' and 'variance_threshold'. Default sample = NULL.}
+\item{sample}{tbl containing sample that is used by some variable selection methods. `sample` has same structure as `population`.}
 
-\item{operation}{One of 'variance_threshold', 'correlation_threshold', 'drop_na_columns'.}
+\item{operation}{optional character string specifying method for variable selection. This must be one of the strings "variance_threshold", "correlation_threshold", "drop_na_columns".}
 
-\item{...}{arguments passed to selection operation}
+\item{...}{arguments passed to selection operation.}
 }
 \value{
-feature selected data
+variable-selected data of the same class as `population`.
 }
 \description{
-Select columns
+Select observation variables
 }

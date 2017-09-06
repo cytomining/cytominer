@@ -1,12 +1,12 @@
-#' Select columns
+#' Select observation variables
 #'
-#' @param population Data frame with observation and grouping variables (metadata). 
-#' @param variables  Vector of column names defining the used features. 
-#' @param operation One of 'variance_threshold', 'correlation_threshold', 'drop_na_columns'. 
-#' @param sample (Sub)population used with operation 'correlation_threshold' and 'variance_threshold'. Default sample = NULL.
-#' @param ... arguments passed to selection operation
+#' @param population tbl with grouping (metadata) and observation variables.
+#' @param variables character vector specifying observation variables.
+#' @param operation optional character string specifying method for variable selection. This must be one of the strings "variance_threshold", "correlation_threshold", "drop_na_columns".
+#' @param sample tbl containing sample that is used by some variable selection methods. `sample` has same structure as `population`.
+#' @param ... arguments passed to selection operation.
 #'
-#' @return feature selected data
+#' @return variable-selected data of the same class as `population`.
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
