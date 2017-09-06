@@ -1,4 +1,4 @@
-#' Normalize observation variables..
+#' Normalize observation variables
 #'
 #' \code{normalize} normalizes observation variables based on the specified normalization method.
 #'
@@ -28,6 +28,7 @@
 #' strata <- c('Metadata_batch')
 #' sample <- population %>% dplyr::filter(Metadata_group == 'control')
 #' cytominer::normalize(population, variables, strata, sample, operation = "standardize")
+#' 
 #' @export
 normalize <- function(population, variables, strata, sample, operation = "standardize", ...) {
   scale <- function(data, location, dispersion, variables) {
