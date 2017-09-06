@@ -2,7 +2,7 @@
 % Please edit documentation in R/normalize.R
 \name{normalize}
 \alias{normalize}
-\title{Normalize observation variables..}
+\title{Normalize observation variables.}
 \usage{
 normalize(population, variables, strata, sample, operation = "standardize",
   ...)
@@ -16,7 +16,7 @@ normalize(population, variables, strata, sample, operation = "standardize",
 
 \item{sample}{tbl containing sample that is used by normalization methods to estimate parameters. \code{sample} has same structure as \code{population}. Typically, \code{sample} corresponds to controls in the experiment.}
 
-\item{operation}{optional character string specifying method for normalization. This must be one of the strings \code{"standardize"}, \code{"robustize"}.}
+\item{operation}{optional character string specifying method for normalization. This must be one of the strings \code{"standardize"} (default), \code{"robustize"}.}
 
 \item{...}{arguments passed to normalization operation}
 }
@@ -38,4 +38,5 @@ variables <- c('AreaShape_Area')
 strata <- c('Metadata_batch')
 sample <- population \%>\% dplyr::filter(Metadata_group == 'control')
 cytominer::normalize(population, variables, strata, sample, operation = "standardize")
+
 }

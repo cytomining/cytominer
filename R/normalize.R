@@ -1,11 +1,11 @@
-#' Normalize observation variables
+#' Normalize observation variables.
 #'
 #' \code{normalize} normalizes observation variables based on the specified normalization method.
 #'
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param variables character vector specifying observation variables.
 #' @param strata character vector specifying grouping variables for grouping prior to normalization.
-#' @param operation optional character string specifying method for normalization. This must be one of the strings \code{"standardize"}, \code{"robustize"}.
+#' @param operation optional character string specifying method for normalization. This must be one of the strings \code{"standardize"} (default), \code{"robustize"}.
 #' @param sample tbl containing sample that is used by normalization methods to estimate parameters. \code{sample} has same structure as \code{population}. Typically, \code{sample} corresponds to controls in the experiment.
 #' @param ... arguments passed to normalization operation
 #'
