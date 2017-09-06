@@ -18,7 +18,7 @@ aggregate(population, variables, strata, operation = "mean", ...)
 \item{...}{optional arguments passed to aggregation operation}
 }
 \value{
-aggregated data of the same class as population
+aggregated data of the same class as population.
 }
 \description{
 Aggregate data based on given grouping.
