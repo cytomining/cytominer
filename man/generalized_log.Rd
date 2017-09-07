@@ -11,7 +11,7 @@ generalized_log(population, variables, offset = 1)
 
 \item{variables}{character vector specifying observation variables.}
 
-\item{offset}{offset parameter for the transformation.}
+\item{offset}{optional offset parameter for the transformation.}
 }
 \value{
 transformed data of the same class as \code{population}.

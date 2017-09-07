@@ -4,7 +4,7 @@
 #'
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param variables character vector specifying observation variables.
-#' @param offset offset parameter for the transformation.
+#' @param offset optional offset parameter for the transformation.
 #'
 #' @return transformed data of the same class as \code{population}.
 #'
