@@ -1,11 +1,11 @@
 #' extract the subpopulations enriched/de-enriched in a given single cell population of a treatment w.r.t the control
 #' 
-#' @param population_treatment data frame whose rows are containing single cell data for a given treatment
-#' @param population_control the same data frame (with the same column names) for the negative control
+#' @param population_treatment data frame which contains single cell data for a given treatment (cells are arranged in rows and measurements in columns)
+#' @param population_control the same data frame (with the same column names, but possibly with different number of rows) for the negative control
 #' @param feats a vector containing the feature names
 #' @param k a scalar which is the number of subpopulations
 #' 
-#' @return list containing subpop. signatures and two histograms showing freq. of each subpop. in treatment and control.
+#' @return list containing subpop. signatures (subpop_centers), two histograms showing freq. of each subpop. in treatment and control (subpop_profiles), and cluster prediction and distance to the predicted cluster for all input data (treatment_clusters and ctrl_clusters).
 #' 
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
