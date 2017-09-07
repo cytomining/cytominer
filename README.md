@@ -34,4 +34,4 @@ Occasionally, the `Suggests` dependencies [may not get installed](https://github
 Example
 -------
 
-See the `vignette("cytominer-pipeline")` for basic example of using `cytominer` to analyze a morphological profiling dataset.
+See `vignette("cytominer-pipeline")` for basic example of using cytominer to analyze a morphological profiling dataset.
