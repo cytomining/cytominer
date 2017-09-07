@@ -2,23 +2,23 @@
 % Please edit documentation in R/transform.R
 \name{transform}
 \alias{transform}
-\title{Transform data}
+\title{Transform observation variables.}
 \usage{
 transform(population, variables, operation = "generalized_log", ...)
 }
 \arguments{
-\item{population}{...}
+\item{population}{tbl with grouping (metadata) and observation variables.}
 
-\item{variables}{...}
+\item{variables}{character vector specifying observation variables.}
 
-\item{operation}{...}
+\item{operation}{optional character string specifying method for transform. Currently, only \code{"generalized_log"} (default) is implemented.}
 
-\item{...}{arguments passed to transformation operation}
+\item{...}{arguments passed to transformation operation.}
 }
 \value{
-transformed data
+transformed data of the same class as \code{population}.
 }
 \description{
-Transform data
+\code{transform} transforms observation variables based on the specified transformation method.
 }
 

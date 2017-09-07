@@ -2,30 +2,30 @@
 % Please edit documentation in R/replicate_correlation.R
 \name{replicate_correlation}
 \alias{replicate_correlation}
-\title{Replicate correlation of variables}
+\title{Measure replicate correlation of variables.}
 \usage{
 replicate_correlation(sample, variables, strata, replicates,
   replicate_by = NULL, split_by = NULL, cores = NULL)
 }
 \arguments{
-\item{sample}{...}
+\item{sample}{tbl containing sample used to estimate parameters.}
 
-\item{variables}{...}
+\item{variables}{character vector specifying observation variables.}
 
-\item{strata}{...}
+\item{strata}{character vector specifying grouping variables for grouping prior to normalization.}
 
-\item{replicates}{...}
+\item{replicates}{number of replicates.}
 
-\item{replicate_by}{...}
+\item{replicate_by}{optional character string specifying column containing the replicate id.}
 
-\item{split_by}{...}
+\item{split_by}{optional character string specifying column  by which to split the sample into batches; replicate correlations will be calculate per batch.}
 
-\item{cores}{...}
+\item{cores}{optional integer specifying number of CPU cores used for parallel computing using \code{doParallel}.}
 }
 \value{
-data.frame of variable quality measurements
+data frame of variable quality measurements
 }
 \description{
-Replicate correlation of variables
+`replicate_correlation` measures replicate correlation of variables.
 }
 

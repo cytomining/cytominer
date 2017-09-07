@@ -2,28 +2,42 @@
 % Please edit documentation in R/normalize.R
 \name{normalize}
 \alias{normalize}
-\title{Normalize data}
+\title{Normalize observation variables.}
 \usage{
 normalize(population, variables, strata, sample, operation = "standardize",
   ...)
 }
 \arguments{
-\item{population}{...}
+\item{population}{tbl with grouping (metadata) and observation variables.}
 
-\item{variables}{...}
+\item{variables}{character vector specifying observation variables.}
 
-\item{strata}{...}
+\item{strata}{character vector specifying grouping variables for grouping prior to normalization.}
 
-\item{sample}{...}
+\item{sample}{tbl containing sample that is used by normalization methods to estimate parameters. \code{sample} has same structure as \code{population}. Typically, \code{sample} corresponds to controls in the experiment.}
 
-\item{operation}{...}
+\item{operation}{optional character string specifying method for normalization. This must be one of the strings \code{"standardize"} (default), \code{"robustize"}.}
 
 \item{...}{arguments passed to normalization operation}
 }
 \value{
-normalized data
+normalized data of the same class as \code{population}.
 }
 \description{
-Normalize data
+\code{normalize} normalizes observation variables based on the specified normalization method.
+}
+\examples{
+library(magrittr)
+population <- tibble::data_frame(
+   Metadata_group = c("control", "control", "control", "control",
+                      "experiment", "experiment", "experiment", "experiment"),
+   Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
+   AreaShape_Area = c(10, 12, 15, 16, 8, 8, 7, 7)
+ )
+variables <- c('AreaShape_Area')
+strata <- c('Metadata_batch')
+sample <- population \%>\% dplyr::filter(Metadata_group == 'control')
+cytominer::normalize(population, variables, strata, sample, operation = "standardize")
+
 }
 

@@ -2,23 +2,26 @@
 % Please edit documentation in R/correlation_threshold.R
 \name{correlation_threshold}
 \alias{correlation_threshold}
-\title{Select features using correlation threshold}
+\title{Remove redundant variables.}
 \usage{
 correlation_threshold(variables, sample, cutoff = 0.9, method = "pearson")
 }
 \arguments{
-\item{variables}{...}
+\item{variables}{character vector specifying observation variables.}
 
-\item{sample}{...}
+\item{sample}{tbl containing sample used to estimate parameters.}
 
-\item{cutoff}{...}
+\item{cutoff}{threshold between [0,1] that defines the minimum correlation of a selected feature.}
 
-\item{method}{...}
+\item{method}{optional character string specifying method for calculating correlation. This must be one of the strings \code{"pearson"} (default), \code{"kendall"}, \code{"spearman"}.}
 }
 \value{
-Excluded variables
+character vector specifying observation variables to be excluded.
 }
 \description{
-Select features using correlation threshold
+\code{correlation_threshold} returns list of variables such that no two variables have a correlation greater than a specified threshold.
+}
+\details{
+\code{correlation_threshold} is a wrapper for \code{\link[caret]{findCorrelation}}.
 }
 
