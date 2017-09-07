@@ -24,4 +24,3 @@ variable-selected data of the same class as \code{population}.
 \description{
 \code{select} selects observation variables based on the specified variable selection method.
 }
-

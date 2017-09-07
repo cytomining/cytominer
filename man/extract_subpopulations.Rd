@@ -21,4 +21,3 @@ list containing subpop. signatures (subpop_centers), two histograms showing freq
 \description{
 extract the subpopulations enriched/de-enriched in a given single cell population of a treatment w.r.t the control
 }
-

@@ -21,4 +21,3 @@ character vector specifying observation variables to be excluded.
 \code{variance_threshold} is a reimplementation of \code{\link[caret]{nearZeroVar}}, using 
 the default values for \code{freqCut} and \code{uniqueCut}.
 }
-

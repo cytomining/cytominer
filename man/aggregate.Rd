@@ -35,4 +35,3 @@ strata <- c("Metadata_group", "Metadata_batch")
 aggregate(population, variables, strata, operation = "mean")
 
 }
-

@@ -30,4 +30,3 @@ drop_na_rows(population, variables)
 
 
 }
-

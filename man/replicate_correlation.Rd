@@ -28,4 +28,3 @@ data frame of variable quality measurements
 \description{
 `replicate_correlation` measures replicate correlation of variables.
 }
-

@@ -24,4 +24,3 @@ character vector specifying observation variables to be excluded.
 \details{
 \code{correlation_threshold} is a wrapper for \code{\link[caret]{findCorrelation}}.
 }
-

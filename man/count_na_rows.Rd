@@ -30,4 +30,3 @@ variables <- c('AreaShape_Area','AreaShape_length')
 count_na_rows(population, variables)
 
 }
-

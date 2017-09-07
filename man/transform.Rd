@@ -21,4 +21,3 @@ transformed data of the same class as \code{population}.
 \description{
 \code{transform} transforms observation variables based on the specified transformation method.
 }
-

@@ -22,4 +22,3 @@ data frame containing variable importance measures.
 \description{
 \code{variable_importance} measures importance of variables based on specified methods.
 }
-

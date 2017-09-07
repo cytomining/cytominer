@@ -40,4 +40,3 @@ sample <- population \%>\% dplyr::filter(Metadata_group == 'control')
 cytominer::normalize(population, variables, strata, sample, operation = "standardize")
 
 }
-

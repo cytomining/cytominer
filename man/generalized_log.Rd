@@ -19,4 +19,3 @@ transformed data of the same class as \code{population}.
 \description{
 \code{generalized_log} transforms specified observation variables using \eqn{x = log( (x + sqrt(x ^ 2 + offset ^ 2 )) / 2 )}.
 }
-

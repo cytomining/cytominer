@@ -31,4 +31,3 @@ variables <- c('AreaShape_Area','AreaShape_Length')
 drop_na_columns(population, variables)
 
 }
-
