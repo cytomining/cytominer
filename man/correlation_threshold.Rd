@@ -21,3 +21,6 @@ character vector specifying observation variables to be excluded.
 \description{
 \code{correlation_threshold} returns list of variables such that no two variables have a correlation greater than a specified threshold.
 }
+\details{
+\code{correlation_threshold} is a wrapper for \code{\link[caret]{findCorrelation}}.
+}
