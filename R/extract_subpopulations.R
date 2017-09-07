@@ -1,23 +1,26 @@
 #' extract the subpopulations enriched/de-enriched in a given single cell population of a treatment w.r.t the control
 #' 
-#' @param population_treatment single cell data for a given treatment, including just the features
-#' @param population_control the same matrix for the negative control
-#' @param k number of subpopulations
+#' @param population_treatment data frame whose rows are containing single cell data for a given treatment
+#' @param population_control the same data frame (with the same column names) for the negative control
+#' @param feats a vector containing the feature names
+#' @param k a scalar which is the number of subpopulations
 #' 
 #' @return list containing subpop. signatures and two histograms showing freq. of each subpop. in treatment and control.
 #' 
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @importFrom dplyr one_of
+#' @importFrom dplyr vars
 #' 
 #' @export
 #' 
 extract_subpopulations <- 
   function(population_treatment, 
            population_control, 
+           feats,
            k) {
     
-    feats <- colnames(population_treatment)
+    non_feats <- setdiff(colnames(population_treatment), feats)
     
     population <- population_treatment %>% 
       dplyr::mutate(Metadata_Type = "treatment") %>%
@@ -30,14 +33,24 @@ extract_subpopulations <-
                     iter.max = 5000, 
                     nstart = 10)
     
+    find_dist_to_cluster <- function(x, feats, kmeans_outp) {
+      as.matrix(dist(rbind(x[, feats], 
+                 kmeans_outp$centers[x$Metadata_Cluster[1], feats])))[1, 2]
+    }
+      
     population %<>% 
-      dplyr::mutate(Metadata_Cluster = kmeans_outp$cluster)
+      dplyr::mutate(Metadata_Cluster = kmeans_outp$cluster) %>%
+      dplyr::mutate(row_number = 1:n()) %>%
+      dplyr::group_by_at(vars(one_of(c("row_number", 
+                                       "Metadata_Cluster", 
+                                       "Metadata_Type", 
+                                       non_feats)))) %>%
+      dplyr::do(data.frame(Metadata_dist_to_cluster = find_dist_to_cluster(.[, ], feats, kmeans_outp))) %>%
+      dplyr::ungroup()
     
     subpop_profiles <- population %>%
       dplyr::group_by(Metadata_Type, Metadata_Cluster) %>%
-      dplyr::summarise(n = n())
-    
-    subpop_profiles %<>%
+      dplyr::summarise(n = n()) %>%
       dplyr::group_by(Metadata_Type) %>%
       dplyr::rename(freq = n) %>%
       dplyr::mutate(freq = freq / sum(freq)) %>%
@@ -46,11 +59,15 @@ extract_subpopulations <-
     
     trt_clusters <- population %>% 
       dplyr::filter(Metadata_Type == "treatment") %>% 
-      dplyr::select(Metadata_Cluster)
+      dplyr::select(one_of(c(non_feats, 
+                             "Metadata_Cluster",
+                             "Metadata_dist_to_cluster")))
     
     ctrl_clusters <- population %>% 
       dplyr::filter(Metadata_Type == "control") %>% 
-      dplyr::select(Metadata_Cluster)
+      dplyr::select(one_of(c(non_feats, 
+                             "Metadata_Cluster",
+                             "Metadata_dist_to_cluster")))
     
     return(list(subpop_centers = kmeans_outp$centers,
                 subpop_profiles = subpop_profiles,

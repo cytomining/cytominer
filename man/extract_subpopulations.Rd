@@ -4,14 +4,16 @@
 \alias{extract_subpopulations}
 \title{extract the subpopulations enriched/de-enriched in a given single cell population of a treatment w.r.t the control}
 \usage{
-extract_subpopulations(population_treatment, population_control, k)
+extract_subpopulations(population_treatment, population_control, feats, k)
 }
 \arguments{
-\item{population_treatment}{single cell data for a given treatment, including just the features}
+\item{population_treatment}{data frame whose rows are containing single cell data for a given treatment}
 
-\item{population_control}{the same matrix for the negative control}
+\item{population_control}{the same data frame (with the same column names) for the negative control}
 
-\item{k}{number of subpopulations}
+\item{feats}{a vector containing the feature names}
+
+\item{k}{a scalar which is the number of subpopulations}
 }
 \value{
 list containing subpop. signatures and two histograms showing freq. of each subpop. in treatment and control.
