@@ -2,23 +2,23 @@
 % Please edit documentation in R/variable_importance.R
 \name{variable_importance}
 \alias{variable_importance}
-\title{Measure variable importance}
+\title{Measure variable importance.}
 \usage{
 variable_importance(sample, variables, operation = "replicate_correlation",
   ...)
 }
 \arguments{
-\item{sample}{Poplation used to estimate the importance of each variable.}
+\item{sample}{tbl containing sample used to estimate parameters.}
 
-\item{variables}{Vector of column names defining the used features.}
+\item{variables}{character vector specifying observation variables.}
 
-\item{operation}{The operation "replicate_correlation" can be chosen. Default operation = "replicate_correlation".}
+\item{operation}{optional character string specifying method for computing variable importance. Currently, only \code{"replicate_correlation"} (default) is implemented.}
 
-\item{...}{arguments passed to variable importance operation}
+\item{...}{arguments passed to variable importance operation.}
 }
 \value{
-variable importance measures
+data frame containing variable importance measures.
 }
 \description{
-Measure variable importance
+\code{variable_importance} measures importance of variables based on specified methods.
 }
