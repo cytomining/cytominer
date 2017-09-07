@@ -24,12 +24,16 @@
 #' @export
 drop_na_rows <- function(population, variables) {
 
+  key <- rlang::sym("key")
+  
+  value <- rlang::sym("value")
+
   if (is.data.frame(population)) {
     population %>%
       tibble::rownames_to_column(., var = "rowname_temp") %>%
       tidyr::gather_("key", "value", variables)  %>%
-      dplyr::filter(!is.na(value)) %>%
-      tidyr::spread(key, value) %>%
+      dplyr::filter(!is.na(!!value)) %>%
+      tidyr::spread(!!key, !!value) %>%
       dplyr::select(-rowname_temp)
     
   } else { 
