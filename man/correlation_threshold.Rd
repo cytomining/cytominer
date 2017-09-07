@@ -19,5 +19,5 @@ correlation_threshold(variables, sample, cutoff = 0.9, method = "pearson")
 character vector specifying observation variables to be excluded.
 }
 \description{
-\code{correlation_threshold} returns list of variables to be excluded so that no two variables have a correlation greater than a specified threshold.
+\code{correlation_threshold} returns list of variables such that no two variables have a correlation greater than a specified threshold.
 }

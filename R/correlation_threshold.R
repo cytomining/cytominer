@@ -1,6 +1,6 @@
 #' Remove redundant variables.
 #' 
-#' \code{correlation_threshold} returns list of variables to be excluded so that no two variables have a correlation greater than a specified threshold.
+#' \code{correlation_threshold} returns list of variables such that no two variables have a correlation greater than a specified threshold.
 #'
 #' @param variables character vector specifying observation variables.
 #' @param sample tbl containing sample used to estimate parameters.
