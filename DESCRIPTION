@@ -1,7 +1,7 @@
 Package: cytominer
 Type: Package
 Title: Package for Analyzing High-Dimensional Single-Cell Data
-Version: 0.1.0
+Version: 0.1
 Authors@R: as.person(c(
     "Allen Goodman <allen.goodman@icloud.com> [aut]",
     "Tim Becker <allen.goodman@icloud.com> [aut]",
