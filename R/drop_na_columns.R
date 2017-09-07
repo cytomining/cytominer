@@ -36,12 +36,14 @@ drop_na_columns <- function(population, variables, cutoff = 0.05) {
   
   feature <- rlang::sym("feature")
   
+  percent <- rlang::sym("percent")
+
   population %>%
     dplyr::mutate_at(variables, dplyr::funs(is.na)) %>%
     dplyr::summarize_at(variables, dplyr::funs(sum)) %>%
     dplyr::collect() %>%
     tidyr::gather(!!feature, !!count, !!!variables) %>%
-    dplyr::mutate(percent = (!!count) / nrows) %>%
-    dplyr::filter(percent > !!cutoff) %>%
+    dplyr::mutate(!!percent := (!!count) / nrows) %>%
+    dplyr::filter(magrittr::is_greater_than(!!percent, !!cutoff)) %>%
     magrittr::extract2("feature")
 }
