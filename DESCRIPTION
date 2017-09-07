@@ -3,8 +3,9 @@ Type: Package
 Title: Package for Analyzing High-Dimensional Single-Cell Data
 Version: 0.1.0
 Authors@R: as.person(c(
+    "Tim Becker <tbecker@broadinstitute.org> [aut]",
     "Allen Goodman <allen.goodman@icloud.com> [aut]",
-    "Tim Becker <allen.goodman@icloud.com> [aut]",
+    "Claire McQuin <mcquin@broadinstitute.org> [aut]",
     "Shantanu Singh <shsingh@broadinstitute.org> [aut, cre]"
   ))
 Description: Package for analyzing high-dimensional single-cell data.
