@@ -1,4 +1,4 @@
-#' Counts the number of \code{NA}s per variable.
+#' Count the number of \code{NA}s per variable.
 #' 
 #' \code{count_na_rows} counts the number of \code{NA}s per variable.
 #'

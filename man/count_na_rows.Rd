@@ -2,7 +2,7 @@
 % Please edit documentation in R/count_na_rows.R
 \name{count_na_rows}
 \alias{count_na_rows}
-\title{Counts the number of \code{NA}s per variable.}
+\title{Count the number of \code{NA}s per variable.}
 \usage{
 count_na_rows(population, variables)
 }
