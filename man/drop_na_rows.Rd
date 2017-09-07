@@ -2,31 +2,31 @@
 % Please edit documentation in R/drop_na_rows.R
 \name{drop_na_rows}
 \alias{drop_na_rows}
-\title{Drop rows that are NA in all variables}
+\title{Drop rows that are \code{NA} in all variables.}
 \usage{
 drop_na_rows(population, variables)
 }
 \arguments{
-\item{population}{Data frame with observation and grouping variables (metadata).}
+\item{population}{tbl with grouping (metadata) and observation variables.}
 
-\item{variables}{Vector of column names defining the used features.}
+\item{variables}{character vector specifying observation variables.}
 }
 \value{
-data without rows with NA in all variables
+\code{population} without rows that have \code{NA} in all variables.
 }
 \description{
-Drop rows that are NA in all variables
+\code{drop_na_rows} drops rows that are \code{NA} in all variables.
 }
 \examples{
  population <- tibble::data_frame(
-   Metadata_group = c("control", "control","control","control",
-                      "experiment","experiment","experiment","experiment"),
-   Metadata_batch = c("a","a","b","b","a","a","b","b"),
-   AreaShape_Area = c(10,12,15,16,8,8,7,7),
-   AreaShape_length = c(2,3,NA,NA,4,5,1,5)
+   Metadata_group = c("control", "control", "control", "control",
+                      "experiment", "experiment", "experiment", "experiment"),
+   Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
+   AreaShape_Area = c(10, 12, NA, 16, 8, 8, 7, 7),
+   AreaShape_Length = c(2, 3, NA, NA, 4, 5, 1, 5)
  )
-variables <- c('AreaShape_Area','AreaShape_length')
-na_per_row = drop_na_rows(population, variables)
+variables <- c('AreaShape_Area','AreaShape_Length')
+drop_na_rows(population, variables)
 
 
 }
