@@ -14,8 +14,6 @@ transform(population, variables, operation = "generalized_log", ...)
 \item{operation}{optional character string specifying method for transform. Currently, only \code{"generalized_log"} (default) is implemented.}
 
 \item{...}{arguments passed to transformation operation.}
-
-\item{population}{Data frame with observation and grouping variables (metadata).}
 }
 \value{
 transformed data of the same class as \code{population}.

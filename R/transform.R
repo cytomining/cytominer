@@ -5,7 +5,6 @@
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param variables character vector specifying observation variables.
 #' @param operation optional character string specifying method for transform. Currently, only \code{"generalized_log"} (default) is implemented.
-#' @param population Data frame with observation and grouping variables (metadata).
 #' @param ... arguments passed to transformation operation.
 #'
 #' @return transformed data of the same class as \code{population}.
