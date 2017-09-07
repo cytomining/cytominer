@@ -6,6 +6,7 @@ Authors@R: as.person(c(
     "Tim Becker <tbecker@broadinstitute.org> [aut]",
     "Allen Goodman <allen.goodman@icloud.com> [aut]",
     "Claire McQuin <mcquin@broadinstitute.org> [aut]",
+    "Mohammad Rohban <mrohban@broadinstitute.org> [aut]",
     "Shantanu Singh <shsingh@broadinstitute.org> [aut, cre]"
   ))
 Description: Package for analyzing high-dimensional single-cell data.
