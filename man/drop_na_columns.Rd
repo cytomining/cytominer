@@ -2,32 +2,32 @@
 % Please edit documentation in R/drop_na_columns.R
 \name{drop_na_columns}
 \alias{drop_na_columns}
-\title{Select features without NA values}
+\title{Remove variables with NA values.}
 \usage{
 drop_na_columns(population, variables, cutoff = 0.05)
 }
 \arguments{
-\item{population}{Data frame with observation and grouping variables (metadata).}
+\item{population}{tbl with grouping (metadata) and observation variables.}
 
-\item{variables}{Vector of column names defining the used variables.}
+\item{variables}{character vector specifying observation variables.}
 
-\item{cutoff}{Threshold for the frequency of na values between 0 and 1. All features with a NA frequency > cutoff are selected. Default value cutoff = 0.05.}
+\item{cutoff}{threshold between [0,1]. Variables with an \code{NA} frequency > \code{cutoff} are returned.}
 }
 \value{
-List with names of the excluded features.
+character vector specifying observation variables to be excluded.
 }
 \description{
-Select features without NA values
+\code{drop_na_columns} returns list of variables which have greater than a specified threshold number of \code{NA}s.
 }
 \examples{
  population <- tibble::data_frame(
-   Metadata_group = c("control", "control","control","control",
-                      "experiment","experiment","experiment","experiment"),
-   Metadata_batch = c("a","a","b","b","a","a","b","b"),
-   AreaShape_Area = c(10,12,15,16,8,8,7,7),
-   AreaShape_length = c(2,3,NA,NA,4,5,1,5)
+   Metadata_group = c("control", "control", "control", "control",
+                      "experiment", "experiment", "experiment", "experiment"),
+   Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
+   AreaShape_Area = c(10, 12, 15, 16, 8, 8 ,7, 7),
+   AreaShape_Length = c(2, 3, NA, NA, 4, 5, 1, 5)
  )
-variables <- c('AreaShape_Area','AreaShape_length')
-na_per_column = drop_na_columns(population, variables)
+variables <- c('AreaShape_Area','AreaShape_Length')
+drop_na_columns(population, variables)
 
 }
