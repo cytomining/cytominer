@@ -11,6 +11,7 @@
 #' @importFrom magrittr %<>%
 #' @importFrom dplyr one_of
 #' @importFrom dplyr vars
+#' @importFrom stats setNames
 #' 
 #' @export
 #' 
@@ -34,13 +35,13 @@ extract_subpopulations <-
                     nstart = 10)
     
     find_dist_to_cluster <- function(x, feats, kmeans_outp) {
-      as.matrix(dist(rbind(x[, feats], 
+      as.matrix(stats::dist(rbind(x[, feats], 
                  kmeans_outp$centers[x$Metadata_Cluster[1], feats])))[1, 2]
     }
       
     population %<>% 
       dplyr::mutate(Metadata_Cluster = kmeans_outp$cluster) %>%
-      dplyr::mutate(row_number = 1:n()) %>%
+      dplyr::mutate(row_number = 1:n())  %>%
       dplyr::group_by_at(vars(one_of(c("row_number", 
                                        "Metadata_Cluster", 
                                        "Metadata_Type", 
@@ -49,26 +50,27 @@ extract_subpopulations <-
       dplyr::ungroup()
     
     subpop_profiles <- population %>%
-      dplyr::group_by(Metadata_Type, Metadata_Cluster) %>%
+      dplyr::group_by_(.dots = c("Metadata_Type", "Metadata_Cluster")) %>%
       dplyr::summarise(n = n()) %>%
-      dplyr::group_by(Metadata_Type) %>%
-      dplyr::rename(freq = n) %>%
-      dplyr::mutate(freq = freq / sum(freq)) %>%
+      dplyr::group_by_(.dots = "Metadata_Type") %>%
+      dplyr::rename_('freq' = 'n') %>%
+      dplyr::mutate_(.dots = setNames(list(~ freq / sum(freq)), "freq")) %>%
       dplyr::ungroup() %>%
       tidyr::spread(key = "Metadata_Type", value = "freq")
     
+   
     trt_clusters <- population %>% 
-      dplyr::filter(Metadata_Type == "treatment") %>% 
+      dplyr::filter_('Metadata_Type == "treatment"') %>% 
       dplyr::select(one_of(c(non_feats, 
                              "Metadata_Cluster",
                              "Metadata_dist_to_cluster")))
     
     ctrl_clusters <- population %>% 
-      dplyr::filter(Metadata_Type == "control") %>% 
+      dplyr::filter_('Metadata_Type == "control"') %>% 
       dplyr::select(one_of(c(non_feats, 
                              "Metadata_Cluster",
                              "Metadata_dist_to_cluster")))
-    
+
     return(list(subpop_centers = kmeans_outp$centers,
                 subpop_profiles = subpop_profiles,
                 treatment_clusters = trt_clusters,
