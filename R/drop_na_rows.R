@@ -27,6 +27,8 @@ drop_na_rows <- function(population, variables) {
   key <- rlang::sym("key")
   
   value <- rlang::sym("value")
+  
+  rowname_temp <- rlang::sym("rowname_temp")
 
   if (is.data.frame(population)) {
     population %>%
@@ -34,7 +36,7 @@ drop_na_rows <- function(population, variables) {
       tidyr::gather_("key", "value", variables)  %>%
       dplyr::filter(!is.na(!!value)) %>%
       tidyr::spread(!!key, !!value) %>%
-      dplyr::select(-rowname_temp)
+      dplyr::select(-!!rowname_temp)
     
   } else { 
     
