@@ -1,15 +1,17 @@
 utils::globalVariables(c("n", ".", "variable"))
-#' Replicate correlation of variables
+#' Measure replicate correlation of variables.
+#' 
+#' `replicate_correlation` measures replicate correlation of variables.
 #'
-#' @param sample ...
-#' @param variables ...
-#' @param strata ...
-#' @param replicates ...
-#' @param replicate_by ...
-#' @param split_by ...
-#' @param cores ...
+#' @param sample tbl containing sample used to estimate parameters.
+#' @param variables character vector specifying observation variables.
+#' @param strata character vector specifying grouping variables for grouping prior to normalization.
+#' @param replicates number of replicates. 
+#' @param replicate_by optional character string specifying column containing the replicate id.
+#' @param split_by optional character string specifying column  by which to split the sample into batches; replicate correlations will be calculate per batch.
+#' @param cores optional integer specifying number of CPU cores used for parallel computing using \code{doParallel}.
 #'
-#' @return data.frame of variable quality measurements
+#' @return data frame of variable quality measurements
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%

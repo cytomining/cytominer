@@ -2,18 +2,22 @@
 % Please edit documentation in R/variance_threshold.R
 \name{variance_threshold}
 \alias{variance_threshold}
-\title{Select features using variance threshold}
+\title{Remove variables with near-zero variance.}
 \usage{
 variance_threshold(variables, sample)
 }
 \arguments{
-\item{variables}{...}
+\item{variables}{character vector specifying observation variables.}
 
-\item{sample}{...}
+\item{sample}{tbl containing sample used to estimate parameters.}
 }
 \value{
-Excluded variables
+character vector specifying observation variables to be excluded.
 }
 \description{
-Select features using variance threshold
+\code{variance_threshold} returns list of variables that have near-zero variance.
+}
+\details{
+\code{variance_threshold} is a reimplementation of \code{\link[caret]{nearZeroVar}}, using 
+the default values for \code{freqCut} and \code{uniqueCut}.
 }
