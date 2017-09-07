@@ -1,14 +1,37 @@
-# cytominer
-[![Build Status](https://travis-ci.org/cytomining/cytominer.png?branch=master)](https://travis-ci.org/cytomining/cytominer)
-[![Coverage Status](https://img.shields.io/codecov/c/github/cytomining/cytominer/master.svg)](https://codecov.io/github/cytomining/cytominer?branch=master)
 
-Library for mining patterns in perturbation data
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+[![Build Status](https://travis-ci.org/cytomining/cytominer.png?branch=master)](https://travis-ci.org/cytomining/cytominer) [![Coverage Status](https://img.shields.io/codecov/c/github/cytomining/cytominer/master.svg)](https://codecov.io/github/cytomining/cytominer?branch=master)
 
-## Installation
+cytominer
+=========
 
-```R
+Typical morphological profiling datasets have millions of cells and hundreds of features per cells. When working with this data, you must
+
+-   clean the data
+
+-   normalize the features so that they are comparable across experiments
+
+-   transform the features so that their distributions are well-behaved ( i.e., bring them in line with assumptions we want to make about their disributions)
+
+-   select features based on their quality
+
+-   aggregate the single-cell data, if needed
+
+The cytominer package makes these steps fast and easy.
+
+Installation
+------------
+
+You can install cytominer from github with:
+
+``` r
 # install.packages("devtools")
 devtools::install_github("cytomining/cytominer", dependencies = TRUE, build_vignettes = TRUE)
 ```
 
 Occasionally, the `Suggests` dependencies [may not get installed](https://github.com/hadley/devtools/issues/1370), depending on your system, so you'd need to install those explicitly.
+
+Example
+-------
+
+See the `vignette("cytominer-pipeline")` for basic example of using `cytominer` to analyze a morphological profiling dataset.
