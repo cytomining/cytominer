@@ -2,31 +2,31 @@
 % Please edit documentation in R/count_na_rows.R
 \name{count_na_rows}
 \alias{count_na_rows}
-\title{Counts the frequency of NAs per variable.}
+\title{Counts the number of \code{NA}s per variable.}
 \usage{
 count_na_rows(population, variables)
 }
 \arguments{
-\item{population}{Data frame with observation and grouping variables (metadata).}
+\item{population}{tbl with grouping (metadata) and observation variables.}
 
-\item{variables}{Vector of column names defining the used features.}
+\item{variables}{character vector specifying observation variables.}
 }
 \value{
-Data frame with frequency of NAs per variable
+data frame with frequency of \code{NA}s per variable.
 }
 \description{
-Counts the frequency of NAs per variable.
+\code{count_na_rows} counts the number of \code{NA}s per variable.
 }
 \examples{
 
- population <- tibble::data_frame(
-   Metadata_group = c("control", "control","control","control",
-                      "experiment","experiment","experiment","experiment"),
-   Metadata_batch = c("a","a","b","b","a","a","b","b"),
-   AreaShape_Area = c(10,12,15,16,8,8,7,7),
-   AreaShape_length = c(2,3,NA,NA,4,5,1,5)
- )
+population <- tibble::data_frame(
+   Metadata_group = c("control", "control", "control", "control",
+                      "experiment", "experiment", "experiment", "experiment"),
+   Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
+   AreaShape_Area = c(10, 12, 15, 16, 8, 8,7, 7),
+   AreaShape_length = c(2, 3, NA, NA, 4, 5, 1, 5)
+)
 variables <- c('AreaShape_Area','AreaShape_length')
-na_per_row = count_na_rows(population, variables)
+count_na_rows(population, variables)
 
 }
