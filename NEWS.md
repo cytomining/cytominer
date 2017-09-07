@@ -1,4 +1,4 @@
-# cytominer 0.0.1
+# cytominer 0.1
 
 Hello world!
 
