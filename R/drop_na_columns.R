@@ -44,6 +44,6 @@ drop_na_columns <- function(population, variables, cutoff = 0.05) {
     dplyr::collect() %>%
     tidyr::gather(!!feature, !!count, !!!variables) %>%
     dplyr::mutate(!!percent := (!!count) / nrows) %>%
-    dplyr::filter(magrittr::is_greater_than(!!percent, !!cutoff)) %>%
+    dplyr::filter((!!percent) > (!!cutoff)) %>%
     magrittr::extract2("feature")
 }
