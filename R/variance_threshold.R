@@ -1,9 +1,14 @@
-#' Select features using variance threshold
+#' Remove variables with near-zero variance.
 #'
-#' @param variables Vector of column names defining the used features.
-#' @param sample Subpopulation used to calculate the distribution of the given variables.
+#' \code{variance_threshold} returns list of variables that have near-zero variance.
+#' 
+#' \code{variance_threshold} is a reimplementation of \code{\link[caret]{nearZeroVar}}, using 
+#' the default values for \code{freqCut} and \code{uniqueCut}.
+#' 
+#' @param variables character vector specifying observation variables.
+#' @param sample tbl containing sample used to estimate parameters.
 #'
-#' @return Excluded variables
+#' @return character vector specifying observation variables to be excluded.
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
