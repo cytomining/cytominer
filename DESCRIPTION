@@ -35,6 +35,6 @@ Suggests:
     stringr (>= 1.2.0),
     testthat (>= 1.0.2)
 VignetteBuilder: knitr
-URL: https://github.com/shntnu/cytominer
-BugReports: https://github.com/shntnu/cytominer/issues
+URL: https://github.com/cytomining/cytominer
+BugReports: https://github.com/cytomining/cytominer/issues
 RoxygenNote: 6.0.1
