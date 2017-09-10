@@ -2,12 +2,11 @@ Package: cytominer
 Type: Package
 Title: Package for Analyzing High-Dimensional Single-Cell Data
 Version: 0.1.0
-Authors@R: c(
-    person("Tim", "Becker", email = "<tbecker@broadinstitute.org>", role = "aut"),
-    person("Allen", "Goodman", email = "<allen.goodman@icloud.com>", role = "aut"),
-    person("Claire", "McQuin", email = "<mcquin@broadinstitute.org>", role = "aut"),
-    person("Mohammad", "Rohban", email = "<mrohban@broadinstitute.org>", role = "aut"),
-    person("Shantanu", "Singh", email = "<shsingh@broadinstitute.org>", role = c("aut", "cre"))
+Authors@R: c(person("Tim", "Becker", email = "tbecker@broadinstitute.org", role = "aut"),
+    person("Allen", "Goodman", email = "allen.goodman@icloud.com", role = "aut"),
+    person("Claire", "McQuin", email = "mcquin@broadinstitute.org", role = "aut"),
+    person("Mohammad", "Rohban", email = "mrohban@broadinstitute.org", role = "aut"),
+    person("Shantanu", "Singh", email = "shsingh@broadinstitute.org", role = c("aut", "cre"))
   )
 Description: Package for analyzing high-dimensional single-cell data.
 Depends:
