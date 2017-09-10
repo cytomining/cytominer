@@ -11,7 +11,7 @@ Authors@R: c(person("Tim", "Becker", email = "tbecker@broadinstitute.org", role 
 Description: Package for analyzing high-dimensional single-cell data.
 Depends:
     R (>= 3.3.3)
-License: file LICENSE
+License: BSD_3_clause + file LICENSE
 LazyData: TRUE
 Imports:
     doParallel (>= 1.0.10),
