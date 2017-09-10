@@ -61,8 +61,11 @@ test_that("`replicate_correlation` measure correlation between replicates in eac
                           replicates = 2,
                           cores = 2) %>%
       dplyr::select_(.dots = c('variable', 'median')) %>%
-      dplyr::arrange_(.dots = c('variable')),
-    correlations
+      dplyr::arrange_(.dots = c('variable')) %>%
+      as.data.frame(),
+    correlations %>%
+      as.data.frame(),
+    tolerance = 10e-12
   )
 
   expect_equal(
@@ -73,8 +76,11 @@ test_that("`replicate_correlation` measure correlation between replicates in eac
                           replicate_by = "replicate_id",
                           cores = 2) %>%
       dplyr::select_(.dots = c('variable', 'median')) %>%
-      dplyr::arrange_(.dots = c('variable')),
-    correlations
+      dplyr::arrange_(.dots = c('variable')) %>%
+      as.data.frame(),
+    correlations %>%
+      as.data.frame(),
+    tolerance = 10e-12
   )
 
   expect_equal(
