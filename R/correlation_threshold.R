@@ -2,7 +2,7 @@
 #' 
 #' \code{correlation_threshold} returns list of variables such that no two variables have a correlation greater than a specified threshold.
 #'
-#' \code{correlation_threshold} is a wrapper for \code{\link[caret]{findCorrelation}}.
+#' \code{correlation_threshold} is a wrapper for \code{caret::findCorrelation}.
 #' 
 #' @param variables character vector specifying observation variables.
 #' @param sample tbl containing sample used to estimate parameters.
