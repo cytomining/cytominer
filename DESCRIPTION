@@ -14,6 +14,7 @@ Depends:
 License: BSD_3_clause + file LICENSE
 LazyData: TRUE
 Imports:
+    caret (>= 6.0.76),
     doParallel (>= 1.0.10),
     dplyr (>= 0.7.2),
     foreach (>= 1.4.3),

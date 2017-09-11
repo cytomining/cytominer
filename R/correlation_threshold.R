@@ -21,7 +21,7 @@ correlation_threshold <- function(variables, sample, cutoff = 0.90,
     sample %>%
     dplyr::select_(.dots = variables) %>%
     cor(method = method) %>%
-    findCorrelation(cutoff = cutoff)
+    caret::findCorrelation(cutoff = cutoff)
 
   variables[excluded_indexes]
 }
