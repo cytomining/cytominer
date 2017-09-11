@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Package for Analyzing High-Dimensional Single-Cell Data • cytominer</title>
+<title>Methods for Image-Based Cell Profiling • cytominer</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
@@ -53,7 +53,14 @@
   <a href="news/index.html">News</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/cytomining/cytominer">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -74,7 +81,7 @@
 <div id="cytominer" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#cytominer" class="anchor"></a>cytominer</h1></div>
-<p>Typical morphological profiling datasets have millions of cells and hundreds of features per cells. When working with this data, you must</p>
+<p>Typical morphological profiling datasets have millions of cells and hundreds of features per cell. When working with this data, you must</p>
 <ul>
 <li><p>clean the data</p></li>
 <li><p>normalize the features so that they are comparable across experiments</p></li>
@@ -102,13 +109,21 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2 class="hasAnchor">
-<a href="#sidebar" class="anchor"></a>License</h2>
-<p>file <a href="LICENSE.html">LICENSE</a></p>
+<a href="#sidebar" class="anchor"></a>Links</h2>
+<ul class="list-unstyled">
+<li>Browse source code at <br><a href="https://github.com/cytomining/cytominer">https://​github.com/​cytomining/​cytominer</a>
+</li>
+<li>Report a bug at <br><a href="https://github.com/cytomining/cytominer/issues">https://​github.com/​cytomining/​cytominer/​issues</a>
+</li>
+</ul>
+<h2>License</h2>
+<p><a href="https://opensource.org/licenses/BSD-3-Clause">BSD_3_clause</a> + file <a href="LICENSE.html">LICENSE</a></p>
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>Tim Becker <br><small class="roles"> Author </small> </li>
 <li>Allen Goodman <br><small class="roles"> Author </small> </li>
 <li>Claire McQuin <br><small class="roles"> Author </small> </li>
+<li>Mohammad Rohban <br><small class="roles"> Author </small> </li>
 <li>Shantanu Singh <br><small class="roles"> Author, maintainer </small> </li>
 </ul>
 <h2>Dev status</h2>
@@ -122,7 +137,7 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 
 
       <footer><div class="copyright">
-  <p>Developed by Tim Becker, Allen Goodman, Claire McQuin, Shantanu Singh.</p>
+  <p>Developed by Tim Becker, Allen Goodman, Claire McQuin, Mohammad Rohban, Shantanu Singh.</p>
 </div>
 
 <div class="pkgdown">

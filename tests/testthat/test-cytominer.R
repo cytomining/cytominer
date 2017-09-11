@@ -1,6 +1,8 @@
 context("cytominer integration test")
 
 test_that("cytominer can process dataset with a normalized schema", {
+  
+  skip_on_os("windows")
 
   futile.logger::flog.threshold(futile.logger::WARN)
 
@@ -127,6 +129,9 @@ test_that("cytominer can process dataset with a normalized schema", {
 })
 
 test_that("cytominer can process dataset with a CellProfiler schema", {
+  
+  skip_on_os("windows")
+  
   futile.logger::flog.threshold(futile.logger::WARN)
 
   fixture <-

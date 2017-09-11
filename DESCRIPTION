@@ -1,19 +1,27 @@
 Package: cytominer
 Type: Package
-Title: Package for Analyzing High-Dimensional Single-Cell Data
+Title: Methods for Image-Based Cell Profiling
 Version: 0.1.0
-Authors@R: as.person(c(
-    "Tim Becker <tbecker@broadinstitute.org> [aut]",
-    "Allen Goodman <allen.goodman@icloud.com> [aut]",
-    "Claire McQuin <mcquin@broadinstitute.org> [aut]",
-    "Shantanu Singh <shsingh@broadinstitute.org> [aut, cre]"
-  ))
-Description: Package for analyzing high-dimensional single-cell data.
+Authors@R: c(person("Tim", "Becker", email = "tbecker@broadinstitute.org", role = "aut"),
+    person("Allen", "Goodman", email = "allen.goodman@icloud.com", role = "aut"),
+    person("Claire", "McQuin", email = "mcquin@broadinstitute.org", role = "aut"),
+    person("Mohammad", "Rohban", email = "mrohban@broadinstitute.org", role = "aut"),
+    person("Shantanu", "Singh", email = "shsingh@broadinstitute.org", role = c("aut", "cre"))
+  )
+Description: Typical morphological profiling datasets have millions of cells 
+    and hundreds of features per cell. When working with this data, you must 
+    clean the data, normalize the features to make them comparable across 
+    experiments, transform the features, select features based on their 
+    quality, and aggregate the single-cell data, if needed. 'cytominer' makes
+    these steps fast and easy. Methods used in practice in the field are 
+    discussed in (Caicedo 2017) <doi:10.1038/nmeth.4397>. An overview of the 
+    field is presented in (Caicedo 2016) <doi:10.1016/j.copbio.2016.04.003>.
 Depends:
     R (>= 3.3.3)
-License: file LICENSE
+License: BSD_3_clause + file LICENSE
 LazyData: TRUE
 Imports:
+    caret (>= 6.0.76),
     doParallel (>= 1.0.10),
     dplyr (>= 0.7.2),
     foreach (>= 1.4.3),
@@ -34,4 +42,6 @@ Suggests:
     stringr (>= 1.2.0),
     testthat (>= 1.0.2)
 VignetteBuilder: knitr
+URL: https://github.com/cytomining/cytominer
+BugReports: https://github.com/cytomining/cytominer/issues
 RoxygenNote: 6.0.1
