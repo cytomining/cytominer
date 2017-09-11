@@ -1,6 +1,6 @@
 Package: cytominer
 Type: Package
-Title: Package for Analyzing High-Dimensional Single-Cell Data
+Title: Methods for Image-Based Cell Profiling
 Version: 0.1.0
 Authors@R: c(person("Tim", "Becker", email = "tbecker@broadinstitute.org", role = "aut"),
     person("Allen", "Goodman", email = "allen.goodman@icloud.com", role = "aut"),
@@ -8,7 +8,14 @@ Authors@R: c(person("Tim", "Becker", email = "tbecker@broadinstitute.org", role 
     person("Mohammad", "Rohban", email = "mrohban@broadinstitute.org", role = "aut"),
     person("Shantanu", "Singh", email = "shsingh@broadinstitute.org", role = c("aut", "cre"))
   )
-Description: Package for analyzing high-dimensional single-cell data.
+Description: Typical morphological profiling datasets have millions of cells 
+    and hundreds of features per cell. When working with this data, you must 
+    clean the data, normalize the features to make them comparable across 
+    experiments, transform the features, select features based on their 
+    quality, and aggregate the single-cell data, if needed. 'cytominer' makes
+    these steps fast and easy. Methods used in practice in the field are 
+    discussed in (Caicedo 2017) <doi:10.1038/nmeth.4397>. An overview of the 
+    field is presented in (Caicedo 2016) <doi:10.1016/j.copbio.2016.04.003>.
 Depends:
     R (>= 3.3.3)
 License: BSD_3_clause + file LICENSE
