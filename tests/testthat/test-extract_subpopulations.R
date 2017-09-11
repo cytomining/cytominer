@@ -25,9 +25,9 @@ test_that("`extract_subpopulations` extracts and assigns each point to a subpopu
     clusters <- t(apply(dist_to_clusters, 1, 
                             function(x) c(min(x),
                                           which.min(x))))
-    colnames(clusters) <- c("Metadata_dist_to_cluster", "Metadata_Cluster")
+    colnames(clusters) <- c("dist_to_cluster", "cluster_id")
     clusters <- dplyr::as_tibble(clusters) 
-    clusters$Metadata_Cluster <- as.integer(clusters$Metadata_Cluster)
+    clusters$cluster_id <- as.integer(clusters$cluster_id)
     return(clusters)
   }
   
@@ -45,23 +45,23 @@ test_that("`extract_subpopulations` extracts and assigns each point to a subpopu
   ## are consistent with the returned cluster centers
   
   expect_equal(
-    subpops$treatment_clusters[, c("Metadata_dist_to_cluster", 
-                                              "Metadata_Cluster")],
+    subpops$treatment_clusters[, c("dist_to_cluster", 
+                                              "cluster_id")],
     trt_clusters
   )
   
   expect_equal(
-    subpops$ctrl_clusters[, c("Metadata_dist_to_cluster", 
-                                   "Metadata_Cluster")],
+    subpops$ctrl_clusters[, c("dist_to_cluster", 
+                                   "cluster_id")],
     ctrl_clusters
   )
   
   ## test if the summation of cluster proportions are equal to one
   expect_equal(
     subpops$subpop_profiles %>% 
-      dplyr::select(-Metadata_Cluster) %>%
-      tidyr::gather(key = "Metadata_Type", value = "freq") %>%
-      dplyr::group_by(Metadata_Type) %>%
+      dplyr::select(-cluster_id) %>%
+      tidyr::gather(key = "pert_type", value = "freq") %>%
+      dplyr::group_by(pert_type) %>%
       dplyr::summarise(tot.freq = sum(freq)) %>%
       dplyr::select(tot.freq),
     dplyr::tibble(tot.freq = c(1, 1))
