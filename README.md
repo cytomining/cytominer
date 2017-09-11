@@ -5,7 +5,7 @@
 cytominer
 =========
 
-Typical morphological profiling datasets have millions of cells and hundreds of features per cells. When working with this data, you must
+Typical morphological profiling datasets have millions of cells and hundreds of features per cell. When working with this data, you must
 
 -   clean the data
 
