@@ -4,11 +4,14 @@ test_that("`extract_subpopulations` extracts and assigns each point to a subpopu
   set.seed(24)
 
   k <- 6  
-  data_trt <- data.frame(matrix(runif(1000), 100, 10),
-                         Metadata_id = 1:100)
-
-  data_ctrl <- data.frame(matrix(runif(2000), 200, 10),
-                         Metadata_id = 1:200)
+  data_trt <- matrix(runif(1000), 100, 10)
+  data_ctrl <- matrix(runif(2000), 200, 10)
+  
+  data_trt[sample(1:length(data_trt), size = round(length(data_trt) * 0.1))] <- NA
+  data_ctrl[sample(1:length(data_ctrl), size = round(length(data_ctrl) * 0.1))] <- NA
+  
+  data_trt <- data.frame(data_trt, Metadata_id = 1:NROW(data_trt))
+  data_ctrl <- data.frame(data_ctrl, Metadata_id = 1:NROW(data_ctrl))
   
   feats <- colnames(data_trt)
   feats <- feats[which(!stringr::str_detect(feats, "Metadata_"))]
@@ -31,12 +34,12 @@ test_that("`extract_subpopulations` extracts and assigns each point to a subpopu
     return(clusters)
   }
   
-  trt_clusters <- cluster_assign(data = data_trt, 
+  trt_clusters <- cluster_assign(data = data_trt[stats::complete.cases(data_trt[,feats]), ], 
                                  centers = subpops$subpop_centers, 
                                  feats = feats, 
                                  k = k)
 
-  ctrl_clusters <- cluster_assign(data = data_ctrl, 
+  ctrl_clusters <- cluster_assign(data = data_ctrl[stats::complete.cases(data_ctrl[,feats]), ],
                                  centers = subpops$subpop_centers, 
                                  feats = feats, 
                                  k = k)
