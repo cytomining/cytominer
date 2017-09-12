@@ -94,7 +94,7 @@ test_that("cytominer can process dataset with a normalized schema", {
 
   # drop NA columns because they may arise after normalize
   cleaned <-
-    select(
+    variable_select(
       population = normalized,
       variables = feature_cols,
       operation = "drop_na_columns"
@@ -118,7 +118,7 @@ test_that("cytominer can process dataset with a normalized schema", {
 
   # feature selection (variance threshold by default)
   selected <-
-    select(
+    variable_select(
       population = transformed,
       variables = feature_cols,
       operation = "correlation_threshold",
@@ -244,7 +244,7 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
 
   # drop NA columns because they may arise after normalize
   cleaned <-
-    select(
+    variable_select(
       population = normalized,
       variables = feature_cols,
       operation = "drop_na_columns"
@@ -272,7 +272,7 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
 
   # feature selection (variance threshold by default)
   selected <-
-    select(
+    variable_select(
       population = transformed,
       variables = feature_cols,
       sample = aggregated,

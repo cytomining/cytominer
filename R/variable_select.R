@@ -1,6 +1,6 @@
 #' Select observation variables.
 #'
-#' \code{select} selects observation variables based on the specified variable selection method.
+#' \code{variable_select} selects observation variables based on the specified variable selection method.
 #'
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param variables character vector specifying observation variables.
@@ -13,7 +13,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @export
-select <- function(population, variables, sample = NULL,
+variable_select <- function(population, variables, sample = NULL,
                    operation = "variance_threshold", ...) {
   if (operation == "variance_threshold") {
     excluded <- variance_threshold(variables, sample, ...)
