@@ -21,3 +21,12 @@ character vector specifying observation variables to be excluded.
 \code{variance_threshold} is a reimplementation of \code{caret::nearZeroVar}, using 
 the default values for \code{freqCut} and \code{uniqueCut}.
 }
+\examples{
+sample <- tibble::data_frame(
+   AreaShape_Area = c(10, 12, 15, 16, 8, 8, 7, 7, 13, 18),
+   AreaShape_Euler = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+ )
+variables <- c("AreaShape_Area", "AreaShape_Euler")
+variance_threshold(variables, sample)
+
+}
