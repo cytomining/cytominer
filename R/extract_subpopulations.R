@@ -6,6 +6,23 @@
 #' @param k a scalar which is the number of subpopulations
 #' 
 #' @return list containing subpop. signatures (subpop_centers), two histograms showing freq. of each subpop. in treatment and control (subpop_profiles), and cluster prediction and distance to the predicted cluster for all input data (treatment_clusters and ctrl_clusters).
+#' @examples
+#' population <- tibble::data_frame(
+#'    Metadata_group = c("control", "control", "control", "control",
+#'                       "experiment", "experiment", "experiment", "experiment"),
+#'    Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
+#'    AreaShape_Area = c(10, 12, NA, 16, 8, 8, 7, 7),
+#'    AreaShape_Length = c(2, 3, NA, NA, 4, 5, 1, 5)
+#' )
+#' variables <- c('AreaShape_Area','AreaShape_Length')
+#' population_trt <-  dplyr::filter(population, Metadata_group == "experiment")
+#' population_ctrl <- dplyr::filter(population, Metadata_group == "control")
+#' extract_subpopulations(
+#'    population_treatment = population_trt,
+#'    population_control = population_ctrl,
+#'    feats = variables,
+#'    k = 3
+#' )
 #' 
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
@@ -34,7 +51,8 @@ extract_subpopulations <-
     population <- population_treatment %>% 
       dplyr::mutate(!!type_var_name := "treatment") %>%
       dplyr::bind_rows(., population_control %>% 
-                         dplyr::mutate(!!type_var_name := "control")) 
+                         dplyr::mutate(!!type_var_name := "control")) %>%
+      tidyr::drop_na(one_of(feats))
     
     kmeans_outp <- population %>%
       dplyr::select(one_of(feats)) %>%
@@ -71,14 +89,13 @@ extract_subpopulations <-
       dplyr::rename(!!freq_var := !!"n") %>%
       dplyr::mutate(!!freq_var := ((!!freq_var) / sum(!!freq_var))) %>%
       dplyr::ungroup() %>%
-      tidyr::spread(key = type_var_name, value = freq_var_name)
+      tidyr::spread(key = type_var_name, value = freq_var_name, fill = 0) 
     
-   
     trt_clusters <- population %>% 
       dplyr::filter(rlang::UQ(type_var) == "treatment") %>% 
       dplyr::select(one_of(c(non_feats, 
                              cluster_var_name,
-                             dist_var_name)))
+                             dist_var_name))) 
     
     ctrl_clusters <- population %>% 
       dplyr::filter(rlang::UQ(type_var) == "control") %>% 

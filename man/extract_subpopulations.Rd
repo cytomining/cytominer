@@ -21,3 +21,22 @@ list containing subpop. signatures (subpop_centers), two histograms showing freq
 \description{
 extract the subpopulations enriched/de-enriched in a given single cell population of a treatment w.r.t the control
 }
+\examples{
+population <- tibble::data_frame(
+   Metadata_group = c("control", "control", "control", "control",
+                      "experiment", "experiment", "experiment", "experiment"),
+   Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
+   AreaShape_Area = c(10, 12, NA, 16, 8, 8, 7, 7),
+   AreaShape_Length = c(2, 3, NA, NA, 4, 5, 1, 5)
+)
+variables <- c('AreaShape_Area','AreaShape_Length')
+population_trt <-  dplyr::filter(population, Metadata_group == "experiment")
+population_ctrl <- dplyr::filter(population, Metadata_group == "control")
+extract_subpopulations(
+   population_treatment = population_trt,
+   population_control = population_ctrl,
+   feats = variables,
+   k = 3
+)
+
+}
