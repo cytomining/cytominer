@@ -10,6 +10,32 @@
 #'
 #' @return variable-selected data of the same class as \code{population}.
 #'
+#' @examples
+#' 
+#' # In this example, we use `correlation_threshold` as the operation for 
+#' # variable selection.
+#' 
+#' population <- tibble::data_frame(
+#'    x = rnorm(100),
+#'    y = rnorm(100)/1000
+#'  )
+#'  
+#' population %<>% mutate(z = x + rnorm(100) / 10)
+#' 
+#' population <- sample %>% slice(1:30)
+#' 
+#' variables <- c("x", "y", "z")
+#' 
+#' operation <- "correlation_threshold"
+#' 
+#' cor(sample)
+#' 
+#' # `x` and `z` are highly correlated; one of them will be removed
+#' 
+#' head(population)
+#' 
+#' variable_select(population, variables, sample, operation) %>% head()
+#'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @export

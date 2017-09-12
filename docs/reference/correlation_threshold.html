@@ -135,12 +135,28 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>sample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>data_frame</a></span>(
-   <span class='kw'>AreaShape_Area</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>12</span>, <span class='fl'>15</span>, <span class='fl'>16</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>7</span>, <span class='fl'>7</span>, <span class='fl'>13</span>, <span class='fl'>18</span>),
-   <span class='kw'>AreaShape_Euler</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>)
+    <pre class="examples"><div class='input'>
+<span class='no'>sample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>data_frame</a></span>(
+   <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>30</span>),
+   <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>30</span>)/<span class='fl'>1000</span>
  )
-<span class='no'>variables</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"AreaShape_Area"</span>, <span class='st'>"AreaShape_Euler"</span>)
-<span class='fu'>correlation_threshold</span>(<span class='no'>variables</span>, <span class='no'>sample</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: the standard deviation is zero</span></div><div class='output co'>#&gt; character(0)</div><div class='input'>
+
+<span class='no'>sample</span> <span class='kw'>%&lt;&gt;%</span> <span class='fu'>mutate</span>(<span class='kw'>z</span> <span class='kw'>=</span> <span class='no'>x</span> + <span class='fu'>rnorm</span>(<span class='fl'>30</span>) / <span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='error'>Error in mutate(., z = x + rnorm(30)/10): could not find function "mutate"</span></div><div class='input'><span class='no'>variables</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"x"</span>, <span class='st'>"y"</span>, <span class='st'>"z"</span>)
+
+<span class='fu'>head</span>(<span class='no'>sample</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 2
+#&gt;              x             y
+#&gt;          &lt;dbl&gt;         &lt;dbl&gt;
+#&gt; 1 -1.400043517  0.0009353632
+#&gt; 2  0.255317055  0.0001764886
+#&gt; 3 -2.437263611  0.0002436855
+#&gt; 4 -0.005571287  0.0016235489
+#&gt; 5  0.621552721  0.0001120381
+#&gt; 6  1.148411606 -0.0001339970</div><div class='input'><span class='fu'>cor</span>(<span class='no'>sample</span>)</div><div class='output co'>#&gt;            x          y
+#&gt; x 1.00000000 0.05080466
+#&gt; y 0.05080466 1.00000000</div><div class='input'>
+<span class='co'># `x` and `z` are highly correlated; one of them will be removed</span>
+
+<span class='fu'>correlation_threshold</span>(<span class='no'>variables</span>, <span class='no'>sample</span>)</div><div class='output co'>#&gt; <span class='error'>Error in overscope_eval_next(overscope, expr): object 'z' not found</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

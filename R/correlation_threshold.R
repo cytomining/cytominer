@@ -11,16 +11,26 @@
 #'
 #' @return character vector specifying observation variables to be excluded.
 #'
-#' @examples
-#' sample <- tibble::data_frame(
-#'    AreaShape_Area = c(10, 12, 15, 16, 8, 8, 7, 7, 13, 18),
-#'    AreaShape_Euler = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-#'  )
-#' variables <- c("AreaShape_Area", "AreaShape_Euler")
-#' correlation_threshold(variables, sample)
-#'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
+#' 
+#' @examples
+#' 
+#' sample <- tibble::data_frame(
+#'    x = rnorm(30),
+#'    y = rnorm(30)/1000
+#'  )
+#'  
+#' sample %<>% mutate(z = x + rnorm(30) / 10)
+#' variables <- c("x", "y", "z")
+#' 
+#' head(sample)
+#' cor(sample)
+#' 
+#' # `x` and `z` are highly correlated; one of them will be removed
+#' 
+#' correlation_threshold(variables, sample)
+#'
 #' @export
 correlation_threshold <- function(variables, sample, cutoff = 0.90,
                                   method = "pearson") {
