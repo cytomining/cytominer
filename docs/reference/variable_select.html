@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Select observation variables. — select • cytominer</title>
+<title>Select observation variables. — variable_select • cytominer</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -99,10 +99,10 @@
     </div>
 
     
-    <p><code>select</code> selects observation variables based on the specified variable selection method.</p>
+    <p><code>variable_select</code> selects observation variables based on the specified variable selection method.</p>
     
 
-    <pre class="usage"><span class='fu'>select</span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='kw'>sample</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>variable_select</span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='kw'>sample</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>operation</span> <span class='kw'>=</span> <span class='st'>"variance_threshold"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -135,6 +135,51 @@
     <p>variable-selected data of the same class as <code>population</code>.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='co'># In this example, we use `correlation_threshold` as the operation for </span>
+<span class='co'># variable selection.</span>
+
+<span class='fu'>library</span>(<span class='no'>magrittr</span>)
+<span class='no'>population</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>data_frame</a></span>(
+   <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>100</span>),
+   <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>100</span>)/<span class='fl'>1000</span>
+ )
+
+<span class='no'>population</span> <span class='kw'>%&lt;&gt;%</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>z</span> <span class='kw'>=</span> <span class='no'>x</span> + <span class='fu'>rnorm</span>(<span class='fl'>100</span>) / <span class='fl'>10</span>)
+
+<span class='no'>sample</span> <span class='kw'>&lt;-</span> <span class='no'>population</span> <span class='kw'>%&gt;%</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/slice.html'>slice</a></span>(<span class='fl'>1</span>:<span class='fl'>30</span>)
+
+<span class='no'>variables</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"x"</span>, <span class='st'>"y"</span>, <span class='st'>"z"</span>)
+
+<span class='no'>operation</span> <span class='kw'>&lt;-</span> <span class='st'>"correlation_threshold"</span>
+
+<span class='fu'>cor</span>(<span class='no'>sample</span>)</div><div class='output co'>#&gt;             x           y           z
+#&gt; x  1.00000000 -0.08022343  0.99463331
+#&gt; y -0.08022343  1.00000000 -0.06732153
+#&gt; z  0.99463331 -0.06732153  1.00000000</div><div class='input'>
+<span class='co'># `x` and `z` are highly correlated; one of them will be removed</span>
+
+<span class='fu'>head</span>(<span class='no'>population</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 3
+#&gt;            x             y          z
+#&gt;        &lt;dbl&gt;         &lt;dbl&gt;      &lt;dbl&gt;
+#&gt; 1  0.3796395  0.0010527115  0.3275278
+#&gt; 2 -0.5023235 -0.0010491770 -0.5513105
+#&gt; 3 -0.3332074 -0.0012601552 -0.3284919
+#&gt; 4 -1.0185754  0.0032410399 -0.8885555
+#&gt; 5 -1.0717912 -0.0004168576 -0.8424833
+#&gt; 6  0.3035286  0.0002982276  0.4582867</div><div class='input'>
+<span class='fu'>variable_select</span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='no'>sample</span>, <span class='no'>operation</span>) <span class='kw'>%&gt;%</span> <span class='fu'>head</span>()</div><div class='output co'>#&gt; INFO [2017-09-12 11:16:42] excluded:
+#&gt; INFO [2017-09-12 11:16:42] 	 x</div><div class='output co'>#&gt; # A tibble: 6 x 2
+#&gt;               y          z
+#&gt;           &lt;dbl&gt;      &lt;dbl&gt;
+#&gt; 1  0.0010527115  0.3275278
+#&gt; 2 -0.0010491770 -0.5513105
+#&gt; 3 -0.0012601552 -0.3284919
+#&gt; 4  0.0032410399 -0.8885555
+#&gt; 5 -0.0004168576 -0.8424833
+#&gt; 6  0.0002982276  0.4582867</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -142,7 +187,9 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

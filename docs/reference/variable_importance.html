@@ -131,6 +131,52 @@
     <p>data frame containing variable importance measures.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>set.seed</span>(<span class='fl'>123</span>)
+<span class='no'>x1</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fl'>10</span>)
+<span class='no'>x2</span> <span class='kw'>&lt;-</span> <span class='no'>x1</span> + <span class='fu'>rnorm</span>(<span class='fl'>10</span>) / <span class='fl'>100</span>
+<span class='no'>y1</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fl'>10</span>)
+<span class='no'>y2</span> <span class='kw'>&lt;-</span> <span class='no'>y1</span> + <span class='fu'>rnorm</span>(<span class='fl'>10</span>) / <span class='fl'>10</span>
+<span class='no'>z1</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='fl'>10</span>)
+<span class='no'>z2</span> <span class='kw'>&lt;-</span> <span class='no'>z1</span> + <span class='fu'>rnorm</span>(<span class='fl'>10</span>) / <span class='fl'>1</span>
+
+<span class='no'>batch</span> <span class='kw'>&lt;-</span> <span class='fu'>rep</span>(<span class='fu'>rep</span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>each</span><span class='kw'>=</span><span class='fl'>5</span>), <span class='fl'>2</span>)
+
+<span class='no'>treatment</span> <span class='kw'>&lt;-</span> <span class='fu'>rep</span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>2</span>)
+
+<span class='no'>replicate_id</span> <span class='kw'>&lt;-</span> <span class='fu'>rep</span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>each</span><span class='kw'>=</span><span class='fl'>10</span>)
+
+<span class='no'>sample</span> <span class='kw'>&lt;-</span>
+  <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>data_frame</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='no'>x1</span>, <span class='no'>x2</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='no'>y1</span>, <span class='no'>y2</span>), <span class='kw'>z</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='no'>z1</span>, <span class='no'>z2</span>),
+                     <span class='kw'>Metadata_treatment</span> <span class='kw'>=</span> <span class='no'>treatment</span>,
+                     <span class='kw'>Metadata_replicate_id</span> <span class='kw'>=</span> <span class='no'>replicate_id</span>,
+                     <span class='kw'>Metadata_batch</span> <span class='kw'>=</span> <span class='no'>batch</span>)
+
+<span class='fu'>head</span>(<span class='no'>sample</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 6
+#&gt;             x          y          z Metadata_treatment Metadata_replicate_id
+#&gt;         &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;              &lt;int&gt;                 &lt;int&gt;
+#&gt; 1 -0.56047565 -1.0678237 -0.6947070                  1                     1
+#&gt; 2 -0.23017749 -0.2179749 -0.2079173                  2                     1
+#&gt; 3  1.55870831 -1.0260044 -1.2653964                  3                     1
+#&gt; 4  0.07050839 -0.7288912  2.1689560                  4                     1
+#&gt; 5  0.12928774 -0.6250393  1.2079620                  5                     1
+#&gt; 6  1.71506499 -1.6866933 -1.1231086                  6                     1
+#&gt; # ... with 1 more variables: Metadata_batch &lt;int&gt;</div><div class='input'>
+<span class='co'># `replicate_correlation`` returns the median, min, and max </span>
+<span class='co'># replicate correlation (across batches) per variable</span>
+<span class='fu'>variable_importance</span>(<span class='kw'>sample</span> <span class='kw'>=</span> <span class='no'>sample</span>,
+                    <span class='kw'>variables</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"x"</span>, <span class='st'>"y"</span>, <span class='st'>"z"</span>),
+                    <span class='kw'>operation</span> <span class='kw'>=</span> <span class='st'>"replicate_correlation"</span>,
+                    <span class='kw'>strata</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Metadata_treatment"</span>),
+                    <span class='kw'>replicates</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+                    <span class='kw'>split_by</span> <span class='kw'>=</span> <span class='st'>"Metadata_batch"</span>,
+                    <span class='kw'>replicate_by</span> <span class='kw'>=</span> <span class='st'>"Metadata_replicate_id"</span>,
+                    <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 4
+#&gt;   variable    median       min       max
+#&gt;      &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+#&gt; 1        x 0.9999749 0.9999707 0.9999791
+#&gt; 2        y 0.9959638 0.9926341 0.9992935
+#&gt; 3        z 0.6269866 0.2899923 0.9639808</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -138,7 +184,9 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

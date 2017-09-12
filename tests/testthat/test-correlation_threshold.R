@@ -12,15 +12,13 @@ test_that("`correlation_threshold` selects variables that are not highly correla
   data <- dplyr::copy_to(db, data)
 
   expect_equal(
-    correlation_threshold(#population = data,
-                          variables = c("x", "y", "z"),
+    correlation_threshold(variables = c("x", "y", "z"),
                           sample = data %>% dplyr::collect()),
     c("z")
   )
 
   expect_equal(
-    correlation_threshold(#population = data,
-                          variables = c("x", "y"),
+    correlation_threshold(variables = c("x", "y"),
                           sample = data %>% dplyr::collect()),
     character(0)
   )

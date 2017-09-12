@@ -189,7 +189,7 @@ But lets run this cleaning operation  anyway (no features will be dropped)
 ```{r}
 
 cleaned <-
-  cytominer::select(
+  cytominer::variable_select(
     population = normalized,
     variables = feature_cols,
     operation = "drop_na_columns"
@@ -232,7 +232,7 @@ aggregated <-
 is used.
 ```{r}
 selected <-
-  cytominer::select(
+  cytominer::variable_select(
     population = transformed,
     variables = feature_cols,
     sample = aggregated,

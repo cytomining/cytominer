@@ -75,7 +75,7 @@
       <h1>Introduction to cytominer</h1>
                         <h4 class="author">Allen Goodman and Shantanu Singh</h4>
             
-            <h4 class="date">2017-09-11</h4>
+            <h4 class="date">2017-09-12</h4>
           </div>
 
     
@@ -244,7 +244,7 @@ na_frequency <span class="op">%&gt;%</span>
 </table>
 <p>As it turns out, no feature has NA in this example. But lets run this cleaning operation anyway (no features will be dropped)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cleaned &lt;-
-<span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/select">select</a></span>(
+<span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/variable_select">variable_select</a></span>(
     <span class="dt">population =</span> normalized,
     <span class="dt">variables =</span> feature_cols,
     <span class="dt">operation =</span> <span class="st">"drop_na_columns"</span>
@@ -273,7 +273,7 @@ na_frequency <span class="op">%&gt;%</span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">collect</a></span>()</code></pre></div>
 <p>… and then apply feature selection on the per-cell data. Here <code>correlation_threshold</code> - a method that reduces the redundancy of features - is used.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">selected &lt;-
-<span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/select">select</a></span>(
+<span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/variable_select">variable_select</a></span>(
     <span class="dt">population =</span> transformed,
     <span class="dt">variables =</span> feature_cols,
     <span class="dt">sample =</span> aggregated,
