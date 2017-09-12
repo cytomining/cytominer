@@ -140,42 +140,45 @@
 <span class='co'># In this example, we use `correlation_threshold` as the operation for </span>
 <span class='co'># variable selection.</span>
 
+<span class='fu'>library</span>(<span class='no'>magrittr</span>)
 <span class='no'>population</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>data_frame</a></span>(
    <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>100</span>),
    <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>100</span>)/<span class='fl'>1000</span>
  )
 
-<span class='no'>population</span> <span class='kw'>%&lt;&gt;%</span> <span class='fu'>mutate</span>(<span class='kw'>z</span> <span class='kw'>=</span> <span class='no'>x</span> + <span class='fu'>rnorm</span>(<span class='fl'>100</span>) / <span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='error'>Error in mutate(., z = x + rnorm(100)/10): could not find function "mutate"</span></div><div class='input'>
-<span class='no'>population</span> <span class='kw'>&lt;-</span> <span class='no'>sample</span> <span class='kw'>%&gt;%</span> <span class='fu'>slice</span>(<span class='fl'>1</span>:<span class='fl'>30</span>)</div><div class='output co'>#&gt; <span class='error'>Error in slice(., 1:30): could not find function "slice"</span></div><div class='input'>
+<span class='no'>population</span> <span class='kw'>%&lt;&gt;%</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>z</span> <span class='kw'>=</span> <span class='no'>x</span> + <span class='fu'>rnorm</span>(<span class='fl'>100</span>) / <span class='fl'>10</span>)
+
+<span class='no'>sample</span> <span class='kw'>&lt;-</span> <span class='no'>population</span> <span class='kw'>%&gt;%</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/slice.html'>slice</a></span>(<span class='fl'>1</span>:<span class='fl'>30</span>)
+
 <span class='no'>variables</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"x"</span>, <span class='st'>"y"</span>, <span class='st'>"z"</span>)
 
 <span class='no'>operation</span> <span class='kw'>&lt;-</span> <span class='st'>"correlation_threshold"</span>
 
-<span class='fu'>cor</span>(<span class='no'>sample</span>)</div><div class='output co'>#&gt;            x          y          z
-#&gt; x  1.0000000 -0.1711243  0.9913507
-#&gt; y -0.1711243  1.0000000 -0.1770019
-#&gt; z  0.9913507 -0.1770019  1.0000000</div><div class='input'>
+<span class='fu'>cor</span>(<span class='no'>sample</span>)</div><div class='output co'>#&gt;             x           y           z
+#&gt; x  1.00000000 -0.08022343  0.99463331
+#&gt; y -0.08022343  1.00000000 -0.06732153
+#&gt; z  0.99463331 -0.06732153  1.00000000</div><div class='input'>
 <span class='co'># `x` and `z` are highly correlated; one of them will be removed</span>
 
-<span class='fu'>head</span>(<span class='no'>population</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 2
-#&gt;            x             y
-#&gt;        &lt;dbl&gt;         &lt;dbl&gt;
-#&gt; 1  0.3796395  0.0010527115
-#&gt; 2 -0.5023235 -0.0010491770
-#&gt; 3 -0.3332074 -0.0012601552
-#&gt; 4 -1.0185754  0.0032410399
-#&gt; 5 -1.0717912 -0.0004168576
-#&gt; 6  0.3035286  0.0002982276</div><div class='input'>
-<span class='fu'>variable_select</span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='no'>sample</span>, <span class='no'>operation</span>) <span class='kw'>%&gt;%</span> <span class='fu'>head</span>()</div><div class='output co'>#&gt; INFO [2017-09-12 11:06:08] excluded:
-#&gt; INFO [2017-09-12 11:06:08] 	 z</div><div class='output co'>#&gt; # A tibble: 6 x 2
-#&gt;            x             y
-#&gt;        &lt;dbl&gt;         &lt;dbl&gt;
-#&gt; 1  0.3796395  0.0010527115
-#&gt; 2 -0.5023235 -0.0010491770
-#&gt; 3 -0.3332074 -0.0012601552
-#&gt; 4 -1.0185754  0.0032410399
-#&gt; 5 -1.0717912 -0.0004168576
-#&gt; 6  0.3035286  0.0002982276</div><div class='input'>
+<span class='fu'>head</span>(<span class='no'>population</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 3
+#&gt;            x             y          z
+#&gt;        &lt;dbl&gt;         &lt;dbl&gt;      &lt;dbl&gt;
+#&gt; 1  0.3796395  0.0010527115  0.3275278
+#&gt; 2 -0.5023235 -0.0010491770 -0.5513105
+#&gt; 3 -0.3332074 -0.0012601552 -0.3284919
+#&gt; 4 -1.0185754  0.0032410399 -0.8885555
+#&gt; 5 -1.0717912 -0.0004168576 -0.8424833
+#&gt; 6  0.3035286  0.0002982276  0.4582867</div><div class='input'>
+<span class='fu'>variable_select</span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='no'>sample</span>, <span class='no'>operation</span>) <span class='kw'>%&gt;%</span> <span class='fu'>head</span>()</div><div class='output co'>#&gt; INFO [2017-09-12 11:16:42] excluded:
+#&gt; INFO [2017-09-12 11:16:42] 	 x</div><div class='output co'>#&gt; # A tibble: 6 x 2
+#&gt;               y          z
+#&gt;           &lt;dbl&gt;      &lt;dbl&gt;
+#&gt; 1  0.0010527115  0.3275278
+#&gt; 2 -0.0010491770 -0.5513105
+#&gt; 3 -0.0012601552 -0.3284919
+#&gt; 4  0.0032410399 -0.8885555
+#&gt; 5 -0.0004168576 -0.8424833
+#&gt; 6  0.0002982276  0.4582867</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
