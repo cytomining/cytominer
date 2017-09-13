@@ -45,17 +45,18 @@
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @export
-variable_importance <- function(sample, variables, operation = "replicate_correlation", ...) {
+variable_importance <- function(sample, variables,
+                                operation = "replicate_correlation", ...) {
   if (operation == "replicate_correlation") {
    importance <- replicate_correlation(sample, variables, ...)
-   
+
   } else {
     error <- paste0("undefined operation `", operation, "'")
 
     futile.logger::flog.error(msg = error)
 
     stop(error)
-    
+
   }
 
   importance

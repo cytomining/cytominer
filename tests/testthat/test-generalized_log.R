@@ -4,12 +4,12 @@ test_that("`generalized_log` generalized_logs data", {
 
   data <- data.frame(x = rnorm(5), y = rnorm(5))
 
-  # The call to dplyr::src_sqlite was not changed to DBI::dbConnect
-  # because it results in an error "no such function: log"
-  # db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-  # data <- dplyr::copy_to(db, data)
-  data <- dplyr::copy_to(dplyr::src_sqlite(":memory:", create = T),
-                        data)
+  db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+
+  #https://github.com/tidyverse/dplyr/issues/3093
+  RSQLite::initExtension(db)
+
+  data <- dplyr::copy_to(db, data)
 
   glog <- function(x, c=1) log( (x + ( x ^ 2 + c ^ 2) ^ 0.5 ) / 2 )
 
@@ -24,4 +24,6 @@ test_that("`generalized_log` generalized_logs data", {
                     variables = c("x")) %>% dplyr::collect(),
     within(data %>% dplyr::collect(), x <- glog(x))
   )
+
+  DBI::dbDisconnect(db)
 })

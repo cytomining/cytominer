@@ -25,9 +25,9 @@
 drop_na_rows <- function(population, variables) {
 
   key <- rlang::sym("key")
-  
+
   value <- rlang::sym("value")
-  
+
   rowname_temp <- rlang::sym("rowname_temp")
 
   if (is.data.frame(population)) {
@@ -37,13 +37,13 @@ drop_na_rows <- function(population, variables) {
       dplyr::filter(!is.na(!!value)) %>%
       tidyr::spread(!!key, !!value) %>%
       dplyr::select(-!!rowname_temp)
-    
-  } else { 
-    
+
+  } else {
+
     # Coalesce() must have at least 2 arguments.
-    if(length(variables) == 1)
+    if (length(variables) == 1)
       variables <- c(variables, variables)
-    
+
     population %>%
       dplyr::filter_(.dots =
           sprintf("!is.null(coalesce(%s))",

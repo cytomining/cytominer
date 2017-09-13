@@ -82,8 +82,7 @@ replicate_correlation <-
       strata <- c(strata, replicate_by)
     }
 
-    foreach::foreach(variable = variables, .combine = rbind) %dopar%
-    {
+    foreach::foreach(variable = variables, .combine = rbind) %dopar% {
 
       sample %>%
         split(.[split_by]) %>%
@@ -94,7 +93,8 @@ replicate_correlation <-
                 dplyr::arrange_(.dots = strata) %>%
                 dplyr::select_(.dots = c(strata, variable, replicate_by)) %>%
                 tidyr::spread_(replicate_by, variable) %>%
-                dplyr::select_(~-dplyr::one_of(setdiff(strata, replicate_by))) %>%
+                dplyr::select_(~-dplyr::one_of(setdiff(strata,
+                                                       replicate_by))) %>%
                 stats::cor()
               median(correlation_matrix[upper.tri(correlation_matrix)])
             }) %>%

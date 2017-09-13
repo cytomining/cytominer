@@ -15,7 +15,7 @@
 #' # In this example, we use `correlation_threshold` as the operation for 
 #' # variable selection.
 #' 
-#' library(magrittr)
+#' suppressMessages(suppressWarnings(library(magrittr)))
 #' population <- tibble::data_frame(
 #'    x = rnorm(100),
 #'    y = rnorm(100)/1000
@@ -34,6 +34,8 @@
 #' # `x` and `z` are highly correlated; one of them will be removed
 #' 
 #' head(population)
+#' 
+#' futile.logger::flog.threshold(futile.logger::ERROR)
 #' 
 #' variable_select(population, variables, sample, operation) %>% head()
 #'

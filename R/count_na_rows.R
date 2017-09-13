@@ -29,5 +29,4 @@ count_na_rows <- function(population, variables) {
     dplyr::summarize_at(variables, dplyr::funs(sum)) %>%
     dplyr::collect() %>%
     data.frame()
-  
 }

@@ -9,7 +9,7 @@ test_that("`aggregate` aggregates data", {
     )
 
   db <- dplyr::src_sqlite(":memory:", create = T)
-  
+
   data <- dplyr::copy_to(db, data)
 
   expect_equal(
@@ -31,7 +31,7 @@ test_that("`aggregate` aggregates data", {
       dplyr::collect(),
     data %>%
       dplyr::group_by(g) %>%
-      dplyr::summarise_at(.funs =dplyr::funs(median), .vars = c("x", "y"))
+      dplyr::summarise_at(.funs = dplyr::funs(median), .vars = c("x", "y"))
   )
 
   expect_equal(
@@ -42,7 +42,8 @@ test_that("`aggregate` aggregates data", {
       dplyr::collect(),
     data %>%
       dplyr::group_by(g) %>%
-      dplyr::summarise_at(.funs =c(dplyr::funs(mean), dplyr::funs(sd)), .vars = c("x", "y"))
+      dplyr::summarise_at(.funs = c(dplyr::funs(mean), dplyr::funs(sd)),
+                          .vars = c("x", "y"))
   )
   
   lower_tri_mat <- function(mat) {

@@ -27,7 +27,7 @@ normalized data of the same class as \code{population}.
 \code{normalize} normalizes observation variables based on the specified normalization method.
 }
 \examples{
-library(magrittr)
+suppressMessages(suppressWarnings(library(magrittr)))
 population <- tibble::data_frame(
    Metadata_group = c("control", "control", "control", "control",
                       "experiment", "experiment", "experiment", "experiment"),

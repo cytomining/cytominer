@@ -1,7 +1,7 @@
 context("replicate_correlation")
 
-test_that("`replicate_correlation` measure correlation between replicates in each feature", {
-
+test_that(paste0("`replicate_correlation` measures correlation",
+                 "between replicates in each feature"), {
   set.seed(123)
 
   x1 <- rnorm(10)
@@ -13,7 +13,7 @@ test_that("`replicate_correlation` measure correlation between replicates in eac
 
   correlations <-
     tibble::data_frame(
-      variable = c('x', 'y', 'z'),
+      variable = c("x", "y", "z"),
       median = c(
         cor(x1, x2, method = "pearson"),
         cor(y1, y2, method = "pearson"),
@@ -22,7 +22,7 @@ test_that("`replicate_correlation` measure correlation between replicates in eac
 
   correlations_batched <-
     tibble::data_frame(
-      variable = c('x', 'y', 'z'),
+      variable = c("x", "y", "z"),
       b1 = c(
         cor(x1[1:5], x2[1:5], method = "pearson"),
         cor(y1[1:5], y2[1:5], method = "pearson"),
@@ -41,11 +41,11 @@ test_that("`replicate_correlation` measure correlation between replicates in eac
     dplyr::ungroup() %>%
     dplyr::select(-b1, -b2)
 
-  batch <- rep(rep(1:2, each=5), 2)
+  batch <- rep(rep(1:2, each = 5), 2)
 
   cpd <- rep(1:10, 2)
 
-  replicate_id <- rep(1:2, each=10)
+  replicate_id <- rep(1:2, each = 10)
 
   data <- data.frame(x = c(x1, x2),
                      y = c(y1, y2),
@@ -60,8 +60,8 @@ test_that("`replicate_correlation` measure correlation between replicates in eac
                           strata = c("cpd"),
                           replicates = 2,
                           cores = 2) %>%
-      dplyr::select_(.dots = c('variable', 'median')) %>%
-      dplyr::arrange_(.dots = c('variable')) %>%
+      dplyr::select_(.dots = c("variable", "median")) %>%
+      dplyr::arrange_(.dots = c("variable")) %>%
       as.data.frame(),
     correlations %>%
       as.data.frame(),
@@ -75,8 +75,8 @@ test_that("`replicate_correlation` measure correlation between replicates in eac
                           replicates = 2,
                           replicate_by = "replicate_id",
                           cores = 2) %>%
-      dplyr::select_(.dots = c('variable', 'median')) %>%
-      dplyr::arrange_(.dots = c('variable')) %>%
+      dplyr::select_(.dots = c("variable", "median")) %>%
+      dplyr::arrange_(.dots = c("variable")) %>%
       as.data.frame(),
     correlations %>%
       as.data.frame(),
@@ -91,7 +91,7 @@ test_that("`replicate_correlation` measure correlation between replicates in eac
                           split_by = "batch",
                           replicate_by = "replicate_id",
                           cores = 2) %>%
-      dplyr::arrange_(.dots = c('variable')) %>%
+      dplyr::arrange_(.dots = c("variable")) %>%
       as.data.frame(),
     correlations_batched %>%
       as.data.frame(),

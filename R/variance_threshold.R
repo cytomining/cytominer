@@ -35,7 +35,8 @@ variance_threshold <- function(variables, sample) {
 
     lunique <- apply(x, 2, function(data) length(unique(data[!is.na(data)])))
 
-    which((ratio > 19 & (100 * lunique / apply(x, 2, length)) <= 10) | (lunique == 1) | apply(x, 2, function(data) all(is.na(data))))
+    which( (ratio > 19 & (100 * lunique / apply(x, 2, length)) <= 10) |
+            (lunique == 1) | apply(x, 2, function(data) all(is.na(data))))
   }
 
   excluded_indexes <-
