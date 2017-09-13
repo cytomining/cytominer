@@ -1,6 +1,7 @@
 context("correlation_threshold")
 
-test_that("`correlation_threshold` selects variables that are not highly correlated", {
+test_that(
+  "`correlation_threshold` selects variables that are not highly correlated", {
 
   set.seed(123)
   data <- data.frame(x = rnorm(30))
@@ -8,7 +9,7 @@ test_that("`correlation_threshold` selects variables that are not highly correla
   data$z <- data$x + rnorm(30) / 1000
 
   db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-  
+
   data <- dplyr::copy_to(db, data)
 
   expect_equal(

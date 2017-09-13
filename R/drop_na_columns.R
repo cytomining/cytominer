@@ -25,7 +25,7 @@
 #' @export
 drop_na_columns <- function(population, variables, cutoff = 0.05) {
   cutoff <- rlang::enquo(cutoff)
-  
+
   nrows <-
     population %>%
     dplyr::tally() %>%
@@ -33,9 +33,9 @@ drop_na_columns <- function(population, variables, cutoff = 0.05) {
     magrittr::extract2("n")
 
   count <- rlang::sym("count")
-  
+
   feature <- rlang::sym("feature")
-  
+
   percent <- rlang::sym("percent")
 
   population %>%
@@ -44,6 +44,6 @@ drop_na_columns <- function(population, variables, cutoff = 0.05) {
     dplyr::collect() %>%
     tidyr::gather(!!feature, !!count, !!!variables) %>%
     dplyr::mutate(!!percent := (!!count) / nrows) %>%
-    dplyr::filter((!!percent) > (!!cutoff)) %>%
+    dplyr::filter( (!!percent) > (!!cutoff)) %>%
     magrittr::extract2("feature")
 }
