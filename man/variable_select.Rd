@@ -49,6 +49,8 @@ cor(sample)
 
 head(population)
 
+futile.logger::flog.threshold(futile.logger::ERROR)
+
 variable_select(population, variables, sample, operation) \%>\% head()
 
 }
