@@ -13,9 +13,9 @@ aggregate(population, variables, strata, operation = "mean", ...)
 
 \item{strata}{character vector specifying grouping variables for aggregation.}
 
-\item{operation}{optional character string specifying method for aggregation. This must be one of the strings \code{"mean"}, \code{"median"}, \code{"mean+sd"}.}
+\item{operation}{optional character string specifying method for aggregation. This must be one of the strings \code{"mean"}, \code{"median"}, \code{"mean+sd"}, or \code{"cov"}.}
 
-\item{...}{optional arguments passed to aggregation operation}
+\item{...}{optional arguments passed to aggregation operation : \code{random_projection} is an optional matrix of size (# features * (#features + 1)/2, k); if operation is set to \code{"cov"}, this matrix would be used to project the resulting cov profile along k directions specified in the columns.}
 }
 \value{
 aggregated data of the same class as \code{population}.
