@@ -30,7 +30,8 @@
 #' cytominer::normalize(population, variables, strata, sample, operation = "standardize")
 #' 
 #' @export
-normalize <- function(population, variables, strata, sample, operation = "standardize", ...) {
+normalize <- function(population, variables, strata, sample,
+                      operation = "standardize", ...) {
   scale <- function(data, location, dispersion, variables) {
     if (is.data.frame(data)) {
       futile.logger::flog.debug(paste0("\t\tUsing base::scale (data is ",
@@ -59,7 +60,7 @@ normalize <- function(population, variables, strata, sample, operation = "standa
         s <- dispersion[[variable]]
 
         data %<>%
-          dplyr::mutate(!!x := ((!!x) - m) / s )
+          dplyr::mutate(!!x := ( (!!x) - m) / s )
 
       }
 

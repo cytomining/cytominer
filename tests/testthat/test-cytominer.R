@@ -1,7 +1,7 @@
 context("cytominer integration test")
 
 test_that("cytominer can process dataset with a normalized schema", {
-  
+
   skip_on_os("windows")
 
   futile.logger::flog.threshold(futile.logger::WARN)
@@ -129,9 +129,9 @@ test_that("cytominer can process dataset with a normalized schema", {
 })
 
 test_that("cytominer can process dataset with a CellProfiler schema", {
-  
+
   skip_on_os("windows")
-  
+
   futile.logger::flog.threshold(futile.logger::WARN)
 
   fixture <-
@@ -163,10 +163,11 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
                                                 ImageNumber,
                                                 image_Metadata_Barcode,
                                                 image_Metadata_Well,
-                                                image_Metadata_isDebris) ,
-                                by = c("TableNumber", "ImageNumber")) 
-  
-  # need to rename individually because of https://github.com/tidyverse/dplyr/issues/2860
+                                                image_Metadata_isDebris),
+                                by = c("TableNumber", "ImageNumber"))
+
+  # need to rename individually because of
+  # https://github.com/tidyverse/dplyr/issues/2860
   object %<>% dplyr::rename(g_plate = image_Metadata_Barcode)
   object %<>% dplyr::rename(g_well = image_Metadata_Well)
   object %<>% dplyr::rename(g_table = TableNumber)
@@ -214,7 +215,7 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
 
   # Coalesce can't handle the large number of columns so skipping the
   # `na_rows_removed` step
-  na_rows_removed <- debris_removed 
+  na_rows_removed <- debris_removed
 
   # dplyr::collect is forced below for `population` and `sample`
   # not doing this is resulting in "parser stack overflow" likely because
@@ -253,7 +254,7 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
   feature_cols <-
     colnames(cleaned) %>%
     stringr::str_subset("^Nuclei_|^Cells_|^Cytoplasm_")
-  
+
   # tranformation (generalized log by default)
   transformed <-
     transform(

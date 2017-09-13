@@ -2,17 +2,17 @@ context("normalize")
 
 test_that("`normalize' normalizes data", {
   set.seed(123)
-  
+
   generate_matrix <- function(cvec, svec) {
     n <- 30
 
     m <- matrix(runif(n * 2), n, 2) %>% scale(.)
 
     m %<>% sweep(., 2, svec, FUN = "*") %>% sweep(., 2, cvec, FUN = "+")
-    
+
     m[1, 1] <- NA
-    
-    cbind(scale(m), m) %>% as.data.frame()    
+
+    cbind(scale(m), m) %>% as.data.frame()
   }
 
   data <-
@@ -26,7 +26,7 @@ test_that("`normalize' normalizes data", {
       generate_matrix(rnorm(2), rnorm(2) ^ 2) %>%
         dplyr::mutate(g1 = "b", g2 = "y")
     )
-  
+
   data %<>% dplyr::mutate(g3 = seq(nrow(data)))
 
   data_normalized <-
@@ -86,6 +86,5 @@ test_that("`normalize' normalizes data", {
     ),
     .Machine$double.eps * 1000000
   )
-  
 
 })
