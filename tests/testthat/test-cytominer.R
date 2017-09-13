@@ -159,20 +159,21 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
                       by = c("TableNumber", "ImageNumber", "ObjectNumber"))
 
   object %<>% dplyr::inner_join(image %>%
-                                  dplyr::select(TableNumber,
-                                                ImageNumber,
-                                                image_Metadata_Barcode,
-                                                image_Metadata_Well,
-                                                image_Metadata_isDebris),
+                                  dplyr::select("TableNumber",
+                                                "ImageNumber",
+                                                "image_Metadata_Barcode",
+                                                "image_Metadata_Well",
+                                                "image_Metadata_isDebris"),
                                 by = c("TableNumber", "ImageNumber"))
 
   # need to rename individually because of
   # https://github.com/tidyverse/dplyr/issues/2860
-  object %<>% dplyr::rename(g_plate = image_Metadata_Barcode)
-  object %<>% dplyr::rename(g_well = image_Metadata_Well)
-  object %<>% dplyr::rename(g_table = TableNumber)
-  object %<>% dplyr::rename(g_image = ImageNumber)
-  object %<>% dplyr::rename(q_debris = image_Metadata_isDebris)
+  # https://github.com/tidyverse/dplyr/issues/2896
+  object %<>% dplyr::rename(g_plate = "image_Metadata_Barcode")
+  object %<>% dplyr::rename(g_well = "image_Metadata_Well")
+  object %<>% dplyr::rename(g_table = "TableNumber")
+  object %<>% dplyr::rename(g_image = "ImageNumber")
+  object %<>% dplyr::rename(q_debris = "image_Metadata_isDebris")
 
   futile.logger::flog.info("Created table for objects")
 
