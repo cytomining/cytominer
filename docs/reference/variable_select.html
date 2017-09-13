@@ -140,7 +140,7 @@
 <span class='co'># In this example, we use `correlation_threshold` as the operation for </span>
 <span class='co'># variable selection.</span>
 
-<span class='fu'>library</span>(<span class='no'>magrittr</span>)
+<span class='fu'>suppressMessages</span>(<span class='fu'>suppressWarnings</span>(<span class='fu'>library</span>(<span class='no'>magrittr</span>)))
 <span class='no'>population</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>data_frame</a></span>(
    <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>100</span>),
    <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>100</span>)/<span class='fl'>1000</span>
@@ -169,8 +169,8 @@
 #&gt; 4 -1.0185754  0.0032410399 -0.8885555
 #&gt; 5 -1.0717912 -0.0004168576 -0.8424833
 #&gt; 6  0.3035286  0.0002982276  0.4582867</div><div class='input'>
-<span class='fu'>variable_select</span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='no'>sample</span>, <span class='no'>operation</span>) <span class='kw'>%&gt;%</span> <span class='fu'>head</span>()</div><div class='output co'>#&gt; INFO [2017-09-12 11:16:42] excluded:
-#&gt; INFO [2017-09-12 11:16:42] 	 x</div><div class='output co'>#&gt; # A tibble: 6 x 2
+<span class='fu'>variable_select</span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='no'>sample</span>, <span class='no'>operation</span>) <span class='kw'>%&gt;%</span> <span class='fu'>head</span>()</div><div class='output co'>#&gt; INFO [2017-09-13 12:20:45] excluded:
+#&gt; INFO [2017-09-13 12:20:45] 	 x</div><div class='output co'>#&gt; # A tibble: 6 x 2
 #&gt;               y          z
 #&gt;           &lt;dbl&gt;      &lt;dbl&gt;
 #&gt; 1  0.0010527115  0.3275278

@@ -26,7 +26,7 @@ character vector specifying observation variables to be excluded.
 }
 \examples{
 
-library(magrittr)
+suppressMessages(suppressWarnings(library(magrittr)))
 sample <- tibble::data_frame(
    x = rnorm(30),
    y = rnorm(30)/1000

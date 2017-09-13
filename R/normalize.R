@@ -17,7 +17,7 @@
 #' @importFrom stats cor mad median sd setNames
 #'
 #' @examples
-#' library(magrittr)
+#' suppressMessages(suppressWarnings(library(magrittr)))
 #' population <- tibble::data_frame(
 #'    Metadata_group = c("control", "control", "control", "control",
 #'                       "experiment", "experiment", "experiment", "experiment"),
