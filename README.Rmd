@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
 
 [![Build Status](https://travis-ci.org/cytomining/cytominer.png?branch=master)](https://travis-ci.org/cytomining/cytominer)
 [![Coverage Status](https://img.shields.io/codecov/c/github/cytomining/cytominer/master.svg)](https://codecov.io/github/cytomining/cytominer?branch=master)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/cytominer)](http://cran.r-project.org/package=cytominer)
 
 # cytominer
 
@@ -36,9 +37,15 @@ The cytominer package makes these steps fast and easy.
 
 ## Installation
 
-You can install cytominer from github with:
+You can install `cytominer` from CRAN:
 
-```{r gh-installation, eval = FALSE}
+```{r, eval = FALSE}
+install.packages("cytominer")
+```
+
+Or, install the development version from GitHub:
+
+```{r, eval = FALSE}
 # install.packages("devtools")
 devtools::install_github("cytomining/cytominer", dependencies = TRUE, build_vignettes = TRUE)
 ```
