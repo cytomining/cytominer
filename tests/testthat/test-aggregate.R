@@ -45,4 +45,38 @@ test_that("`aggregate` aggregates data", {
       dplyr::summarise_at(.funs = c(dplyr::funs(mean), dplyr::funs(sd)),
                           .vars = c("x", "y"))
   )
+  
+  lower_tri_mat <- function(mat) {
+    mat[lower.tri(mat, diag = T)]  
+  }
+  
+  expect_equal(
+    aggregate(population = data,
+              variables = c("x", "y"),
+              strata = c("g"),
+              operation = "cov") %>%
+      dplyr::collect(),
+    data %>%
+      dplyr::group_by(g) %>%
+      dplyr::do(data.frame(matrix(lower_tri_mat(stats::cov(.[, c("x", "y")])), 
+                                  dimnames = list(NULL, c("x__x", "y__x", "y__y")),
+                                  nrow = 1))) %>%
+      dplyr::ungroup()
+  )
+  
+  random_proj <- matrix(runif(2 * 3), nrow = 3, ncol = 2)
+  expect_equal(
+    aggregate(population = data,
+              variables = c("x", "y"),
+              strata = c("g"),
+              operation = "cov",
+              random_projection = random_proj) %>%
+      dplyr::collect(),
+    data %>%
+      dplyr::group_by(g) %>%
+      dplyr::do(data.frame(matrix(lower_tri_mat(stats::cov(.[, c("x", "y")])), 
+                                  dimnames = list(NULL, c("x__x", "y__x", "y__y")),
+                                  nrow = 1) %*% random_proj)) %>%
+      dplyr::ungroup()
+  )
 })
