@@ -1,6 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Build Status](https://travis-ci.org/cytomining/cytominer.png?branch=master)](https://travis-ci.org/cytomining/cytominer) [![Coverage Status](https://img.shields.io/codecov/c/github/cytomining/cytominer/master.svg)](https://codecov.io/github/cytomining/cytominer?branch=master)
+[![Build Status](https://travis-ci.org/cytomining/cytominer.png?branch=master)](https://travis-ci.org/cytomining/cytominer) [![Coverage Status](https://img.shields.io/codecov/c/github/cytomining/cytominer/master.svg)](https://codecov.io/github/cytomining/cytominer?branch=master) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/cytominer)](http://cran.r-project.org/package=cytominer)
 
 cytominer
 =========
@@ -22,7 +22,13 @@ The cytominer package makes these steps fast and easy.
 Installation
 ------------
 
-You can install cytominer from github with:
+You can install `cytominer` from CRAN:
+
+``` r
+install.packages("cytominer")
+```
+
+Or, install the development version from GitHub:
 
 ``` r
 # install.packages("devtools")
