@@ -2,12 +2,32 @@
 % Please edit documentation in R/whiten.R
 \name{whiten}
 \alias{whiten}
-\title{variables <- c("Intensity_DNA", "Texture_DNA")
-whiten(population, variables, sample)}
+\title{Generalized log transform data.}
 \usage{
 whiten(population, variables, sample, regularization_param = 1)
 }
+\arguments{
+\item{population}{tbl with grouping (metadata) and observation variables.}
+
+\item{variables}{character vector specifying observation variables.}
+
+\item{sample}{tbl containing sample that is used by the method to estimate whitening parameters. \code{sample} has same structure as \code{population}. Typically, \code{sample} corresponds to controls in the experiment.}
+
+\item{regularization_param}{optional parameter used in whitening to offset eigenvalues to avoid division by zero.}
+}
+\value{
+transformed data of the same class as \code{population}.
+}
 \description{
+\code{generalized_log} transforms specified observation variables using \eqn{x = log( (x + sqrt(x ^ 2 + offset ^ 2 )) / 2 )}.
+}
+\examples{
+population <- tibble::data_frame(
+   Metadata_Well = c("A01", "A02", "B01", "B02"),
+   Intensity_DNA = c(8, 20, 12, 32),
+   Texture_DNA = c(5, 2, 43, 13)
+ )
 variables <- c("Intensity_DNA", "Texture_DNA")
-whiten(population, variables, sample)
+whiten(population, variables, population, 0.01)
+
 }
