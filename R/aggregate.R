@@ -29,23 +29,24 @@ aggregate <- function(population, variables, strata, operation="mean", ...) {
 
   # check whether `operation` is a function, or a sequence of functions
   # separated by `+`
-  if (stringr::str_split(operation, "\\+")[[1]] %>% 
-      purrr::map_lgl(function(f) length(utils::find(f, mode = "function")) == 0) %>%
+  if (stringr::str_split(operation, "\\+")[[1]] %>%
+      purrr::map_lgl(function(f)
+        length(utils::find(f, mode = "function")) == 0) %>%
       any()
       ) {
     error <- paste0("undefined operation `", operation, "'")
-    
+
     futile.logger::flog.error(msg = error)
-    
+
     stop(error)
-    
+
   }
 
   # construct aggregation_function
-  aggregating_function <- 
-    stringr::str_split(operation, "\\+")[[1]] %>% 
-    sapply(function(f) {dplyr::funs(!!f)}) %>% 
-    as.vector() %>% 
+  aggregating_function <-
+    stringr::str_split(operation, "\\+")[[1]] %>%
+    sapply(function(f) dplyr::funs(!!f) ) %>%
+    as.vector() %>%
     unname()
 
   population %>%
