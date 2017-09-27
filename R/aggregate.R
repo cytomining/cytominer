@@ -21,6 +21,7 @@
 #' strata <- c("Metadata_group", "Metadata_batch")
 #' aggregate(population, variables, strata, operation = "mean")
 #'
+#' @importFrom utils find
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @export
@@ -29,7 +30,7 @@ aggregate <- function(population, variables, strata, operation="mean", ...) {
   # check whether `operation` is a function, or a sequence of functions
   # separated by `+`
   if (stringr::str_split(operation, "\\+")[[1]] %>% 
-      purrr::map_lgl(function(f) length(find(f, mode = "function")) == 0) %>%
+      purrr::map_lgl(function(f) length(utils::find(f, mode = "function")) == 0) %>%
       any()
       ) {
     error <- paste0("undefined operation `", operation, "'")
