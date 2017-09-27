@@ -5,7 +5,7 @@
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param variables character vector specifying observation variables.
 #' @param strata character vector specifying grouping variables for aggregation.
-#' @param operation optional character string specifying method for aggregation. This must be one of the strings \code{"mean"}, \code{"median"}, \code{"mean+sd"}.
+#' @param operation optional character string specifying method for aggregation, e.g. \code{"mean"}, \code{"median"}, \code{"mean+sd"}.
 #' @param ... optional arguments passed to aggregation operation
 #'
 #' @return aggregated data of the same class as \code{population}.
@@ -26,19 +26,26 @@
 #' @export
 aggregate <- function(population, variables, strata, operation="mean", ...) {
 
-  if (operation == "mean") {
-    aggregating_function <- dplyr::funs(mean)
-  } else if (operation == "median") {
-    aggregating_function <- dplyr::funs(median)
-  } else if (operation == "mean+sd") {
-    aggregating_function <- c(dplyr::funs(mean), dplyr::funs(sd))
-  } else {
+  # check whether `operation` is a function, or a sequence of functions
+  # separated by `+`
+  if (stringr::str_split(operation, "\\+")[[1]] %>% 
+      purrr::map_lgl(function(f) length(find(f, mode = "function")) == 0) %>%
+      any()
+      ) {
     error <- paste0("undefined operation `", operation, "'")
-
+    
     futile.logger::flog.error(msg = error)
-
+    
     stop(error)
+    
   }
+
+  # construct aggregation_function
+  aggregating_function <- 
+    stringr::str_split(operation, "\\+")[[1]] %>% 
+    sapply(function(f) {dplyr::funs(!!f)}) %>% 
+    as.vector() %>% 
+    unname()
 
   population %>%
     dplyr::group_by_(.dots = strata) %>%
