@@ -1,6 +1,6 @@
-#' Generalized log transform data.
+#' Whiten data.
 #'
-#' \code{generalized_log} transforms specified observation variables using \eqn{x = log( (x + sqrt(x ^ 2 + offset ^ 2 )) / 2 )}.
+#' \code{whiten} transforms specified observation variables by estimating a whitening transformation on a sample and applying it to the population.
 #'
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param variables character vector specifying observation variables.
@@ -21,53 +21,51 @@
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @importFrom rlang :=
-#' @importFrom dplyr one_of
 #' @importFrom stats cov
 #' @export
 whiten <- function(population, variables, sample, regularization_param = 1) {
-  sample %<>% 
-    dplyr::select(one_of(variables)) %>%
+
+  sample %<>%
     dplyr::collect()
   
-  population %<>% 
-    dplyr::collect()
-  
-  avg <- sample %>%
-    dplyr::summarise_at(.vars = variables, .funs = mean) %>%
+  sample_data <- sample %>%
+    dplyr::select(dplyr::one_of(variables)) %>%
     as.matrix()
   
-  covariance <- cov(sample[, variables])
+  population %<>%
+    dplyr::collect()
+
+  population_data <- population %>%
+    dplyr::select(dplyr::one_of(variables)) %>%
+    as.matrix()
   
-  eig_decomp <- eigen(covariance)
-  
-  W <- diag((eig_decomp$values + regularization_param)^-0.5) %*% 
+  # mean of sample
+  sample_mean <- colMeans(sample_data)
+
+  # covariance of sample
+  sample_cov <- cov(sample_data)
+
+  # eigen decomposition \Sigma = E * \Lambda * E'
+  eig_decomp <- eigen(sample_cov)
+
+  # compute whitening transformation, which is {\Lambda + \epsilon}^.5 x E'
+  W <- diag( (eig_decomp$values + regularization_param) ^ -0.5) %*%
     t(eig_decomp$vectors)
+
+  # apply whitening transformation, which is (X - \mu) * W'
+  transformed_population_data <- sweep(population_data, 2, sample_mean) %*% t(W)
+
+  colnames(transformed_population_data) <- paste0("PC", 1:NCOL(W))
+
+  transformed_population_data %<>% as.data.frame()
   
-  population_data <- population %>% 
-    dplyr::select(one_of(variables)) %>%
-    as.matrix()
-  
-  transformed_population <- population
-  
-  new_col_names <- paste("PC", 1:NCOL(W), sep = "")
-  names(new_col_names) <- variables
-  
-  transformed_population[, variables] <- t(W %*% 
-                                             (apply(population_data, 
-                                                    1, 
-                                                    function(x) (x - avg)
-                                                    )
-                                              )
-                                           )
-  
-  for (variable in variables) {
-    new_name <- rlang::sym(new_col_names[variable])
-    old_name <- rlang::sym(variable)
-    
-    
-    transformed_population %<>%
-      dplyr::rename(!!new_name := !!old_name)
-  }
-  
+  transformed_population <-
+    dplyr::bind_cols(
+      list(
+        population %>% dplyr::select(-dplyr::one_of(variables)),
+        transformed_population_data
+      )
+    )
+
   transformed_population
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/whiten.R
 \name{whiten}
 \alias{whiten}
-\title{Generalized log transform data.}
+\title{Whiten data.}
 \usage{
 whiten(population, variables, sample, regularization_param = 1)
 }
@@ -19,7 +19,7 @@ whiten(population, variables, sample, regularization_param = 1)
 transformed data of the same class as \code{population}.
 }
 \description{
-\code{generalized_log} transforms specified observation variables using \eqn{x = log( (x + sqrt(x ^ 2 + offset ^ 2 )) / 2 )}.
+\code{whiten} transforms specified observation variables by estimating a whitening transformation on a sample and applying it to the population.
 }
 \examples{
 population <- tibble::data_frame(
