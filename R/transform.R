@@ -24,6 +24,8 @@ transform <- function(population, variables,
                       operation = "generalized_log", ...) {
   if (operation == "generalized_log") {
     generalized_log(population, variables, ...)
+  } else if (operation == "whiten") {
+    whiten(population, variables, ...)
   } else {
     error <- paste0("undefined operation `", operation, "'")
 
