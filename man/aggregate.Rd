@@ -13,7 +13,7 @@ aggregate(population, variables, strata, operation = "mean", ...)
 
 \item{strata}{character vector specifying grouping variables for aggregation.}
 
-\item{operation}{optional character string specifying method for aggregation. This must be one of the strings \code{"mean"}, \code{"median"}, \code{"mean+sd"}.}
+\item{operation}{optional character string specifying method for aggregation, e.g. \code{"mean"}, \code{"median"}, \code{"mean+sd"}.}
 
 \item{...}{optional arguments passed to aggregation operation}
 }
