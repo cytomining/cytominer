@@ -2,12 +2,17 @@
 #'
 #' \code{extract_subpopulations} extracts the subpopulations enriched/de-enriched in a given set w.r.t a reference set
 #'
-#' @param population_treatment data frame which contains single cell data for a given treatment (cells are arranged in rows and measurements in columns)
-#' @param population_control the same data frame (with the same column names, but possibly with different number of rows) for the negative control
-#' @param variables a vector containing the feature names
-#' @param k a scalar which is the number of subpopulations
+#' @param population tbl with grouping (metadata) and observation variables.
+#' @param reference tbl with grouping (metadata) and observation variables. Columns of \code{population} and \code{reference} should be identical.
+#' @param variables character vector specifying observation variables.
+#' @param k scalar specifying number of subpopulations
 #'
-#' @return list containing subpop. signatures (subpop_centers), two histograms showing freq. of each subpop. in treatment and control (subpop_profiles), and cluster prediction and distance to the predicted cluster for all input data (treatment_clusters and ctrl_clusters).
+#' @return list containing subpopulation signatures (\code{subpop_centers}), two
+#' histograms specifying frequency of each subpopulation in population and
+#' reference (\code{subpop_profiles}), and cluster prediction and distance to
+#' the predicted cluster for all input data (\code{treatment_clusters} and
+#' \code {ctrl_clusters}).
+
 #' @examples
 #' population <- tibble::data_frame(
 #'    Metadata_group = c("control", "control", "control", "control",
@@ -20,27 +25,26 @@
 #' population_trt <-  dplyr::filter(population, Metadata_group == "experiment")
 #' population_ctrl <- dplyr::filter(population, Metadata_group == "control")
 #' extract_subpopulations(
-#'    population_treatment = population_trt,
-#'    population_control = population_ctrl,
+#'    population = population_trt,
+#'    reference = population_ctrl,
 #'    variables = variables,
 #'    k = 3
 #' )
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
-#' @importFrom dplyr one_of
 #' @importFrom dplyr vars
 #' @importFrom stats setNames
 #'
 #' @export
 #'
 extract_subpopulations <-
-  function(population_treatment,
-           population_control,
+  function(population,
+           reference,
            variables,
            k) {
 
-    non_feats <- setdiff(colnames(population_treatment), variables)
+    non_feats <- setdiff(colnames(population), variables)
 
     type_var_name <- "pert_type"
     cluster_var_name <- "cluster_id"
@@ -50,14 +54,14 @@ extract_subpopulations <-
     type_var <- rlang::sym(type_var_name)
     freq_var <- rlang::sym(freq_var_name)
 
-    population <- population_treatment %>%
+    population <- population %>%
       dplyr::mutate(!!type_var_name := "treatment") %>%
-      dplyr::bind_rows(., population_control %>%
+      dplyr::bind_rows(., reference %>%
                          dplyr::mutate(!!type_var_name := "control")) %>%
-      tidyr::drop_na(one_of(variables))
+      tidyr::drop_na(dplyr::one_of(variables))
 
     kmeans_outp <- population %>%
-      dplyr::select(one_of(variables)) %>%
+      dplyr::select(dplyr::one_of(variables)) %>%
       stats::kmeans(centers = k,
                     iter.max = 5000,
                     nstart = 10)
@@ -73,7 +77,7 @@ extract_subpopulations <-
     population %<>%
       dplyr::mutate(!!cluster_var_name := kmeans_outp$cluster) %>%
       dplyr::mutate(!!row_var_name := 1:n())  %>%
-      dplyr::group_by_at(vars(one_of(c(row_var_name,
+      dplyr::group_by_at(vars(dplyr::one_of(c(row_var_name,
                                        cluster_var_name,
                                        type_var_name,
                                        non_feats)))) %>%
@@ -96,13 +100,13 @@ extract_subpopulations <-
 
     trt_clusters <- population %>%
       dplyr::filter(rlang::UQ(type_var) == "treatment") %>%
-      dplyr::select(one_of(c(non_feats,
+      dplyr::select(dplyr::one_of(c(non_feats,
                              cluster_var_name,
                              dist_var_name)))
 
     ctrl_clusters <- population %>%
       dplyr::filter(rlang::UQ(type_var) == "control") %>%
-      dplyr::select(one_of(c(non_feats,
+      dplyr::select(dplyr::one_of(c(non_feats,
                              cluster_var_name,
                              dist_var_name)))
 

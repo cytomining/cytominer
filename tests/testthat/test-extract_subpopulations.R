@@ -22,8 +22,8 @@ test_that(
   variables <- grep(colnames(data_trt), pattern = "Metadata_", inv = TRUE,
                 value = TRUE)
 
-  subpops <- extract_subpopulations(population_treatment = data_trt,
-                                    population_control = data_ctrl,
+  subpops <- extract_subpopulations(population = data_trt,
+                                    reference = data_ctrl,
                                     variables = variables,
                                     k = k)
 
@@ -65,7 +65,6 @@ test_that(
 
   # test whether the cluster assignment and distance to the clusters
   # are consistent with the returned cluster centers
-
   expect_equal(
     subpops$treatment_clusters[, c("dist_to_cluster", "cluster_id")],
     trt_clusters
