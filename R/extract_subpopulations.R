@@ -48,7 +48,6 @@ extract_subpopulations <-
     non_feats <- setdiff(colnames(population), variables)
 
     type_var_name <- "pert_type"
-    row_var_name <- "row_number"
     type_var <- rlang::sym(type_var_name)
 
     population <- population %>%
@@ -73,8 +72,8 @@ extract_subpopulations <-
 
     population %<>%
       dplyr::mutate(cluster_id = kmeans_outp$cluster) %>%
-      dplyr::mutate(!!row_var_name := 1:n())  %>%
-      dplyr::group_by_at(vars(dplyr::one_of(c(row_var_name,
+      dplyr::mutate(row_num = 1:n())  %>%
+      dplyr::group_by_at(vars(dplyr::one_of(c("row_num",
                                        "cluster_id",
                                        type_var_name,
                                        non_feats)))) %>%
