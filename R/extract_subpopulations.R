@@ -33,7 +33,6 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
-#' @importFrom dplyr vars
 #' @importFrom stats setNames
 #' @importFrom rlang .data
 #'
