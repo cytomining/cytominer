@@ -44,8 +44,8 @@ aggregate <- function(population, variables, strata, operation="mean", ...) {
 
   # construct aggregation_function
 
-  # if there is only one operation, dplyr::summarize does not append
-  # function name unless explicitly named e.g. funs(mean = mean)
+  # In dplyr::summarize, function names will be included only if `.funs`` has
+  # names or multiple inputs
   if (length(stringr::str_split(operation, "\\+")[[1]]) == 1) {
     aggregating_function <- dplyr::funs(!!operation := !!operation)
 
