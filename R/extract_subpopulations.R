@@ -1,8 +1,10 @@
-#' extract the subpopulations enriched/de-enriched in a given single cell population of a treatment w.r.t the control
+#' Extract subpopulations.
+#'
+#' \code{extract_subpopulations} extracts the subpopulations enriched/de-enriched in a given set w.r.t a reference set
 #'
 #' @param population_treatment data frame which contains single cell data for a given treatment (cells are arranged in rows and measurements in columns)
 #' @param population_control the same data frame (with the same column names, but possibly with different number of rows) for the negative control
-#' @param feats a vector containing the feature names
+#' @param variables a vector containing the feature names
 #' @param k a scalar which is the number of subpopulations
 #'
 #' @return list containing subpop. signatures (subpop_centers), two histograms showing freq. of each subpop. in treatment and control (subpop_profiles), and cluster prediction and distance to the predicted cluster for all input data (treatment_clusters and ctrl_clusters).
@@ -20,7 +22,7 @@
 #' extract_subpopulations(
 #'    population_treatment = population_trt,
 #'    population_control = population_ctrl,
-#'    feats = variables,
+#'    variables = variables,
 #'    k = 3
 #' )
 #'
@@ -35,10 +37,10 @@
 extract_subpopulations <-
   function(population_treatment,
            population_control,
-           feats,
+           variables,
            k) {
 
-    non_feats <- setdiff(colnames(population_treatment), feats)
+    non_feats <- setdiff(colnames(population_treatment), variables)
 
     type_var_name <- "pert_type"
     cluster_var_name <- "cluster_id"
@@ -52,10 +54,10 @@ extract_subpopulations <-
       dplyr::mutate(!!type_var_name := "treatment") %>%
       dplyr::bind_rows(., population_control %>%
                          dplyr::mutate(!!type_var_name := "control")) %>%
-      tidyr::drop_na(one_of(feats))
+      tidyr::drop_na(one_of(variables))
 
     kmeans_outp <- population %>%
-      dplyr::select(one_of(feats)) %>%
+      dplyr::select(one_of(variables)) %>%
       stats::kmeans(centers = k,
                     iter.max = 5000,
                     nstart = 10)
@@ -77,7 +79,7 @@ extract_subpopulations <-
                                        non_feats)))) %>%
       dplyr::do(data.frame("name_tmp" =
                              find_dist_to_cluster(.[, ],
-                                                  feats,
+                                                  variables,
                                                   kmeans_outp,
                                                   cluster_var_name))) %>%
       dplyr::ungroup() %>%
