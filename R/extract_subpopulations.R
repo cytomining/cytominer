@@ -1,20 +1,20 @@
 #' Extract subpopulations.
 #'
-#' \code{extract_subpopulations} extracts the subpopulations enriched/de-enriched in a given set w.r.t a reference set
+#' \code{extract_subpopulations} extracts the clusters enriched/de-enriched in a given set w.r.t a reference set.
 #'
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param reference tbl with grouping (metadata) and observation variables. Columns of \code{population} and \code{reference} should be identical.
 #' @param variables character vector specifying observation variables.
-#' @param k scalar specifying number of subpopulations
+#' @param k scalar specifying number of clusters.
 #'
-#' @return list containing subpopulation signatures (\code{subpop_centers}), two
-#' histograms specifying frequency of each subpopulation in population and
-#' reference (\code{subpop_profiles}), and cluster prediction and distance to
-#' the predicted cluster for all input data (\code{treatment_clusters} and
-#' \code{ctrl_clusters}).
+#' @return list containing clusters centers (\code{subpop_centers}), two
+#' normalized histograms specifying frequency of each clusters in population
+#' and reference (\code{subpop_profiles}), and cluster prediction and distance to
+#' the predicted cluster for all input data (\code{population_clusters} and
+#' \code{reference_clusters}).
 
 #' @examples
-#' population <- tibble::data_frame(
+#' data <- tibble::data_frame(
 #'    Metadata_group = c("control", "control", "control", "control",
 #'                       "experiment", "experiment", "experiment", "experiment"),
 #'    Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
@@ -22,11 +22,11 @@
 #'    AreaShape_Length = c(2, 3, NA, NA, 4, 5, 1, 5)
 #' )
 #' variables <- c('AreaShape_Area','AreaShape_Length')
-#' population_trt <-  dplyr::filter(population, Metadata_group == "experiment")
-#' population_ctrl <- dplyr::filter(population, Metadata_group == "control")
+#' population <-  dplyr::filter(data, Metadata_group == "experiment")
+#' reference <- dplyr::filter(data, Metadata_group == "control")
 #' extract_subpopulations(
-#'    population = population_trt,
-#'    reference = population_ctrl,
+#'    population = population,
+#'    reference = reference,
 #'    variables = variables,
 #'    k = 3
 #' )
