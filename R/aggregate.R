@@ -43,31 +43,24 @@ aggregate <- function(population, variables, strata, operation="mean", ...) {
   }
 
   # construct aggregation_function
-  aggregating_function <-
-    stringr::str_split(operation, "\\+")[[1]] %>%
-    sapply(function(f) dplyr::funs(!!f)) %>%
-    as.vector() %>%
-    unname()
 
-  population %<>%
+  # if there is only one operation, dplyr::summarize does not append
+  # function name unless explicitly named e.g. funs(mean = mean)
+  if (length(stringr::str_split(operation, "\\+")[[1]]) == 1) {
+    aggregating_function <- dplyr::funs(!!operation := !!operation)
+
+  } else {
+    aggregating_function <-
+      stringr::str_split(operation, "\\+")[[1]] %>%
+      sapply(function(f) dplyr::funs(!!f)) %>%
+      as.vector() %>%
+      unname()
+
+  }
+
+  population %>%
     dplyr::group_by_(.dots = strata) %>%
     dplyr::summarise_at(.funs = aggregating_function, .vars = variables) %>%
     dplyr::ungroup()
 
-  # if only one operation, dplyr::summarize does not append function name.
-  # append explicitly
-  if (length(stringr::str_split(operation, "\\+")[[1]]) == 1) {
-
-    append_operation_tag <- function(s) stringr::str_c(s, operation, sep = "_")
-
-    # TODO: remove dplyr::collect once
-    # https://github.com/tidyverse/dplyr/issues/3132
-    # is fixed
-    population %<>%
-      dplyr::collect() %>%
-      dplyr::rename_at(variables, append_operation_tag)
-
-  }
-
-  population
 }
