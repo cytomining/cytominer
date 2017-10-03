@@ -11,7 +11,7 @@
 #' histograms specifying frequency of each subpopulation in population and
 #' reference (\code{subpop_profiles}), and cluster prediction and distance to
 #' the predicted cluster for all input data (\code{treatment_clusters} and
-#' \code {ctrl_clusters}).
+#' \code{ctrl_clusters}).
 
 #' @examples
 #' population <- tibble::data_frame(

@@ -2,24 +2,28 @@
 % Please edit documentation in R/extract_subpopulations.R
 \name{extract_subpopulations}
 \alias{extract_subpopulations}
-\title{extract the subpopulations enriched/de-enriched in a given single cell population of a treatment w.r.t the control}
+\title{Extract subpopulations.}
 \usage{
-extract_subpopulations(population_treatment, population_control, feats, k)
+extract_subpopulations(population, reference, variables, k)
 }
 \arguments{
-\item{population_treatment}{data frame which contains single cell data for a given treatment (cells are arranged in rows and measurements in columns)}
+\item{population}{tbl with grouping (metadata) and observation variables.}
 
-\item{population_control}{the same data frame (with the same column names, but possibly with different number of rows) for the negative control}
+\item{reference}{tbl with grouping (metadata) and observation variables. Columns of \code{population} and \code{reference} should be identical.}
 
-\item{feats}{a vector containing the feature names}
+\item{variables}{character vector specifying observation variables.}
 
-\item{k}{a scalar which is the number of subpopulations}
+\item{k}{scalar specifying number of subpopulations}
 }
 \value{
-list containing subpop. signatures (subpop_centers), two histograms showing freq. of each subpop. in treatment and control (subpop_profiles), and cluster prediction and distance to the predicted cluster for all input data (treatment_clusters and ctrl_clusters).
+list containing subpopulation signatures (\code{subpop_centers}), two
+histograms specifying frequency of each subpopulation in population and
+reference (\code{subpop_profiles}), and cluster prediction and distance to
+the predicted cluster for all input data (\code{treatment_clusters} and
+\code{ctrl_clusters}).
 }
 \description{
-extract the subpopulations enriched/de-enriched in a given single cell population of a treatment w.r.t the control
+\code{extract_subpopulations} extracts the subpopulations enriched/de-enriched in a given set w.r.t a reference set
 }
 \examples{
 population <- tibble::data_frame(
@@ -33,9 +37,9 @@ variables <- c('AreaShape_Area','AreaShape_Length')
 population_trt <-  dplyr::filter(population, Metadata_group == "experiment")
 population_ctrl <- dplyr::filter(population, Metadata_group == "control")
 extract_subpopulations(
-   population_treatment = population_trt,
-   population_control = population_ctrl,
-   feats = variables,
+   population = population_trt,
+   reference = population_ctrl,
+   variables = variables,
    k = 3
 )
 

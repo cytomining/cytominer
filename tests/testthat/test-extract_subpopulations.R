@@ -43,9 +43,9 @@ test_that(
     dist_to_clusters <- cross_dist(data[, variables], centers)
 
     apply(dist_to_clusters, 1,
-          function(x) data_frame(dist_to_cluster = min(x),
-                                 cluster_id = which.min(x))) %>%
-      bind_rows()
+          function(x) tibble::data_frame(dist_to_cluster = min(x),
+                                         cluster_id = which.min(x))) %>%
+      dplyr::bind_rows()
 
   }
 
@@ -79,7 +79,7 @@ test_that(
   expect_equal(
     subpops$subpop_profiles %>%
       dplyr::select(-cluster_id) %>%
-      summarise_all(sum),
+      dplyr::summarise_all(sum),
     dplyr::frame_data(~control, ~treatment,
                       1, 1)
   )
