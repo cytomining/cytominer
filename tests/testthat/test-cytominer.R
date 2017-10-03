@@ -131,7 +131,7 @@ test_that("cytominer can process dataset with a normalized schema", {
 test_that("cytominer can process dataset with a CellProfiler schema", {
 
   skip_on_os("windows")
-  
+
   set.seed(123)
 
   futile.logger::flog.threshold(futile.logger::WARN)
@@ -211,7 +211,7 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
 
   # select only a few variables to speed up test
   variables <- sample(variables, 10)
-  
+
   measurements %<>%
     dplyr::select(dplyr::one_of(c(groupings, qualities, variables)))
 
