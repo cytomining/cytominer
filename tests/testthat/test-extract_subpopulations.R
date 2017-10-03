@@ -1,14 +1,18 @@
 context("extract_subpopulations")
 
-test_that("`extract_subpopulations` extracts and assigns each point to a subpopulation", {
+test_that(
+"`extract_subpopulations` extracts and assigns each point to a subpopulation", {
+
   set.seed(24)
 
   k <- 6
   data_trt <- matrix(runif(1000), 100, 10)
   data_ctrl <- matrix(runif(2000), 200, 10)
 
-  data_trt[sample(1:length(data_trt), size = round(length(data_trt) * 0.1))] <- NA
-  data_ctrl[sample(1:length(data_ctrl), size = round(length(data_ctrl) * 0.1))] <- NA
+  data_trt[sample(1:length(data_trt),
+                  size = round(length(data_trt) * 0.1))] <- NA
+  data_ctrl[sample(1:length(data_ctrl),
+                   size = round(length(data_ctrl) * 0.1))] <- NA
 
   data_trt <- data.frame(data_trt, Metadata_id = 1:NROW(data_trt))
   data_ctrl <- data.frame(data_ctrl, Metadata_id = 1:NROW(data_ctrl))
@@ -22,9 +26,10 @@ test_that("`extract_subpopulations` extracts and assigns each point to a subpopu
                          k = k)
 
   cluster_assign <- function(data, centers, feats, k) {
-    dist_to_clusters <- as.matrix(dist(rbind(data[,feats],
-                                             centers)))[1:NROW(data),
-                                                        (NROW(data) + 1):(NROW(data) + k)]
+    dist_to_clusters <-
+      as.matrix(dist(rbind(data[, feats],
+                           centers)))[1:NROW(data),
+                                      (NROW(data) + 1):(NROW(data) + k)]
     clusters <- t(apply(dist_to_clusters, 1,
                             function(x) c(min(x),
                                           which.min(x))))
@@ -34,15 +39,18 @@ test_that("`extract_subpopulations` extracts and assigns each point to a subpopu
     return(clusters)
   }
 
-  trt_clusters <- cluster_assign(data = data_trt[stats::complete.cases(data_trt[,feats]), ],
-                                 centers = subpops$subpop_centers,
-                                 feats = feats,
-                                 k = k)
+  trt_clusters <-
+    cluster_assign(data = data_trt[stats::complete.cases(data_trt[, feats]), ],
+                   centers = subpops$subpop_centers,
+                   feats = feats,
+                   k = k)
 
-  ctrl_clusters <- cluster_assign(data = data_ctrl[stats::complete.cases(data_ctrl[,feats]), ],
-                                 centers = subpops$subpop_centers,
-                                 feats = feats,
-                                 k = k)
+  ctrl_clusters <-
+    cluster_assign(data =
+                     data_ctrl[stats::complete.cases(data_ctrl[, feats]), ],
+                   centers = subpops$subpop_centers,
+                   feats = feats,
+                   k = k)
 
   # test whether the cluster assignment and distance to the clusters
   # are consistent with the returned cluster centers

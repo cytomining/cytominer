@@ -75,10 +75,11 @@ extract_subpopulations <-
                                        cluster_var_name,
                                        type_var_name,
                                        non_feats)))) %>%
-      dplyr::do(data.frame("name_tmp" = find_dist_to_cluster(.[, ],
-                                                          feats,
-                                                          kmeans_outp,
-                                                          cluster_var_name))) %>%
+      dplyr::do(data.frame("name_tmp" =
+                             find_dist_to_cluster(.[, ],
+                                                  feats,
+                                                  kmeans_outp,
+                                                  cluster_var_name))) %>%
       dplyr::ungroup() %>%
       dplyr::rename(!!dist_var_name := !!"name_tmp")
 
@@ -87,7 +88,7 @@ extract_subpopulations <-
       dplyr::summarise(n = n()) %>%
       dplyr::group_by_(.dots = type_var_name) %>%
       dplyr::rename(!!freq_var := !!"n") %>%
-      dplyr::mutate(!!freq_var := ((!!freq_var) / sum(!!freq_var))) %>%
+      dplyr::mutate(!!freq_var := ( (!!freq_var) / sum(!!freq_var)) ) %>%
       dplyr::ungroup() %>%
       tidyr::spread(key = type_var_name, value = freq_var_name, fill = 0)
 
@@ -107,4 +108,4 @@ extract_subpopulations <-
                 subpop_profiles = subpop_profiles,
                 treatment_clusters = trt_clusters,
                 ctrl_clusters = ctrl_clusters))
-  }
+}
