@@ -27,18 +27,18 @@ whiten <- function(population, variables, sample, regularization_param = 1) {
 
   sample %<>%
     dplyr::collect()
-  
+
   sample_data <- sample %>%
     dplyr::select(dplyr::one_of(variables)) %>%
     as.matrix()
-  
+
   population %<>%
     dplyr::collect()
 
   population_data <- population %>%
     dplyr::select(dplyr::one_of(variables)) %>%
     as.matrix()
-  
+
   # mean of sample
   sample_mean <- colMeans(sample_data)
 
@@ -58,7 +58,7 @@ whiten <- function(population, variables, sample, regularization_param = 1) {
   colnames(transformed_population_data) <- paste0("PC", 1:NCOL(W))
 
   transformed_population_data %<>% as.data.frame()
-  
+
   transformed_population <-
     dplyr::bind_cols(
       list(

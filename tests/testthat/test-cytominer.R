@@ -29,31 +29,31 @@ test_that("cytominer can process dataset with a normalized schema", {
     intensities %>%
     dplyr::filter(g_well %in% c("A01", "A02", "A10", "A11"))
 
-  qc_cols <- c("q_debris")
+  qualities <- c("q_debris")
 
-  group_cols <-
+  groupings <-
     c("g_plate",
       "g_well",
       "g_image",
       "g_pattern",
       "g_channel")
 
-  testthat::expect_true(all(group_cols %in% (
+  testthat::expect_true(all(groupings %in% (
     colnames(measurements) %>%
       stringr::str_subset("^g_")
   )))
 
-  testthat::expect_true(all(qc_cols %in% (
+  testthat::expect_true(all(qualities %in% (
     colnames(measurements) %>%
       stringr::str_subset("^q_")
   )))
 
-  feature_cols <-
+  variables <-
     colnames(measurements) %>%
     stringr::str_subset("^m_")
 
   measurements %<>%
-    dplyr::select(dplyr::one_of(c(group_cols, qc_cols, feature_cols)))
+    dplyr::select(dplyr::one_of(c(groupings, qualities, variables)))
 
   # data cleaning
   debris_removed <-
@@ -62,7 +62,7 @@ test_that("cytominer can process dataset with a normalized schema", {
   na_rows_removed <-
     drop_na_rows(
       population = debris_removed,
-      variables = feature_cols
+      variables = variables
     ) %>%
     dplyr::compute()
 
@@ -71,7 +71,7 @@ test_that("cytominer can process dataset with a normalized schema", {
   normalized <-
     normalize(
       population = na_rows_removed,
-      variables = feature_cols,
+      variables = variables,
       strata =  c("g_plate", "g_pattern", "g_channel"),
       sample =
         na_rows_removed %>%
@@ -90,13 +90,13 @@ test_that("cytominer can process dataset with a normalized schema", {
   na_frequency <-
     count_na_rows(
       population = normalized,
-      variables = feature_cols)
+      variables = variables)
 
   # drop NA columns because they may arise after normalize
   cleaned <-
     variable_select(
       population = normalized,
-      variables = feature_cols,
+      variables = variables,
       operation = "drop_na_columns"
   )
 
@@ -104,15 +104,15 @@ test_that("cytominer can process dataset with a normalized schema", {
   transformed <-
     transform(
       population = cleaned,
-      variables = feature_cols
+      variables = variables
     )
 
   # aggregation (mean by default)
   aggregated <-
     aggregate(
       population = transformed,
-      variables = feature_cols,
-      strata = group_cols
+      variables = variables,
+      strata = groupings
     ) %>%
     dplyr::collect()
 
@@ -120,7 +120,7 @@ test_that("cytominer can process dataset with a normalized schema", {
   selected <-
     variable_select(
       population = transformed,
-      variables = feature_cols,
+      variables = variables,
       operation = "correlation_threshold",
       sample = aggregated
     ) %>%
@@ -131,6 +131,8 @@ test_that("cytominer can process dataset with a normalized schema", {
 test_that("cytominer can process dataset with a CellProfiler schema", {
 
   skip_on_os("windows")
+
+  set.seed(123)
 
   futile.logger::flog.threshold(futile.logger::WARN)
 
@@ -181,34 +183,37 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
     object %>%
     dplyr::filter(g_well %in% c("A01", "A02", "A10", "A11"))
 
-  qc_cols <- c("q_debris")
+  qualities <- c("q_debris")
 
-  group_cols <-
+  groupings <-
     c("g_plate",
       "g_well",
       "g_table",
       "g_image")
 
-  feature_cols <-
+  variables <-
     colnames(measurements) %>%
     stringr::str_subset("^Nuclei_|^Cells_|^Cytoplasm_")
 
-  testthat::expect_true(all(group_cols %in% (
+  testthat::expect_true(all(groupings %in% (
     colnames(measurements) %>%
       stringr::str_subset("^g_")
   )))
 
-  testthat::expect_true(all(qc_cols %in% (
+  testthat::expect_true(all(qualities %in% (
     colnames(measurements) %>%
       stringr::str_subset("^q_")
   )))
 
-  feature_cols <-
+  variables <-
     colnames(measurements) %>%
     stringr::str_subset("^Nuclei_|^Cells_|^Cytoplasm_")
 
+  # select only a few variables to speed up test
+  variables <- sample(variables, 10)
+
   measurements %<>%
-    dplyr::select(dplyr::one_of(c(group_cols, qc_cols, feature_cols)))
+    dplyr::select(dplyr::one_of(c(groupings, qualities, variables)))
 
   # data cleaning
   debris_removed <-
@@ -227,7 +232,7 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
   normalized <-
     normalize(
       population = na_rows_removed %>% dplyr::collect(),
-      variables = feature_cols,
+      variables = variables,
       strata =  c("g_plate"),
       sample =
         na_rows_removed %>%
@@ -242,17 +247,17 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
   na_frequency <-
     count_na_rows(
       population = normalized,
-      variables = feature_cols)
+      variables = variables)
 
   # drop NA columns because they may arise after normalize
   cleaned <-
     variable_select(
       population = normalized,
-      variables = feature_cols,
+      variables = variables,
       operation = "drop_na_columns"
     )
 
-  feature_cols <-
+  variables <-
     colnames(cleaned) %>%
     stringr::str_subset("^Nuclei_|^Cells_|^Cytoplasm_")
 
@@ -260,15 +265,15 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
   transformed <-
     transform(
       population = cleaned,
-      variables = feature_cols
+      variables = variables
     )
 
   # aggregation (default is mean)
   aggregated <-
     aggregate(
       population = transformed,
-      variables = feature_cols,
-      strata = group_cols
+      variables = variables,
+      strata = groupings
     ) %>%
     dplyr::collect()
 
@@ -276,7 +281,7 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
   selected <-
     variable_select(
       population = transformed,
-      variables = feature_cols,
+      variables = variables,
       sample = aggregated,
       operation = "correlation_threshold"
     ) %>%
