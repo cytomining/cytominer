@@ -144,12 +144,12 @@
 <span class='no'>variables</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"AreaShape_Area"</span>)
 <span class='no'>strata</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"Metadata_group"</span>, <span class='st'>"Metadata_batch"</span>)
 <span class='fu'>aggregate</span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='no'>strata</span>, <span class='kw'>operation</span> <span class='kw'>=</span> <span class='st'>"mean"</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 3
-#&gt;   Metadata_group Metadata_batch AreaShape_Area
-#&gt;            &lt;chr&gt;          &lt;chr&gt;          &lt;dbl&gt;
-#&gt; 1        control              a           11.0
-#&gt; 2        control              b           15.5
-#&gt; 3     experiment              a            8.0
-#&gt; 4     experiment              b            7.0</div><div class='input'>
+#&gt;   Metadata_group Metadata_batch AreaShape_Area_mean
+#&gt;            &lt;chr&gt;          &lt;chr&gt;               &lt;dbl&gt;
+#&gt; 1        control              a                11.0
+#&gt; 2        control              b                15.5
+#&gt; 3     experiment              a                 8.0
+#&gt; 4     experiment              b                 7.0</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

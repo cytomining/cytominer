@@ -43,14 +43,24 @@ aggregate <- function(population, variables, strata, operation="mean", ...) {
   }
 
   # construct aggregation_function
-  aggregating_function <-
-    stringr::str_split(operation, "\\+")[[1]] %>%
-    sapply(function(f) dplyr::funs(!!f) ) %>%
-    as.vector() %>%
-    unname()
+
+  # In dplyr::summarize, function names will be included only if `.funs`` has
+  # names or multiple inputs
+  if (length(stringr::str_split(operation, "\\+")[[1]]) == 1) {
+    aggregating_function <- dplyr::funs(!!operation := !!operation)
+
+  } else {
+    aggregating_function <-
+      stringr::str_split(operation, "\\+")[[1]] %>%
+      sapply(function(f) dplyr::funs(!!f)) %>%
+      as.vector() %>%
+      unname()
+
+  }
 
   population %>%
     dplyr::group_by_(.dots = strata) %>%
     dplyr::summarise_at(.funs = aggregating_function, .vars = variables) %>%
     dplyr::ungroup()
+
 }

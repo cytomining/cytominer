@@ -90,13 +90,13 @@ extract_subpopulations <-
     population_clusters <-
       data %>%
       dplyr::filter(type == "population") %>%
-      dplyr::select(-(!!type)) %>%
+      dplyr::select(- (!!type)) %>%
       dplyr::select(-dplyr::one_of(variables))
 
     reference_clusters <-
       data %>%
       dplyr::filter(type == "reference") %>%
-      dplyr::select(-(!!type)) %>%
+      dplyr::select(- (!!type)) %>%
       dplyr::select(-dplyr::one_of(variables))
 
     return(list(subpop_centers = kmeans_output$centers,
