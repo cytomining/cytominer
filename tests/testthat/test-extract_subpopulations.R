@@ -7,23 +7,23 @@ test_that(
 
   # generate two data frames corresponding to treatment and control
   k <- 6
-  data_trt <- matrix(runif(1000), 100, 10)
-  data_ctrl <- matrix(runif(2000), 200, 10)
+  population <- matrix(runif(1000), 100, 10)
+  reference <- matrix(runif(2000), 200, 10)
 
   # set 10% of the data to be NA's
-  data_trt[sample(1:length(data_trt),
-                  size = round(length(data_trt) * 0.1))] <- NA
-  data_ctrl[sample(1:length(data_ctrl),
-                   size = round(length(data_ctrl) * 0.1))] <- NA
+  population[sample(1:length(population),
+                  size = round(length(population) * 0.1))] <- NA
+  reference[sample(1:length(reference),
+                   size = round(length(reference) * 0.1))] <- NA
 
-  data_trt <- data.frame(data_trt, Metadata_id = 1:nrow(data_trt))
-  data_ctrl <- data.frame(data_ctrl, Metadata_id = 1:nrow(data_ctrl))
+  population <- data.frame(population, Metadata_id = 1:nrow(population))
+  reference <- data.frame(reference, Metadata_id = 1:nrow(reference))
 
-  variables <- grep(colnames(data_trt), pattern = "Metadata_", inv = TRUE,
+  variables <- grep(colnames(population), pattern = "Metadata_", inv = TRUE,
                 value = TRUE)
 
-  subpops <- extract_subpopulations(population = data_trt,
-                                    reference = data_ctrl,
+  subpops <- extract_subpopulations(population = population,
+                                    reference = reference,
                                     variables = variables,
                                     k = k)
 
@@ -49,16 +49,18 @@ test_that(
 
   }
 
-  trt_clusters <-
+  population_clusters <-
     cluster_assign(data =
-                     data_trt[stats::complete.cases(data_trt[, variables]), ],
+                     population[
+                       stats::complete.cases(population[, variables]), ],
                    centers = subpops$subpop_centers,
                    variables = variables,
                    k = k)
 
-  ctrl_clusters <-
+  reference_clusters <-
     cluster_assign(data =
-                     data_ctrl[stats::complete.cases(data_ctrl[, variables]), ],
+                     reference[
+                       stats::complete.cases(reference[, variables]), ],
                    centers = subpops$subpop_centers,
                    variables = variables,
                    k = k)
@@ -66,13 +68,13 @@ test_that(
   # test whether the cluster assignment and distance to the clusters
   # are consistent with the returned cluster centers
   expect_equal(
-    subpops$treatment_clusters[, c("dist_to_cluster", "cluster_id")],
-    trt_clusters
+    subpops$population_clusters[, c("dist_to_cluster", "cluster_id")],
+    as.data.frame(population_clusters)
   )
 
   expect_equal(
-    subpops$ctrl_clusters[, c("dist_to_cluster", "cluster_id")],
-    ctrl_clusters
+    subpops$reference_clusters[, c("dist_to_cluster", "cluster_id")],
+    as.data.frame(reference_clusters)
   )
 
   # test whether the summation of cluster proportions is equal to one
@@ -80,7 +82,7 @@ test_that(
     subpops$subpop_profiles %>%
       dplyr::select(-cluster_id) %>%
       dplyr::summarise_all(sum),
-    dplyr::frame_data(~control, ~treatment,
+    dplyr::frame_data(~population, ~reference,
                       1, 1)
   )
 })

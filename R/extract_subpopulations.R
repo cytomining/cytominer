@@ -45,68 +45,63 @@ extract_subpopulations <-
            variables,
            k) {
 
-    non_feats <- setdiff(colnames(population), variables)
-
-    type_var_name <- "pert_type"
-    type_var <- rlang::sym(type_var_name)
-
-    population <- population %>%
-      dplyr::mutate(!!type_var_name := "treatment") %>%
-      dplyr::bind_rows(., reference %>%
-                         dplyr::mutate(!!type_var_name := "control")) %>%
+    data <-
+      dplyr::bind_rows(
+        population %>% dplyr::mutate(type = "population"),
+        reference %>% dplyr::mutate(type = "reference")) %>%
       tidyr::drop_na(dplyr::one_of(variables))
 
-    kmeans_outp <- population %>%
+    kmeans_output <- data %>%
       dplyr::select(dplyr::one_of(variables)) %>%
       stats::kmeans(centers = k,
                     iter.max = 5000,
                     nstart = 10)
 
-    find_dist_to_cluster <- function(x,
-                                     feats,
-                                     kmeans_outp,
-                                     cluter_var_name) {
-      as.matrix(stats::dist(rbind(x[, feats],
-                 kmeans_outp$centers[x[[cluter_var_name]][1], feats])))[1, 2]
+    find_dist_to_cluster <- function(x) {
+        (rbind(
+          x[, variables],
+          kmeans_output$centers[x[["cluster_id"]][1], variables]
+          ) %>%
+          stats::dist() %>%
+          as.matrix())[1, 2]
+
     }
 
-    population %<>%
-      dplyr::mutate(cluster_id = kmeans_outp$cluster) %>%
-      dplyr::mutate(row_num = 1:n())  %>%
-      dplyr::group_by_at(vars(dplyr::one_of(c("row_num",
-                                       "cluster_id",
-                                       type_var_name,
-                                       non_feats)))) %>%
-      dplyr::do(data.frame(dist_to_cluster =
-                             find_dist_to_cluster(.[, ],
-                                                  variables,
-                                                  kmeans_outp,
-                                                  "cluster_id"))) %>%
-      dplyr::ungroup()
+    data %<>% dplyr::mutate(cluster_id = kmeans_output$cluster)
+    data %<>%
+      dplyr::bind_cols(
+        purrr::map_df(1:nrow(data),
+               ~dplyr::data_frame(dist_to_cluster =
+                                    find_dist_to_cluster(data[.x, ])))
+      )
 
-    subpop_profiles <- population %>%
-      dplyr::group_by_(.dots = c(type_var_name, "cluster_id")) %>%
-      dplyr::summarise(n = n()) %>%
-      dplyr::group_by_(.dots = type_var_name) %>%
+    subpop_profiles <- data %>%
+      dplyr::group_by_(.dots = c("type", "cluster_id")) %>%
+      dplyr::tally() %>%
+      dplyr::group_by_(.dots = "type") %>%
       dplyr::rename(freq = "n") %>%
       dplyr::mutate(freq = .data$freq / sum(.data$freq) ) %>%
       dplyr::ungroup() %>%
-      tidyr::spread(key = type_var_name, value = "freq", fill = 0)
+      tidyr::spread(key = "type", value = "freq", fill = 0)
 
-    trt_clusters <- population %>%
-      dplyr::filter(rlang::UQ(type_var) == "treatment") %>%
-      dplyr::select(dplyr::one_of(c(non_feats,
-                             "cluster_id",
-                             "dist_to_cluster")))
+    # to avoid "no visible binding for global variable" warning
+    # when doing select(-type) below
+    type <- rlang::sym("type")
 
-    ctrl_clusters <- population %>%
-      dplyr::filter(rlang::UQ(type_var) == "control") %>%
-      dplyr::select(dplyr::one_of(c(non_feats,
-                             "cluster_id",
-                             "dist_to_cluster")))
+    population_clusters <-
+      data %>%
+      dplyr::filter(type == "population") %>%
+      dplyr::select(-(!!type)) %>%
+      dplyr::select(-dplyr::one_of(variables))
 
-    return(list(subpop_centers = kmeans_outp$centers,
+    reference_clusters <-
+      data %>%
+      dplyr::filter(type == "reference") %>%
+      dplyr::select(-(!!type)) %>%
+      dplyr::select(-dplyr::one_of(variables))
+
+    return(list(subpop_centers = kmeans_output$centers,
                 subpop_profiles = subpop_profiles,
-                treatment_clusters = trt_clusters,
-                ctrl_clusters = ctrl_clusters))
+                population_clusters = population_clusters,
+                reference_clusters = reference_clusters))
 }
