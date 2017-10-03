@@ -35,6 +35,7 @@
 #' @importFrom magrittr %<>%
 #' @importFrom dplyr vars
 #' @importFrom stats setNames
+#' @importFrom rlang .data
 #'
 #' @export
 #'
@@ -47,12 +48,8 @@ extract_subpopulations <-
     non_feats <- setdiff(colnames(population), variables)
 
     type_var_name <- "pert_type"
-    cluster_var_name <- "cluster_id"
-    dist_var_name <- "dist_to_cluster"
-    freq_var_name <- "freq"
     row_var_name <- "row_number"
     type_var <- rlang::sym(type_var_name)
-    freq_var <- rlang::sym(freq_var_name)
 
     population <- population %>%
       dplyr::mutate(!!type_var_name := "treatment") %>%
@@ -75,40 +72,39 @@ extract_subpopulations <-
     }
 
     population %<>%
-      dplyr::mutate(!!cluster_var_name := kmeans_outp$cluster) %>%
+      dplyr::mutate(cluster_id = kmeans_outp$cluster) %>%
       dplyr::mutate(!!row_var_name := 1:n())  %>%
       dplyr::group_by_at(vars(dplyr::one_of(c(row_var_name,
-                                       cluster_var_name,
+                                       "cluster_id",
                                        type_var_name,
                                        non_feats)))) %>%
-      dplyr::do(data.frame("name_tmp" =
+      dplyr::do(data.frame(dist_to_cluster =
                              find_dist_to_cluster(.[, ],
                                                   variables,
                                                   kmeans_outp,
-                                                  cluster_var_name))) %>%
-      dplyr::ungroup() %>%
-      dplyr::rename(!!dist_var_name := !!"name_tmp")
+                                                  "cluster_id"))) %>%
+      dplyr::ungroup()
 
     subpop_profiles <- population %>%
-      dplyr::group_by_(.dots = c(type_var_name, cluster_var_name)) %>%
+      dplyr::group_by_(.dots = c(type_var_name, "cluster_id")) %>%
       dplyr::summarise(n = n()) %>%
       dplyr::group_by_(.dots = type_var_name) %>%
-      dplyr::rename(!!freq_var := !!"n") %>%
-      dplyr::mutate(!!freq_var := ( (!!freq_var) / sum(!!freq_var)) ) %>%
+      dplyr::rename(freq = "n") %>%
+      dplyr::mutate(freq = .data$freq / sum(.data$freq) ) %>%
       dplyr::ungroup() %>%
-      tidyr::spread(key = type_var_name, value = freq_var_name, fill = 0)
+      tidyr::spread(key = type_var_name, value = "freq", fill = 0)
 
     trt_clusters <- population %>%
       dplyr::filter(rlang::UQ(type_var) == "treatment") %>%
       dplyr::select(dplyr::one_of(c(non_feats,
-                             cluster_var_name,
-                             dist_var_name)))
+                             "cluster_id",
+                             "dist_to_cluster")))
 
     ctrl_clusters <- population %>%
       dplyr::filter(rlang::UQ(type_var) == "control") %>%
       dplyr::select(dplyr::one_of(c(non_feats,
-                             cluster_var_name,
-                             dist_var_name)))
+                             "cluster_id",
+                             "dist_to_cluster")))
 
     return(list(subpop_centers = kmeans_outp$centers,
                 subpop_profiles = subpop_profiles,
