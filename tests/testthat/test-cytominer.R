@@ -116,6 +116,10 @@ test_that("cytominer can process dataset with a normalized schema", {
     ) %>%
     dplyr::collect()
 
+  variables <-
+    colnames(aggregated) %>%
+    stringr::str_subset("^m_")
+
   # feature selection (variance threshold by default)
   selected <-
     variable_select(
@@ -276,6 +280,10 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
       strata = groupings
     ) %>%
     dplyr::collect()
+
+  variables <-
+    colnames(aggregated) %>%
+    stringr::str_subset("^m_")
 
   # feature selection (variance threshold by default)
   selected <-
