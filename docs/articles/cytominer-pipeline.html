@@ -75,7 +75,7 @@
       <h1>Introduction to cytominer</h1>
                         <h4 class="author">Allen Goodman and Shantanu Singh</h4>
             
-            <h4 class="date">2017-10-03</h4>
+            <h4 class="date">2017-10-05</h4>
           </div>
 
     
@@ -104,24 +104,24 @@ db &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ext_metadata &lt;-
 <span class="st">  </span>readr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"metadata.csv"</span>,
                               <span class="dt">package =</span> <span class="st">"cytominer"</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">rename</a></span>(<span class="dt">g_well =</span> Well)</code></pre></div>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/select">rename</a></span>(<span class="dt">g_well =</span> Well)</code></pre></div>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   Well = col_character(),
 ##   Type = col_character()
 ## )</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ext_metadata &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span>(db, ext_metadata)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ext_metadata &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/copy_to">copy_to</a></span>(db, ext_metadata)</code></pre></div>
 <p>Next, select a measurement table that you want to work. Here, we will pick <code>intensities</code> but we can easily extend to using multiple or all measurement classes if needed by creating new views.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">intensities &lt;-
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span>(<span class="dt">src =</span> db, <span class="st">"view_intensities"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">compute</a></span>()</code></pre></div>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/tbl">tbl</a></span>(<span class="dt">src =</span> db, <span class="st">"view_intensities"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/compute">compute</a></span>()</code></pre></div>
 <p>For this example, lets filter the data down to a few wells.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">measurements &lt;-
 <span class="st">  </span>intensities <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(g_well <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">"A01"</span>, <span class="st">"A02"</span>, <span class="st">"A10"</span>, <span class="st">"A11"</span>))</code></pre></div>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(g_well <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">"A01"</span>, <span class="st">"A02"</span>, <span class="st">"A10"</span>, <span class="st">"A11"</span>))</code></pre></div>
 <p>How many rows does this table have?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">measurements <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/tally.html">tally</a></span>() <span class="op">%&gt;%</span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/tally">tally</a></span>() <span class="op">%&gt;%</span>
 <span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>()</code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -147,21 +147,21 @@ variables &lt;-
 <span class="st">  </span>stringr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_subset">str_subset</a></span>(<span class="st">"^m_"</span>)
 
 measurements <span class="op">%&lt;&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select_helpers.html">one_of</a></span>(<span class="kw">c</span>(groupings, qualities, variables)))</code></pre></div>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/select_helpers">one_of</a></span>(<span class="kw">c</span>(groupings, qualities, variables)))</code></pre></div>
 </div>
 <div id="clean" class="section level2">
 <h2 class="hasAnchor">
 <a href="#clean" class="anchor"></a>Clean</h2>
 <p>Let’s remove cells that come from images that were marked as having debris</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">debris_removed &lt;-
-<span class="st">  </span>measurements <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(q_debris <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</code></pre></div>
+<span class="st">  </span>measurements <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(q_debris <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</code></pre></div>
 <p>Then, remove cells where all the measurements are NA’s - this may happen if the identified cell mask was too small to measure any of the features.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">na_rows_removed &lt;-
 <span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/drop_na_rows">drop_na_rows</a></span>(
     <span class="dt">population =</span> debris_removed,
     <span class="dt">variables =</span> variables
   ) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">compute</a></span>()</code></pre></div>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/compute">compute</a></span>()</code></pre></div>
 </div>
 <div id="normalize" class="section level2">
 <h2 class="hasAnchor">
@@ -175,19 +175,19 @@ measurements <span class="op">%&lt;&gt;%</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">normalized &lt;-
 <span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/normalize">normalize</a></span>(
     <span class="dt">population =</span> na_rows_removed <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">      </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">collect</a></span>(),
+<span class="st">      </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/compute">collect</a></span>(),
     <span class="dt">variables =</span> variables,
     <span class="dt">strata =</span>  <span class="kw">c</span>(<span class="st">"g_plate"</span>, <span class="st">"g_pattern"</span>, <span class="st">"g_channel"</span>),
     <span class="dt">sample =</span>
       na_rows_removed <span class="op">%&gt;%</span>
-<span class="st">      </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/join.html">inner_join</a></span>(
+<span class="st">      </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/join">inner_join</a></span>(
         ext_metadata <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">          </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(Type <span class="op">==</span><span class="st"> "ctrl"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">          </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(g_well) 
-      ) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">collect</a></span>()
+<span class="st">          </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/filter">filter</a></span>(Type <span class="op">==</span><span class="st"> "ctrl"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">          </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(g_well) 
+      ) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/compute">collect</a></span>()
   )</code></pre></div>
 <pre><code>## Joining, by = "g_well"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">normalized <span class="op">%&lt;&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">collect</a></span>()</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">normalized <span class="op">%&lt;&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/compute">collect</a></span>()</code></pre></div>
 <p>In some cases, we may have features that have no variance at all (e.g. Euler number). If these features have not already been removed by this stage, the standardization step will results in all values for that feature being NA ( because s.d. = 0). Lets remove them:</p>
 <p>First, count how many cells have NA values per feature:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">na_frequency &lt;-
@@ -270,7 +270,7 @@ na_frequency <span class="op">%&gt;%</span>
     <span class="dt">variables =</span> variables,
     <span class="dt">strata =</span> groupings
   ) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">collect</a></span>()
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/compute">collect</a></span>()
 
 variables &lt;-
 <span class="st">  </span><span class="kw">colnames</span>(aggregated) <span class="op">%&gt;%</span>
@@ -283,10 +283,10 @@ variables &lt;-
     <span class="dt">sample =</span> aggregated,
     <span class="dt">operation =</span> <span class="st">"correlation_threshold"</span>
   ) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">collect</a></span>()</code></pre></div>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/compute">collect</a></span>()</code></pre></div>
 <p>And now lets take a glimpse at the data!</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">selected <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>()</code></pre></div>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/reexports">glimpse</a></span>()</code></pre></div>
 <pre><code>## Observations: 315
 ## Variables: 15
 ## $ g_plate                                 &lt;chr&gt; "110000106828", "11000...
