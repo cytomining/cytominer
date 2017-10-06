@@ -149,7 +149,7 @@
  )
 <span class='no'>variables</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>'AreaShape_Area'</span>)
 <span class='no'>strata</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>'Metadata_batch'</span>)
-<span class='no'>sample</span> <span class='kw'>&lt;-</span> <span class='no'>population</span> <span class='kw'>%&gt;%</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/filter'>filter</a></span>(<span class='no'>Metadata_group</span> <span class='kw'>==</span> <span class='st'>'control'</span>)
+<span class='no'>sample</span> <span class='kw'>&lt;-</span> <span class='no'>population</span> <span class='kw'>%&gt;%</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>Metadata_group</span> <span class='kw'>==</span> <span class='st'>'control'</span>)
 <span class='kw pkg'>cytominer</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/cytominer/topics/normalize'>normalize</a></span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='no'>strata</span>, <span class='no'>sample</span>, <span class='kw'>operation</span> <span class='kw'>=</span> <span class='st'>"standardize"</span>)</div><div class='output co'>#&gt; # A tibble: 8 x 3
 #&gt;   Metadata_group Metadata_batch AreaShape_Area
 #&gt;            &lt;chr&gt;          &lt;chr&gt;          &lt;dbl&gt;

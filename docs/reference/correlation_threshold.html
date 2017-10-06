@@ -142,7 +142,7 @@
    <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>30</span>)/<span class='fl'>1000</span>
  )
 
-<span class='no'>sample</span> <span class='kw'>%&lt;&gt;%</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/mutate'>mutate</a></span>(<span class='kw'>z</span> <span class='kw'>=</span> <span class='no'>x</span> + <span class='fu'>rnorm</span>(<span class='fl'>30</span>) / <span class='fl'>10</span>)
+<span class='no'>sample</span> <span class='kw'>%&lt;&gt;%</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>z</span> <span class='kw'>=</span> <span class='no'>x</span> + <span class='fu'>rnorm</span>(<span class='fl'>30</span>) / <span class='fl'>10</span>)
 <span class='no'>variables</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"x"</span>, <span class='st'>"y"</span>, <span class='st'>"z"</span>)
 
 <span class='fu'>head</span>(<span class='no'>sample</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 3
