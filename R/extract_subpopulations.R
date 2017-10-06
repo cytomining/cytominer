@@ -1,6 +1,9 @@
+utils::globalVariables("type")
 #' Extract subpopulations.
 #'
-#' \code{extract_subpopulations} extracts the clusters enriched/de-enriched in a given set w.r.t a reference set.
+#' \code{extract_subpopulations} identifies clusters in the reference and
+#' population sets and reports the frequency of points in each cluster for the
+#' two sets.
 #'
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param reference tbl with grouping (metadata) and observation variables. Columns of \code{population} and \code{reference} should be identical.
@@ -17,7 +20,6 @@
 #' data <- tibble::data_frame(
 #'    Metadata_group = c("control", "control", "control", "control",
 #'                       "experiment", "experiment", "experiment", "experiment"),
-#'    Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
 #'    AreaShape_Area = c(10, 12, NA, 16, 8, 8, 7, 7),
 #'    AreaShape_Length = c(2, 3, NA, NA, 4, 5, 1, 5)
 #' )
@@ -83,20 +85,16 @@ extract_subpopulations <-
       dplyr::ungroup() %>%
       tidyr::spread(key = "type", value = "freq", fill = 0)
 
-    # to avoid "no visible binding for global variable" warning
-    # when doing select(-type) below
-    type <- rlang::sym("type")
-
     population_clusters <-
       data %>%
       dplyr::filter(type == "population") %>%
-      dplyr::select(- (!!type)) %>%
+      dplyr::select(-type) %>%
       dplyr::select(-dplyr::one_of(variables))
 
     reference_clusters <-
       data %>%
       dplyr::filter(type == "reference") %>%
-      dplyr::select(- (!!type)) %>%
+      dplyr::select(-type) %>%
       dplyr::select(-dplyr::one_of(variables))
 
     return(list(subpop_centers = kmeans_output$centers,

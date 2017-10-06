@@ -99,7 +99,9 @@
     </div>
 
     
-    <p><code>extract_subpopulations</code> extracts the clusters enriched/de-enriched in a given set w.r.t a reference set.</p>
+    <p><code>extract_subpopulations</code> identifies clusters in the reference and
+population sets and reports the frequency of points in each cluster for the
+two sets.</p>
     
 
     <pre class="usage"><span class='fu'>extract_subpopulations</span>(<span class='no'>population</span>, <span class='no'>reference</span>, <span class='no'>variables</span>, <span class='no'>k</span>)</pre>
@@ -138,13 +140,12 @@ the predicted cluster for all input data (<code>population_clusters</code> and
     <pre class="examples"><div class='input'><span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>data_frame</a></span>(
    <span class='kw'>Metadata_group</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"control"</span>, <span class='st'>"control"</span>, <span class='st'>"control"</span>, <span class='st'>"control"</span>,
                       <span class='st'>"experiment"</span>, <span class='st'>"experiment"</span>, <span class='st'>"experiment"</span>, <span class='st'>"experiment"</span>),
-   <span class='kw'>Metadata_batch</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"b"</span>, <span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"b"</span>),
    <span class='kw'>AreaShape_Area</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>12</span>, <span class='fl'>NA</span>, <span class='fl'>16</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>7</span>, <span class='fl'>7</span>),
    <span class='kw'>AreaShape_Length</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>1</span>, <span class='fl'>5</span>)
 )
 <span class='no'>variables</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>'AreaShape_Area'</span>,<span class='st'>'AreaShape_Length'</span>)
-<span class='no'>population</span> <span class='kw'>&lt;-</span>  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>data</span>, <span class='no'>Metadata_group</span> <span class='kw'>==</span> <span class='st'>"experiment"</span>)
-<span class='no'>reference</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>data</span>, <span class='no'>Metadata_group</span> <span class='kw'>==</span> <span class='st'>"control"</span>)
+<span class='no'>population</span> <span class='kw'>&lt;-</span>  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/filter'>filter</a></span>(<span class='no'>data</span>, <span class='no'>Metadata_group</span> <span class='kw'>==</span> <span class='st'>"experiment"</span>)
+<span class='no'>reference</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/filter'>filter</a></span>(<span class='no'>data</span>, <span class='no'>Metadata_group</span> <span class='kw'>==</span> <span class='st'>"control"</span>)
 <span class='fu'>extract_subpopulations</span>(
    <span class='kw'>population</span> <span class='kw'>=</span> <span class='no'>population</span>,
    <span class='kw'>reference</span> <span class='kw'>=</span> <span class='no'>reference</span>,
@@ -165,20 +166,20 @@ the predicted cluster for all input data (<code>population_clusters</code> and
 #&gt; 3          3       0.00         1
 #&gt; 
 #&gt; $population_clusters
-#&gt; # A tibble: 4 x 4
-#&gt;   Metadata_group Metadata_batch cluster_id dist_to_cluster
-#&gt;            &lt;chr&gt;          &lt;chr&gt;      &lt;int&gt;           &lt;dbl&gt;
-#&gt; 1     experiment              a          1       0.7453560
-#&gt; 2     experiment              a          1       0.4714045
-#&gt; 3     experiment              b          2       0.0000000
-#&gt; 4     experiment              b          1       0.7453560
+#&gt; # A tibble: 4 x 3
+#&gt;   Metadata_group cluster_id dist_to_cluster
+#&gt;            &lt;chr&gt;      &lt;int&gt;           &lt;dbl&gt;
+#&gt; 1     experiment          1       0.7453560
+#&gt; 2     experiment          1       0.4714045
+#&gt; 3     experiment          2       0.0000000
+#&gt; 4     experiment          1       0.7453560
 #&gt; 
 #&gt; $reference_clusters
-#&gt; # A tibble: 2 x 4
-#&gt;   Metadata_group Metadata_batch cluster_id dist_to_cluster
-#&gt;            &lt;chr&gt;          &lt;chr&gt;      &lt;int&gt;           &lt;dbl&gt;
-#&gt; 1        control              a          3        1.118034
-#&gt; 2        control              a          3        1.118034
+#&gt; # A tibble: 2 x 3
+#&gt;   Metadata_group cluster_id dist_to_cluster
+#&gt;            &lt;chr&gt;      &lt;int&gt;           &lt;dbl&gt;
+#&gt; 1        control          3        1.118034
+#&gt; 2        control          3        1.118034
 #&gt; </div><div class='input'>
 </div></pre>
   </div>

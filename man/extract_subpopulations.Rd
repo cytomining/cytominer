@@ -23,13 +23,14 @@ the predicted cluster for all input data (\code{population_clusters} and
 \code{reference_clusters}).
 }
 \description{
-\code{extract_subpopulations} extracts the clusters enriched/de-enriched in a given set w.r.t a reference set.
+\code{extract_subpopulations} identifies clusters in the reference and
+population sets and reports the frequency of points in each cluster for the
+two sets.
 }
 \examples{
 data <- tibble::data_frame(
    Metadata_group = c("control", "control", "control", "control",
                       "experiment", "experiment", "experiment", "experiment"),
-   Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
    AreaShape_Area = c(10, 12, NA, 16, 8, 8, 7, 7),
    AreaShape_Length = c(2, 3, NA, NA, 4, 5, 1, 5)
 )
