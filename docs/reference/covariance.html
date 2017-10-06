@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Remove redundant variables. — correlation_threshold • cytominer</title>
+<title>Compute covariance matrix and vectorize. — covariance • cytominer</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -95,71 +95,45 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Remove redundant variables.</h1>
+    <h1>Compute covariance matrix and vectorize.</h1>
     </div>
 
     
-    <p><code>correlation_threshold</code> returns list of variables such that no two variables have a correlation greater than a specified threshold.</p>
+    <p><code>covariance</code> computes the covariance matrix and vectorize it.</p>
     
 
-    <pre class="usage"><span class='fu'>correlation_threshold</span>(<span class='no'>variables</span>, <span class='no'>sample</span>, <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>)</pre>
+    <pre class="usage"><span class='fu'>covariance</span>(<span class='no'>population</span>, <span class='no'>variables</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>population</th>
+      <td><p>tbl with grouping (metadata) and observation variables.</p></td>
+    </tr>
+    <tr>
       <th>variables</th>
       <td><p>character vector specifying observation variables.</p></td>
-    </tr>
-    <tr>
-      <th>sample</th>
-      <td><p>tbl containing sample used to estimate parameters.</p></td>
-    </tr>
-    <tr>
-      <th>cutoff</th>
-      <td><p>threshold between [0,1] that defines the minimum correlation of a selected feature.</p></td>
-    </tr>
-    <tr>
-      <th>method</th>
-      <td><p>optional character string specifying method for calculating correlation. This must be one of the strings <code>"pearson"</code> (default), <code>"kendall"</code>, <code>"spearman"</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>character vector specifying observation variables to be excluded.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><code>correlation_threshold</code> is a wrapper for <code><a href='http://www.rdocumentation.org/packages/caret/topics/findCorrelation'>caret::findCorrelation</a></code>.</p>
+    <p>data frame of 1 row comprising vectorized covariance matrix.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'>suppressMessages</span>(<span class='fu'>suppressWarnings</span>(<span class='fu'>library</span>(<span class='no'>magrittr</span>)))
-<span class='no'>sample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>data_frame</a></span>(
+<span class='no'>population</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>data_frame</a></span>(
    <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>30</span>),
-   <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>30</span>)/<span class='fl'>1000</span>
+   <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>30</span>),
+   <span class='kw'>z</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='fl'>30</span>)
  )
 
-<span class='no'>sample</span> <span class='kw'>%&lt;&gt;%</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>z</span> <span class='kw'>=</span> <span class='no'>x</span> + <span class='fu'>rnorm</span>(<span class='fl'>30</span>) / <span class='fl'>10</span>)
-<span class='no'>variables</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"x"</span>, <span class='st'>"y"</span>, <span class='st'>"z"</span>)
+<span class='no'>variables</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"x"</span>, <span class='st'>"y"</span>)
 
-<span class='fu'>head</span>(<span class='no'>sample</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 3
-#&gt;              x             y           z
-#&gt;          &lt;dbl&gt;         &lt;dbl&gt;       &lt;dbl&gt;
-#&gt; 1 -1.400043517  0.0009353632 -1.29260893
-#&gt; 2  0.255317055  0.0001764886  0.18880823
-#&gt; 3 -2.437263611  0.0002436855 -2.32586837
-#&gt; 4 -0.005571287  0.0016235489 -0.03016093
-#&gt; 5  0.621552721  0.0001120381  0.50379639
-#&gt; 6  1.148411606 -0.0001339970  1.05082654</div><div class='input'><span class='fu'>cor</span>(<span class='no'>sample</span>)</div><div class='output co'>#&gt;            x          y          z
-#&gt; x 1.00000000 0.05080466 0.99554738
-#&gt; y 0.05080466 1.00000000 0.06550465
-#&gt; z 0.99554738 0.06550465 1.00000000</div><div class='input'>
-<span class='co'># `x` and `z` are highly correlated; one of them will be removed</span>
-
-<span class='fu'>correlation_threshold</span>(<span class='no'>variables</span>, <span class='no'>sample</span>)</div><div class='output co'>#&gt; [1] "z"</div><div class='input'>
+<span class='fu'>covariance</span>(<span class='no'>population</span>, <span class='no'>variables</span>)</div><div class='output co'>#&gt;        x__x      y__x     y__y
+#&gt; 1 0.9379415 0.3075673 0.907543</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -168,8 +142,6 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

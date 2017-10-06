@@ -51,6 +51,26 @@ test_that("`aggregate` aggregates data", {
                           .vars = c("x", "y"))
   )
 
+  cov_a <-
+    data %>%
+    dplyr::filter(g == "a") %>%
+    dplyr::select(x, y) %>%
+    dplyr::collect() %>%
+    stats::cov()
+
+  expect_equal(
+    aggregate(population = data,
+              variables = c("x", "y"),
+              strata = c("g"),
+              operation = "covariance",
+              univariate = FALSE) %>%
+      dplyr::filter(g == "a") %>%
+      dplyr::select(-g),
+    tibble::data_frame(x__x = cov_a[1,1],
+                       y__x = cov_a[1,2],
+                       y__y = cov_a[2,2])
+  )
+
   DBI::dbDisconnect(db)
 
 })
