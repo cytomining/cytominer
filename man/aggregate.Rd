@@ -4,7 +4,8 @@
 \alias{aggregate}
 \title{Aggregate data based on given grouping.}
 \usage{
-aggregate(population, variables, strata, operation = "mean", ...)
+aggregate(population, variables, strata, operation = "mean",
+  univariate = TRUE, ...)
 }
 \arguments{
 \item{population}{tbl with grouping (metadata) and observation variables.}
@@ -14,6 +15,8 @@ aggregate(population, variables, strata, operation = "mean", ...)
 \item{strata}{character vector specifying grouping variables for aggregation.}
 
 \item{operation}{optional character string specifying method for aggregation, e.g. \code{"mean"}, \code{"median"}, \code{"mean+sd"}.}
+
+\item{univariate}{boolean specifying whether the aggregation function is univariate or multivariate.}
 
 \item{...}{optional arguments passed to aggregation operation}
 }

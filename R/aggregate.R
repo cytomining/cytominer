@@ -1,3 +1,4 @@
+utils::globalVariables("data")
 #' Aggregate data based on given grouping.
 #'
 #' \code{aggregate} aggregates data based on the specified aggregation method.
@@ -6,6 +7,7 @@
 #' @param variables character vector specifying observation variables.
 #' @param strata character vector specifying grouping variables for aggregation.
 #' @param operation optional character string specifying method for aggregation, e.g. \code{"mean"}, \code{"median"}, \code{"mean+sd"}.
+#' @param univariate boolean specifying whether the aggregation function is univariate or multivariate.
 #' @param ... optional arguments passed to aggregation operation
 #'
 #' @return aggregated data of the same class as \code{population}.
@@ -25,7 +27,25 @@
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @export
-aggregate <- function(population, variables, strata, operation="mean", ...) {
+aggregate <- function(population, variables, strata, operation="mean",
+                      univariate = TRUE,
+                      ...) {
+
+
+  if (!univariate) {
+    return(
+      population %>%
+        dplyr::collect() %>%
+        dplyr::group_by_at(.vars = strata) %>%
+        tidyr::nest() %>%
+        dplyr::mutate(data = purrr::map(data,
+                                        rlang::as_function(operation),
+                                        variables)) %>%
+        tidyr::unnest()
+
+    )
+
+  }
 
   # check whether `operation` is a function, or a sequence of functions
   # separated by `+`
