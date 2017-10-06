@@ -14,9 +14,12 @@ aggregate(population, variables, strata, operation = "mean",
 
 \item{strata}{character vector specifying grouping variables for aggregation.}
 
-\item{operation}{optional character string specifying method for aggregation, e.g. \code{"mean"}, \code{"median"}, \code{"mean+sd"}.}
+\item{operation}{optional character string specifying method for aggregation,
+e.g. \code{"mean"}, \code{"median"}, \code{"mean+sd"}. A sequence can
+comprise only of univariate functions.}
 
-\item{univariate}{boolean specifying whether the aggregation function is univariate or multivariate.}
+\item{univariate}{boolean specifying whether the aggregation function is
+univariate or multivariate.}
 
 \item{...}{optional arguments passed to aggregation operation}
 }
@@ -29,7 +32,8 @@ aggregated data of the same class as \code{population}.
 \examples{
 population <- tibble::data_frame(
    Metadata_group = c("control", "control", "control", "control",
-                      "experiment", "experiment", "experiment", "experiment"),
+                      "experiment", "experiment", "experiment",
+                      "experiment"),
    Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
    AreaShape_Area = c(10, 12, 15, 16, 8, 8, 7, 7)
  )

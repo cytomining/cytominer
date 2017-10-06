@@ -122,11 +122,14 @@
     </tr>
     <tr>
       <th>operation</th>
-      <td><p>optional character string specifying method for aggregation, e.g. <code>"mean"</code>, <code>"median"</code>, <code>"mean+sd"</code>.</p></td>
+      <td><p>optional character string specifying method for aggregation,
+e.g. <code>"mean"</code>, <code>"median"</code>, <code>"mean+sd"</code>. A sequence can
+comprise only of univariate functions.</p></td>
     </tr>
     <tr>
       <th>univariate</th>
-      <td><p>boolean specifying whether the aggregation function is univariate or multivariate.</p></td>
+      <td><p>boolean specifying whether the aggregation function is
+univariate or multivariate.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -142,7 +145,8 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>population</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>data_frame</a></span>(
    <span class='kw'>Metadata_group</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"control"</span>, <span class='st'>"control"</span>, <span class='st'>"control"</span>, <span class='st'>"control"</span>,
-                      <span class='st'>"experiment"</span>, <span class='st'>"experiment"</span>, <span class='st'>"experiment"</span>, <span class='st'>"experiment"</span>),
+                      <span class='st'>"experiment"</span>, <span class='st'>"experiment"</span>, <span class='st'>"experiment"</span>,
+                      <span class='st'>"experiment"</span>),
    <span class='kw'>Metadata_batch</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"b"</span>, <span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"b"</span>),
    <span class='kw'>AreaShape_Area</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>12</span>, <span class='fl'>15</span>, <span class='fl'>16</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>7</span>, <span class='fl'>7</span>)
  )
