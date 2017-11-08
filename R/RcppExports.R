@@ -3,13 +3,13 @@
 
 #' calculate_entropy_new
 #'
-#' Calculate the entropy of a matrix based on SVD alternative method when more observations than features. A = XtX instead of A = Xt
-#' @param A dataset mxm (m features and n observations)
+#' Calculate the entropy of a matrix singular values, when their summation is normalized to one.
+#' @param A matrix of any arbitrary size
 NULL
 
 #' @return Calculate the entropy contribution of a matrix based on SVD
-calculate_entropy_new <- function(A) {
-    .Call('_cytominer_calculate_entropy_new', PACKAGE = 'cytominer', A)
+calculate_sv_entropy <- function(A) {
+    .Call('_cytominer_calculate_sv_entropy', PACKAGE = 'cytominer', A)
 }
 
 #' CE_entropy_SR
@@ -19,15 +19,5 @@ calculate_entropy_new <- function(A) {
 #' @return entropy contribution vector
 CE_entropy_SR <- function(A) {
     .Call('_cytominer_CE_entropy_SR', PACKAGE = 'cytominer', A)
-}
-
-#' CE_entropy_FS2_new
-#'
-#' Calculate the entropy of a matrix based on SVD with FS method
-#' @param A dataset mxn (m features and n observations)
-#' @param mc number of feature to select
-#' @return index of features that were selected
-CE_entropy_FS2_new <- function(A, mc) {
-    .Call('_cytominer_CE_entropy_FS2_new', PACKAGE = 'cytominer', A, mc)
 }
 

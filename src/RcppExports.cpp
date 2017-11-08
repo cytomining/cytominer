@@ -6,14 +6,14 @@
 
 using namespace Rcpp;
 
-// calculate_entropy_new
-double calculate_entropy_new(arma::mat A);
-RcppExport SEXP _cytominer_calculate_entropy_new(SEXP ASEXP) {
+// calculate_sv_entropy
+double calculate_sv_entropy(arma::mat A);
+RcppExport SEXP _cytominer_calculate_sv_entropy(SEXP ASEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type A(ASEXP);
-    rcpp_result_gen = Rcpp::wrap(calculate_entropy_new(A));
+    rcpp_result_gen = Rcpp::wrap(calculate_sv_entropy(A));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -28,23 +28,10 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// CE_entropy_FS2_new
-NumericVector CE_entropy_FS2_new(NumericMatrix A, unsigned int mc);
-RcppExport SEXP _cytominer_CE_entropy_FS2_new(SEXP ASEXP, SEXP mcSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type A(ASEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type mc(mcSEXP);
-    rcpp_result_gen = Rcpp::wrap(CE_entropy_FS2_new(A, mc));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_cytominer_calculate_entropy_new", (DL_FUNC) &_cytominer_calculate_entropy_new, 1},
+    {"_cytominer_calculate_sv_entropy", (DL_FUNC) &_cytominer_calculate_sv_entropy, 1},
     {"_cytominer_CE_entropy_SR", (DL_FUNC) &_cytominer_CE_entropy_SR, 1},
-    {"_cytominer_CE_entropy_FS2_new", (DL_FUNC) &_cytominer_CE_entropy_FS2_new, 2},
     {NULL, NULL, 0}
 };
 

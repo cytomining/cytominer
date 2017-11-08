@@ -1,20 +1,26 @@
 #' entropy based feature selection
 #'
-#' @param X named tbl containing data, where columns and rows correspond to features and samples, respectively. Column names are assumed to be feature names.
-#' @param n_features number of features to be extracted
+#' @param population named tbl containing data, where columns and rows correspond to features and samples, respectively. Column names are assumed to be feature names.
+#' @param variables vector containing the names of numerical variables (or features) in the population.
+#' @param n_feature integer specifying number of features to be selected
 #'
 #' @importFrom magrittr %>%
-#' @importFrom magrittr %<>%
-#' @importFrom foreach %dopar%
 #'
 #' @return vector containing name of the selected features
 #'
 #' @export
-entropy_feature_selection <- function(X, n_features) {
+entropy_feature_selection <- function(population, variables, n_feature) {
 
-  A <- tcrossprod(t(X), t(X))
+  population_data <- population %>%
+    dplyr::select(dplyr::one_of(variables)) %>%
+    as.matrix()
 
-  feat_index <- CE_entropy_FS2_new(A, n_features)
+  feat_inner_prods <- crossprod(population_data, population_data)
 
-  return(colnames(X)[feat_index[1:n_features]])
+  CE <- CE_entropy_SR(feat_inner_prods)
+
+  feat_rank <- order(CE, decreasing = T)
+
+  return(list(feats = colnames(population_data)[feat_rank[1:n_feature]],
+              CE = CE[feat_rank[1:n_feature]]))
 }
