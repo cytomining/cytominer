@@ -6,7 +6,7 @@
 #'
 #' @importFrom magrittr %>%
 #'
-#' @return vector containing name of the selected features
+#' @return vector containing name of the features sorted based on their SVD score. Higher score means better.
 #'
 #' @export
 entropy_feature_selection <- function(population, variables, n_feature) {

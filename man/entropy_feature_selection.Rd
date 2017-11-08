@@ -4,10 +4,17 @@
 \alias{entropy_feature_selection}
 \title{entropy based feature selection}
 \usage{
-entropy_feature_selection(x)
+entropy_feature_selection(population, variables, n_feature)
 }
 \arguments{
-\item{x}{data matrix}
+\item{population}{named tbl containing data, where columns and rows correspond to features and samples, respectively. Column names are assumed to be feature names.}
+
+\item{variables}{vector containing the names of numerical variables (or features) in the population.}
+
+\item{n_feature}{integer specifying number of features to be selected}
+}
+\value{
+vector containing name of the features sorted based on their SVD score. Higher score means better.
 }
 \description{
 entropy based feature selection
