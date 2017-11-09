@@ -28,7 +28,8 @@ sparse_random_projection <- function(population, variables, n_components) {
   population %<>%
     dplyr::collect()
 
-  # Extract variables (columns) from population (data frame) and convert to a matrix
+  # Extract variables (columns) from population (data frame)
+  # and convert to a matrix
   population_data <- population %>%
     dplyr::select(dplyr::one_of(variables)) %>%
     as.matrix()
@@ -46,7 +47,10 @@ sparse_random_projection <- function(population, variables, n_components) {
     as.matrix()
 
   # Coerce the result into a data frame
-  colnames(projected_population_data) <- paste0("R", 1:NCOL(projected_population_data))
+  colnames(projected_population_data) <- paste0(
+    "R",
+    1:NCOL(projected_population_data)
+  )
 
   projected_population_data %<>% as.data.frame()
 

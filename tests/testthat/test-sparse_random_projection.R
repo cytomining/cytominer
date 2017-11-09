@@ -1,11 +1,13 @@
 context("sparse_random_projection")
 
-test_that("`generate_component_matrix` contains only the values 0 and +/-sqrt(1 / (density * n_components))", {
+test_that("`generate_component_matrix` contains 3 values", {
   n_features <- 500
   n_components <- 100
   density <- 0.3
 
-  component_matrix <- generate_component_matrix(n_features, n_components, density) %>%
+  component_matrix <- generate_component_matrix(n_features = n_features,
+                                                n_components = n_components,
+                                                density = density) %>%
     as.matrix()
 
   # Assert there are exactly 3 unique values
@@ -19,12 +21,14 @@ test_that("`generate_component_matrix` contains only the values 0 and +/-sqrt(1 
   expect_true(expected_k %in% component_matrix)
 })
 
-test_that("`generate_component_matrix` samples the values with the correct probability", {
+test_that("`generate_component_matrix` samples values from distribution", {
   n_features <- 500
   n_components <- 100
   density <- 0.3
 
-  component_matrix <- generate_component_matrix(n_features, n_components, density) %>%
+  component_matrix <- generate_component_matrix(n_features = n_features,
+                                                n_components = n_components,
+                                                density = density) %>%
     as.matrix()
 
   # Check the values follow the correct distribution:
@@ -32,13 +36,16 @@ test_that("`generate_component_matrix` samples the values with the correct proba
   #  -k    with probability density / 2
   #   0    with probability 1 - density
   #   k    with probability density / 2
-  p_negative <- length(which(component_matrix < 0)) / (n_features * n_components)
+  n_negative <- length(which(component_matrix < 0))
+  n_zero <- length(which(component_matrix == 0))
+  n_positive <- length(which(component_matrix > 0))
+
+  p_negative <- n_negative / (n_features * n_components)
+  p_zero <- n_zero / (n_features * n_components)
+  p_positive <- n_positive / (n_features * n_components)
+
   expect_equal(p_negative, density / 2, tolerance = 0.005)
-
-  p_zero <- length(which(component_matrix == 0)) / (n_features * n_components)
   expect_equal(p_zero, 1 - density, tolerance = 0.005)
-
-  p_positive <- length(which(component_matrix > 0)) / (n_features * n_components)
   expect_equal(p_positive, density / 2, tolerance = 0.005)
 })
 
