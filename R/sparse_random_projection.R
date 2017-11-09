@@ -1,3 +1,29 @@
+#' Reduce the dimensionality of a population.
+#'
+#' \code{sparse_random_projection} reduces the dimensionality of a population by projecting
+#' the original data with a sparse random matrix. Generally more efficient and faster to
+#' compute than a Gaussian random projection matrix, while providing similar embedding quality.
+#'
+#' @param population tbl with grouping (metadata) and observation variables.
+#' @param variables character vector specifying observation variables.
+#' @param n_components size of the projected feature space.
+#'
+#' @return Dimensionality reduced \code{population}.
+#'
+#' @examples
+#' population <- tibble::data_frame(
+#'    Metadata_Well = c("A01", "A02", "B01", "B02"),
+#'    AreaShape_Area_DNA = c(10, 12, 7, 7),
+#'    AreaShape_Length_DNA = c(2, 3, 1, 5)
+#'    Intensity_DNA = c(8, 20, 12, 32),
+#'    Texture_DNA = c(5, 2, 43, 13)
+#'  )
+#' variables <- c("AreaShape_Area_DNA", "AreaShape_Length_DNA", "Intensity_DNA", "Texture_DNA")
+#' sparse_random_projection(population, variables, 2)
+#'
+#' @importFrom magrittr %>%
+#' @importFrom magrittr %<>%
+#' @export
 sparse_random_projection <- function(population, variables, n_components) {
   population %<>%
     dplyr::collect()
@@ -35,6 +61,25 @@ sparse_random_projection <- function(population, variables, n_components) {
   projected_population
 }
 
+#' A sparse matrix for sparse random projection.
+#'
+#' \code{generate_component_matrix} generates the sparse random component matrix
+#' for performing sparse random projection. If \code{density} is the density of
+#' the sparse matrix and \code{n_components} is the size of the projected space,
+#' the elements of the random matrix are drawn from
+#'
+#'     \code{-sqrt(1 / (density * n_components))} with probability \code{density / 2}
+#'     \code{0}                                   with probability \code{1 - density}
+#'     \code{sqrt(1 / (density * n_components))}  with probability \code{density / 2}
+#'
+#' @param n_features the dimensionality of the original space.
+#' @param n_components the dimensionality of the projected space.
+#' @param density the density of the sparse random matrix.
+#'
+#' @return A sparse random matrix of size \code{(n_features, n_components)}.
+#'
+#' @examples
+#' generate_component_matrix(500, 100, 0.3)
 generate_component_matrix <- function(n_features, n_components, density) {
   # Generate nonzero elements - follows the binomial distribution:
   #
