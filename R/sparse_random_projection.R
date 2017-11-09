@@ -1,4 +1,7 @@
 sparse_random_projection <- function(population, variables, n_components) {
+  population %<>%
+    dplyr::collect()
+
   # Extract variables (columns) from population (data frame) and convert to a matrix
   population_data <- population %>%
     dplyr::select(dplyr::one_of(variables)) %>%
