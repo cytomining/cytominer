@@ -14,7 +14,7 @@
 #' population <- tibble::data_frame(
 #'    Metadata_Well = c("A01", "A02", "B01", "B02"),
 #'    AreaShape_Area_DNA = c(10, 12, 7, 7),
-#'    AreaShape_Length_DNA = c(2, 3, 1, 5)
+#'    AreaShape_Length_DNA = c(2, 3, 1, 5),
 #'    Intensity_DNA = c(8, 20, 12, 32),
 #'    Texture_DNA = c(5, 2, 43, 13)
 #'  )
@@ -23,6 +23,8 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
+#' @importFrom Matrix sparseMatrix
+#' @importFrom stats rbinom
 #' @export
 sparse_random_projection <- function(population, variables, n_components) {
   population %<>%
