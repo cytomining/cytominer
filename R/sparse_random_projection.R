@@ -23,8 +23,6 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
-#' @importFrom Matrix sparseMatrix
-#' @importFrom stats rbinom
 #' @export
 sparse_random_projection <- function(population, variables, n_components) {
   population %<>%
@@ -86,6 +84,10 @@ sparse_random_projection <- function(population, variables, n_components) {
 #'
 #' @examples
 #' generate_component_matrix(500, 100, 0.3)
+#'
+#' @importFrom Matrix sparseMatrix
+#' @importFrom stats rbinom
+#' @export
 generate_component_matrix <- function(n_features, n_components, density) {
   # Generate nonzero elements - follows the binomial distribution:
   #
