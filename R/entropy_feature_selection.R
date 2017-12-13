@@ -17,10 +17,10 @@ entropy_feature_selection <- function(population, variables, n_feature) {
 
   feat_inner_prods <- crossprod(population_data, population_data)
 
-  CE <- CE_entropy_SR(feat_inner_prods)
+  entropy_score <- score_features_sv_entropy(feat_inner_prods)
 
-  feat_rank <- order(CE, decreasing = T)
+  feat_rank <- order(entropy_score, decreasing = T)
 
   return(list(feats = colnames(population_data)[feat_rank[1:n_feature]],
-              CE = CE[feat_rank[1:n_feature]]))
+              entropy_score = entropy_score[feat_rank[1:n_feature]]))
 }
