@@ -3,7 +3,7 @@
 
 #' singular_value_entropy
 #'
-#' Calculate the entropy of a matrix singular values in the SVD decomposition, when their summation is normalized to one.
+#' Calculate the entropy of a matrix singular values (SV) in the SVD decomposition, when the SVs summation is normalized to one.
 #' @param A a matrix of any arbitrary size
 #' @return entropy of the normalized singular values using log base 10
 #'
@@ -15,9 +15,11 @@ singular_value_entropy <- function(A) {
 
 #' score_features_sv_entropy
 #'
-#' Calculate the entropy contribution of a matrix based on SVD
-#' @param data a dataset mxn (m features and n observations)
-#' @return entropy contribution vector
+#' Scores each feature based on the difference of normalized SVs entropy of the data
+#' with and without the feature; the higher the difference, the more informative the
+#' feature would be.
+#' @param data a matrix which represents the dataset; columns and rows correspond to features and observations, respectively.
+#' @return vector containing scores for all the features, in the same order as the columns of data are arranged
 #'
 #' @export
 #'

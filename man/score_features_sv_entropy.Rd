@@ -7,11 +7,13 @@
 score_features_sv_entropy(data)
 }
 \arguments{
-\item{data}{a dataset mxn (m features and n observations)}
+\item{data}{a matrix which represents the dataset; columns and rows correspond to features and observations, respectively.}
 }
 \value{
-entropy contribution vector
+vector containing scores for all the features, in the same order as the columns of data are arranged
 }
 \description{
-Calculate the entropy contribution of a matrix based on SVD
+Scores each feature based on the difference of normalized SVs entropy of the data
+with and without the feature; the higher the difference, the more informative the
+feature would be.
 }

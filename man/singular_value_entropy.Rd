@@ -13,5 +13,5 @@ singular_value_entropy(A)
 entropy of the normalized singular values using log base 10
 }
 \description{
-Calculate the entropy of a matrix singular values in the SVD decomposition, when their summation is normalized to one.
+Calculate the entropy of a matrix singular values (SV) in the SVD decomposition, when the SVs summation is normalized to one.
 }
