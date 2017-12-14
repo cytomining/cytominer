@@ -2,20 +2,20 @@
 % Please edit documentation in R/entropy_feature_selection.R
 \name{entropy_feature_selection}
 \alias{entropy_feature_selection}
-\title{entropy based feature selection}
+\title{feature selection based on the entropy of data singular values}
 \usage{
 entropy_feature_selection(population, variables, n_feature)
 }
 \arguments{
-\item{population}{named tbl containing data, where columns and rows correspond to features and samples, respectively. Column names are assumed to be feature names.}
+\item{population}{named tbl containing data, where columns and rows correspond to features (and/or metadata) and samples, respectively. Column names are assumed to be feature or metadata names.}
 
 \item{variables}{vector containing the names of numerical variables (or features) in the population.}
 
 \item{n_feature}{integer specifying number of features to be selected}
 }
 \value{
-vector containing name of the features sorted based on their SVD score. Higher score means better.
+vector containing name of the features sorted based on their score, and the actual score values. Higher score means more informative feature.
 }
 \description{
-entropy based feature selection
+feature selection based on the entropy of data singular values
 }
