@@ -13,7 +13,9 @@ entropy_feature_selection <- function(population, variables, n_feature) {
 
   population_data <- population %>%
     dplyr::select(dplyr::one_of(variables)) %>%
+    dplyr::collect() %>%
     as.matrix()
+
 
   # working with the matrix inner product; as it would be computationally more efficient for large number of samples
   feat_inner_prods <- crossprod(population_data, population_data)
@@ -22,6 +24,6 @@ entropy_feature_selection <- function(population, variables, n_feature) {
 
   feat_rank <- order(entropy_score, decreasing = T)
 
-  return(list(feats = colnames(population_data)[feat_rank[1:n_feature]],
+  return(list(features = colnames(population_data)[feat_rank[1:n_feature]],
               entropy_score = entropy_score[feat_rank[1:n_feature]]))
 }
