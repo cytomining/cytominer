@@ -1,4 +1,5 @@
-#' feature selection based on the entropy of data singular values
+#' Feature selection based on redundancy
+#' \code{entropy_feature_selection} is a feature selection method based on the entropy of data singular values
 #'
 #' @param population named tbl containing data, where columns and rows correspond to features (and/or metadata) and samples, respectively. Column names are assumed to be feature or metadata names.
 #' @param variables vector containing the names of numerical variables (or features) in the population.
@@ -7,6 +8,15 @@
 #' @importFrom magrittr %>%
 #'
 #' @return vector containing name of the features sorted based on their score, and the actual score values. Higher score means more informative feature.
+#'
+#' @examples
+#' population <- tibble::data_frame(
+#'    AreaShape_MinorAxisLength = c(10, 12, 15, 16, 8, 8, 7, 7, 13, 18),
+#'    AreaShape_MajorAxisLength = c(35, 18, 22, 16, 9, 20, 11, 15, 18, 42),
+#'    AreaShape_Area = c(245, 151, 231, 179, 50, 112, 53, 73, 164, 529)
+#'  )
+#' variables <- c("AreaShape_MinorAxisLength", "AreaShape_MajorAxisLength", "AreaShape_Area")
+#' entropy_feature_selection(population, variables, 2)
 #'
 #' @export
 entropy_feature_selection <- function(population, variables, n_feature) {

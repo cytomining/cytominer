@@ -2,7 +2,8 @@
 % Please edit documentation in R/entropy_feature_selection.R
 \name{entropy_feature_selection}
 \alias{entropy_feature_selection}
-\title{feature selection based on the entropy of data singular values}
+\title{Feature selection based on redundancy
+\code{entropy_feature_selection} is a feature selection method based on the entropy of data singular values}
 \usage{
 entropy_feature_selection(population, variables, n_feature)
 }
@@ -17,5 +18,16 @@ entropy_feature_selection(population, variables, n_feature)
 vector containing name of the features sorted based on their score, and the actual score values. Higher score means more informative feature.
 }
 \description{
-feature selection based on the entropy of data singular values
+Feature selection based on redundancy
+\code{entropy_feature_selection} is a feature selection method based on the entropy of data singular values
+}
+\examples{
+population <- tibble::data_frame(
+   AreaShape_MinorAxisLength = c(10, 12, 15, 16, 8, 8, 7, 7, 13, 18),
+   AreaShape_MajorAxisLength = c(35, 18, 22, 16, 9, 20, 11, 15, 18, 42),
+   AreaShape_Area = c(245, 151, 231, 179, 50, 112, 53, 73, 164, 529)
+ )
+variables <- c("AreaShape_MinorAxisLength", "AreaShape_MajorAxisLength", "AreaShape_Area")
+entropy_feature_selection(population, variables, 2)
+
 }
