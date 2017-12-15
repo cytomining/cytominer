@@ -8,65 +8,64 @@ using namespace std;
 using namespace arma;
 
 
-//' calculate_entropy_new
+//' singular_value_entropy
 //'
-//' Calculate the entropy of a matrix singular values, when their summation is normalized to one.
-//' @param A matrix of any arbitrary size
-// entropy
-//' @return Calculate the entropy contribution of a matrix based on SVD
+//' Calculate the entropy of a matrix singular values (SV) in the SVD decomposition, when the SVs summation is normalized to one.
+//' @param A a matrix of any arbitrary size
+//' @return entropy of the normalized singular values using log base 10
+//'
+//' @export
+//'
 // [[Rcpp::export]]
-double calculate_sv_entropy(arma::mat A) {
+double singular_value_entropy(arma::mat A) {
 
   // calculate the svd
-  vec s = svd(A);
+  vec singular_values = svd(A);
 
   // normalize relative values
-  vec v = s/sum(s);
+  vec singular_values_nrm = singular_values/sum(singular_values);
 
-  // calculate the entropy for values greater than 0 (to avoid error)
-  arma::vec vNoZero = v.elem(find(v > 0));
-  double e = -sum(vNoZero % log(vNoZero))/log(10);
+  // calculate the entropy for values greater than 0 (to avoid log(0))
+  arma::vec sv_nonzero = singular_values_nrm.elem(find(singular_values_nrm > 0));
+  double sv_entropy = -sum(sv_nonzero % log(sv_nonzero))/log(10);
 
-  return e;
+  return sv_entropy;
 }
 
-/* SR method
-Simple Ranking:
-select mc features according to the highest ranking order of their CE values
-*/
-
-//' CE_entropy_SR
+//' score_features_sv_entropy
 //'
-//' Calculate the entropy contribution of a matrix based on SVD
-//' @param A dataset mxn (m features and n observations)
-//' @return entropy contribution vector
+//' Scores each feature based on the difference of normalized SVs entropy of the data
+//' with and without the feature; the higher the difference, the more informative the
+//' feature would be.
+//' @param data a matrix which represents the dataset; columns and rows correspond to features and observations, respectively.
+//' @return vector containing scores for all the features, in the same order as the columns of data are arranged
+//'
+//' @export
+//'
 // [[Rcpp::export]]
-NumericVector CE_entropy_SR(NumericMatrix A){
+NumericVector score_features_sv_entropy(NumericMatrix data){
 
   // convert into matrix (armadillo)
-  mat Amat(A.begin(), A.nrow(), A.ncol(), false);
+  mat data_mat(data.begin(), data.nrow(), data.ncol(), false);
 
   // total entropy
-  double E = calculate_sv_entropy(Amat);
+  double sv_entropy_orig = singular_value_entropy(data_mat);
 
   // vector of contribution to the entropy by on a leave-a-feature-out basis
-  NumericVector CE(A.nrow());
-
-  // vector of selected feature indices
-  NumericVector selected_indx;
+  NumericVector sv_entropy(data.nrow());
 
   // for each feature calculate the contribution to the entropy by leaving that feature out
-  for(unsigned int i = 0; i < A.nrow(); i++){
+  for(unsigned int i = 0; i < data.nrow(); i++){
 
-    mat Ai = Amat;
+    mat data_mat_i = data_mat;
 
     // remove the row and column i
-    Ai.shed_row(i);
-    Ai.shed_col(i);
+    data_mat_i.shed_row(i);
+    data_mat_i.shed_col(i);
 
-    double Ei = calculate_sv_entropy(Ai);
-    CE[i] = E - Ei;
+    double sv_entropy_i = singular_value_entropy(data_mat_i);
+    sv_entropy[i] = sv_entropy_orig - sv_entropy_i;
   }
 
-  return(CE);
+  return(sv_entropy);
 }

@@ -6,32 +6,32 @@
 
 using namespace Rcpp;
 
-// calculate_sv_entropy
-double calculate_sv_entropy(arma::mat A);
-RcppExport SEXP _cytominer_calculate_sv_entropy(SEXP ASEXP) {
+// singular_value_entropy
+double singular_value_entropy(arma::mat A);
+RcppExport SEXP _cytominer_singular_value_entropy(SEXP ASEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type A(ASEXP);
-    rcpp_result_gen = Rcpp::wrap(calculate_sv_entropy(A));
+    rcpp_result_gen = Rcpp::wrap(singular_value_entropy(A));
     return rcpp_result_gen;
 END_RCPP
 }
-// CE_entropy_SR
-NumericVector CE_entropy_SR(NumericMatrix A);
-RcppExport SEXP _cytominer_CE_entropy_SR(SEXP ASEXP) {
+// score_features_sv_entropy
+NumericVector score_features_sv_entropy(NumericMatrix data);
+RcppExport SEXP _cytominer_score_features_sv_entropy(SEXP dataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type A(ASEXP);
-    rcpp_result_gen = Rcpp::wrap(CE_entropy_SR(A));
+    Rcpp::traits::input_parameter< NumericMatrix >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(score_features_sv_entropy(data));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_cytominer_calculate_sv_entropy", (DL_FUNC) &_cytominer_calculate_sv_entropy, 1},
-    {"_cytominer_CE_entropy_SR", (DL_FUNC) &_cytominer_CE_entropy_SR, 1},
+    {"_cytominer_singular_value_entropy", (DL_FUNC) &_cytominer_singular_value_entropy, 1},
+    {"_cytominer_score_features_sv_entropy", (DL_FUNC) &_cytominer_score_features_sv_entropy, 1},
     {NULL, NULL, 0}
 };
 
