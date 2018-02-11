@@ -45,35 +45,40 @@ extract_subpopulations <-
            reference,
            variables,
            k) {
-
     data <-
       dplyr::bind_rows(
         population %>% dplyr::mutate(type = "population"),
-        reference %>% dplyr::mutate(type = "reference")) %>%
+        reference %>% dplyr::mutate(type = "reference")
+      ) %>%
       tidyr::drop_na(dplyr::one_of(variables))
 
     kmeans_output <- data %>%
       dplyr::select(dplyr::one_of(variables)) %>%
-      stats::kmeans(centers = k,
-                    iter.max = 5000,
-                    nstart = 10)
+      stats::kmeans(
+        centers = k,
+        iter.max = 5000,
+        nstart = 10
+      )
 
     find_dist_to_cluster <- function(x) {
-        (rbind(
-          x[, variables],
-          kmeans_output$centers[x[["cluster_id"]][1], variables]
-          ) %>%
-          stats::dist() %>%
-          as.matrix())[1, 2]
-
+      (rbind(
+        x[, variables],
+        kmeans_output$centers[x[["cluster_id"]][1], variables]
+      ) %>%
+        stats::dist() %>%
+        as.matrix())[1, 2]
     }
 
     data %<>% dplyr::mutate(cluster_id = kmeans_output$cluster)
     data %<>%
       dplyr::bind_cols(
-        purrr::map_df(1:nrow(data),
-               ~dplyr::data_frame(dist_to_cluster =
-                                    find_dist_to_cluster(data[.x, ])))
+        purrr::map_df(
+          1:nrow(data),
+          ~dplyr::data_frame(
+            dist_to_cluster =
+              find_dist_to_cluster(data[.x, ])
+          )
+        )
       )
 
     subpop_profiles <- data %>%
@@ -81,7 +86,7 @@ extract_subpopulations <-
       dplyr::tally() %>%
       dplyr::group_by_(.dots = "type") %>%
       dplyr::rename(freq = "n") %>%
-      dplyr::mutate(freq = .data$freq / sum(.data$freq) ) %>%
+      dplyr::mutate(freq = .data$freq / sum(.data$freq)) %>%
       dplyr::ungroup() %>%
       tidyr::spread(key = "type", value = "freq", fill = 0)
 
@@ -97,8 +102,10 @@ extract_subpopulations <-
       dplyr::select(-type) %>%
       dplyr::select(-dplyr::one_of(variables))
 
-    return(list(subpop_centers = kmeans_output$centers,
-                subpop_profiles = subpop_profiles,
-                population_clusters = population_clusters,
-                reference_clusters = reference_clusters))
-}
+    return(list(
+      subpop_centers = kmeans_output$centers,
+      subpop_profiles = subpop_profiles,
+      population_clusters = population_clusters,
+      reference_clusters = reference_clusters
+    ))
+  }
