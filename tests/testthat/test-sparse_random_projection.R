@@ -5,9 +5,11 @@ test_that("`generate_component_matrix` contains 3 values", {
   n_components <- 100
   density <- 0.3
 
-  component_matrix <- generate_component_matrix(n_features = n_features,
-                                                n_components = n_components,
-                                                density = density) %>%
+  component_matrix <- generate_component_matrix(
+    n_features = n_features,
+    n_components = n_components,
+    density = density
+  ) %>%
     as.matrix()
 
   # Assert there are exactly 3 unique values
@@ -26,9 +28,11 @@ test_that("`generate_component_matrix` samples values from distribution", {
   n_components <- 100
   density <- 0.3
 
-  component_matrix <- generate_component_matrix(n_features = n_features,
-                                                n_components = n_components,
-                                                density = density) %>%
+  component_matrix <- generate_component_matrix(
+    n_features = n_features,
+    n_components = n_components,
+    density = density
+  ) %>%
     as.matrix()
 
   # Check the values follow the correct distribution:
@@ -50,7 +54,6 @@ test_that("`generate_component_matrix` samples values from distribution", {
 })
 
 test_that("`sparse_random_projection` creates a sparse random projection", {
-
   data <- data.frame(
     id = 1:10,
     a = rnorm(10),
@@ -63,7 +66,7 @@ test_that("`sparse_random_projection` creates a sparse random projection", {
 
   db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
 
-  #https://github.com/tidyverse/dplyr/issues/3093
+  # https://github.com/tidyverse/dplyr/issues/3093
   RSQLite::initExtension(db)
 
   data <- dplyr::copy_to(db, data)
