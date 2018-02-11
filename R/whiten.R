@@ -24,7 +24,6 @@
 #' @importFrom stats cov
 #' @export
 whiten <- function(population, variables, sample, regularization_param = 1) {
-
   sample %<>%
     dplyr::collect()
 
@@ -49,7 +48,7 @@ whiten <- function(population, variables, sample, regularization_param = 1) {
   eig_decomp <- eigen(sample_cov)
 
   # compute whitening transformation, which is {\Lambda + \epsilon}^.5 x E'
-  W <- diag( (eig_decomp$values + regularization_param) ^ -0.5) %*%
+  W <- diag((eig_decomp$values + regularization_param) ^ -0.5) %*%
     t(eig_decomp$vectors)
 
   # apply whitening transformation, which is (X - \mu) * W'

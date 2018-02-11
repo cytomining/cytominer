@@ -1,5 +1,5 @@
 #' Count the number of \code{NA}s per variable.
-#' 
+#'
 #' \code{count_na_rows} counts the number of \code{NA}s per variable.
 #'
 #' @param population tbl with grouping (metadata) and observation variables.
@@ -9,8 +9,8 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
-#' 
-#'@examples
+#'
+#' @examples
 #'
 #' population <- tibble::data_frame(
 #'    Metadata_group = c("control", "control", "control", "control",
@@ -21,7 +21,7 @@
 #' )
 #' variables <- c('AreaShape_Area','AreaShape_length')
 #' count_na_rows(population, variables)
-#' 
+#'
 #' @export
 count_na_rows <- function(population, variables) {
   population %>%

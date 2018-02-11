@@ -43,29 +43,28 @@ aggregate <- function(population, variables, strata, operation="mean",
         dplyr::collect() %>%
         dplyr::group_by_at(.vars = strata) %>%
         tidyr::nest() %>%
-        dplyr::mutate(data = purrr::map(data,
-                                        rlang::as_function(operation),
-                                        variables)) %>%
+        dplyr::mutate(data = purrr::map(
+          data,
+          rlang::as_function(operation),
+          variables
+        )) %>%
         tidyr::unnest()
-
     )
-
   }
 
   # Check whether `operation` is a function, or a sequence of functions
   # separated by `+`
   # For simplicity, a sequence can comprise only of univariate functions
   if (stringr::str_split(operation, "\\+")[[1]] %>%
-      purrr::map_lgl(function(f)
-        length(utils::find(f, mode = "function")) == 0) %>%
-      any()
-      ) {
+    purrr::map_lgl(function(f)
+      length(utils::find(f, mode = "function")) == 0) %>%
+    any()
+  ) {
     error <- paste0("undefined operation `", operation, "'")
 
     futile.logger::flog.error(msg = error)
 
     stop(error)
-
   }
 
   # construct aggregation_function
@@ -74,19 +73,16 @@ aggregate <- function(population, variables, strata, operation="mean",
   # names or multiple inputs
   if (length(stringr::str_split(operation, "\\+")[[1]]) == 1) {
     aggregating_function <- operation
-
   } else {
     aggregating_function <-
       stringr::str_split(operation, "\\+")[[1]] %>%
-      sapply(function(f) dplyr::funs(!!f)) %>%
+      sapply(function(f) dplyr::funs(!! f)) %>%
       as.vector() %>%
       unname()
-
   }
 
   population %>%
     dplyr::group_by_(.dots = strata) %>%
     dplyr::summarise_at(.funs = aggregating_function, .vars = variables) %>%
     dplyr::ungroup()
-
 }
