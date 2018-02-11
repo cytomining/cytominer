@@ -1,10 +1,10 @@
 #' Remove variables with near-zero variance.
 #'
 #' \code{variance_threshold} returns list of variables that have near-zero variance.
-#' 
-#' \code{variance_threshold} is a reimplementation of \code{caret::nearZeroVar}, using 
+#'
+#' \code{variance_threshold} is a reimplementation of \code{caret::nearZeroVar}, using
 #' the default values for \code{freqCut} and \code{uniqueCut}.
-#' 
+#'
 #' @param variables character vector specifying observation variables.
 #' @param sample tbl containing sample used to estimate parameters.
 #'
@@ -22,7 +22,7 @@
 #' @importFrom magrittr %<>%
 #' @export
 variance_threshold <- function(variables, sample) {
-  near_zero_variance <- function (x) {
+  near_zero_variance <- function(x) {
     if (is.null(dim(x))) x <- matrix(x, ncol = 1)
 
     ratio <- apply(x, 2, function(data) {
@@ -35,8 +35,8 @@ variance_threshold <- function(variables, sample) {
 
     lunique <- apply(x, 2, function(data) length(unique(data[!is.na(data)])))
 
-    which( (ratio > 19 & (100 * lunique / apply(x, 2, length)) <= 10) |
-            (lunique == 1) | apply(x, 2, function(data) all(is.na(data))))
+    which((ratio > 19 & (100 * lunique / apply(x, 2, length)) <= 10) |
+      (lunique == 1) | apply(x, 2, function(data) all(is.na(data))))
   }
 
   excluded_indexes <-

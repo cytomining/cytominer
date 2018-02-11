@@ -23,17 +23,17 @@
 #' @importFrom magrittr %<>%
 #' @export
 covariance <- function(population, variables) {
-
   covariance <-
     population %>%
     dplyr::select_at(variables) %>%
     stats::cov()
 
   variable_pairs <-
-    outer(variables,
-          variables,
-          function(var1, var2) paste(var1, "__", var2, sep = "")
-          )
+    outer(
+      variables,
+      variables,
+      function(var1, var2) paste(var1, "__", var2, sep = "")
+    )
 
   mask <- lower.tri(covariance, diag = T)
 

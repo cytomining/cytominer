@@ -1,5 +1,5 @@
 #' Remove variables with NA values.
-#' 
+#'
 #' \code{drop_na_columns} returns list of variables which have greater than a specified threshold number of \code{NA}s.
 #'
 #' @param population tbl with grouping (metadata) and observation variables.
@@ -10,7 +10,7 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
-#' 
+#'
 #' @examples
 #'  population <- tibble::data_frame(
 #'    Metadata_group = c("control", "control", "control", "control",
@@ -21,7 +21,7 @@
 #'  )
 #' variables <- c('AreaShape_Area','AreaShape_Length')
 #' drop_na_columns(population, variables)
-#' 
+#'
 #' @export
 drop_na_columns <- function(population, variables, cutoff = 0.05) {
   cutoff <- rlang::enquo(cutoff)
@@ -42,8 +42,8 @@ drop_na_columns <- function(population, variables, cutoff = 0.05) {
     dplyr::mutate_at(variables, dplyr::funs(is.na)) %>%
     dplyr::summarize_at(variables, dplyr::funs(sum)) %>%
     dplyr::collect() %>%
-    tidyr::gather(!!feature, !!count, !!!variables) %>%
-    dplyr::mutate(!!percent := (!!count) / nrows) %>%
-    dplyr::filter( (!!percent) > (!!cutoff)) %>%
+    tidyr::gather(!! feature, !! count, !!! variables) %>%
+    dplyr::mutate(!! percent := (!! count) / nrows) %>%
+    dplyr::filter((!! percent) > (!! cutoff)) %>%
     magrittr::extract2("feature")
 }

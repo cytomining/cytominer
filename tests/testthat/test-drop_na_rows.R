@@ -1,7 +1,6 @@
 context("drop_na_rows")
 
 test_that("`drop_na_rows` removes rows have only NAs", {
-
   data <-
     data.frame(x = c(1, NA, 3, 4), y = c(1, NA, 3, NA)) %>%
     tibble::rownames_to_column()
@@ -20,8 +19,10 @@ test_that("`drop_na_rows` removes rows have only NAs", {
   }
 
   expect_equal(
-    drop_na_rows(population = data,
-                 variables = c("x", "y")) %>%
+    drop_na_rows(
+      population = data,
+      variables = c("x", "y")
+    ) %>%
       dplyr::collect() %>%
       dplyr::arrange(rowname),
     data %>%
@@ -31,8 +32,10 @@ test_that("`drop_na_rows` removes rows have only NAs", {
   )
 
   expect_equal(
-    drop_na_rows(population = data,
-                 variables = c("x")) %>%
+    drop_na_rows(
+      population = data,
+      variables = c("x")
+    ) %>%
       dplyr::collect() %>%
       dplyr::arrange(rowname),
     data %>%
@@ -43,8 +46,10 @@ test_that("`drop_na_rows` removes rows have only NAs", {
 
   # repeat tests with data frames instead of sql tables
   expect_equal(
-    drop_na_rows(population = data %>% dplyr::collect(),
-      variables = c("x", "y")) %>%
+    drop_na_rows(
+      population = data %>% dplyr::collect(),
+      variables = c("x", "y")
+    ) %>%
       dplyr::arrange(rowname),
     data %>%
       dplyr::collect() %>%
@@ -53,8 +58,10 @@ test_that("`drop_na_rows` removes rows have only NAs", {
   )
 
   expect_equal(
-    drop_na_rows(population = data %>% dplyr::collect(),
-      variables = c("x")) %>%
+    drop_na_rows(
+      population = data %>% dplyr::collect(),
+      variables = c("x")
+    ) %>%
       dplyr::arrange(rowname),
     data %>%
       dplyr::collect() %>%

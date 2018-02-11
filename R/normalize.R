@@ -28,29 +28,35 @@
 #' strata <- c('Metadata_batch')
 #' sample <- population %>% dplyr::filter(Metadata_group == 'control')
 #' cytominer::normalize(population, variables, strata, sample, operation = "standardize")
-#' 
+#'
 #' @export
 normalize <- function(population, variables, strata, sample,
                       operation = "standardize", ...) {
   scale <- function(data, location, dispersion, variables) {
     if (is.data.frame(data)) {
-      futile.logger::flog.debug(paste0("\t\tUsing base::scale (data is ",
-                                       paste(class(data), collapse = ","),
-                                       ")"))
+      futile.logger::flog.debug(paste0(
+        "\t\tUsing base::scale (data is ",
+        paste(class(data), collapse = ","),
+        ")"
+      ))
 
       dplyr::bind_cols(
         data %>% dplyr::select_(~-dplyr::one_of(variables)),
         data %>%
           dplyr::select_(.dots = variables) %>%
           as.matrix() %>%
-          base::scale(center = as.matrix(location),
-                      scale = as.matrix(dispersion)) %>%
+          base::scale(
+            center = as.matrix(location),
+            scale = as.matrix(dispersion)
+          ) %>%
           tibble::as_data_frame()
       )
     } else {
-      futile.logger::flog.debug(paste0("\t\tNot using base::scale (data is ",
-                                       paste(class(data), collapse = ","),
-                                       ")"))
+      futile.logger::flog.debug(paste0(
+        "\t\tNot using base::scale (data is ",
+        paste(class(data), collapse = ","),
+        ")"
+      ))
 
       for (variable in variables) {
         x <- rlang::sym(variable)
@@ -60,8 +66,7 @@ normalize <- function(population, variables, strata, sample,
         s <- dispersion[[variable]]
 
         data %<>%
-          dplyr::mutate(!!x := ( (!!x) - m) / s )
-
+          dplyr::mutate(!! x := ((!! x) - m) / s)
       }
 
       data
@@ -72,21 +77,24 @@ normalize <- function(population, variables, strata, sample,
 
   if (operation == "robustize") {
     location <- ifelse(sample_is_df,
-                       dplyr::funs(median(., na.rm = TRUE)),
-                       dplyr::funs(median))
+      dplyr::funs(median(., na.rm = TRUE)),
+      dplyr::funs(median)
+    )
 
     dispersion <- ifelse(sample_is_df,
-                         dplyr::funs(mad(., na.rm = TRUE)),
-                         dplyr::funs(mad))
-
+      dplyr::funs(mad(., na.rm = TRUE)),
+      dplyr::funs(mad)
+    )
   } else if (operation == "standardize") {
     location <- ifelse(sample_is_df,
-                       dplyr::funs(mean(., na.rm = TRUE)),
-                       dplyr::funs(mean))
+      dplyr::funs(mean(., na.rm = TRUE)),
+      dplyr::funs(mean)
+    )
 
     dispersion <- ifelse(sample_is_df,
-                         dplyr::funs(sd(., na.rm = TRUE)),
-                         dplyr::funs(sd))
+      dplyr::funs(sd(., na.rm = TRUE)),
+      dplyr::funs(sd)
+    )
   } else {
     error <- paste0("undefined operation `", operation, "'")
 
