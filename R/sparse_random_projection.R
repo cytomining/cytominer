@@ -1,4 +1,4 @@
-#' Reduce the dimensionality of a population.
+#' Reduce the dimensionality of a population using sparse random projection.
 #'
 #' \code{sparse_random_projection} reduces the dimensionality of a population by projecting
 #' the original data with a sparse random matrix. Generally more efficient and faster to
@@ -35,7 +35,7 @@ sparse_random_projection <- function(population, variables, n_components) {
     as.matrix()
 
   # Generate the sparse component matrix
-  n_features <- dim(population_data)[-1]
+  n_features <- ncol(population_data)
   component_matrix <- generate_component_matrix(
     n_features = n_features,
     n_components = n_components,
@@ -56,10 +56,8 @@ sparse_random_projection <- function(population, variables, n_components) {
 
   projected_population <-
     dplyr::bind_cols(
-      list(
-        population %>% dplyr::select(-dplyr::one_of(variables)),
-        projected_population_data
-      )
+      population %>% dplyr::select(-dplyr::one_of(variables)),
+      projected_population_data
     )
 
   projected_population

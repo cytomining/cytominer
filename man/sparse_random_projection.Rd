@@ -2,7 +2,7 @@
 % Please edit documentation in R/sparse_random_projection.R
 \name{sparse_random_projection}
 \alias{sparse_random_projection}
-\title{Reduce the dimensionality of a population.}
+\title{Reduce the dimensionality of a population using sparse random projection.}
 \usage{
 sparse_random_projection(population, variables, n_components)
 }
