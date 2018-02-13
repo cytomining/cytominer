@@ -27,6 +27,7 @@ Imports:
     foreach (>= 1.4.3),
     futile.logger (>= 1.4.3),
     magrittr (>= 1.5),
+    Matrix (>= 1.2),
     purrr (>= 0.2.3),
     rlang (>= 0.1.2),  
     tibble (>= 1.3.4),
