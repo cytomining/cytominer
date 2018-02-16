@@ -14,7 +14,7 @@ svd_entropy(variables, sample, cores = NULL)
 \item{cores}{optional integer specifying number of CPU cores used for parallel computing using \code{doParallel}.}
 }
 \value{
-data frame specify contribution of each feature in decreases the data entropy.
+data frame specifying the contribution of each feature in decreasing the data entropy.
 Higher values indicate more information.
 }
 \description{

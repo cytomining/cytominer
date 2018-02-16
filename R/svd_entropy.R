@@ -7,7 +7,7 @@ utils::globalVariables(c(".", "i"))
 #' @param sample tbl containing sample used to estimate parameters.
 #' @param cores optional integer specifying number of CPU cores used for parallel computing using \code{doParallel}.
 #'
-#' @return data frame specify contribution of each feature in decreases the data entropy.
+#' @return data frame specifying the contribution of each feature in decreasing the data entropy.
 #' Higher values indicate more information.
 #'
 #' @importFrom foreach %dopar%
