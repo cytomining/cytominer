@@ -52,7 +52,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -137,7 +137,7 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='co'># In this example, we use `correlation_threshold` as the operation for </span>
+<span class='co'># In this example, we use `correlation_threshold` as the operation for</span>
 <span class='co'># variable selection.</span>
 
 <span class='fu'>suppressMessages</span>(<span class='fu'>suppressWarnings</span>(<span class='fu'>library</span>(<span class='no'>magrittr</span>)))
@@ -161,24 +161,24 @@
 <span class='co'># `x` and `z` are highly correlated; one of them will be removed</span>
 
 <span class='fu'>head</span>(<span class='no'>population</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 3
-#&gt;            x             y          z
-#&gt;        &lt;dbl&gt;         &lt;dbl&gt;      &lt;dbl&gt;
-#&gt; 1  0.3796395  0.0010527115  0.3275278
-#&gt; 2 -0.5023235 -0.0010491770 -0.5513105
-#&gt; 3 -0.3332074 -0.0012601552 -0.3284919
-#&gt; 4 -1.0185754  0.0032410399 -0.8885555
-#&gt; 5 -1.0717912 -0.0004168576 -0.8424833
-#&gt; 6  0.3035286  0.0002982276  0.4582867</div><div class='input'>
+#&gt;        x         y      z
+#&gt;    &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;
+#&gt; 1  0.380  0.00105   0.328
+#&gt; 2 -0.502 -0.00105  -0.551
+#&gt; 3 -0.333 -0.00126  -0.328
+#&gt; 4 -1.02   0.00324  -0.889
+#&gt; 5 -1.07  -0.000417 -0.842
+#&gt; 6  0.304  0.000298  0.458</div><div class='input'>
 <span class='kw pkg'>futile.logger</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/futile.logger/topics/flog.threshold'>flog.threshold</a></span>(<span class='kw pkg'>futile.logger</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/futile.logger/topics/logger.options'>ERROR</a></span>)</div><div class='output co'>#&gt; NULL</div><div class='input'>
 <span class='fu'>variable_select</span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='no'>sample</span>, <span class='no'>operation</span>) <span class='kw'>%&gt;%</span> <span class='fu'>head</span>()</div><div class='output co'>#&gt; # A tibble: 6 x 2
-#&gt;               y          z
-#&gt;           &lt;dbl&gt;      &lt;dbl&gt;
-#&gt; 1  0.0010527115  0.3275278
-#&gt; 2 -0.0010491770 -0.5513105
-#&gt; 3 -0.0012601552 -0.3284919
-#&gt; 4  0.0032410399 -0.8885555
-#&gt; 5 -0.0004168576 -0.8424833
-#&gt; 6  0.0002982276  0.4582867</div><div class='input'>
+#&gt;           y      z
+#&gt;       &lt;dbl&gt;  &lt;dbl&gt;
+#&gt; 1  0.00105   0.328
+#&gt; 2 -0.00105  -0.551
+#&gt; 3 -0.00126  -0.328
+#&gt; 4  0.00324  -0.889
+#&gt; 5 -0.000417 -0.842
+#&gt; 6  0.000298  0.458</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -200,7 +200,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
