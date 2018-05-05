@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Aggregate data based on given grouping. — aggregate • cytominer</title>
+<title>Reduce the dimensionality of a population using sparse random projection. — sparse_random_projection • cytominer</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -95,15 +95,16 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Aggregate data based on given grouping.</h1>
+    <h1>Reduce the dimensionality of a population using sparse random projection.</h1>
     </div>
 
     
-    <p><code>aggregate</code> aggregates data based on the specified aggregation method.</p>
+    <p><code>sparse_random_projection</code> reduces the dimensionality of a population by projecting
+the original data with a sparse random matrix. Generally more efficient and faster to
+compute than a Gaussian random projection matrix, while providing similar embedding quality.</p>
     
 
-    <pre class="usage"><span class='fu'>aggregate</span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='no'>strata</span>, <span class='kw'>operation</span> <span class='kw'>=</span> <span class='st'>"mean"</span>,
-  <span class='kw'>univariate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>sparse_random_projection</span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='no'>n_components</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -117,48 +118,32 @@
       <td><p>character vector specifying observation variables.</p></td>
     </tr>
     <tr>
-      <th>strata</th>
-      <td><p>character vector specifying grouping variables for aggregation.</p></td>
-    </tr>
-    <tr>
-      <th>operation</th>
-      <td><p>optional character string specifying method for aggregation,
-e.g. <code>"mean"</code>, <code>"median"</code>, <code>"mean+sd"</code>. A sequence can
-comprise only of univariate functions.</p></td>
-    </tr>
-    <tr>
-      <th>univariate</th>
-      <td><p>boolean specifying whether the aggregation function is
-univariate or multivariate.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>optional arguments passed to aggregation operation</p></td>
+      <th>n_components</th>
+      <td><p>size of the projected feature space.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>aggregated data of the same class as <code>population</code>.</p>
+    <p>Dimensionality reduced <code>population</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>population</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>data_frame</a></span>(
-   <span class='kw'>Metadata_group</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"control"</span>, <span class='st'>"control"</span>, <span class='st'>"control"</span>, <span class='st'>"control"</span>,
-                      <span class='st'>"experiment"</span>, <span class='st'>"experiment"</span>, <span class='st'>"experiment"</span>,
-                      <span class='st'>"experiment"</span>),
-   <span class='kw'>Metadata_batch</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"b"</span>, <span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"b"</span>),
-   <span class='kw'>AreaShape_Area</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>12</span>, <span class='fl'>15</span>, <span class='fl'>16</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>7</span>, <span class='fl'>7</span>)
+   <span class='kw'>Metadata_Well</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"A01"</span>, <span class='st'>"A02"</span>, <span class='st'>"B01"</span>, <span class='st'>"B02"</span>),
+   <span class='kw'>AreaShape_Area_DNA</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>12</span>, <span class='fl'>7</span>, <span class='fl'>7</span>),
+   <span class='kw'>AreaShape_Length_DNA</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>1</span>, <span class='fl'>5</span>),
+   <span class='kw'>Intensity_DNA</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>8</span>, <span class='fl'>20</span>, <span class='fl'>12</span>, <span class='fl'>32</span>),
+   <span class='kw'>Texture_DNA</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>5</span>, <span class='fl'>2</span>, <span class='fl'>43</span>, <span class='fl'>13</span>)
  )
-<span class='no'>variables</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"AreaShape_Area"</span>)
-<span class='no'>strata</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"Metadata_group"</span>, <span class='st'>"Metadata_batch"</span>)
-<span class='fu'>aggregate</span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='no'>strata</span>, <span class='kw'>operation</span> <span class='kw'>=</span> <span class='st'>"mean"</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 3
-#&gt;   Metadata_group Metadata_batch AreaShape_Area
-#&gt;   &lt;chr&gt;          &lt;chr&gt;                   &lt;dbl&gt;
-#&gt; 1 control        a                       11.0 
-#&gt; 2 control        b                       15.5 
-#&gt; 3 experiment     a                        8.00
-#&gt; 4 experiment     b                        7.00</div><div class='input'>
+<span class='no'>variables</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"AreaShape_Area_DNA"</span>, <span class='st'>"AreaShape_Length_DNA"</span>, <span class='st'>"Intensity_DNA"</span>, <span class='st'>"Texture_DNA"</span>)
+<span class='fu'>sparse_random_projection</span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='fl'>2</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 3
+#&gt;   Metadata_Well     R1    R2
+#&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1 A01           -10.0   2.00
+#&gt; 2 A02           -12.0   3.00
+#&gt; 3 B01           - 7.00  1.00
+#&gt; 4 B02           - 7.00  5.00</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
