@@ -17,7 +17,7 @@ Description: Typical morphological profiling datasets have millions of cells
     discussed in Caicedo (2017) <doi:10.1038/nmeth.4397>. An overview of the
     field is presented in Caicedo (2016) <doi:10.1016/j.copbio.2016.04.003>.
 Depends:
-    R (>= 3.3.3)
+    R (>= 3.3.0)
 License: BSD_3_clause + file LICENSE
 LazyData: TRUE
 Imports:
