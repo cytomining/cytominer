@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Aggregate data based on given grouping. — aggregate • cytominer</title>
+<title>Feature importance based on data entropy. — svd_entropy • cytominer</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -95,70 +95,51 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Aggregate data based on given grouping.</h1>
+    <h1>Feature importance based on data entropy.</h1>
     </div>
 
     
-    <p><code>aggregate</code> aggregates data based on the specified aggregation method.</p>
+    <p><code>svd_entropy</code> measures the contribution of each feature in decreasing the data entropy.</p>
     
 
-    <pre class="usage"><span class='fu'>aggregate</span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='no'>strata</span>, <span class='kw'>operation</span> <span class='kw'>=</span> <span class='st'>"mean"</span>,
-  <span class='kw'>univariate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>svd_entropy</span>(<span class='no'>variables</span>, <span class='no'>sample</span>, <span class='kw'>cores</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>population</th>
-      <td><p>tbl with grouping (metadata) and observation variables.</p></td>
-    </tr>
-    <tr>
       <th>variables</th>
       <td><p>character vector specifying observation variables.</p></td>
     </tr>
     <tr>
-      <th>strata</th>
-      <td><p>character vector specifying grouping variables for aggregation.</p></td>
+      <th>sample</th>
+      <td><p>tbl containing sample used to estimate parameters.</p></td>
     </tr>
     <tr>
-      <th>operation</th>
-      <td><p>optional character string specifying method for aggregation,
-e.g. <code>"mean"</code>, <code>"median"</code>, <code>"mean+sd"</code>. A sequence can
-comprise only of univariate functions.</p></td>
-    </tr>
-    <tr>
-      <th>univariate</th>
-      <td><p>boolean specifying whether the aggregation function is
-univariate or multivariate.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>optional arguments passed to aggregation operation</p></td>
+      <th>cores</th>
+      <td><p>optional integer specifying number of CPU cores used for parallel computing using <code>doParallel</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>aggregated data of the same class as <code>population</code>.</p>
+    <p>data frame specifying the contribution of each feature in decreasing the data entropy.
+Higher values indicate more information.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>population</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>data_frame</a></span>(
-   <span class='kw'>Metadata_group</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"control"</span>, <span class='st'>"control"</span>, <span class='st'>"control"</span>, <span class='st'>"control"</span>,
-                      <span class='st'>"experiment"</span>, <span class='st'>"experiment"</span>, <span class='st'>"experiment"</span>,
-                      <span class='st'>"experiment"</span>),
-   <span class='kw'>Metadata_batch</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"b"</span>, <span class='st'>"a"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='st'>"b"</span>),
-   <span class='kw'>AreaShape_Area</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>12</span>, <span class='fl'>15</span>, <span class='fl'>16</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>7</span>, <span class='fl'>7</span>)
+    <pre class="examples"><div class='input'><span class='no'>sample</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>data_frame</a></span>(
+   <span class='kw'>AreaShape_MinorAxisLength</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>12</span>, <span class='fl'>15</span>, <span class='fl'>16</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>7</span>, <span class='fl'>7</span>, <span class='fl'>13</span>, <span class='fl'>18</span>),
+   <span class='kw'>AreaShape_MajorAxisLength</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>35</span>, <span class='fl'>18</span>, <span class='fl'>22</span>, <span class='fl'>16</span>, <span class='fl'>9</span>, <span class='fl'>20</span>, <span class='fl'>11</span>, <span class='fl'>15</span>, <span class='fl'>18</span>, <span class='fl'>42</span>),
+   <span class='kw'>AreaShape_Area</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>245</span>, <span class='fl'>151</span>, <span class='fl'>231</span>, <span class='fl'>179</span>, <span class='fl'>50</span>, <span class='fl'>112</span>, <span class='fl'>53</span>, <span class='fl'>73</span>, <span class='fl'>164</span>, <span class='fl'>529</span>)
  )
-<span class='no'>variables</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"AreaShape_Area"</span>)
-<span class='no'>strata</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"Metadata_group"</span>, <span class='st'>"Metadata_batch"</span>)
-<span class='fu'>aggregate</span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='no'>strata</span>, <span class='kw'>operation</span> <span class='kw'>=</span> <span class='st'>"mean"</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 3
-#&gt;   Metadata_group Metadata_batch AreaShape_Area
-#&gt;   &lt;chr&gt;          &lt;chr&gt;                   &lt;dbl&gt;
-#&gt; 1 control        a                       11.0 
-#&gt; 2 control        b                       15.5 
-#&gt; 3 experiment     a                        8.00
-#&gt; 4 experiment     b                        7.00</div><div class='input'>
+<span class='no'>variables</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"AreaShape_MinorAxisLength"</span>, <span class='st'>"AreaShape_MajorAxisLength"</span>, <span class='st'>"AreaShape_Area"</span>)
+<span class='fu'>svd_entropy</span>(<span class='no'>variables</span>, <span class='no'>sample</span>, <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; # A tibble: 3 x 2
+#&gt;   variables                 svd_entropy
+#&gt;   &lt;chr&gt;                           &lt;dbl&gt;
+#&gt; 1 AreaShape_MinorAxisLength     0.00174
+#&gt; 2 AreaShape_MajorAxisLength     0.00285
+#&gt; 3 AreaShape_Area               -0.0424 </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

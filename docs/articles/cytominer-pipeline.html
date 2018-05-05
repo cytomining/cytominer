@@ -29,7 +29,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -75,7 +75,7 @@
       <h1>Introduction to cytominer</h1>
                         <h4 class="author">Allen Goodman and Shantanu Singh</h4>
             
-            <h4 class="date">2018-01-06</h4>
+            <h4 class="date">2018-02-15</h4>
           </div>
 
     
@@ -91,221 +91,202 @@
 <li><p>aggregate the single-cell data, if needed</p></li>
 </ul>
 <p>The cytominer package makes these steps fast and easy.</p>
-<div id="load-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#load-data" class="anchor"></a>Load data</h2>
+<section id="load-data" class="level2"><h2>Load data</h2>
 <p>First, load the data, which is stored in a database backend created using <a href="https://github.com/cytomining/cytominer-database" class="uri">https://github.com/cytomining/cytominer-database</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fixture &lt;-
-<span class="st">  </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"fixture_intensities_shapes.sqlite"</span>,
-              <span class="dt">package =</span> <span class="st">"cytominer"</span>)
-
-db &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), fixture)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">fixture &lt;-</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">  </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"fixture_intensities_shapes.sqlite"</span>,</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">              <span class="dt">package =</span> <span class="st">"cytominer"</span>)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">db &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), fixture)</a></code></pre></div>
 <p>Then load associated metadata if it exists, and copy it to the backend so that we can use it later.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ext_metadata &lt;-
-<span class="st">  </span>readr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"metadata.csv"</span>,
-                              <span class="dt">package =</span> <span class="st">"cytominer"</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">rename</a></span>(<span class="dt">g_well =</span> Well)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">ext_metadata &lt;-</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span>readr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">read_csv</a></span>(<span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"metadata.csv"</span>,</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">                              <span class="dt">package =</span> <span class="st">"cytominer"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">rename</a></span>(<span class="dt">g_well =</span> Well)</a></code></pre></div>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   Well = col_character(),
 ##   Type = col_character()
 ## )</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ext_metadata &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span>(db, ext_metadata)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">ext_metadata &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span>(db, ext_metadata)</a></code></pre></div>
 <p>Next, select a measurement table that you want to work. Here, we will pick <code>intensities</code> but we can easily extend to using multiple or all measurement classes if needed by creating new views.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">intensities &lt;-
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span>(<span class="dt">src =</span> db, <span class="st">"view_intensities"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">compute</a></span>()</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">intensities &lt;-</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span>(<span class="dt">src =</span> db, <span class="st">"view_intensities"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">compute</a></span>()</a></code></pre></div>
 <p>For this example, lets filter the data down to a few wells.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">measurements &lt;-
-<span class="st">  </span>intensities <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(g_well <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">"A01"</span>, <span class="st">"A02"</span>, <span class="st">"A10"</span>, <span class="st">"A11"</span>))</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">measurements &lt;-</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span>intensities <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(g_well <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">"A01"</span>, <span class="st">"A02"</span>, <span class="st">"A10"</span>, <span class="st">"A11"</span>))</a></code></pre></div>
 <p>How many rows does this table have?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">measurements <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/tally.html">tally</a></span>() <span class="op">%&gt;%</span>
-<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>()</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">measurements <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/tally.html">tally</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>()</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="right">n</th>
+<th style="text-align: right;">n</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td align="right">360</td>
+<td style="text-align: right;">360</td>
 </tr></tbody>
 </table>
 <p>That actually 9 times the number of cells in this experiment (n = 40): each compartment and each channel gets its own row. Here, we have 3 compartments (cell, nucleus, cytoplasm) and 3 channels (CellMask, Hoechst, Alexa568). So that’s 3 x 3 x 40 = 360.</p>
 <p>Next, do some setup stuff that we will need later</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qualities &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"q_debris"</span>)
-
-groupings &lt;-
-<span class="st">  </span><span class="kw">c</span>(<span class="st">"g_plate"</span>,
-    <span class="st">"g_well"</span>,
-    <span class="st">"g_image"</span>,
-    <span class="st">"g_pattern"</span>,
-    <span class="st">"g_channel"</span>)
-
-variables &lt;-
-<span class="st">  </span><span class="kw">colnames</span>(measurements) <span class="op">%&gt;%</span>
-<span class="st">  </span>stringr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_subset">str_subset</a></span>(<span class="st">"^m_"</span>)
-
-measurements <span class="op">%&lt;&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select_helpers.html">one_of</a></span>(<span class="kw">c</span>(groupings, qualities, variables)))</code></pre></div>
-</div>
-<div id="clean" class="section level2">
-<h2 class="hasAnchor">
-<a href="#clean" class="anchor"></a>Clean</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">qualities &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"q_debris"</span>)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">groupings &lt;-</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw">c</span>(<span class="st">"g_plate"</span>,</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">    <span class="st">"g_well"</span>,</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">    <span class="st">"g_image"</span>,</a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">    <span class="st">"g_pattern"</span>,</a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">    <span class="st">"g_channel"</span>)</a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10">variables &lt;-</a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="st">  </span><span class="kw">colnames</span>(measurements) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="st">  </span>stringr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_subset">str_subset</a></span>(<span class="st">"^m_"</span>)</a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14">measurements <span class="op">%&lt;&gt;%</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select_helpers.html">one_of</a></span>(<span class="kw">c</span>(groupings, qualities, variables)))</a></code></pre></div>
+</section><section id="clean" class="level2"><h2>Clean</h2>
 <p>Let’s remove cells that come from images that were marked as having debris</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">debris_removed &lt;-
-<span class="st">  </span>measurements <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(q_debris <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">debris_removed &lt;-</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span>measurements <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(q_debris <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</a></code></pre></div>
 <p>Then, remove cells where all the measurements are NA’s - this may happen if the identified cell mask was too small to measure any of the features.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">na_rows_removed &lt;-
-<span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/drop_na_rows">drop_na_rows</a></span>(
-    <span class="dt">population =</span> debris_removed,
-    <span class="dt">variables =</span> variables
-  ) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">compute</a></span>()</code></pre></div>
-</div>
-<div id="normalize" class="section level2">
-<h2 class="hasAnchor">
-<a href="#normalize" class="anchor"></a>Normalize</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">na_rows_removed &lt;-</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/drop_na_rows">drop_na_rows</a></span>(</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">    <span class="dt">population =</span> debris_removed,</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">    <span class="dt">variables =</span> variables</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">  ) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">compute</a></span>()</a></code></pre></div>
+</section><section id="normalize" class="level2"><h2>Normalize</h2>
 <p>We need to normalize the data so that</p>
 <ul>
 <li><p>features are on the same scale</p></li>
 <li><p>plate-to-plate variation is reduced</p></li>
 </ul>
 <p>The default for doing this is <code>standardization</code>. Here, we take all the cells from control wells in the experiment (this is where the external metadata gets used) and compute normalizations parameters from that (in this case, just the mean and s.d.) and then apply it to the whole dataset (i.e. the population)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">normalized &lt;-
-<span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/normalize">normalize</a></span>(
-    <span class="dt">population =</span> na_rows_removed <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">      </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">collect</a></span>(),
-    <span class="dt">variables =</span> variables,
-    <span class="dt">strata =</span>  <span class="kw">c</span>(<span class="st">"g_plate"</span>, <span class="st">"g_pattern"</span>, <span class="st">"g_channel"</span>),
-    <span class="dt">sample =</span>
-      na_rows_removed <span class="op">%&gt;%</span>
-<span class="st">      </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/join.html">inner_join</a></span>(
-        ext_metadata <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">          </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(Type <span class="op">==</span><span class="st"> "ctrl"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">          </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(g_well) 
-      ) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">collect</a></span>()
-  )</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">normalized &lt;-</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/normalize">normalize</a></span>(</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">    <span class="dt">population =</span> na_rows_removed <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">      </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">collect</a></span>(),</a>
+<a class="sourceLine" id="cb12-5" data-line-number="5">    <span class="dt">variables =</span> variables,</a>
+<a class="sourceLine" id="cb12-6" data-line-number="6">    <span class="dt">strata =</span>  <span class="kw">c</span>(<span class="st">"g_plate"</span>, <span class="st">"g_pattern"</span>, <span class="st">"g_channel"</span>),</a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">    <span class="dt">sample =</span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8">      na_rows_removed <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="st">      </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/join.html">inner_join</a></span>(</a>
+<a class="sourceLine" id="cb12-10" data-line-number="10">        ext_metadata <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="st">          </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(Type <span class="op">==</span><span class="st"> "ctrl"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="st">          </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(g_well) </a>
+<a class="sourceLine" id="cb12-13" data-line-number="13">      ) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">collect</a></span>()</a>
+<a class="sourceLine" id="cb12-14" data-line-number="14">  )</a></code></pre></div>
 <pre><code>## Joining, by = "g_well"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">normalized <span class="op">%&lt;&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">collect</a></span>()</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">normalized <span class="op">%&lt;&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">collect</a></span>()</a></code></pre></div>
 <p>In some cases, we may have features that have no variance at all (e.g. Euler number). If these features have not already been removed by this stage, the standardization step will results in all values for that feature being NA ( because s.d. = 0). Lets remove them:</p>
 <p>First, count how many cells have NA values per feature:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">na_frequency &lt;-
-<span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/count_na_rows">count_na_rows</a></span>(
-    <span class="dt">population =</span> normalized,
-    <span class="dt">variables =</span> variables)
-
-na_frequency <span class="op">%&gt;%</span>
-<span class="st">  </span>tidyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">gather</a></span>(feature, na_count) <span class="op">%&gt;%</span>
-<span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>()</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">na_frequency &lt;-</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/count_na_rows">count_na_rows</a></span>(</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">    <span class="dt">population =</span> normalized,</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">    <span class="dt">variables =</span> variables)</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">na_frequency <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/tidyr/topics/gather">gather</a></span>(feature, na_count) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="st">  </span>knitr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/knitr/topics/kable">kable</a></span>()</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th align="left">feature</th>
-<th align="right">na_count</th>
+<th style="text-align: left;">feature</th>
+<th style="text-align: right;">na_count</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">m_intensities_first_quartile</td>
-<td align="right">0</td>
+<td style="text-align: left;">m_intensities_first_quartile</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
-<td align="left">m_intensities_integrated</td>
-<td align="right">0</td>
+<td style="text-align: left;">m_intensities_integrated</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr class="odd">
-<td align="left">m_intensities_maximum</td>
-<td align="right">0</td>
+<td style="text-align: left;">m_intensities_maximum</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
-<td align="left">m_intensities_mean</td>
-<td align="right">0</td>
+<td style="text-align: left;">m_intensities_mean</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr class="odd">
-<td align="left">m_intensities_median</td>
-<td align="right">0</td>
+<td style="text-align: left;">m_intensities_median</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
-<td align="left">m_intensities_median_absolute_deviation</td>
-<td align="right">0</td>
+<td style="text-align: left;">m_intensities_median_absolute_deviation</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr class="odd">
-<td align="left">m_intensities_minimum</td>
-<td align="right">0</td>
+<td style="text-align: left;">m_intensities_minimum</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
-<td align="left">m_intensities_standard_deviation</td>
-<td align="right">0</td>
+<td style="text-align: left;">m_intensities_standard_deviation</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr class="odd">
-<td align="left">m_intensities_third_quartile</td>
-<td align="right">0</td>
+<td style="text-align: left;">m_intensities_third_quartile</td>
+<td style="text-align: right;">0</td>
 </tr>
 </tbody>
 </table>
 <p>As it turns out, no feature has NA in this example. But lets run this cleaning operation anyway (no features will be dropped)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cleaned &lt;-
-<span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/variable_select">variable_select</a></span>(
-    <span class="dt">population =</span> normalized,
-    <span class="dt">variables =</span> variables,
-    <span class="dt">operation =</span> <span class="st">"drop_na_columns"</span>
-)</code></pre></div>
-</div>
-<div id="transform" class="section level2">
-<h2 class="hasAnchor">
-<a href="#transform" class="anchor"></a>Transform</h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">cleaned &lt;-</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/variable_select">variable_select</a></span>(</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">    <span class="dt">population =</span> normalized,</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">    <span class="dt">variables =</span> variables,</a>
+<a class="sourceLine" id="cb16-5" data-line-number="5">    <span class="dt">operation =</span> <span class="st">"drop_na_columns"</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6">)</a></code></pre></div>
+</section><section id="transform" class="level2"><h2>Transform</h2>
 <p>Tranform the data so that assumptions we may later make about the data distribution are satisfied (e.g. Gaussianity). The default here is <code>generalized_log</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">transformed &lt;-
-<span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/transform">transform</a></span>(
-    <span class="dt">population =</span> cleaned,
-    <span class="dt">variables =</span> variables
-  )</code></pre></div>
-</div>
-<div id="select-features" class="section level2">
-<h2 class="hasAnchor">
-<a href="#select-features" class="anchor"></a>Select features</h2>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">transformed &lt;-</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/transform">transform</a></span>(</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">    <span class="dt">population =</span> cleaned,</a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">    <span class="dt">variables =</span> variables</a>
+<a class="sourceLine" id="cb17-5" data-line-number="5">  )</a></code></pre></div>
+</section><section id="select-features" class="level2"><h2>Select features</h2>
 <p>Finally, we typically perform feature selection on the data. Feature selection is an expensive operation, so we usually want to train the feature selection model on a sample of the dataset. Here, we choose to aggregate the data instead of sampling it (i.e. collapse it to per-well aggregates)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">aggregated &lt;-
-<span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/aggregate">aggregate</a></span>(
-    <span class="dt">population =</span> transformed,
-    <span class="dt">variables =</span> variables,
-    <span class="dt">strata =</span> groupings
-  ) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">collect</a></span>()
-
-variables &lt;-
-<span class="st">  </span><span class="kw">colnames</span>(aggregated) <span class="op">%&gt;%</span>
-<span class="st">  </span>stringr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_subset">str_subset</a></span>(<span class="st">"^m_"</span>)</code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">aggregated &lt;-</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/aggregate">aggregate</a></span>(</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">    <span class="dt">population =</span> transformed,</a>
+<a class="sourceLine" id="cb18-4" data-line-number="4">    <span class="dt">variables =</span> variables,</a>
+<a class="sourceLine" id="cb18-5" data-line-number="5">    <span class="dt">strata =</span> groupings</a>
+<a class="sourceLine" id="cb18-6" data-line-number="6">  ) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-7" data-line-number="7"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">collect</a></span>()</a>
+<a class="sourceLine" id="cb18-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb18-9" data-line-number="9">variables &lt;-</a>
+<a class="sourceLine" id="cb18-10" data-line-number="10"><span class="st">  </span><span class="kw">colnames</span>(aggregated) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-11" data-line-number="11"><span class="st">  </span>stringr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_subset">str_subset</a></span>(<span class="st">"^m_"</span>)</a></code></pre></div>
 <p>… and then apply feature selection on the per-cell data. Here <code>correlation_threshold</code> - a method that reduces the redundancy of features - is used.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">selected &lt;-
-<span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/variable_select">variable_select</a></span>(
-    <span class="dt">population =</span> transformed,
-    <span class="dt">variables =</span> variables,
-    <span class="dt">sample =</span> aggregated,
-    <span class="dt">operation =</span> <span class="st">"correlation_threshold"</span>
-  ) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">collect</a></span>()</code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">selected &lt;-</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="st">  </span>cytominer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/cytominer/topics/variable_select">variable_select</a></span>(</a>
+<a class="sourceLine" id="cb19-3" data-line-number="3">    <span class="dt">population =</span> transformed,</a>
+<a class="sourceLine" id="cb19-4" data-line-number="4">    <span class="dt">variables =</span> variables,</a>
+<a class="sourceLine" id="cb19-5" data-line-number="5">    <span class="dt">sample =</span> aggregated,</a>
+<a class="sourceLine" id="cb19-6" data-line-number="6">    <span class="dt">operation =</span> <span class="st">"correlation_threshold"</span></a>
+<a class="sourceLine" id="cb19-7" data-line-number="7">  ) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb19-8" data-line-number="8"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/compute.html">collect</a></span>()</a></code></pre></div>
 <p>And now lets take a glimpse at the data!</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">selected <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>()</code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">selected <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>()</a></code></pre></div>
 <pre><code>## Observations: 315
-## Variables: 15
+## Variables: 10
 ## $ g_plate                                 &lt;chr&gt; "110000106828", "11000...
 ## $ g_well                                  &lt;chr&gt; "A01", "A01", "A01", "...
 ## $ g_image                                 &lt;chr&gt; "5a822385194aceb347a07...
 ## $ g_pattern                               &lt;chr&gt; "Cells", "Cells", "Cel...
 ## $ g_channel                               &lt;chr&gt; "Alexa568", "Alexa568"...
 ## $ q_debris                                &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0...
-## $ m_intensities_first_quartile            &lt;dbl&gt; -1.401783492, -0.44869...
 ## $ m_intensities_integrated                &lt;dbl&gt; -1.48831626, -0.067616...
 ## $ m_intensities_maximum                   &lt;dbl&gt; -1.25783096, -1.514831...
-## $ m_intensities_mean                      &lt;dbl&gt; -1.4908295, -0.7858533...
-## $ m_intensities_median                    &lt;dbl&gt; -1.5032257, -0.5397778...
 ## $ m_intensities_median_absolute_deviation &lt;dbl&gt; -1.4847843, -0.5372476...
-## $ m_intensities_minimum                   &lt;dbl&gt; -2.3552231, -1.9025552...
-## $ m_intensities_standard_deviation        &lt;dbl&gt; -1.3409044908, -1.5861...
-## $ m_intensities_third_quartile            &lt;dbl&gt; -1.35890644, 0.0776661...</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(db)</code></pre></div>
-</div>
+## $ m_intensities_minimum                   &lt;dbl&gt; -2.3552231, -1.9025552...</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">  DBI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/DBI/topics/dbDisconnect">dbDisconnect</a></span>(db)</a></code></pre></div>
+</section>
 </div>
   </div>
 
@@ -331,7 +312,7 @@ variables &lt;-
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
