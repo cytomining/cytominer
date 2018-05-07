@@ -40,7 +40,3 @@ Example
 
 See `vignette("cytominer-pipeline")` for basic example of using cytominer to analyze a morphological profiling dataset.
 
-Contributing
-------------
-
-Read more about the contributing process [on our wiki](https://github.com/cytomining/cytominer/wiki/Contributing).
