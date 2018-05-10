@@ -81,6 +81,12 @@ aggregate <- function(population, variables, strata, operation="mean",
       unname()
   }
 
+  # Once this issue is fixed
+  # https://github.com/tidyverse/dplyr/issues/3352
+  # change this
+  # dplyr::summarise_at(.funs = aggregating_function, .vars = variables)
+  # to this
+  # dplyr::summarise_at(.funs = aggregating_function, .vars = variables, na.rm = T)
   population %>%
     dplyr::group_by_(.dots = strata) %>%
     dplyr::summarise_at(.funs = aggregating_function, .vars = variables) %>%
