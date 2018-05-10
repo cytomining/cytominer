@@ -50,6 +50,9 @@ variable_select <- function(population, variables, sample = NULL,
     excluded <- correlation_threshold(variables, sample, ...)
   } else if (operation == "drop_na_columns") {
     excluded <- drop_na_columns(population, variables, ...)
+  } else if (operation == "entropy_based") {
+    included <- entropy_feature_selection(population, variables, ...)[["features"]]
+    excluded <- setdiff(variables, included)
   } else {
     error <- paste0("undefined operation `", operation, "'")
 
