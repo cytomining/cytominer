@@ -40,7 +40,7 @@ drop_na_columns <- function(population, variables, cutoff = 0.05) {
 
   population %>%
     dplyr::mutate_at(variables, dplyr::funs(is.na)) %>%
-    dplyr::summarize_at(variables, dplyr::funs(sum)) %>%
+    dplyr::summarize_at(variables, dplyr::funs(sum(., na.rm = T))) %>%
     dplyr::collect() %>%
     tidyr::gather(!! feature, !! count, !!! variables) %>%
     dplyr::mutate(!! percent := (!! count) / nrows) %>%

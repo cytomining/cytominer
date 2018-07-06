@@ -26,7 +26,7 @@
 count_na_rows <- function(population, variables) {
   population %>%
     dplyr::mutate_at(variables, dplyr::funs(is.na)) %>%
-    dplyr::summarize_at(variables, dplyr::funs(sum)) %>%
+    dplyr::summarize_at(variables, dplyr::funs(sum(., na.rm = T))) %>%
     dplyr::collect() %>%
     data.frame()
 }

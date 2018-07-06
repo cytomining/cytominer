@@ -57,7 +57,7 @@ test_that("`aggregate` aggregates data", {
     data %>%
       dplyr::group_by(g) %>%
       dplyr::summarise_at(
-        .funs = c(dplyr::funs(mean), dplyr::funs(sd)),
+        .funs = c(dplyr::funs(mean(., na.rm = T)), dplyr::funs(sd(., na.rm = T))),
         .vars = c("x", "y")
       )
   )
