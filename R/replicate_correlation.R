@@ -88,6 +88,7 @@ replicate_correlation <-
       .strata <- rlang::syms(strata)
     }
 
+    result <-
     foreach::foreach(variable = variables, .combine = rbind) %dopar%
       {
         sample %>%
@@ -111,4 +112,8 @@ replicate_correlation <-
       tidyr::gather_(replicate_by, "pearson", setdiff(names(.), "variable")) %>%
       dplyr::group_by(variable) %>%
       dplyr::summarize_at("pearson", c("median", "min", "max"))
+
+    doParallel::stopImplicitCluster()
+
+    result
   }
