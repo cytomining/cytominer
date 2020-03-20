@@ -27,7 +27,7 @@ utils::globalVariables(c("n", ".", "variable"))
 #' replicate_id <- rep(1:2, each=10)
 #'
 #' sample <-
-#'   tibble::data_frame(x = c(x1, x2), y = c(y1, y2), z = c(z1, z2),
+#'   tibble::tibble(x = c(x1, x2), y = c(y1, y2), z = c(z1, z2),
 #'                      Metadata_treatment = treatment,
 #'                      Metadata_replicate_id = replicate_id,
 #'                      Metadata_batch = batch)
@@ -103,5 +103,5 @@ replicate_correlation <-
     } %>%
       tidyr::gather_(replicate_by, "pearson", setdiff(names(.), "variable")) %>%
       dplyr::group_by_(.dots = c("variable")) %>%
-      dplyr::summarize_at("pearson", dplyr::funs(median, min, max))
+      dplyr::summarize_at("pearson", c("median", "min", "max"))
   }

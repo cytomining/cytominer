@@ -1,4 +1,4 @@
-utils::globalVariables("type")
+utils::globalVariables(c("type", "cluster_id"))
 #' Extract subpopulations.
 #'
 #' \code{extract_subpopulations} identifies clusters in the reference and
@@ -17,7 +17,7 @@ utils::globalVariables("type")
 #' \code{reference_clusters}).
 
 #' @examples
-#' data <- tibble::data_frame(
+#' data <- tibble::tibble(
 #'    Metadata_group = c("control", "control", "control", "control",
 #'                       "experiment", "experiment", "experiment", "experiment"),
 #'    AreaShape_Area = c(10, 12, NA, 16, 8, 8, 7, 7),
@@ -74,7 +74,7 @@ extract_subpopulations <-
       dplyr::bind_cols(
         purrr::map_df(
           1:nrow(data),
-          ~dplyr::data_frame(
+          ~dplyr::tibble(
             dist_to_cluster =
               find_dist_to_cluster(data[.x, ])
           )
@@ -82,9 +82,9 @@ extract_subpopulations <-
       )
 
     subpop_profiles <- data %>%
-      dplyr::group_by_(.dots = c("type", "cluster_id")) %>%
+      dplyr::group_by(type, cluster_id) %>%
       dplyr::tally() %>%
-      dplyr::group_by_(.dots = "type") %>%
+      dplyr::group_by(type) %>%
       dplyr::rename(freq = "n") %>%
       dplyr::mutate(freq = .data$freq / sum(.data$freq)) %>%
       dplyr::ungroup() %>%

@@ -11,7 +11,7 @@
 #' @return Dimensionality reduced \code{population}.
 #'
 #' @examples
-#' population <- tibble::data_frame(
+#' population <- tibble::tibble(
 #'    Metadata_Well = c("A01", "A02", "B01", "B02"),
 #'    AreaShape_Area_DNA = c(10, 12, 7, 7),
 #'    AreaShape_Length_DNA = c(2, 3, 1, 5),

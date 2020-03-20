@@ -14,7 +14,7 @@ utils::globalVariables(c(".", "i"))
 #' @importFrom magrittr %>%
 #'
 #' @examples
-#' sample <- tibble::data_frame(
+#' sample <- tibble::tibble(
 #'    AreaShape_MinorAxisLength = c(10, 12, 15, 16, 8, 8, 7, 7, 13, 18),
 #'    AreaShape_MajorAxisLength = c(35, 18, 22, 16, 9, 20, 11, 15, 18, 42),
 #'    AreaShape_Area = c(245, 151, 231, 179, 50, 112, 53, 73, 164, 529)
@@ -57,8 +57,8 @@ svd_entropy <- function(variables, sample, cores = NULL) {
     crossprod(., .) %>%
     entropy_score()
 
-  dplyr::data_frame(variable = variables,
-                    svd_entropy = entropy_scores)
+  dplyr::tibble(variable = variables,
+                svd_entropy = entropy_scores)
 
 }
 

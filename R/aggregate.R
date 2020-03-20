@@ -16,7 +16,7 @@ utils::globalVariables("data")
 #' @return aggregated data of the same class as \code{population}.
 #'
 #' @examples
-#' population <- tibble::data_frame(
+#' population <- tibble::tibble(
 #'    Metadata_group = c("control", "control", "control", "control",
 #'                       "experiment", "experiment", "experiment",
 #'                       "experiment"),
@@ -35,20 +35,23 @@ aggregate <- function(population, variables, strata, operation="mean",
                       univariate = TRUE,
                       ...) {
 
+  strata <- rlang::syms(strata)
+
   # If the aggregation function is a multivariate function, dplyr::summarize
   # won't do the job because that operates on variable at a time.
   if (!univariate) {
     return(
       population %>%
         dplyr::collect() %>%
-        dplyr::group_by_at(.vars = strata) %>%
+        dplyr::group_by(!!!strata) %>%
         tidyr::nest() %>%
         dplyr::mutate(data = purrr::map(
           data,
           rlang::as_function(operation),
           variables
         )) %>%
-        tidyr::unnest()
+        tidyr::unnest(cols = data) %>%
+        dplyr::ungroup()
     )
   }
 
@@ -72,13 +75,31 @@ aggregate <- function(population, variables, strata, operation="mean",
   # In dplyr::summarize, function names will be included only if `.funs`` has
   # names or multiple inputs
   if (length(stringr::str_split(operation, "\\+")[[1]]) == 1) {
+    if (!is.data.frame(population)) {
+      operation <- ifelse(operation == "median",
+                          "~MEDIAN(.)",
+                          sprintf("~%s(., na.rm = TRUE)", operation)
+                          )
+
+      operation <- stats::as.formula(operation)
+    }
+
     aggregating_function <- operation
+
   } else {
     aggregating_function <-
       stringr::str_split(operation, "\\+")[[1]] %>%
-      sapply(function(f) dplyr::funs(!! f)) %>%
       as.vector() %>%
       unname()
+
+    if (!is.data.frame(population)) {
+      aggregating_function <-
+        aggregating_function %>%
+        purrr::map_chr(~ifelse(.x == "median",
+                               "~MEDIAN(.)",
+                               sprintf("~%s(., na.rm = TRUE)", .x))) %>%
+        purrr::map(stats::as.formula)
+    }
   }
 
   # Once this issue is fixed
@@ -88,7 +109,7 @@ aggregate <- function(population, variables, strata, operation="mean",
   # to this
   # dplyr::summarise_at(.funs = aggregating_function, .vars = variables, na.rm = T)
   population %>%
-    dplyr::group_by_(.dots = strata) %>%
+    dplyr::group_by(!!!strata) %>%
     dplyr::summarise_at(.funs = aggregating_function, .vars = variables) %>%
     dplyr::ungroup()
 }

@@ -11,7 +11,7 @@
 #' @return character vector specifying observation variables to be excluded.
 #'
 #' @examples
-#' sample <- tibble::data_frame(
+#' sample <- tibble::tibble(
 #'    AreaShape_Area = c(10, 12, 15, 16, 8, 8, 7, 7, 13, 18),
 #'    AreaShape_Euler = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 #'  )
@@ -22,6 +22,8 @@
 #' @importFrom magrittr %<>%
 #' @export
 variance_threshold <- function(variables, sample) {
+  .variables <- rlang::syms(variables)
+
   near_zero_variance <- function(x) {
     if (is.null(dim(x))) x <- matrix(x, ncol = 1)
 
@@ -41,7 +43,7 @@ variance_threshold <- function(variables, sample) {
 
   excluded_indexes <-
     sample %>%
-    dplyr::select_(.dots = variables) %>%
+    dplyr::select(!!!.variables) %>%
     near_zero_variance()
 
   variables[excluded_indexes]

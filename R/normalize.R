@@ -18,7 +18,7 @@
 #'
 #' @examples
 #' suppressMessages(suppressWarnings(library(magrittr)))
-#' population <- tibble::data_frame(
+#' population <- tibble::tibble(
 #'    Metadata_group = c("control", "control", "control", "control",
 #'                       "experiment", "experiment", "experiment", "experiment"),
 #'    Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
@@ -41,15 +41,15 @@ normalize <- function(population, variables, strata, sample,
       ))
 
       dplyr::bind_cols(
-        data %>% dplyr::select_(~-dplyr::one_of(variables)),
+        data %>% dplyr::select(-dplyr::one_of(variables)),
         data %>%
-          dplyr::select_(.dots = variables) %>%
+          dplyr::select(dplyr::one_of(variables)) %>%
           as.matrix() %>%
           base::scale(
             center = as.matrix(location),
             scale = as.matrix(dispersion)
           ) %>%
-          tibble::as_data_frame()
+          tibble::as_tibble()
       )
     } else {
       futile.logger::flog.debug(paste0(
@@ -76,14 +76,14 @@ normalize <- function(population, variables, strata, sample,
   sample_is_df <- is.data.frame(sample)
 
   if (operation == "robustize") {
-    location <- dplyr::funs(median(., na.rm = TRUE))
+    location <- ~median(., na.rm = TRUE)
 
-    dispersion <- dplyr::funs(mad(., na.rm = TRUE))
+    dispersion <- ~mad(., na.rm = TRUE)
 
   } else if (operation == "standardize") {
-    location <- dplyr::funs(mean(., na.rm = TRUE))
+    location <- ~mean(., na.rm = TRUE)
 
-    dispersion <- dplyr::funs(sd(., na.rm = TRUE))
+    dispersion <- ~sd(., na.rm = TRUE)
 
   } else {
     error <- paste0("undefined operation `", operation, "'")
@@ -99,7 +99,7 @@ normalize <- function(population, variables, strata, sample,
 
   groups <-
     sample %>%
-    dplyr::select_(.dots = strata) %>%
+    dplyr::select(dplyr::one_of(strata)) %>%
     dplyr::distinct() %>%
     dplyr::collect()
 

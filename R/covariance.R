@@ -9,7 +9,7 @@
 #'
 #' @examples
 #'
-#' population <- tibble::data_frame(
+#' population <- tibble::tibble(
 #'    x = rnorm(30),
 #'    y = rnorm(30),
 #'    z = rnorm(30)

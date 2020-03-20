@@ -17,7 +17,7 @@
 #' @examples
 #'
 #' suppressMessages(suppressWarnings(library(magrittr)))
-#' sample <- tibble::data_frame(
+#' sample <- tibble::tibble(
 #'    x = rnorm(30),
 #'    y = rnorm(30)/1000
 #'  )
@@ -35,9 +35,11 @@
 #' @export
 correlation_threshold <- function(variables, sample, cutoff = 0.90,
                                   method = "pearson") {
+  .variables <- rlang::syms(variables)
+
   excluded_indexes <-
     sample %>%
-    dplyr::select_(.dots = variables) %>%
+    dplyr::select(!!!.variables) %>%
     cor(method = method) %>%
     caret::findCorrelation(cutoff = cutoff)
 

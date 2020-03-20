@@ -12,7 +12,7 @@
 #'
 #' @examples
 #'
-#' population <- tibble::data_frame(
+#' population <- tibble::tibble(
 #'    Metadata_group = c("control", "control", "control", "control",
 #'                       "experiment", "experiment", "experiment", "experiment"),
 #'    Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
@@ -25,8 +25,8 @@
 #' @export
 count_na_rows <- function(population, variables) {
   population %>%
-    dplyr::mutate_at(variables, dplyr::funs(is.na)) %>%
-    dplyr::summarize_at(variables, dplyr::funs(sum(., na.rm = T))) %>%
+    dplyr::mutate_at(variables, ~is.na(.)) %>%
+    dplyr::summarize_at(variables, ~sum(., na.rm = T)) %>%
     dplyr::collect() %>%
     data.frame()
 }

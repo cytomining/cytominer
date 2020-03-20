@@ -12,7 +12,7 @@
 #' @importFrom magrittr %<>%
 #'
 #' @examples
-#'  population <- tibble::data_frame(
+#'  population <- tibble::tibble(
 #'    Metadata_group = c("control", "control", "control", "control",
 #'                       "experiment", "experiment", "experiment", "experiment"),
 #'    Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
@@ -39,8 +39,8 @@ drop_na_columns <- function(population, variables, cutoff = 0.05) {
   percent <- rlang::sym("percent")
 
   population %>%
-    dplyr::mutate_at(variables, dplyr::funs(is.na)) %>%
-    dplyr::summarize_at(variables, dplyr::funs(sum(., na.rm = T))) %>%
+    dplyr::mutate_at(variables, is.na) %>%
+    dplyr::summarize_at(variables, ~sum(., na.rm = T)) %>%
     dplyr::collect() %>%
     tidyr::gather(!! feature, !! count, !!! variables) %>%
     dplyr::mutate(!! percent := (!! count) / nrows) %>%

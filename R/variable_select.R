@@ -16,7 +16,7 @@
 #' # variable selection.
 #'
 #' suppressMessages(suppressWarnings(library(magrittr)))
-#' population <- tibble::data_frame(
+#' population <- tibble::tibble(
 #'    x = rnorm(100),
 #'    y = rnorm(100)/1000
 #'  )
@@ -67,5 +67,5 @@ variable_select <- function(population, variables, sample = NULL,
   }
 
   population %>%
-    dplyr::select_(.dots = setdiff(x = colnames(population), y = excluded))
+    dplyr::select(dplyr::one_of(setdiff(x = colnames(population), y = excluded)))
 }

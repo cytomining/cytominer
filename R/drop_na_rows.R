@@ -8,7 +8,7 @@
 #' @return \code{population} without rows that have \code{NA} in all variables.
 #'
 #' @examples
-#'  population <- tibble::data_frame(
+#'  population <- tibble::tibble(
 #'    Metadata_group = c("control", "control", "control", "control",
 #'                       "experiment", "experiment", "experiment", "experiment"),
 #'    Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
