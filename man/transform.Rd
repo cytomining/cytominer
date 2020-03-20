@@ -22,7 +22,7 @@ transformed data of the same class as \code{population}.
 \code{transform} transforms observation variables based on the specified transformation method.
 }
 \examples{
-population <- tibble::data_frame(
+population <- tibble::tibble(
    Metadata_Well = c("A01", "A02", "B01", "B02"),
    Intensity_DNA = c(8, 20, 12, 32)
  )

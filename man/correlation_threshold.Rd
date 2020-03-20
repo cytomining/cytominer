@@ -4,7 +4,8 @@
 \alias{correlation_threshold}
 \title{Remove redundant variables.}
 \usage{
-correlation_threshold(variables, sample, cutoff = 0.9, method = "pearson")
+correlation_threshold(variables, sample, cutoff = 0.9,
+  method = "pearson")
 }
 \arguments{
 \item{variables}{character vector specifying observation variables.}
@@ -27,7 +28,7 @@ character vector specifying observation variables to be excluded.
 \examples{
 
 suppressMessages(suppressWarnings(library(magrittr)))
-sample <- tibble::data_frame(
+sample <- tibble::tibble(
    x = rnorm(30),
    y = rnorm(30)/1000
  )

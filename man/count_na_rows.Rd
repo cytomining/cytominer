@@ -19,7 +19,7 @@ data frame with frequency of \code{NA}s per variable.
 }
 \examples{
 
-population <- tibble::data_frame(
+population <- tibble::tibble(
    Metadata_group = c("control", "control", "control", "control",
                       "experiment", "experiment", "experiment", "experiment"),
    Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),

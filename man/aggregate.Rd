@@ -30,7 +30,7 @@ aggregated data of the same class as \code{population}.
 \code{aggregate} aggregates data based on the specified aggregation method.
 }
 \examples{
-population <- tibble::data_frame(
+population <- tibble::tibble(
    Metadata_group = c("control", "control", "control", "control",
                       "experiment", "experiment", "experiment",
                       "experiment"),

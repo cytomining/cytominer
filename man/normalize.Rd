@@ -4,8 +4,8 @@
 \alias{normalize}
 \title{Normalize observation variables.}
 \usage{
-normalize(population, variables, strata, sample, operation = "standardize",
-  ...)
+normalize(population, variables, strata, sample,
+  operation = "standardize", ...)
 }
 \arguments{
 \item{population}{tbl with grouping (metadata) and observation variables.}
@@ -28,7 +28,7 @@ normalized data of the same class as \code{population}.
 }
 \examples{
 suppressMessages(suppressWarnings(library(magrittr)))
-population <- tibble::data_frame(
+population <- tibble::tibble(
    Metadata_group = c("control", "control", "control", "control",
                       "experiment", "experiment", "experiment", "experiment"),
    Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),

@@ -28,7 +28,7 @@ population sets and reports the frequency of points in each cluster for the
 two sets.
 }
 \examples{
-data <- tibble::data_frame(
+data <- tibble::tibble(
    Metadata_group = c("control", "control", "control", "control",
                       "experiment", "experiment", "experiment", "experiment"),
    AreaShape_Area = c(10, 12, NA, 16, 8, 8, 7, 7),

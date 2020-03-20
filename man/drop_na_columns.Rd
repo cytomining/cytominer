@@ -20,7 +20,7 @@ character vector specifying observation variables to be excluded.
 \code{drop_na_columns} returns list of variables which have greater than a specified threshold number of \code{NA}s.
 }
 \examples{
- population <- tibble::data_frame(
+ population <- tibble::tibble(
    Metadata_group = c("control", "control", "control", "control",
                       "experiment", "experiment", "experiment", "experiment"),
    Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),

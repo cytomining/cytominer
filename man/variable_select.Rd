@@ -30,7 +30,7 @@ variable-selected data of the same class as \code{population}.
 # variable selection.
 
 suppressMessages(suppressWarnings(library(magrittr)))
-population <- tibble::data_frame(
+population <- tibble::tibble(
    x = rnorm(100),
    y = rnorm(100)/1000
  )
