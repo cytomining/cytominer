@@ -103,7 +103,7 @@ test_that(paste0(
       replicate_by = "replicate_id",
       cores = 2
     ) %>%
-      dplyr::arrange_(.dots = c("variable")) %>%
+      dplyr::arrange(variable) %>%
       as.data.frame(),
     correlations_batched %>%
       as.data.frame(),
