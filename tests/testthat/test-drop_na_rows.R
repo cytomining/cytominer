@@ -13,7 +13,7 @@ test_that("`drop_na_rows` removes rows have only NAs", {
 
   drop_na_rows_data_frame <- function(population, variables) {
     population %>%
-      tidyr::gather_("key", "value", variables) %>%
+      tidyr::gather(key, value, variables) %>%
       dplyr::filter(!is.na(value)) %>%
       tidyr::spread(key, value)
   }
