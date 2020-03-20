@@ -1,3 +1,8 @@
+## Note about two consecutive submissions
+I mistakenly submitted to CRAN without saving cran-comments.md. 
+I am thus resubmitting, but have bumped up the version because I get the message
+"The Server already contains a file with that name/version, please increase version number"
+
 ## Test environments
 * local OS X install, R 3.6.1 
 * Ubuntu 16.04.6 LTS (on travis-ci), R 3.6.2
