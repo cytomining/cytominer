@@ -41,9 +41,9 @@ normalize <- function(population, variables, strata, sample,
       ))
 
       dplyr::bind_cols(
-        data %>% dplyr::select(-dplyr::one_of(variables)),
+        data %>% dplyr::select(-variables),
         data %>%
-          dplyr::select(dplyr::one_of(variables)) %>%
+          dplyr::select(variables) %>%
           as.matrix() %>%
           base::scale(
             center = as.matrix(location),
@@ -99,7 +99,7 @@ normalize <- function(population, variables, strata, sample,
 
   groups <-
     sample %>%
-    dplyr::select(dplyr::one_of(strata)) %>%
+    dplyr::select(strata) %>%
     dplyr::distinct() %>%
     dplyr::collect()
 

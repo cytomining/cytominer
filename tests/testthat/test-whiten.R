@@ -17,7 +17,7 @@ test_that("`whiten` whiten data", {
       sample = data,
       regularization_param = 0
     ) %>%
-      dplyr::select(dplyr::one_of(c("PC1", "PC2", "PC3"))) %>%
+      dplyr::select(c("PC1", "PC2", "PC3")) %>%
       dplyr::collect() %>%
       cov() %>%
       as.matrix() %>%

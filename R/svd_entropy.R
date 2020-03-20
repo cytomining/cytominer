@@ -46,7 +46,7 @@ svd_entropy <- function(variables, sample, cores = NULL) {
   }
 
   sample %<>%
-    dplyr::select(dplyr::one_of(variables)) %>%
+    dplyr::select(variables) %>%
     dplyr::collect()
 
   # to ensure the ordering is captured

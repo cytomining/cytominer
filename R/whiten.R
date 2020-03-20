@@ -28,14 +28,14 @@ whiten <- function(population, variables, sample, regularization_param = 1) {
     dplyr::collect()
 
   sample_data <- sample %>%
-    dplyr::select(dplyr::one_of(variables)) %>%
+    dplyr::select(variables) %>%
     as.matrix()
 
   population %<>%
     dplyr::collect()
 
   population_data <- population %>%
-    dplyr::select(dplyr::one_of(variables)) %>%
+    dplyr::select(variables) %>%
     as.matrix()
 
   # mean of sample

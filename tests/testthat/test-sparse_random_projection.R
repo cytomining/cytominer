@@ -78,7 +78,7 @@ test_that("`sparse_random_projection` creates a sparse random projection", {
   )
 
   projected_population_data <- projected_population %>%
-    dplyr::select(dplyr::one_of(c("R1", "R2", "R3"))) %>%
+    dplyr::select(c("R1", "R2", "R3")) %>%
     as.matrix()
 
   expect_equal(dim(projected_population_data), c(10, 3))

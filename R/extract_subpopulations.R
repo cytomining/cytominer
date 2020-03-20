@@ -53,7 +53,7 @@ extract_subpopulations <-
       tidyr::drop_na(dplyr::one_of(variables))
 
     kmeans_output <- data %>%
-      dplyr::select(dplyr::one_of(variables)) %>%
+      dplyr::select(variables) %>%
       stats::kmeans(
         centers = k,
         iter.max = 5000,

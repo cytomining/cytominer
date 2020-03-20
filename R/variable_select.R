@@ -67,5 +67,5 @@ variable_select <- function(population, variables, sample = NULL,
   }
 
   population %>%
-    dplyr::select(dplyr::one_of(setdiff(x = colnames(population), y = excluded)))
+    dplyr::select(setdiff(x = colnames(population), y = excluded))
 }
