@@ -2,7 +2,7 @@ Encoding: UTF-8
 Package: cytominer
 Type: Package
 Title: Methods for Image-Based Cell Profiling
-Version: 0.1.0.9000
+Version: 0.2.1
 Authors@R: c(person("Tim", "Becker", email = "tbecker@broadinstitute.org", role = "aut"),
     person("Allen", "Goodman", email = "allen.goodman@icloud.com", role = "aut"),
     person("Claire", "McQuin", email = "mcquin@broadinstitute.org", role = "aut"),
