@@ -1,7 +1,8 @@
 context("correlation_threshold")
 
 test_that(
-  "`correlation_threshold` selects variables that are not highly correlated", {
+  "`correlation_threshold` selects variables that are not highly correlated",
+  {
     set.seed(123)
     data <- data.frame(x = rnorm(30))
     data$y <- rnorm(30) / 1000

@@ -17,13 +17,13 @@ test_that("`normalize' normalizes data", {
 
   data <-
     dplyr::bind_rows(
-      generate_matrix(rnorm(2), rnorm(2) ^ 2) %>%
+      generate_matrix(rnorm(2), rnorm(2)^2) %>%
         dplyr::mutate(g1 = "a", g2 = "x"),
-      generate_matrix(rnorm(2), rnorm(2) ^ 2) %>%
+      generate_matrix(rnorm(2), rnorm(2)^2) %>%
         dplyr::mutate(g1 = "a", g2 = "y"),
-      generate_matrix(rnorm(2), rnorm(2) ^ 2) %>%
+      generate_matrix(rnorm(2), rnorm(2)^2) %>%
         dplyr::mutate(g1 = "b", g2 = "x"),
-      generate_matrix(rnorm(2), rnorm(2) ^ 2) %>%
+      generate_matrix(rnorm(2), rnorm(2)^2) %>%
         dplyr::mutate(g1 = "b", g2 = "y")
     )
 

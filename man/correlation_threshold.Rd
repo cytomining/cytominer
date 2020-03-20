@@ -29,9 +29,9 @@ character vector specifying observation variables to be excluded.
 
 suppressMessages(suppressWarnings(library(magrittr)))
 sample <- tibble::tibble(
-   x = rnorm(30),
-   y = rnorm(30)/1000
- )
+  x = rnorm(30),
+  y = rnorm(30) / 1000
+)
 
 sample \%<>\% dplyr::mutate(z = x + rnorm(30) / 10)
 variables <- c("x", "y", "z")
@@ -42,5 +42,4 @@ cor(sample)
 # `x` and `z` are highly correlated; one of them will be removed
 
 correlation_threshold(variables, sample)
-
 }

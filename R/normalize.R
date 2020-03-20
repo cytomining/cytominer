@@ -19,16 +19,17 @@
 #' @examples
 #' suppressMessages(suppressWarnings(library(magrittr)))
 #' population <- tibble::tibble(
-#'    Metadata_group = c("control", "control", "control", "control",
-#'                       "experiment", "experiment", "experiment", "experiment"),
-#'    Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
-#'    AreaShape_Area = c(10, 12, 15, 16, 8, 8, 7, 7)
-#'  )
-#' variables <- c('AreaShape_Area')
-#' strata <- c('Metadata_batch')
-#' sample <- population %>% dplyr::filter(Metadata_group == 'control')
+#'   Metadata_group = c(
+#'     "control", "control", "control", "control",
+#'     "experiment", "experiment", "experiment", "experiment"
+#'   ),
+#'   Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
+#'   AreaShape_Area = c(10, 12, 15, 16, 8, 8, 7, 7)
+#' )
+#' variables <- c("AreaShape_Area")
+#' strata <- c("Metadata_batch")
+#' sample <- population %>% dplyr::filter(Metadata_group == "control")
 #' cytominer::normalize(population, variables, strata, sample, operation = "standardize")
-#'
 #' @export
 normalize <- function(population, variables, strata, sample,
                       operation = "standardize", ...) {
@@ -66,7 +67,7 @@ normalize <- function(population, variables, strata, sample,
         s <- dispersion[[variable]]
 
         data %<>%
-          dplyr::mutate(!! x := ((!! x) - m) / s)
+          dplyr::mutate(!!x := ((!!x) - m) / s)
       }
 
       data
@@ -76,15 +77,13 @@ normalize <- function(population, variables, strata, sample,
   sample_is_df <- is.data.frame(sample)
 
   if (operation == "robustize") {
-    location <- ~median(., na.rm = TRUE)
+    location <- ~ median(., na.rm = TRUE)
 
-    dispersion <- ~mad(., na.rm = TRUE)
-
+    dispersion <- ~ mad(., na.rm = TRUE)
   } else if (operation == "standardize") {
-    location <- ~mean(., na.rm = TRUE)
+    location <- ~ mean(., na.rm = TRUE)
 
-    dispersion <- ~sd(., na.rm = TRUE)
-
+    dispersion <- ~ sd(., na.rm = TRUE)
   } else {
     error <- paste0("undefined operation `", operation, "'")
 

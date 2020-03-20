@@ -17,24 +17,24 @@ utils::globalVariables("data")
 #'
 #' @examples
 #' population <- tibble::tibble(
-#'    Metadata_group = c("control", "control", "control", "control",
-#'                       "experiment", "experiment", "experiment",
-#'                       "experiment"),
-#'    Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
-#'    AreaShape_Area = c(10, 12, 15, 16, 8, 8, 7, 7)
-#'  )
+#'   Metadata_group = c(
+#'     "control", "control", "control", "control",
+#'     "experiment", "experiment", "experiment",
+#'     "experiment"
+#'   ),
+#'   Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
+#'   AreaShape_Area = c(10, 12, 15, 16, 8, 8, 7, 7)
+#' )
 #' variables <- c("AreaShape_Area")
 #' strata <- c("Metadata_group", "Metadata_batch")
 #' aggregate(population, variables, strata, operation = "mean")
-#'
 #' @importFrom utils find
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @export
-aggregate <- function(population, variables, strata, operation="mean",
+aggregate <- function(population, variables, strata, operation = "mean",
                       univariate = TRUE,
                       ...) {
-
   strata <- rlang::syms(strata)
 
   # If the aggregation function is a multivariate function, dplyr::summarize
@@ -59,8 +59,9 @@ aggregate <- function(population, variables, strata, operation="mean",
   # separated by `+`
   # For simplicity, a sequence can comprise only of univariate functions
   if (stringr::str_split(operation, "\\+")[[1]] %>%
-    purrr::map_lgl(function(f)
-      length(utils::find(f, mode = "function")) == 0) %>%
+    purrr::map_lgl(function(f) {
+      length(utils::find(f, mode = "function")) == 0
+    }) %>%
     any()
   ) {
     error <- paste0("undefined operation `", operation, "'")
@@ -80,15 +81,14 @@ aggregate <- function(population, variables, strata, operation="mean",
   if (length(stringr::str_split(operation, "\\+")[[1]]) == 1) {
     if (!is.data.frame(population)) {
       operation <- ifelse(operation == "median",
-                          "~MEDIAN(.)",
-                          sprintf("~%s(., na.rm = TRUE)", operation)
-                          )
+        "~MEDIAN(.)",
+        sprintf("~%s(., na.rm = TRUE)", operation)
+      )
 
       operation <- stats::as.formula(operation)
     }
 
     aggregating_function <- operation
-
   } else {
     aggregating_function <-
       stringr::str_split(operation, "\\+")[[1]] %>%
@@ -98,9 +98,10 @@ aggregate <- function(population, variables, strata, operation="mean",
     if (!is.data.frame(population)) {
       aggregating_function <-
         aggregating_function %>%
-        purrr::map_chr(~ifelse(.x == "median",
-                               "~MEDIAN(.)",
-                               sprintf("~%s(., na.rm = TRUE)", .x))) %>%
+        purrr::map_chr(~ ifelse(.x == "median",
+          "~MEDIAN(.)",
+          sprintf("~%s(., na.rm = TRUE)", .x)
+        )) %>%
         purrr::map(stats::as.formula)
     }
   }

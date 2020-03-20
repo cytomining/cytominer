@@ -10,12 +10,11 @@
 #'
 #' @examples
 #' population <- tibble::tibble(
-#'    Metadata_Well = c("A01", "A02", "B01", "B02"),
-#'    Intensity_DNA = c(8, 20, 12, 32)
-#'  )
+#'   Metadata_Well = c("A01", "A02", "B01", "B02"),
+#'   Intensity_DNA = c(8, 20, 12, 32)
+#' )
 #' variables <- c("Intensity_DNA")
 #' generalized_log(population, variables)
-#'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @importFrom rlang :=
@@ -27,8 +26,8 @@ generalized_log <- function(population, variables, offset = 1) {
     x <- rlang::sym(variable)
 
     population %<>%
-      dplyr::mutate(!! x :=
-        log(((!! x) + ((!! x) ^ 2 + (!! offset) ^ 2) ^ 0.5) / 2))
+      dplyr::mutate(!!x :=
+        log(((!!x) + ((!!x)^2 + (!!offset)^2)^0.5) / 2))
   }
 
   population

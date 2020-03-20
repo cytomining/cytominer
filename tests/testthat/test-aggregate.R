@@ -25,7 +25,7 @@ test_that("`aggregate` aggregates data", {
     data %>%
       dplyr::group_by(g) %>%
       dplyr::summarise_at(
-        .funs = ~MEDIAN(.),
+        .funs = ~ MEDIAN(.),
         .vars = c("x", "y")
       )
   )
@@ -41,7 +41,7 @@ test_that("`aggregate` aggregates data", {
     data %>%
       dplyr::group_by(g) %>%
       dplyr::summarise_at(
-        .funs = ~MEDIAN(.),
+        .funs = ~ MEDIAN(.),
         .vars = c("x", "y")
       )
   )
@@ -57,7 +57,7 @@ test_that("`aggregate` aggregates data", {
     data %>%
       dplyr::group_by(g) %>%
       dplyr::summarise_at(
-        .funs = c(~mean(., na.rm = T), ~sd(., na.rm = T)),
+        .funs = c(~ mean(., na.rm = T), ~ sd(., na.rm = T)),
         .vars = c("x", "y")
       )
   )

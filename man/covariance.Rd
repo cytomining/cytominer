@@ -20,13 +20,12 @@ data frame of 1 row comprising vectorized covariance matrix.
 \examples{
 
 population <- tibble::tibble(
-   x = rnorm(30),
-   y = rnorm(30),
-   z = rnorm(30)
- )
+  x = rnorm(30),
+  y = rnorm(30),
+  z = rnorm(30)
+)
 
 variables <- c("x", "y")
 
 covariance(population, variables)
-
 }

@@ -15,13 +15,12 @@ utils::globalVariables(c(".", "i"))
 #'
 #' @examples
 #' sample <- tibble::tibble(
-#'    AreaShape_MinorAxisLength = c(10, 12, 15, 16, 8, 8, 7, 7, 13, 18),
-#'    AreaShape_MajorAxisLength = c(35, 18, 22, 16, 9, 20, 11, 15, 18, 42),
-#'    AreaShape_Area = c(245, 151, 231, 179, 50, 112, 53, 73, 164, 529)
-#'  )
+#'   AreaShape_MinorAxisLength = c(10, 12, 15, 16, 8, 8, 7, 7, 13, 18),
+#'   AreaShape_MajorAxisLength = c(35, 18, 22, 16, 9, 20, 11, 15, 18, 42),
+#'   AreaShape_Area = c(245, 151, 231, 179, 50, 112, 53, 73, 164, 529)
+#' )
 #' variables <- c("AreaShape_MinorAxisLength", "AreaShape_MajorAxisLength", "AreaShape_Area")
 #' svd_entropy(variables, sample, cores = 1)
-#'
 #' @export
 svd_entropy <- function(variables, sample, cores = NULL) {
   doParallel::registerDoParallel(cores = cores)
@@ -57,8 +56,8 @@ svd_entropy <- function(variables, sample, cores = NULL) {
     crossprod(., .) %>%
     entropy_score()
 
-  dplyr::tibble(variable = variables,
-                svd_entropy = entropy_scores)
-
+  dplyr::tibble(
+    variable = variables,
+    svd_entropy = entropy_scores
+  )
 }
-

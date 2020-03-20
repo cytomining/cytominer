@@ -1,7 +1,8 @@
 context("extract_subpopulations")
 
 test_that(
-  "`extract_subpopulations` extracts and assigns each point to a subpopulation", {
+  "`extract_subpopulations` extracts and assigns each point to a subpopulation",
+  {
     set.seed(24)
 
     # generate two data frames corresponding to treatment and control
@@ -23,7 +24,8 @@ test_that(
     reference <- data.frame(reference, Metadata_id = 1:nrow(reference))
 
     variables <- grep(
-      colnames(population), pattern = "Metadata_", inv = TRUE,
+      colnames(population),
+      pattern = "Metadata_", inv = TRUE,
       value = TRUE
     )
 
@@ -50,10 +52,12 @@ test_that(
 
       apply(
         dist_to_clusters, 1,
-        function(x) tibble::tibble(
+        function(x) {
+          tibble::tibble(
             dist_to_cluster = min(x),
             cluster_id = which.min(x)
           )
+        }
       ) %>%
         dplyr::bind_rows()
     }

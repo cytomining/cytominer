@@ -23,7 +23,7 @@ test_that("`whiten` whiten data", {
       as.matrix() %>%
       unname(),
     diag(rep(1, 3)),
-    tolerance = 10 ^ -10
+    tolerance = 10^-10
   )
 
   DBI::dbDisconnect(db)

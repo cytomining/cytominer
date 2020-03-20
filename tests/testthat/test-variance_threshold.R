@@ -1,7 +1,8 @@
 context("variance_threshold")
 
 test_that(
-  "`variance_threshold` selects variables that have non-trivial variance", {
+  "`variance_threshold` selects variables that have non-trivial variance",
+  {
     data <- data.frame(x = rnorm(30), y = 1)
 
     db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")

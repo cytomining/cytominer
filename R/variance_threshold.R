@@ -12,12 +12,11 @@
 #'
 #' @examples
 #' sample <- tibble::tibble(
-#'    AreaShape_Area = c(10, 12, 15, 16, 8, 8, 7, 7, 13, 18),
-#'    AreaShape_Euler = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-#'  )
+#'   AreaShape_Area = c(10, 12, 15, 16, 8, 8, 7, 7, 13, 18),
+#'   AreaShape_Euler = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+#' )
 #' variables <- c("AreaShape_Area", "AreaShape_Euler")
 #' variance_threshold(variables, sample)
-#'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @export
@@ -30,7 +29,9 @@ variance_threshold <- function(variables, sample) {
     ratio <- apply(x, 2, function(data) {
       t <- table(data[!is.na(data)])
 
-      if (length(t) <= 1) return(0)
+      if (length(t) <= 1) {
+        return(0)
+      }
 
       return(max(t, na.rm = TRUE) / max(t[-which.max(t)], na.rm = TRUE))
     })

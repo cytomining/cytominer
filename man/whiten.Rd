@@ -23,11 +23,10 @@ transformed data of the same class as \code{population}.
 }
 \examples{
 population <- tibble::tibble(
-   Metadata_Well = c("A01", "A02", "B01", "B02"),
-   Intensity_DNA = c(8, 20, 12, 32),
-   Texture_DNA = c(5, 2, 43, 13)
- )
+  Metadata_Well = c("A01", "A02", "B01", "B02"),
+  Intensity_DNA = c(8, 20, 12, 32),
+  Texture_DNA = c(5, 2, 43, 13)
+)
 variables <- c("Intensity_DNA", "Texture_DNA")
 whiten(population, variables, population, 0.01)
-
 }

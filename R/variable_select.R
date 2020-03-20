@@ -17,9 +17,9 @@
 #'
 #' suppressMessages(suppressWarnings(library(magrittr)))
 #' population <- tibble::tibble(
-#'    x = rnorm(100),
-#'    y = rnorm(100)/1000
-#'  )
+#'   x = rnorm(100),
+#'   y = rnorm(100) / 1000
+#' )
 #'
 #' population %<>% dplyr::mutate(z = x + rnorm(100) / 10)
 #'
@@ -38,7 +38,6 @@
 #' futile.logger::flog.threshold(futile.logger::ERROR)
 #'
 #' variable_select(population, variables, sample, operation) %>% head()
-#'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @export

@@ -18,21 +18,22 @@ utils::globalVariables(c("type", "cluster_id"))
 
 #' @examples
 #' data <- tibble::tibble(
-#'    Metadata_group = c("control", "control", "control", "control",
-#'                       "experiment", "experiment", "experiment", "experiment"),
-#'    AreaShape_Area = c(10, 12, NA, 16, 8, 8, 7, 7),
-#'    AreaShape_Length = c(2, 3, NA, NA, 4, 5, 1, 5)
+#'   Metadata_group = c(
+#'     "control", "control", "control", "control",
+#'     "experiment", "experiment", "experiment", "experiment"
+#'   ),
+#'   AreaShape_Area = c(10, 12, NA, 16, 8, 8, 7, 7),
+#'   AreaShape_Length = c(2, 3, NA, NA, 4, 5, 1, 5)
 #' )
-#' variables <- c('AreaShape_Area','AreaShape_Length')
-#' population <-  dplyr::filter(data, Metadata_group == "experiment")
+#' variables <- c("AreaShape_Area", "AreaShape_Length")
+#' population <- dplyr::filter(data, Metadata_group == "experiment")
 #' reference <- dplyr::filter(data, Metadata_group == "control")
 #' extract_subpopulations(
-#'    population = population,
-#'    reference = reference,
-#'    variables = variables,
-#'    k = 3
+#'   population = population,
+#'   reference = reference,
+#'   variables = variables,
+#'   k = 3
 #' )
-#'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @importFrom stats setNames
@@ -74,7 +75,7 @@ extract_subpopulations <-
       dplyr::bind_cols(
         purrr::map_df(
           1:nrow(data),
-          ~dplyr::tibble(
+          ~ dplyr::tibble(
             dist_to_cluster =
               find_dist_to_cluster(data[.x, ])
           )
