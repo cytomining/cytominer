@@ -10,14 +10,13 @@
 #' @return transformed data of the same class as \code{population}.
 #'
 #' @examples
-#' population <- tibble::data_frame(
-#'    Metadata_Well = c("A01", "A02", "B01", "B02"),
-#'    Intensity_DNA = c(8, 20, 12, 32),
-#'    Texture_DNA = c(5, 2, 43, 13)
-#'  )
+#' population <- tibble::tibble(
+#'   Metadata_Well = c("A01", "A02", "B01", "B02"),
+#'   Intensity_DNA = c(8, 20, 12, 32),
+#'   Texture_DNA = c(5, 2, 43, 13)
+#' )
 #' variables <- c("Intensity_DNA", "Texture_DNA")
 #' whiten(population, variables, population, 0.01)
-#'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @importFrom rlang :=
@@ -28,14 +27,14 @@ whiten <- function(population, variables, sample, regularization_param = 1) {
     dplyr::collect()
 
   sample_data <- sample %>%
-    dplyr::select(dplyr::one_of(variables)) %>%
+    dplyr::select(variables) %>%
     as.matrix()
 
   population %<>%
     dplyr::collect()
 
   population_data <- population %>%
-    dplyr::select(dplyr::one_of(variables)) %>%
+    dplyr::select(variables) %>%
     as.matrix()
 
   # mean of sample
@@ -48,7 +47,7 @@ whiten <- function(population, variables, sample, regularization_param = 1) {
   eig_decomp <- eigen(sample_cov)
 
   # compute whitening transformation, which is {\Lambda + \epsilon}^.5 x E'
-  W <- diag((eig_decomp$values + regularization_param) ^ -0.5) %*%
+  W <- diag((eig_decomp$values + regularization_param)^-0.5) %*%
     t(eig_decomp$vectors)
 
   # apply whitening transformation, which is (X - \mu) * W'

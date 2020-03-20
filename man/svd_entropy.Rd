@@ -21,12 +21,11 @@ Higher values indicate more information.
 \code{svd_entropy} measures the contribution of each feature in decreasing the data entropy.
 }
 \examples{
-sample <- tibble::data_frame(
-   AreaShape_MinorAxisLength = c(10, 12, 15, 16, 8, 8, 7, 7, 13, 18),
-   AreaShape_MajorAxisLength = c(35, 18, 22, 16, 9, 20, 11, 15, 18, 42),
-   AreaShape_Area = c(245, 151, 231, 179, 50, 112, 53, 73, 164, 529)
- )
+sample <- tibble::tibble(
+  AreaShape_MinorAxisLength = c(10, 12, 15, 16, 8, 8, 7, 7, 13, 18),
+  AreaShape_MajorAxisLength = c(35, 18, 22, 16, 9, 20, 11, 15, 18, 42),
+  AreaShape_Area = c(245, 151, 231, 179, 50, 112, 53, 73, 164, 529)
+)
 variables <- c("AreaShape_MinorAxisLength", "AreaShape_MajorAxisLength", "AreaShape_Area")
 svd_entropy(variables, sample, cores = 1)
-
 }

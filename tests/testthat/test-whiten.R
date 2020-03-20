@@ -17,13 +17,13 @@ test_that("`whiten` whiten data", {
       sample = data,
       regularization_param = 0
     ) %>%
-      dplyr::select(dplyr::one_of(c("PC1", "PC2", "PC3"))) %>%
+      dplyr::select(c("PC1", "PC2", "PC3")) %>%
       dplyr::collect() %>%
       cov() %>%
       as.matrix() %>%
       unname(),
     diag(rep(1, 3)),
-    tolerance = 10 ^ -10
+    tolerance = 10^-10
   )
 
   DBI::dbDisconnect(db)

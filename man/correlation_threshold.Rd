@@ -4,7 +4,8 @@
 \alias{correlation_threshold}
 \title{Remove redundant variables.}
 \usage{
-correlation_threshold(variables, sample, cutoff = 0.9, method = "pearson")
+correlation_threshold(variables, sample, cutoff = 0.9,
+  method = "pearson")
 }
 \arguments{
 \item{variables}{character vector specifying observation variables.}
@@ -27,10 +28,10 @@ character vector specifying observation variables to be excluded.
 \examples{
 
 suppressMessages(suppressWarnings(library(magrittr)))
-sample <- tibble::data_frame(
-   x = rnorm(30),
-   y = rnorm(30)/1000
- )
+sample <- tibble::tibble(
+  x = rnorm(30),
+  y = rnorm(30) / 1000
+)
 
 sample \%<>\% dplyr::mutate(z = x + rnorm(30) / 10)
 variables <- c("x", "y", "z")
@@ -41,5 +42,4 @@ cor(sample)
 # `x` and `z` are highly correlated; one of them will be removed
 
 correlation_threshold(variables, sample)
-
 }

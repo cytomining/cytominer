@@ -8,7 +8,8 @@ test_that("`svd_entropy` measures singular values entropy", {
 
   Y <- svd_entropy(c("X1", "X2", "X3"), X, cores = 1)
 
-  expect_equal(Y[Y$variable == "X3", ]$svd_entropy,
-               -sum(a * log10(a)) + sum(b * log10(b)))
-
+  expect_equal(
+    Y[Y$variable == "X3", ]$svd_entropy,
+    -sum(a * log10(a)) + sum(b * log10(b))
+  )
 })

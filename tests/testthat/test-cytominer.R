@@ -58,7 +58,7 @@ test_that("cytominer can process dataset with a normalized schema", {
     stringr::str_subset("^m_")
 
   measurements %<>%
-    dplyr::select(dplyr::one_of(c(groupings, qualities, variables)))
+    dplyr::select(c(groupings, qualities, variables))
 
   # data cleaning
   debris_removed <-
@@ -237,7 +237,7 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
   variables <- sample(variables, 10)
 
   measurements %<>%
-    dplyr::select(dplyr::one_of(c(groupings, qualities, variables)))
+    dplyr::select(c(groupings, qualities, variables))
 
   # data cleaning
   debris_removed <-

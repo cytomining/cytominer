@@ -18,17 +18,18 @@
 #'
 #' @examples
 #' suppressMessages(suppressWarnings(library(magrittr)))
-#' population <- tibble::data_frame(
-#'    Metadata_group = c("control", "control", "control", "control",
-#'                       "experiment", "experiment", "experiment", "experiment"),
-#'    Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
-#'    AreaShape_Area = c(10, 12, 15, 16, 8, 8, 7, 7)
-#'  )
-#' variables <- c('AreaShape_Area')
-#' strata <- c('Metadata_batch')
-#' sample <- population %>% dplyr::filter(Metadata_group == 'control')
+#' population <- tibble::tibble(
+#'   Metadata_group = c(
+#'     "control", "control", "control", "control",
+#'     "experiment", "experiment", "experiment", "experiment"
+#'   ),
+#'   Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
+#'   AreaShape_Area = c(10, 12, 15, 16, 8, 8, 7, 7)
+#' )
+#' variables <- c("AreaShape_Area")
+#' strata <- c("Metadata_batch")
+#' sample <- population %>% dplyr::filter(Metadata_group == "control")
 #' cytominer::normalize(population, variables, strata, sample, operation = "standardize")
-#'
 #' @export
 normalize <- function(population, variables, strata, sample,
                       operation = "standardize", ...) {
@@ -41,15 +42,15 @@ normalize <- function(population, variables, strata, sample,
       ))
 
       dplyr::bind_cols(
-        data %>% dplyr::select_(~-dplyr::one_of(variables)),
+        data %>% dplyr::select(-variables),
         data %>%
-          dplyr::select_(.dots = variables) %>%
+          dplyr::select(variables) %>%
           as.matrix() %>%
           base::scale(
             center = as.matrix(location),
             scale = as.matrix(dispersion)
           ) %>%
-          tibble::as_data_frame()
+          tibble::as_tibble()
       )
     } else {
       futile.logger::flog.debug(paste0(
@@ -66,7 +67,7 @@ normalize <- function(population, variables, strata, sample,
         s <- dispersion[[variable]]
 
         data %<>%
-          dplyr::mutate(!! x := ((!! x) - m) / s)
+          dplyr::mutate(!!x := ((!!x) - m) / s)
       }
 
       data
@@ -76,15 +77,13 @@ normalize <- function(population, variables, strata, sample,
   sample_is_df <- is.data.frame(sample)
 
   if (operation == "robustize") {
-    location <- dplyr::funs(median(., na.rm = TRUE))
+    location <- ~ median(., na.rm = TRUE)
 
-    dispersion <- dplyr::funs(mad(., na.rm = TRUE))
-
+    dispersion <- ~ mad(., na.rm = TRUE)
   } else if (operation == "standardize") {
-    location <- dplyr::funs(mean(., na.rm = TRUE))
+    location <- ~ mean(., na.rm = TRUE)
 
-    dispersion <- dplyr::funs(sd(., na.rm = TRUE))
-
+    dispersion <- ~ sd(., na.rm = TRUE)
   } else {
     error <- paste0("undefined operation `", operation, "'")
 
@@ -99,7 +98,7 @@ normalize <- function(population, variables, strata, sample,
 
   groups <-
     sample %>%
-    dplyr::select_(.dots = strata) %>%
+    dplyr::select(strata) %>%
     dplyr::distinct() %>%
     dplyr::collect()
 

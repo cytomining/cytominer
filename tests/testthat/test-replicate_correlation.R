@@ -14,7 +14,7 @@ test_that(paste0(
   z2 <- z1 + rnorm(10) / 1
 
   correlations <-
-    tibble::data_frame(
+    tibble::tibble(
       variable = c("x", "y", "z"),
       median = c(
         cor(x1, x2, method = "pearson"),
@@ -24,7 +24,7 @@ test_that(paste0(
     )
 
   correlations_batched <-
-    tibble::data_frame(
+    tibble::tibble(
       variable = c("x", "y", "z"),
       b1 = c(
         cor(x1[1:5], x2[1:5], method = "pearson"),
@@ -68,8 +68,8 @@ test_that(paste0(
       replicates = 2,
       cores = 2
     ) %>%
-      dplyr::select_(.dots = c("variable", "median")) %>%
-      dplyr::arrange_(.dots = c("variable")) %>%
+      dplyr::select(variable, median) %>%
+      dplyr::arrange(variable) %>%
       as.data.frame(),
     correlations %>%
       as.data.frame(),
@@ -85,8 +85,8 @@ test_that(paste0(
       replicate_by = "replicate_id",
       cores = 2
     ) %>%
-      dplyr::select_(.dots = c("variable", "median")) %>%
-      dplyr::arrange_(.dots = c("variable")) %>%
+      dplyr::select(variable, median) %>%
+      dplyr::arrange(variable) %>%
       as.data.frame(),
     correlations %>%
       as.data.frame(),
@@ -103,7 +103,7 @@ test_that(paste0(
       replicate_by = "replicate_id",
       cores = 2
     ) %>%
-      dplyr::arrange_(.dots = c("variable")) %>%
+      dplyr::arrange(variable) %>%
       as.data.frame(),
     correlations_batched %>%
       as.data.frame(),

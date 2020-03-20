@@ -29,5 +29,4 @@ the elements of the random matrix are drawn from
 }
 \examples{
 generate_component_matrix(500, 100, 0.3)
-
 }

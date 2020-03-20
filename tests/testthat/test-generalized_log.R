@@ -10,7 +10,7 @@ test_that("`generalized_log` generalized_logs data", {
 
   data <- dplyr::copy_to(db, data)
 
-  glog <- function(x, c=1) log((x + (x ^ 2 + c ^ 2) ^ 0.5) / 2)
+  glog <- function(x, c = 1) log((x + (x^2 + c^2)^0.5) / 2)
 
   expect_equal(
     generalized_log(

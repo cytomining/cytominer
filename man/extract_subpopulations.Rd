@@ -28,20 +28,21 @@ population sets and reports the frequency of points in each cluster for the
 two sets.
 }
 \examples{
-data <- tibble::data_frame(
-   Metadata_group = c("control", "control", "control", "control",
-                      "experiment", "experiment", "experiment", "experiment"),
-   AreaShape_Area = c(10, 12, NA, 16, 8, 8, 7, 7),
-   AreaShape_Length = c(2, 3, NA, NA, 4, 5, 1, 5)
+data <- tibble::tibble(
+  Metadata_group = c(
+    "control", "control", "control", "control",
+    "experiment", "experiment", "experiment", "experiment"
+  ),
+  AreaShape_Area = c(10, 12, NA, 16, 8, 8, 7, 7),
+  AreaShape_Length = c(2, 3, NA, NA, 4, 5, 1, 5)
 )
-variables <- c('AreaShape_Area','AreaShape_Length')
-population <-  dplyr::filter(data, Metadata_group == "experiment")
+variables <- c("AreaShape_Area", "AreaShape_Length")
+population <- dplyr::filter(data, Metadata_group == "experiment")
 reference <- dplyr::filter(data, Metadata_group == "control")
 extract_subpopulations(
-   population = population,
-   reference = reference,
-   variables = variables,
-   k = 3
+  population = population,
+  reference = reference,
+  variables = variables,
+  k = 3
 )
-
 }

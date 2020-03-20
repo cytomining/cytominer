@@ -20,11 +20,10 @@ transformed data of the same class as \code{population}.
 \code{generalized_log} transforms specified observation variables using \eqn{x = log( (x + sqrt(x ^ 2 + offset ^ 2 )) / 2 )}.
 }
 \examples{
-population <- tibble::data_frame(
-   Metadata_Well = c("A01", "A02", "B01", "B02"),
-   Intensity_DNA = c(8, 20, 12, 32)
- )
+population <- tibble::tibble(
+  Metadata_Well = c("A01", "A02", "B01", "B02"),
+  Intensity_DNA = c(8, 20, 12, 32)
+)
 variables <- c("Intensity_DNA")
 generalized_log(population, variables)
-
 }
