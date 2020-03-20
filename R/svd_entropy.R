@@ -25,25 +25,6 @@ utils::globalVariables(c(".", "i"))
 svd_entropy <- function(variables, sample, cores = NULL) {
   doParallel::registerDoParallel(cores = cores)
 
-  singular_value_entropy <- function(A) {
-    singular_values <- svd(A, 0, 0)$d
-
-    # normalize
-    singular_values <- singular_values / sum(singular_values)
-
-    # entropy
-    -sum(singular_values * log10(singular_values))
-  }
-
-  entropy_score <- function(data) {
-
-    # calculate contribution of each features to the entropy by leaving that feature out
-    sv_entropy <-
-      foreach::foreach(i = 1:ncol(data), .combine = c) %dopar% singular_value_entropy(data[-i, -i])
-
-    singular_value_entropy(data) - sv_entropy
-  }
-
   sample %<>%
     dplyr::select(variables) %>%
     dplyr::collect()
@@ -56,8 +37,30 @@ svd_entropy <- function(variables, sample, cores = NULL) {
     crossprod(., .) %>%
     entropy_score()
 
+  doParallel::stopImplicitCluster()
+
   dplyr::tibble(
     variable = variables,
     svd_entropy = entropy_scores
   )
 }
+
+singular_value_entropy <- function(A) {
+  singular_values <- svd(A, 0, 0)$d
+
+  # normalize
+  singular_values <- singular_values / sum(singular_values)
+
+  # entropy
+  -sum(singular_values * log10(singular_values))
+}
+
+entropy_score <- function(data) {
+
+  # calculate contribution of each features to the entropy by leaving that feature out
+  sv_entropy <-
+    foreach::foreach(i = 1:ncol(data), .combine = c) %dopar% singular_value_entropy(data[-i, -i])
+
+  singular_value_entropy(data) - sv_entropy
+}
+
