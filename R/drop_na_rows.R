@@ -1,4 +1,4 @@
-utils::globalVariables(c("key", "value", "rowname_temp"))
+utils::globalVariables(c("key", "value", "rowname_temp", "coalesce"))
 #' Drop rows that are \code{NA} in all variables.
 #'
 #' \code{drop_na_rows} drops rows that are \code{NA} in all variables.
