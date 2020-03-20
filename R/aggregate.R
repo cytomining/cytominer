@@ -74,6 +74,9 @@ aggregate <- function(population, variables, strata, operation="mean",
 
   # In dplyr::summarize, function names will be included only if `.funs`` has
   # names or multiple inputs
+
+  # median has special handling because of this issue
+  # https://github.com/tidyverse/dbplyr/issues/357#issuecomment-548850817
   if (length(stringr::str_split(operation, "\\+")[[1]]) == 1) {
     if (!is.data.frame(population)) {
       operation <- ifelse(operation == "median",
@@ -102,12 +105,6 @@ aggregate <- function(population, variables, strata, operation="mean",
     }
   }
 
-  # Once this issue is fixed
-  # https://github.com/tidyverse/dplyr/issues/3352
-  # change this
-  # dplyr::summarise_at(.funs = aggregating_function, .vars = variables)
-  # to this
-  # dplyr::summarise_at(.funs = aggregating_function, .vars = variables, na.rm = T)
   population %>%
     dplyr::group_by(!!!strata) %>%
     dplyr::summarise_at(.funs = aggregating_function, .vars = variables) %>%
