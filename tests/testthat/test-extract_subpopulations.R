@@ -50,7 +50,7 @@ test_that(
 
       apply(
         dist_to_clusters, 1,
-        function(x) tibble::data_frame(
+        function(x) tibble::tibble(
             dist_to_cluster = min(x),
             cluster_id = which.min(x)
           )
@@ -97,7 +97,7 @@ test_that(
       subpops$subpop_profiles %>%
         dplyr::select(-cluster_id) %>%
         dplyr::summarise_all(sum),
-      dplyr::frame_data(
+      dplyr::tribble(
         ~population, ~reference,
         1, 1
       )

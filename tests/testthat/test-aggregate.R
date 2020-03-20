@@ -25,7 +25,7 @@ test_that("`aggregate` aggregates data", {
     data %>%
       dplyr::group_by(g) %>%
       dplyr::summarise_at(
-        .funs = dplyr::funs(median),
+        .funs = ~MEDIAN(.),
         .vars = c("x", "y")
       )
   )
@@ -41,7 +41,7 @@ test_that("`aggregate` aggregates data", {
     data %>%
       dplyr::group_by(g) %>%
       dplyr::summarise_at(
-        .funs = dplyr::funs(median),
+        .funs = ~MEDIAN(.),
         .vars = c("x", "y")
       )
   )
@@ -57,7 +57,7 @@ test_that("`aggregate` aggregates data", {
     data %>%
       dplyr::group_by(g) %>%
       dplyr::summarise_at(
-        .funs = c(dplyr::funs(mean(., na.rm = T)), dplyr::funs(sd(., na.rm = T))),
+        .funs = c(~mean(., na.rm = T), ~sd(., na.rm = T)),
         .vars = c("x", "y")
       )
   )
@@ -79,7 +79,7 @@ test_that("`aggregate` aggregates data", {
     ) %>%
       dplyr::filter(g == "a") %>%
       dplyr::select(-g),
-    tibble::data_frame(
+    tibble::tibble(
       x__x = cov_a[1, 1],
       y__x = cov_a[1, 2],
       y__y = cov_a[2, 2]
