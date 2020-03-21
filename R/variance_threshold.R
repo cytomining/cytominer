@@ -24,7 +24,11 @@ variance_threshold <- function(variables, sample) {
   .variables <- rlang::syms(variables)
 
   near_zero_variance <- function(x) {
-    if (is.null(dim(x))) x <- matrix(x, ncol = 1)
+
+    # this is no longer needed because dplyr::select
+    # will always pass a data frame, even if a single
+    # variable
+    # if (is.null(dim(x))) x <- matrix(x, ncol = 1)
 
     ratio <- apply(x, 2, function(data) {
       t <- table(data[!is.na(data)])
