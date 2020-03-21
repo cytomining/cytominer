@@ -76,6 +76,15 @@ normalize <- function(population, variables, strata, sample,
 
   sample_is_df <- is.data.frame(sample)
 
+  if (operation == "robustize" & !sample_is_df) {
+    futile.logger::flog.info("'robustize' requires casting to data.frame which may increase memory requirements.")
+
+    population %<>% dplyr::collect()
+
+    sample %<>% dplyr::collect()
+
+  }
+
   if (operation == "robustize") {
     location <- ~ median(., na.rm = TRUE)
 
