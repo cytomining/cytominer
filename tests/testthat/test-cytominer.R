@@ -137,6 +137,26 @@ test_that("cytominer can process dataset with a normalized schema", {
       sample = aggregated
     ) %>%
     dplyr::collect()
+
+  selected <-
+    variable_select(
+      population = transformed,
+      variables = variables,
+      operation = "variance_threshold",
+      sample = aggregated
+    ) %>%
+    dplyr::collect()
+
+  # this should go in a unit test for `variable_select`
+  expect_error(
+    variable_select(
+      population = transformed,
+      variables = variables,
+      sample = aggregated,
+      operation = "dummy"
+    ),
+    paste0("undefined operation 'dummy'")
+  )
 })
 
 test_that("cytominer can process dataset with a CellProfiler schema", {
@@ -316,6 +336,15 @@ test_that("cytominer can process dataset with a CellProfiler schema", {
       variables = variables,
       sample = aggregated,
       operation = "correlation_threshold"
+    ) %>%
+    dplyr::collect()
+
+  selected <-
+    variable_select(
+      population = transformed,
+      variables = variables,
+      sample = aggregated,
+      operation = "variance_threshold"
     ) %>%
     dplyr::collect()
 
