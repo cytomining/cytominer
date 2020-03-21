@@ -64,7 +64,7 @@ aggregate <- function(population, variables, strata, operation = "mean",
     }) %>%
     any()
   ) {
-    error <- paste0("undefined operation `", operation, "'")
+    error <- paste0("undefined operation '", operation, "'")
 
     futile.logger::flog.error(msg = error)
 
