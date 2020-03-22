@@ -60,6 +60,7 @@ test_that(paste0(
     replicate_id,
     batch
   )
+
   expect_equal(
     replicate_correlation(
       sample = data,
@@ -83,7 +84,7 @@ test_that(paste0(
       strata = c("cpd"),
       replicates = 2,
       replicate_by = "replicate_id",
-      cores = 2
+      cores = 1
     ) %>%
       dplyr::select(variable, median) %>%
       dplyr::arrange(variable) %>%
@@ -101,7 +102,7 @@ test_that(paste0(
       replicates = 2,
       split_by = "batch",
       replicate_by = "replicate_id",
-      cores = 2
+      cores = 1
     ) %>%
       dplyr::arrange(variable) %>%
       as.data.frame(),
