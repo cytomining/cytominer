@@ -115,6 +115,24 @@ test_that("cytominer can process dataset with a normalized schema", {
       variables = variables
     )
 
+  transformed_whiten <-
+    transform(
+      population = cleaned,
+      sample = cleaned,
+      variables = variables,
+      operation = "whiten"
+    )
+
+  # this should go in a unit test for `transform`
+  expect_error(
+    transform(
+      population = transformed,
+      variables = variables,
+      operation = "dummy"
+    ),
+    paste0("undefined operation 'dummy'")
+  )
+
   # aggregation (mean by default)
   aggregated <-
     aggregate(
@@ -157,6 +175,26 @@ test_that("cytominer can process dataset with a normalized schema", {
     ),
     paste0("undefined operation 'dummy'")
   )
+
+  # importance <-
+  #   variable_importance(
+  #     sample = transformed,
+  #     variables = variables,
+  #     strata = groupings,
+  #     replicates = 2,
+  #     operation = "replicate_correlation"
+  #   )
+
+  # this should go in a unit test for `variable_importance`
+  expect_error(
+    variable_importance(
+      sample = transformed,
+      variables = variables,
+      operation = "dummy"
+    ),
+    paste0("undefined operation 'dummy'")
+  )
+
 })
 
 test_that("cytominer can process dataset with a CellProfiler schema", {
