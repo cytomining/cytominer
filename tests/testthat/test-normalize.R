@@ -94,6 +94,17 @@ test_that("`standardize' standardizes data", {
     .Machine$double.eps * 1000000
   )
 
+  expect_error(
+    normalize(
+      population = data %>% dplyr::collect(),
+      variables = c("x", "y"),
+      strata = c("g1", "g2"),
+      sample = data,
+      operation = "dummy"
+    ),
+    paste0("undefined operation 'dummy'")
+  )
+
   DBI::dbDisconnect(db)
 })
 
