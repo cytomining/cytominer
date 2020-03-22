@@ -194,7 +194,6 @@ test_that("cytominer can process dataset with a normalized schema", {
     ),
     paste0("undefined operation 'dummy'")
   )
-
 })
 
 test_that("cytominer can process dataset with a CellProfiler schema", {

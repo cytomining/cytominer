@@ -4,8 +4,9 @@ test_that("`whiten` whiten data", {
   data <- data.frame(id = 1:10, x = rnorm(10), y = rnorm(10), z = rnorm(10))
 
   db <- DBI::dbConnect(RSQLite::SQLite(),
-                       ":memory:",
-                       loadable.extensions = TRUE)
+    ":memory:",
+    loadable.extensions = TRUE
+  )
 
   data <- dplyr::copy_to(db, data)
 
