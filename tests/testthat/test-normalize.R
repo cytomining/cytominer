@@ -40,8 +40,9 @@ test_that("`standardize' standardizes data", {
     dplyr::rename(x = V3, y = V4)
 
   db <- DBI::dbConnect(RSQLite::SQLite(),
-                       ":memory:",
-                       loadable.extensions = TRUE)
+    ":memory:",
+    loadable.extensions = TRUE
+  )
 
   data <- dplyr::copy_to(db, data)
 
@@ -126,7 +127,6 @@ test_that("`robustize' standardizes data", {
     mad_vec <- apply(m, 2, mad, na.rm = TRUE)
 
     cbind(scale(m, median_vec, mad_vec), m) %>% as.data.frame()
-
   }
 
   data <-
@@ -154,8 +154,9 @@ test_that("`robustize' standardizes data", {
     dplyr::rename(x = V3, y = V4)
 
   db <- DBI::dbConnect(RSQLite::SQLite(),
-                       ":memory:",
-                       loadable.extensions = TRUE)
+    ":memory:",
+    loadable.extensions = TRUE
+  )
 
   data <- dplyr::copy_to(db, data)
 

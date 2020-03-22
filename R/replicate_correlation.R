@@ -89,7 +89,7 @@ replicate_correlation <-
     }
 
     result <-
-    foreach::foreach(variable = variables, .combine = rbind) %dopar%
+      foreach::foreach(variable = variables, .combine = rbind) %dopar%
       {
         sample %>%
           split(.[split_by]) %>%

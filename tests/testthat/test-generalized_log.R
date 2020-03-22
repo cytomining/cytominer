@@ -4,8 +4,9 @@ test_that("`generalized_log` generalized_logs data", {
   data <- data.frame(x = rnorm(5), y = rnorm(5))
 
   db <- DBI::dbConnect(RSQLite::SQLite(),
-                       ":memory:",
-                       loadable.extensions = TRUE)
+    ":memory:",
+    loadable.extensions = TRUE
+  )
 
   data <- dplyr::copy_to(db, data)
 

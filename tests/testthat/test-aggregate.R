@@ -8,8 +8,9 @@ test_that("`aggregate` aggregates data", {
     )
 
   db <- DBI::dbConnect(RSQLite::SQLite(),
-                       ":memory:",
-                       loadable.extensions = TRUE)
+    ":memory:",
+    loadable.extensions = TRUE
+  )
 
   data <- dplyr::copy_to(db, data)
 

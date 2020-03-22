@@ -83,7 +83,6 @@ normalize <- function(population, variables, strata, sample,
     population %<>% dplyr::collect()
 
     sample %<>% dplyr::collect()
-
   }
 
   if (operation == "robustize") {
