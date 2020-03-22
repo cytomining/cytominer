@@ -94,7 +94,7 @@ normalize <- function(population, variables, strata, sample,
 
     dispersion <- ~ sd(., na.rm = TRUE)
   } else {
-    error <- paste0("undefined operation `", operation, "'")
+    error <- paste0("undefined operation '", operation, "'")
 
     futile.logger::flog.error(msg = error)
 
