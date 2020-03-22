@@ -26,7 +26,7 @@ transform <- function(population, variables,
   } else if (operation == "whiten") {
     whiten(population, variables, ...)
   } else {
-    error <- paste0("undefined operation `", operation, "'")
+    error <- paste0("undefined operation '", operation, "'")
 
     futile.logger::flog.error(msg = error)
 
