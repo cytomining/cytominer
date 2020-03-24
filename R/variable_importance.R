@@ -54,7 +54,7 @@ variable_importance <- function(sample, variables,
   if (operation == "replicate_correlation") {
     importance <- replicate_correlation(sample, variables, ...)
   } else {
-    error <- paste0("undefined operation `", operation, "'")
+    error <- paste0("undefined operation '", operation, "'")
 
     futile.logger::flog.error(msg = error)
 

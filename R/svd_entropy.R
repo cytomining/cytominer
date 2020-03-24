@@ -63,4 +63,3 @@ entropy_score <- function(data) {
 
   singular_value_entropy(data) - sv_entropy
 }
-

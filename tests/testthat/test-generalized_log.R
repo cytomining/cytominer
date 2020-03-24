@@ -3,10 +3,10 @@ context("generalized_log")
 test_that("`generalized_log` generalized_logs data", {
   data <- data.frame(x = rnorm(5), y = rnorm(5))
 
-  db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-
-  # https://github.com/tidyverse/dplyr/issues/3093
-  RSQLite::initExtension(db)
+  db <- DBI::dbConnect(RSQLite::SQLite(),
+    ":memory:",
+    loadable.extensions = TRUE
+  )
 
   data <- dplyr::copy_to(db, data)
 

@@ -50,7 +50,7 @@ variable_select <- function(population, variables, sample = NULL,
   } else if (operation == "drop_na_columns") {
     excluded <- drop_na_columns(population, variables, ...)
   } else {
-    error <- paste0("undefined operation `", operation, "'")
+    error <- paste0("undefined operation '", operation, "'")
 
     futile.logger::flog.error(msg = error)
 
