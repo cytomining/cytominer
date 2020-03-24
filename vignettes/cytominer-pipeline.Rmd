@@ -108,7 +108,6 @@ variables <-
 
 measurements %<>%
   dplyr::select(dplyr::one_of(c(groupings, qualities, variables)))
-
 ```
 
 ## Clean
@@ -180,21 +179,24 @@ na_frequency <-
 na_frequency %>%
   tidyr::gather(feature, na_count) %>%
   knitr::kable()
-
 ```
 
 As it turns out, no feature has NA in this example.
 But lets run this cleaning operation  anyway (no features will be dropped)
 
 ```{r}
-
 cleaned <-
   cytominer::variable_select(
     population = normalized,
     variables = variables,
     operation = "drop_na_columns"
 )
+
+variables <-
+  colnames(cleaned) %>%
+  stringr::str_subset("^m_")
 ```
+
 
 ## Transform
 
