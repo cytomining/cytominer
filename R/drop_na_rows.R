@@ -32,7 +32,6 @@ drop_na_rows <- function(population, variables) {
       tidyr::pivot_wider(names_from = "name", values_from = "value") %>%
       dplyr::select(-rowid) %>%
       dplyr::select(names(population))
-
   } else {
 
     # Coalesce() must have at least 2 arguments.
