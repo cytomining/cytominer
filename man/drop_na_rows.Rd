@@ -2,7 +2,7 @@
 % Please edit documentation in R/drop_na_rows.R
 \name{drop_na_rows}
 \alias{drop_na_rows}
-\title{Drop rows that are \code{NA} in all variables.}
+\title{Drop rows that are \code{NA} in all specified variables.}
 \usage{
 drop_na_rows(population, variables)
 }
@@ -12,10 +12,10 @@ drop_na_rows(population, variables)
 \item{variables}{character vector specifying observation variables.}
 }
 \value{
-\code{population} without rows that have \code{NA} in all variables.
+\code{population} without rows that have \code{NA} in all specified variables.
 }
 \description{
-\code{drop_na_rows} drops rows that are \code{NA} in all variables.
+\code{drop_na_rows} drops rows that are \code{NA} in all specified variables.
 }
 \examples{
 population <- tibble::tibble(
