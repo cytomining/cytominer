@@ -49,8 +49,7 @@ test_that(
     # find nearest cluster center and distance to it
     cluster_assign <- function(data, centers, variables, k) {
       dist_to_clusters <-
-        cross_dist(data[, variables], centers) %>%
-        unname()
+        cross_dist(data[, variables], centers)
 
       apply(
         dist_to_clusters, 1,
@@ -61,7 +60,8 @@ test_that(
           )
         }
       ) %>%
-        dplyr::bind_rows()
+        dplyr::bind_rows() %>%
+        dplyr::mutate(cluster_id = unname(cluster_id))
     }
 
     population_clusters <-
