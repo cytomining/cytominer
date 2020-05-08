@@ -89,13 +89,17 @@ test_that(
     # test whether the cluster assignment and distance to the clusters
     # are consistent with the returned cluster centers
     expect_equal(
-      subpops$population_clusters[, c("dist_to_cluster", "cluster_id")],
-      population_clusters
+      subpops$population_clusters[, c("dist_to_cluster", "cluster_id")] %>%
+        as.data.frame(),
+      population_clusters %>%
+        as.data.frame()
     )
 
     expect_equal(
-      subpops$reference_clusters[, c("dist_to_cluster", "cluster_id")],
-      reference_clusters
+      subpops$reference_clusters[, c("dist_to_cluster", "cluster_id")] %>%
+        as.data.frame(),
+      reference_clusters %>%
+        as.data.frame()
     )
 
     # test whether the summation of cluster proportions is equal to one
