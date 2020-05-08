@@ -4,8 +4,12 @@
 \alias{variable_importance}
 \title{Measure variable importance.}
 \usage{
-variable_importance(sample, variables,
-  operation = "replicate_correlation", ...)
+variable_importance(
+  sample,
+  variables,
+  operation = "replicate_correlation",
+  ...
+)
 }
 \arguments{
 \item{sample}{tbl containing sample used to estimate parameters.}

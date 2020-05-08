@@ -4,8 +4,7 @@
 \alias{correlation_threshold}
 \title{Remove redundant variables.}
 \usage{
-correlation_threshold(variables, sample, cutoff = 0.9,
-  method = "pearson")
+correlation_threshold(variables, sample, cutoff = 0.9, method = "pearson")
 }
 \arguments{
 \item{variables}{character vector specifying observation variables.}
