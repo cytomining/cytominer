@@ -4,8 +4,14 @@
 \alias{aggregate}
 \title{Aggregate data based on given grouping.}
 \usage{
-aggregate(population, variables, strata, operation = "mean",
-  univariate = TRUE, ...)
+aggregate(
+  population,
+  variables,
+  strata,
+  operation = "mean",
+  univariate = TRUE,
+  ...
+)
 }
 \arguments{
 \item{population}{tbl with grouping (metadata) and observation variables.}

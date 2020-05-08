@@ -16,7 +16,8 @@ test_that("`generalized_log` generalized_logs data", {
     generalized_log(
       population = data,
       variables = c("x", "y")
-    ) %>% dplyr::collect(),
+    ) %>% dplyr::collect() %>%
+      as.data.frame(),
     glog(data %>% dplyr::collect())
   )
 
