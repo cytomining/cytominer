@@ -70,7 +70,7 @@ extract_subpopulations <-
         as.matrix())[1, 2]
     }
 
-    data %<>% dplyr::mutate(cluster_id = kmeans_output$cluster)
+    data %<>% dplyr::mutate(cluster_id = unname(kmeans_output$cluster))
     data %<>%
       dplyr::bind_cols(
         purrr::map_df(

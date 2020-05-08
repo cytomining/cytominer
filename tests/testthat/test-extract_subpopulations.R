@@ -48,7 +48,9 @@ test_that(
 
     # find nearest cluster center and distance to it
     cluster_assign <- function(data, centers, variables, k) {
-      dist_to_clusters <- cross_dist(data[, variables], centers)
+      dist_to_clusters <-
+        cross_dist(data[, variables], centers) %>%
+        unname()
 
       apply(
         dist_to_clusters, 1,
@@ -88,12 +90,12 @@ test_that(
     # are consistent with the returned cluster centers
     expect_equal(
       subpops$population_clusters[, c("dist_to_cluster", "cluster_id")],
-      as.data.frame(population_clusters)
+      population_clusters
     )
 
     expect_equal(
       subpops$reference_clusters[, c("dist_to_cluster", "cluster_id")],
-      as.data.frame(reference_clusters)
+      reference_clusters
     )
 
     # test whether the summation of cluster proportions is equal to one
