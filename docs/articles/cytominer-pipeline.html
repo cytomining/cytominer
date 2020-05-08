@@ -85,7 +85,7 @@
       <h1 data-toc-skip>Introduction to cytominer</h1>
                         <h4 class="author">Allen Goodman and Shantanu Singh</h4>
             
-            <h4 class="date">2020-04-28</h4>
+            <h4 class="date">2020-05-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cytomining/cytominer/blob/master/vignettes/cytominer-pipeline.Rmd"><code>vignettes/cytominer-pipeline.Rmd</code></a></small>
       <div class="hidden name"><code>cytominer-pipeline.Rmd</code></div>
@@ -117,7 +117,7 @@
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">ext_metadata</span> <span class="kw">&lt;-</span>
   <span class="kw pkg">readr</span><span class="kw ns">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"metadata.csv"</span>,
                               <span class="kw">package</span> <span class="kw">=</span> <span class="st">"cytominer"</span>)) <span class="kw">%&gt;%</span>
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">rename</a></span>(<span class="kw">g_well</span> <span class="kw">=</span> <span class="no">Well</span>)</pre></body></html></div>
+  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span>(<span class="kw">g_well</span> <span class="kw">=</span> <span class="no">Well</span>)</pre></body></html></div>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   Well = col_character(),
@@ -134,7 +134,7 @@
   <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">g_well</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"A01"</span>, <span class="st">"A02"</span>, <span class="st">"A10"</span>, <span class="st">"A11"</span>))</pre></body></html></div>
 <p>How many rows does this table have?</p>
 <div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">measurements</span> <span class="kw">%&gt;%</span>
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tally.html">tally</a></span>() <span class="kw">%&gt;%</span>
+  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">tally</a></span>() <span class="kw">%&gt;%</span>
   <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</pre></body></html></div>
 <table class="table">
 <thead><tr class="header">
@@ -193,7 +193,7 @@
     <span class="kw">strata</span> <span class="kw">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"g_plate"</span>, <span class="st">"g_pattern"</span>, <span class="st">"g_channel"</span>),
     <span class="kw">sample</span> <span class="kw">=</span>
       <span class="no">na_rows_removed</span> <span class="kw">%&gt;%</span>
-      <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/join.html">inner_join</a></span>(
+      <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span>(
         <span class="no">ext_metadata</span> <span class="kw">%&gt;%</span>
           <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">Type</span> <span class="kw">==</span> <span class="st">"ctrl"</span>) <span class="kw">%&gt;%</span>
           <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">g_well</span>)
@@ -335,7 +335,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>
