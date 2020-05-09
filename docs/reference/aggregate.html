@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cytominer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9000</span>
       </span>
     </div>
 
@@ -132,7 +132,7 @@
     <p><code>aggregate</code> aggregates data based on the specified aggregation method.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>aggregate</span>(
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/stats/aggregate.html'>aggregate</a></span>(
   <span class='no'>population</span>,
   <span class='no'>variables</span>,
   <span class='no'>strata</span>,
@@ -189,7 +189,7 @@ univariate or multivariate.</p></td>
 )
 <span class='no'>variables</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"AreaShape_Area"</span>)
 <span class='no'>strata</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Metadata_group"</span>, <span class='st'>"Metadata_batch"</span>)
-<span class='fu'>aggregate</span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='no'>strata</span>, <span class='kw'>operation</span> <span class='kw'>=</span> <span class='st'>"mean"</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 4 x 3</span><span>
+<span class='fu'><a href='https://rdrr.io/r/stats/aggregate.html'>aggregate</a></span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='no'>strata</span>, <span class='kw'>operation</span> <span class='kw'>=</span> <span class='st'>"mean"</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 4 x 3</span><span>
 #&gt;   Metadata_group Metadata_batch AreaShape_Area
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> control        a                        11  
