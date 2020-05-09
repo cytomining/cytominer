@@ -4,8 +4,15 @@
 \alias{replicate_correlation}
 \title{Measure replicate correlation of variables.}
 \usage{
-replicate_correlation(sample, variables, strata, replicates,
-  replicate_by = NULL, split_by = NULL, cores = NULL)
+replicate_correlation(
+  sample,
+  variables,
+  strata,
+  replicates,
+  replicate_by = NULL,
+  split_by = NULL,
+  cores = NULL
+)
 }
 \arguments{
 \item{sample}{tbl containing sample used to estimate parameters.}

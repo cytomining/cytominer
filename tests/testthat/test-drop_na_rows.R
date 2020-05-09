@@ -12,10 +12,16 @@ test_that("`drop_na_rows` removes rows have only NAs", {
   data %<>% dplyr::filter(x != 1)
 
   drop_na_rows_data_frame <- function(population, variables) {
+    # TODO: this is a reimplementation of the code within `drop_na_rows`
+    # so this method should be probably be replaced with a different
+    # implementation
     population %>%
-      tidyr::gather(key, value, variables) %>%
+      tibble::rowid_to_column() %>%
+      tidyr::pivot_longer(variables) %>%
       dplyr::filter(!is.na(value)) %>%
-      tidyr::spread(key, value)
+      tidyr::pivot_wider(names_from = "name", values_from = "value") %>%
+      dplyr::select(-rowid) %>%
+      dplyr::select(names(population))
   }
 
   expect_equal(

@@ -1,12 +1,12 @@
-utils::globalVariables(c("key", "value", "rowname_temp", "coalesce"))
-#' Drop rows that are \code{NA} in all variables.
+utils::globalVariables(c("key", "value", "rowname_temp", "rowid", "coalesce"))
+#' Drop rows that are \code{NA} in all specified variables.
 #'
-#' \code{drop_na_rows} drops rows that are \code{NA} in all variables.
+#' \code{drop_na_rows} drops rows that are \code{NA} in all specified variables.
 #'
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param variables character vector specifying observation variables.
 #'
-#' @return \code{population} without rows that have \code{NA} in all variables.
+#' @return \code{population} without rows that have \code{NA} in all specified variables.
 #'
 #' @examples
 #' population <- tibble::tibble(
@@ -26,11 +26,12 @@ utils::globalVariables(c("key", "value", "rowname_temp", "coalesce"))
 drop_na_rows <- function(population, variables) {
   if (is.data.frame(population)) {
     population %>%
-      tibble::rownames_to_column(., var = "rowname_temp") %>%
-      tidyr::gather(key, value, variables) %>%
+      tibble::rowid_to_column() %>%
+      tidyr::pivot_longer(variables) %>%
       dplyr::filter(!is.na(value)) %>%
-      tidyr::spread(key, value) %>%
-      dplyr::select(-rowname_temp)
+      tidyr::pivot_wider(names_from = "name", values_from = "value") %>%
+      dplyr::select(-rowid) %>%
+      dplyr::select(names(population))
   } else {
 
     # Coalesce() must have at least 2 arguments.

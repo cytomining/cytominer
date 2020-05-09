@@ -11,7 +11,7 @@ test_that("cytominer can process dataset with a normalized schema", {
       package = "cytominer"
     )
 
-  db <- dplyr::src_sqlite(path = fixture)
+  db <- DBI::dbConnect(RSQLite::SQLite(), fixture)
 
   ext_metadata <-
     readr::read_csv(system.file(
@@ -194,6 +194,8 @@ test_that("cytominer can process dataset with a normalized schema", {
     ),
     paste0("undefined operation 'dummy'")
   )
+
+  DBI::dbDisconnect(db)
 })
 
 test_that("cytominer can process dataset with a CellProfiler schema", {

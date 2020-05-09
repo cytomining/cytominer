@@ -4,8 +4,13 @@
 \alias{variable_select}
 \title{Select observation variables.}
 \usage{
-variable_select(population, variables, sample = NULL,
-  operation = "variance_threshold", ...)
+variable_select(
+  population,
+  variables,
+  sample = NULL,
+  operation = "variance_threshold",
+  ...
+)
 }
 \arguments{
 \item{population}{tbl with grouping (metadata) and observation variables.}

@@ -4,8 +4,14 @@
 \alias{normalize}
 \title{Normalize observation variables.}
 \usage{
-normalize(population, variables, strata, sample,
-  operation = "standardize", ...)
+normalize(
+  population,
+  variables,
+  strata,
+  sample,
+  operation = "standardize",
+  ...
+)
 }
 \arguments{
 \item{population}{tbl with grouping (metadata) and observation variables.}

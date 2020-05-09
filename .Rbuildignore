@@ -9,3 +9,5 @@
 ^LICENSE.md$
 ^CONTRIBUTING.md$
 ^CRAN-RELEASE$
+^packrat/
+^\.Rprofile$

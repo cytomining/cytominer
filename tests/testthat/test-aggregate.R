@@ -27,7 +27,8 @@ test_that("`aggregate` aggregates data", {
       dplyr::summarise_at(
         .funs = ~ MEDIAN(.),
         .vars = c("x", "y")
-      )
+      ) %>%
+      dplyr::collect()
   )
 
   expect_equal(
@@ -43,7 +44,8 @@ test_that("`aggregate` aggregates data", {
       dplyr::summarise_at(
         .funs = ~ MEDIAN(.),
         .vars = c("x", "y")
-      )
+      ) %>%
+      dplyr::collect()
   )
 
   expect_equal(
@@ -59,7 +61,8 @@ test_that("`aggregate` aggregates data", {
       dplyr::summarise_at(
         .funs = c(~ mean(., na.rm = T), ~ sd(., na.rm = T)),
         .vars = c("x", "y")
-      )
+      ) %>%
+      dplyr::collect()
   )
 
   cov_a <-
