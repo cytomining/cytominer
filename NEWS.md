@@ -1,4 +1,7 @@
-# cytominer 0.2.1.9000
+# cytominer 0.2.2
+
+- Maintenance release in preparation for `dplyr 1.0.0` (#146)
+- Improve tests and change robustize behavior (#141)
 
 # cytominer 0.2.1
 
