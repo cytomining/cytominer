@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">cytominer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9000</span>
       </span>
     </div>
 
@@ -206,7 +206,7 @@
  )
 <span class="no">variables</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"AreaShape_Area"</span>)
 <span class="no">strata</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Metadata_group"</span>, <span class="st">"Metadata_batch"</span>)
-<span class="fu"><a href="reference/aggregate.html">aggregate</a></span>(<span class="no">population</span>, <span class="no">variables</span>, <span class="no">strata</span>, <span class="kw">operation</span> <span class="kw">=</span> <span class="st">"mean"</span>)</pre></html></div>
+<span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span>(<span class="no">population</span>, <span class="no">variables</span>, <span class="no">strata</span>, <span class="kw">operation</span> <span class="kw">=</span> <span class="st">"mean"</span>)</pre></html></div>
 </div>
 </div>
 <div id="normalize" class="section level2">
@@ -228,7 +228,7 @@
 <span class="no">variables</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'AreaShape_Area'</span>)
 <span class="no">strata</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'Metadata_batch'</span>)
 <span class="no">sample</span> <span class="kw">&lt;-</span> <span class="no">population</span> <span class="kw">%&gt;%</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">Metadata_group</span> <span class="kw">==</span> <span class="st">'control'</span>)
-<span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu"><a href="reference/normalize.html">normalize</a></span>(<span class="no">population</span>, <span class="no">variables</span>, <span class="no">strata</span>, <span class="no">sample</span>, <span class="kw">operation</span> <span class="kw">=</span> <span class="st">"standardize"</span>)</pre></html></div>
+<span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu">normalize</span>(<span class="no">population</span>, <span class="no">variables</span>, <span class="no">strata</span>, <span class="no">sample</span>, <span class="kw">operation</span> <span class="kw">=</span> <span class="st">"standardize"</span>)</pre></html></div>
 </div>
 </div>
 <div id="transform" class="section level2">
@@ -245,7 +245,7 @@
    <span class="kw">Intensity_DNA</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">8</span>, <span class="fl">20</span>, <span class="fl">12</span>, <span class="fl">32</span>)
  )
 <span class="no">variables</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Intensity_DNA"</span>)
-<span class="fu"><a href="reference/transform.html">transform</a></span>(<span class="no">population</span>, <span class="no">variables</span>, <span class="kw">operation</span> <span class="kw">=</span> <span class="st">"generalized_log"</span>)</pre></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/transform.html">transform</a></span>(<span class="no">population</span>, <span class="no">variables</span>, <span class="kw">operation</span> <span class="kw">=</span> <span class="st">"generalized_log"</span>)</pre></html></div>
 </div>
 </div>
 <div id="variable-select" class="section level2">
@@ -272,7 +272,7 @@
 <span class="co"># `x` and `z` are highly correlated; one of them will be removed</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">population</span>)
 <span class="kw pkg">futile.logger</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/futile.logger/man/flog.threshold.html">flog.threshold</a></span>(<span class="kw pkg">futile.logger</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/futile.logger/man/logger.options.html">ERROR</a></span>)
-<span class="fu"><a href="reference/variable_select.html">variable_select</a></span>(<span class="no">population</span>, <span class="no">variables</span>, <span class="no">sample</span>, <span class="no">operation</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()</pre></html></div>
+<span class="fu">variable_select</span>(<span class="no">population</span>, <span class="no">variables</span>, <span class="no">sample</span>, <span class="no">operation</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()</pre></html></div>
 </div>
 </div>
 </div>

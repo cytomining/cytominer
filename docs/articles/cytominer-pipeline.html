@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cytominer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9000</span>
       </span>
     </div>
 
@@ -85,7 +85,7 @@
       <h1 data-toc-skip>Introduction to cytominer</h1>
                         <h4 class="author">Allen Goodman and Shantanu Singh</h4>
             
-            <h4 class="date">2020-05-08</h4>
+            <h4 class="date">2020-05-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cytomining/cytominer/blob/master/vignettes/cytominer-pipeline.Rmd"><code>vignettes/cytominer-pipeline.Rmd</code></a></small>
       <div class="hidden name"><code>cytominer-pipeline.Rmd</code></div>
@@ -170,7 +170,7 @@
   <span class="no">measurements</span> <span class="kw">%&gt;%</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">q_debris</span> <span class="kw">==</span> <span class="fl">0</span>)</pre></body></html></div>
 <p>Then, remove cells where all the measurements are NA’s - this may happen if the identified cell mask was too small to measure any of the features.</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">na_rows_removed</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu"><a href="../reference/drop_na_rows.html">drop_na_rows</a></span>(
+  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu">drop_na_rows</span>(
     <span class="kw">population</span> <span class="kw">=</span> <span class="no">debris_removed</span>,
     <span class="kw">variables</span> <span class="kw">=</span> <span class="no">variables</span>
   ) <span class="kw">%&gt;%</span>
@@ -186,7 +186,7 @@
 </ul>
 <p>The default for doing this is <code>standardization</code>. Here, we take all the cells from control wells in the experiment (this is where the external metadata gets used) and compute normalizations parameters from that (in this case, just the mean and s.d.) and then apply it to the whole dataset (i.e. the population)</p>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">normalized</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu"><a href="../reference/normalize.html">normalize</a></span>(
+  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu">normalize</span>(
     <span class="kw">population</span> <span class="kw">=</span> <span class="no">na_rows_removed</span> <span class="kw">%&gt;%</span>
       <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span>(),
     <span class="kw">variables</span> <span class="kw">=</span> <span class="no">variables</span>,
@@ -204,7 +204,7 @@
 <p>In some cases, we may have features that have no variance at all (e.g. Euler number). If these features have not already been removed by this stage, the standardization step will results in all values for that feature being NA ( because s.d. = 0). Lets remove them:</p>
 <p>First, count how many cells have NA values per feature:</p>
 <div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">na_frequency</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu"><a href="../reference/count_na_rows.html">count_na_rows</a></span>(
+  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu">count_na_rows</span>(
     <span class="kw">population</span> <span class="kw">=</span> <span class="no">normalized</span>,
     <span class="kw">variables</span> <span class="kw">=</span> <span class="no">variables</span>)
 
@@ -257,7 +257,7 @@
 </table>
 <p>As it turns out, no feature has NA in this example. But lets run this cleaning operation anyway (no features will be dropped)</p>
 <div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">cleaned</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu"><a href="../reference/variable_select.html">variable_select</a></span>(
+  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu">variable_select</span>(
     <span class="kw">population</span> <span class="kw">=</span> <span class="no">normalized</span>,
     <span class="kw">variables</span> <span class="kw">=</span> <span class="no">variables</span>,
     <span class="kw">operation</span> <span class="kw">=</span> <span class="st">"drop_na_columns"</span>
@@ -272,7 +272,7 @@
 <a href="#transform" class="anchor"></a>Transform</h2>
 <p>Tranform the data so that assumptions we may later make about the data distribution are satisfied (e.g. Gaussianity). The default here is <code>generalized_log</code>.</p>
 <div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">transformed</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu"><a href="../reference/transform.html">transform</a></span>(
+  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/r/base/transform.html">transform</a></span>(
     <span class="kw">population</span> <span class="kw">=</span> <span class="no">cleaned</span>,
     <span class="kw">variables</span> <span class="kw">=</span> <span class="no">variables</span>
   )</pre></body></html></div>
@@ -282,7 +282,7 @@
 <a href="#select-features" class="anchor"></a>Select features</h2>
 <p>Finally, we typically perform feature selection on the data. Feature selection is an expensive operation, so we usually want to train the feature selection model on a sample of the dataset. Here, we choose to aggregate the data instead of sampling it (i.e. collapse it to per-well aggregates)</p>
 <div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="no">aggregated</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu"><a href="../reference/aggregate.html">aggregate</a></span>(
+  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span>(
     <span class="kw">population</span> <span class="kw">=</span> <span class="no">transformed</span>,
     <span class="kw">variables</span> <span class="kw">=</span> <span class="no">variables</span>,
     <span class="kw">strata</span> <span class="kw">=</span> <span class="no">groupings</span>
@@ -294,7 +294,7 @@
   <span class="kw pkg">stringr</span><span class="kw ns">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_subset</a></span>(<span class="st">"^m_"</span>)</pre></body></html></div>
 <p>… and then apply feature selection on the per-cell data. Here <code>correlation_threshold</code> - a method that reduces the redundancy of features - is used.</p>
 <div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">selected</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu"><a href="../reference/variable_select.html">variable_select</a></span>(
+  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu">variable_select</span>(
     <span class="kw">population</span> <span class="kw">=</span> <span class="no">transformed</span>,
     <span class="kw">variables</span> <span class="kw">=</span> <span class="no">variables</span>,
     <span class="kw">sample</span> <span class="kw">=</span> <span class="no">aggregated</span>,
