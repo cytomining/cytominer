@@ -24,7 +24,7 @@
 covariance <- function(population, variables) {
   covariance <-
     population %>%
-    dplyr::select_at(variables) %>%
+    dplyr::select(all_of(variables)) %>%
     stats::cov()
 
   variable_pairs <-
