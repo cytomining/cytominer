@@ -115,12 +115,12 @@ test_that("cytominer can process dataset with a normalized schema", {
       variables = variables
     )
 
-  transformed_whiten <-
+  transformed_spherize <-
     transform(
       population = cleaned,
       sample = cleaned,
       variables = variables,
-      operation = "whiten"
+      operation = "spherize"
     )
 
   # this should go in a unit test for `transform`
