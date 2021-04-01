@@ -22,7 +22,6 @@
 #' @importFrom magrittr %<>%
 #' @export
 variance_threshold <- function(variables, sample) {
-  .variables <- rlang::syms(variables)
 
   near_zero_variance <- function(x) {
 
@@ -49,7 +48,7 @@ variance_threshold <- function(variables, sample) {
 
   excluded_indexes <-
     sample %>%
-    dplyr::select(!!!.variables) %>%
+    dplyr::select(all_of(variables)) %>%
     near_zero_variance()
 
   variables[excluded_indexes]
