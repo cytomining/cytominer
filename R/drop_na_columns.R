@@ -1,3 +1,4 @@
+utils::globalVariables(c("na_count", "na_percent"))
 #' Remove variables with NA values.
 #'
 #' \code{drop_na_columns} returns list of variables which have greater than a
