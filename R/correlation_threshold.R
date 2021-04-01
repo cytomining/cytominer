@@ -38,11 +38,9 @@
 #' @export
 correlation_threshold <- function(variables, sample, cutoff = 0.90,
                                   method = "pearson") {
-  .variables <- rlang::syms(variables)
-
   excluded_indexes <-
     sample %>%
-    dplyr::select(!!!.variables) %>%
+    dplyr::select(all_of(variables)) %>%
     cor(method = method) %>%
     caret::findCorrelation(cutoff = cutoff)
 
