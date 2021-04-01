@@ -28,8 +28,6 @@ transform <- function(population, variables,
   } else {
     error <- paste0("undefined operation '", operation, "'")
 
-    futile.logger::flog.error(msg = error)
-
     stop(error)
   }
 }

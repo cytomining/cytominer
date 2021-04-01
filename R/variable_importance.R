@@ -56,8 +56,6 @@ variable_importance <- function(sample, variables,
   } else {
     error <- paste0("undefined operation '", operation, "'")
 
-    futile.logger::flog.error(msg = error)
-
     stop(error)
   }
 

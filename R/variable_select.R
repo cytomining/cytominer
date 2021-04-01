@@ -52,8 +52,6 @@ variable_select <- function(population, variables, sample = NULL,
   } else {
     error <- paste0("undefined operation '", operation, "'")
 
-    futile.logger::flog.error(msg = error)
-
     stop(error)
   }
 
