@@ -13,3 +13,4 @@
 ^CRAN-RELEASE$
 ^packrat/
 ^\.Rprofile$
+^_pkgdown\.yml$
