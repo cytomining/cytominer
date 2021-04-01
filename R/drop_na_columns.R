@@ -27,26 +27,22 @@
 #' drop_na_columns(population, variables)
 #' @export
 drop_na_columns <- function(population, variables, cutoff = 0.05) {
-  cutoff <- rlang::enquo(cutoff)
-
   nrows <-
     population %>%
     dplyr::tally() %>%
     dplyr::collect() %>%
     magrittr::extract2("n")
 
-  count <- rlang::sym("count")
-
-  feature <- rlang::sym("feature")
-
-  percent <- rlang::sym("percent")
-
+  # TODO: Migrate to `dplyr::across` once this issue is fixed
+  # https://github.com/tidyverse/dbplyr/issues/480#issuecomment-811814636
   population %>%
     dplyr::mutate_at(variables, is.na) %>%
     dplyr::summarize_at(variables, ~ sum(., na.rm = T)) %>%
     dplyr::collect() %>%
-    tidyr::gather(!!feature, !!count, !!!variables) %>%
-    dplyr::mutate(!!percent := (!!count) / nrows) %>%
-    dplyr::filter((!!percent) > (!!cutoff)) %>%
-    magrittr::extract2("feature")
+    tidyr::pivot_longer(everything(),
+                        names_to = "variable",
+                        values_to = "na_count") %>%
+    dplyr::mutate(na_percent = na_count / nrows) %>%
+    dplyr::filter(na_percent > cutoff) %>%
+    magrittr::extract2("variable")
 }
