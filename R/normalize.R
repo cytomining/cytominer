@@ -67,7 +67,7 @@ normalize <- function(population, variables, strata, sample,
         s <- dispersion[[variable]]
 
         data %<>%
-          dplyr::mutate(!!x := ((!!x) - m) / s)
+          dplyr::mutate("{variable}" := ((.data[[variable]]) - m) / s)
       }
 
       data
@@ -120,11 +120,17 @@ normalize <- function(population, variables, strata, sample,
           dplyr::inner_join(y = group, by = names(group), copy = TRUE) %>%
           dplyr::compute()
 
+        # TODO: Migrate to `dplyr::across` once this issue is fixed
+        # https://github.com/tidyverse/dbplyr/issues/480#issuecomment-811814636
+
         futile.logger::flog.debug("\tlocation")
         location <-
           stratum %>%
           dplyr::summarise_at(.funs = location, .vars = variables) %>%
           dplyr::collect()
+
+        # TODO: Migrate to `dplyr::across` once this issue is fixed
+        # https://github.com/tidyverse/dbplyr/issues/480#issuecomment-811814636
 
         futile.logger::flog.debug("\tdispersion")
         dispersion <-
