@@ -60,8 +60,6 @@ normalize <- function(population, variables, strata, sample,
       ))
 
       for (variable in variables) {
-        x <- rlang::sym(variable)
-
         m <- location[[variable]]
 
         s <- dispersion[[variable]]
