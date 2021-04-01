@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -65,7 +65,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/cytomining/cytominer/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -79,13 +79,13 @@
 
       
 
-      </header><script src="cytominer-pipeline_files/header-attrs-2.1/header-attrs.js"></script><div class="row">
+      </header><script src="cytominer-pipeline_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to cytominer</h1>
                         <h4 class="author">Allen Goodman and Shantanu Singh</h4>
             
-            <h4 class="date">2020-05-09</h4>
+            <h4 class="date">2021-04-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/cytomining/cytominer/blob/master/vignettes/cytominer-pipeline.Rmd"><code>vignettes/cytominer-pipeline.Rmd</code></a></small>
       <div class="hidden name"><code>cytominer-pipeline.Rmd</code></div>
@@ -108,34 +108,41 @@
 <h2 class="hasAnchor">
 <a href="#load-data" class="anchor"></a>Load data</h2>
 <p>First, load the data, which is stored in a database backend created using <a href="https://github.com/cytomining/cytominer-database" class="uri">https://github.com/cytomining/cytominer-database</a>.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">fixture</span> <span class="kw">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"fixture_intensities_shapes.sqlite"</span>,
-              <span class="kw">package</span> <span class="kw">=</span> <span class="st">"cytominer"</span>)
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">fixture</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"fixture_intensities_shapes.sqlite"</span>,
+              package <span class="op">=</span> <span class="st">"cytominer"</span><span class="op">)</span>
 
-<span class="no">db</span> <span class="kw">&lt;-</span> <span class="kw pkg">DBI</span><span class="kw ns">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span>(<span class="kw pkg">RSQLite</span><span class="kw ns">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html">SQLite</a></span>(), <span class="no">fixture</span>)</pre></body></html></div>
+<span class="va">db</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html">SQLite</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">fixture</span><span class="op">)</span></code></pre></div>
 <p>Then load associated metadata if it exists, and copy it to the backend so that we can use it later.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">ext_metadata</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">readr</span><span class="kw ns">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"metadata.csv"</span>,
-                              <span class="kw">package</span> <span class="kw">=</span> <span class="st">"cytominer"</span>)) <span class="kw">%&gt;%</span>
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span>(<span class="kw">g_well</span> <span class="kw">=</span> <span class="no">Well</span>)</pre></body></html></div>
-<pre><code>## Parsed with column specification:
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ext_metadata</span> <span class="op">&lt;-</span>
+  <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"metadata.csv"</span>,
+                              package <span class="op">=</span> <span class="st">"cytominer"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>g_well <span class="op">=</span> <span class="va">Well</span><span class="op">)</span></code></pre></div>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
 ## cols(
 ##   Well = col_character(),
 ##   Type = col_character()
 ## )</code></pre>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">ext_metadata</span> <span class="kw">&lt;-</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span>(<span class="no">db</span>, <span class="no">ext_metadata</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ext_metadata</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span><span class="op">(</span><span class="va">db</span>, <span class="va">ext_metadata</span><span class="op">)</span></code></pre></div>
 <p>Next, select a measurement table that you want to work. Here, we will pick <code>intensities</code> but we can easily extend to using multiple or all measurement classes if needed by creating new views.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">intensities</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span>(<span class="kw">src</span> <span class="kw">=</span> <span class="no">db</span>, <span class="st">"view_intensities"</span>) <span class="kw">%&gt;%</span>
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">compute</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">intensities</span> <span class="op">&lt;-</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span><span class="op">(</span>src <span class="op">=</span> <span class="va">db</span>, <span class="st">"view_intensities"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">compute</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>For this example, lets filter the data down to a few wells.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">measurements</span> <span class="kw">&lt;-</span>
-  <span class="no">intensities</span> <span class="kw">%&gt;%</span>
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">g_well</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"A01"</span>, <span class="st">"A02"</span>, <span class="st">"A10"</span>, <span class="st">"A11"</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">measurements</span> <span class="op">&lt;-</span>
+  <span class="va">intensities</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">g_well</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A01"</span>, <span class="st">"A02"</span>, <span class="st">"A10"</span>, <span class="st">"A11"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>How many rows does this table have?</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">measurements</span> <span class="kw">%&gt;%</span>
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">tally</a></span>() <span class="kw">%&gt;%</span>
-  <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">measurements</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">tally</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">n</th>
@@ -146,35 +153,38 @@
 </table>
 <p>That actually 9 times the number of cells in this experiment (n = 40): each compartment and each channel gets its own row. Here, we have 3 compartments (cell, nucleus, cytoplasm) and 3 channels (CellMask, Hoechst, Alexa568). So that’s 3 x 3 x 40 = 360.</p>
 <p>Next, do some setup stuff that we will need later</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">qualities</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"q_debris"</span>)
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">qualities</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"q_debris"</span><span class="op">)</span>
 
-<span class="no">groupings</span> <span class="kw">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"g_plate"</span>,
+<span class="va">groupings</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"g_plate"</span>,
     <span class="st">"g_well"</span>,
     <span class="st">"g_image"</span>,
     <span class="st">"g_pattern"</span>,
-    <span class="st">"g_channel"</span>)
+    <span class="st">"g_channel"</span><span class="op">)</span>
 
-<span class="no">variables</span> <span class="kw">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">measurements</span>) <span class="kw">%&gt;%</span>
-  <span class="kw pkg">stringr</span><span class="kw ns">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_subset</a></span>(<span class="st">"^m_"</span>)
+<span class="va">variables</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">measurements</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_subset</a></span><span class="op">(</span><span class="st">"^m_"</span><span class="op">)</span>
 
-<span class="no">measurements</span> <span class="kw">%&lt;&gt;%</span>
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/reexports.html">one_of</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">groupings</span>, <span class="no">qualities</span>, <span class="no">variables</span>)))</pre></body></html></div>
+<span class="va">measurements</span> <span class="op">%&lt;&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/one_of.html">one_of</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">groupings</span>, <span class="va">qualities</span>, <span class="va">variables</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="clean" class="section level2">
 <h2 class="hasAnchor">
 <a href="#clean" class="anchor"></a>Clean</h2>
 <p>Let’s remove cells that come from images that were marked as having debris</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">debris_removed</span> <span class="kw">&lt;-</span>
-  <span class="no">measurements</span> <span class="kw">%&gt;%</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">q_debris</span> <span class="kw">==</span> <span class="fl">0</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">debris_removed</span> <span class="op">&lt;-</span>
+  <span class="va">measurements</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">q_debris</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
 <p>Then, remove cells where all the measurements are NA’s - this may happen if the identified cell mask was too small to measure any of the features.</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">na_rows_removed</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu">drop_na_rows</span>(
-    <span class="kw">population</span> <span class="kw">=</span> <span class="no">debris_removed</span>,
-    <span class="kw">variables</span> <span class="kw">=</span> <span class="no">variables</span>
-  ) <span class="kw">%&gt;%</span>
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">compute</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">na_rows_removed</span> <span class="op">&lt;-</span>
+  <span class="fu">cytominer</span><span class="fu">::</span><span class="fu"><a href="../reference/drop_na_rows.html">drop_na_rows</a></span><span class="op">(</span>
+    population <span class="op">=</span> <span class="va">debris_removed</span>,
+    variables <span class="op">=</span> <span class="va">variables</span>
+  <span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">compute</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="normalize" class="section level2">
 <h2 class="hasAnchor">
@@ -185,32 +195,35 @@
 <li><p>plate-to-plate variation is reduced</p></li>
 </ul>
 <p>The default for doing this is <code>standardization</code>. Here, we take all the cells from control wells in the experiment (this is where the external metadata gets used) and compute normalizations parameters from that (in this case, just the mean and s.d.) and then apply it to the whole dataset (i.e. the population)</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">normalized</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu">normalize</span>(
-    <span class="kw">population</span> <span class="kw">=</span> <span class="no">na_rows_removed</span> <span class="kw">%&gt;%</span>
-      <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span>(),
-    <span class="kw">variables</span> <span class="kw">=</span> <span class="no">variables</span>,
-    <span class="kw">strata</span> <span class="kw">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"g_plate"</span>, <span class="st">"g_pattern"</span>, <span class="st">"g_channel"</span>),
-    <span class="kw">sample</span> <span class="kw">=</span>
-      <span class="no">na_rows_removed</span> <span class="kw">%&gt;%</span>
-      <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span>(
-        <span class="no">ext_metadata</span> <span class="kw">%&gt;%</span>
-          <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">Type</span> <span class="kw">==</span> <span class="st">"ctrl"</span>) <span class="kw">%&gt;%</span>
-          <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">g_well</span>)
-      ) <span class="kw">%&gt;%</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span>()
-  )</pre></body></html></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">normalized</span> <span class="op">&lt;-</span>
+  <span class="fu">cytominer</span><span class="fu">::</span><span class="fu"><a href="../reference/normalize.html">normalize</a></span><span class="op">(</span>
+    population <span class="op">=</span> <span class="va">na_rows_removed</span> <span class="op">%&gt;%</span> 
+      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span><span class="op">(</span><span class="op">)</span>,
+    variables <span class="op">=</span> <span class="va">variables</span>,
+    strata <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"g_plate"</span>, <span class="st">"g_pattern"</span>, <span class="st">"g_channel"</span><span class="op">)</span>,
+    sample <span class="op">=</span>
+      <span class="va">na_rows_removed</span> <span class="op">%&gt;%</span>
+      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span>
+        <span class="va">ext_metadata</span> <span class="op">%&gt;%</span> 
+          <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Type</span> <span class="op">==</span> <span class="st">"ctrl"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+          <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">g_well</span><span class="op">)</span> 
+      <span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="op">)</span></code></pre></div>
 <pre><code>## Joining, by = "g_well"</code></pre>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">normalized</span> <span class="kw">%&lt;&gt;%</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">normalized</span> <span class="op">%&lt;&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>In some cases, we may have features that have no variance at all (e.g. Euler number). If these features have not already been removed by this stage, the standardization step will results in all values for that feature being NA ( because s.d. = 0). Lets remove them:</p>
 <p>First, count how many cells have NA values per feature:</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">na_frequency</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu">count_na_rows</span>(
-    <span class="kw">population</span> <span class="kw">=</span> <span class="no">normalized</span>,
-    <span class="kw">variables</span> <span class="kw">=</span> <span class="no">variables</span>)
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">na_frequency</span> <span class="op">&lt;-</span>
+  <span class="fu">cytominer</span><span class="fu">::</span><span class="fu"><a href="../reference/count_na_rows.html">count_na_rows</a></span><span class="op">(</span>
+    population <span class="op">=</span> <span class="va">normalized</span>,
+    variables <span class="op">=</span> <span class="va">variables</span><span class="op">)</span>
 
-<span class="no">na_frequency</span> <span class="kw">%&gt;%</span>
-  <span class="kw pkg">tidyr</span><span class="kw ns">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/gather.html">gather</a></span>(<span class="no">feature</span>, <span class="no">na_count</span>) <span class="kw">%&gt;%</span>
-  <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</pre></body></html></div>
+<span class="va">na_frequency</span> <span class="op">%&gt;%</span>
+  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/gather.html">gather</a></span><span class="op">(</span><span class="va">feature</span>, <span class="va">na_count</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">feature</th>
@@ -256,54 +269,59 @@
 </tbody>
 </table>
 <p>As it turns out, no feature has NA in this example. But lets run this cleaning operation anyway (no features will be dropped)</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">cleaned</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu">variable_select</span>(
-    <span class="kw">population</span> <span class="kw">=</span> <span class="no">normalized</span>,
-    <span class="kw">variables</span> <span class="kw">=</span> <span class="no">variables</span>,
-    <span class="kw">operation</span> <span class="kw">=</span> <span class="st">"drop_na_columns"</span>
-)
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cleaned</span> <span class="op">&lt;-</span>
+  <span class="fu">cytominer</span><span class="fu">::</span><span class="fu"><a href="../reference/variable_select.html">variable_select</a></span><span class="op">(</span>
+    population <span class="op">=</span> <span class="va">normalized</span>,
+    variables <span class="op">=</span> <span class="va">variables</span>,
+    operation <span class="op">=</span> <span class="st">"drop_na_columns"</span>
+<span class="op">)</span>
 
-<span class="no">variables</span> <span class="kw">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">cleaned</span>) <span class="kw">%&gt;%</span>
-  <span class="kw pkg">stringr</span><span class="kw ns">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_subset</a></span>(<span class="st">"^m_"</span>)</pre></body></html></div>
+<span class="va">variables</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">cleaned</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_subset</a></span><span class="op">(</span><span class="st">"^m_"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="transform" class="section level2">
 <h2 class="hasAnchor">
 <a href="#transform" class="anchor"></a>Transform</h2>
 <p>Tranform the data so that assumptions we may later make about the data distribution are satisfied (e.g. Gaussianity). The default here is <code>generalized_log</code>.</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">transformed</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/r/base/transform.html">transform</a></span>(
-    <span class="kw">population</span> <span class="kw">=</span> <span class="no">cleaned</span>,
-    <span class="kw">variables</span> <span class="kw">=</span> <span class="no">variables</span>
-  )</pre></body></html></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">transformed</span> <span class="op">&lt;-</span>
+  <span class="fu">cytominer</span><span class="fu">::</span><span class="fu"><a href="../reference/transform.html">transform</a></span><span class="op">(</span>
+    population <span class="op">=</span> <span class="va">cleaned</span>,
+    variables <span class="op">=</span> <span class="va">variables</span>
+  <span class="op">)</span></code></pre></div>
 </div>
 <div id="select-features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#select-features" class="anchor"></a>Select features</h2>
 <p>Finally, we typically perform feature selection on the data. Feature selection is an expensive operation, so we usually want to train the feature selection model on a sample of the dataset. Here, we choose to aggregate the data instead of sampling it (i.e. collapse it to per-well aggregates)</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="no">aggregated</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span>(
-    <span class="kw">population</span> <span class="kw">=</span> <span class="no">transformed</span>,
-    <span class="kw">variables</span> <span class="kw">=</span> <span class="no">variables</span>,
-    <span class="kw">strata</span> <span class="kw">=</span> <span class="no">groupings</span>
-  ) <span class="kw">%&gt;%</span>
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span>()
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">aggregated</span> <span class="op">&lt;-</span>
+  <span class="fu">cytominer</span><span class="fu">::</span><span class="fu"><a href="../reference/aggregate.html">aggregate</a></span><span class="op">(</span>
+    population <span class="op">=</span> <span class="va">transformed</span>,
+    variables <span class="op">=</span> <span class="va">variables</span>,
+    strata <span class="op">=</span> <span class="va">groupings</span>
+  <span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span><span class="op">(</span><span class="op">)</span>
 
-<span class="no">variables</span> <span class="kw">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">aggregated</span>) <span class="kw">%&gt;%</span>
-  <span class="kw pkg">stringr</span><span class="kw ns">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_subset</a></span>(<span class="st">"^m_"</span>)</pre></body></html></div>
+<span class="va">variables</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">aggregated</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_subset</a></span><span class="op">(</span><span class="st">"^m_"</span><span class="op">)</span></code></pre></div>
 <p>… and then apply feature selection on the per-cell data. Here <code>correlation_threshold</code> - a method that reduces the redundancy of features - is used.</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">selected</span> <span class="kw">&lt;-</span>
-  <span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu">variable_select</span>(
-    <span class="kw">population</span> <span class="kw">=</span> <span class="no">transformed</span>,
-    <span class="kw">variables</span> <span class="kw">=</span> <span class="no">variables</span>,
-    <span class="kw">sample</span> <span class="kw">=</span> <span class="no">aggregated</span>,
-    <span class="kw">operation</span> <span class="kw">=</span> <span class="st">"correlation_threshold"</span>
-  ) <span class="kw">%&gt;%</span>
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">selected</span> <span class="op">&lt;-</span>
+  <span class="fu">cytominer</span><span class="fu">::</span><span class="fu"><a href="../reference/variable_select.html">variable_select</a></span><span class="op">(</span>
+    population <span class="op">=</span> <span class="va">transformed</span>,
+    variables <span class="op">=</span> <span class="va">variables</span>,
+    sample <span class="op">=</span> <span class="va">aggregated</span>,
+    operation <span class="op">=</span> <span class="st">"correlation_threshold"</span>
+  <span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html">collect</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>And now lets take a glimpse at the data!</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">selected</span> <span class="kw">%&gt;%</span>
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">selected</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## Rows: 315
 ## Columns: 10
 ## $ g_plate                                 &lt;chr&gt; "110000106828", "110000106828…
@@ -316,7 +334,8 @@
 ## $ m_intensities_maximum                   &lt;dbl&gt; -1.25783096, -1.51483166, -1.…
 ## $ m_intensities_median_absolute_deviation &lt;dbl&gt; -1.4847843, -0.5372476, -1.10…
 ## $ m_intensities_minimum                   &lt;dbl&gt; -2.3552231, -1.9025552, -0.10…</code></pre>
-<div class="sourceCode" id="cb22"><html><body><pre class="r">  <span class="kw pkg">DBI</span><span class="kw ns">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html">dbDisconnect</a></span>(<span class="no">db</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R">  <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbDisconnect.html">dbDisconnect</a></span><span class="op">(</span><span class="va">db</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
 
@@ -335,7 +354,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
