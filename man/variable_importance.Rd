@@ -16,7 +16,10 @@ variable_importance(
 
 \item{variables}{character vector specifying observation variables.}
 
-\item{operation}{optional character string specifying method for computing variable importance. Currently, only \code{"replicate_correlation"} (default) is implemented.}
+\item{operation}{optional character string specifying method for computing
+variable importance. This must be one of the strings
+\code{"replicate_correlation"} (default) or \code{"svd_entropy"}.
+is implemented.}
 
 \item{...}{arguments passed to variable importance operation.}
 }
@@ -24,7 +27,8 @@ variable_importance(
 data frame containing variable importance measures.
 }
 \description{
-\code{variable_importance} measures importance of variables based on specified methods.
+\code{variable_importance} measures importance of variables based on
+specified methods.
 }
 \examples{
 set.seed(123)
@@ -61,6 +65,16 @@ variable_importance(
   replicates = 2,
   split_by = "Metadata_batch",
   replicate_by = "Metadata_replicate_id",
+  cores = 1
+)
+
+# `svd_entropy`` measures the contribution of each variable in decreasing
+# the data entropy.
+
+variable_importance(
+  sample = sample,
+  variables = c("x", "y", "z"),
+  operation = "svd_entropy",
   cores = 1
 )
 }
