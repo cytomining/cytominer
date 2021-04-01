@@ -22,9 +22,9 @@ utils::globalVariables(c(".", "i"))
 #'   AreaShape_Area = c(245, 151, 231, 179, 50, 112, 53, 73, 164, 529)
 #' )
 #' variables <- c("AreaShape_MinorAxisLength", "AreaShape_MajorAxisLength", "AreaShape_Area")
-#' svd_entropy(variables, sample, cores = 1)
+#' svd_entropy(sample, variables, cores = 1)
 #' @export
-svd_entropy <- function(variables, sample, cores = NULL) {
+svd_entropy <- function(sample, variables, cores = NULL) {
   doParallel::registerDoParallel(cores = cores)
 
   sample %<>%

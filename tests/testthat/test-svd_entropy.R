@@ -6,7 +6,7 @@ test_that("`svd_entropy` measures singular values entropy", {
   a <- c(1, 4, 9) / 14
   b <- c(1, 4) / 5
 
-  Y <- svd_entropy(c("X1", "X2", "X3"), X, cores = 1)
+  Y <- svd_entropy(X, c("X1", "X2", "X3"), cores = 1)
 
   expect_equal(
     Y[Y$variable == "X3", ]$svd_entropy,
