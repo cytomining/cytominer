@@ -1,11 +1,15 @@
 #' Select observation variables.
 #'
-#' \code{variable_select} selects observation variables based on the specified variable selection method.
+#' \code{variable_select} selects observation variables based on the specified
+#' variable selection method.
 #'
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param variables character vector specifying observation variables.
-#' @param operation optional character string specifying method for variable selection. This must be one of the strings \code{"variance_threshold"}, \code{"correlation_threshold"}, \code{"drop_na_columns"}.
-#' @param sample tbl containing sample that is used by some variable selection methods. \code{sample} has same structure as \code{population}.
+#' @param operation optional character string specifying method for variable
+#'   selection. This must be one of the strings \code{"variance_threshold"},
+#'  \code{"correlation_threshold"}, \code{"drop_na_columns"}.
+#' @param sample tbl containing sample that is used by some variable selection
+#'   methods. \code{sample} has same structure as \code{population}.
 #' @param ... arguments passed to selection operation.
 #'
 #' @return variable-selected data of the same class as \code{population}.
@@ -51,8 +55,6 @@ variable_select <- function(population, variables, sample = NULL,
     excluded <- drop_na_columns(population, variables, ...)
   } else {
     error <- paste0("undefined operation '", operation, "'")
-
-    futile.logger::flog.error(msg = error)
 
     stop(error)
   }

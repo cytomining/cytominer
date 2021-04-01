@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Measure variable importance. — variable_importance" />
-<meta property="og:description" content="variable_importance measures importance of variables based on specified methods." />
+<meta property="og:description" content="variable_importance measures importance of variables based on
+specified methods." />
 
 
 
@@ -80,7 +81,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -106,7 +107,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/cytomining/cytominer/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -129,15 +130,16 @@
     </div>
 
     <div class="ref-description">
-    <p><code>variable_importance</code> measures importance of variables based on specified methods.</p>
+    <p><code>variable_importance</code> measures importance of variables based on
+specified methods.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>variable_importance</span>(
-  <span class='no'>sample</span>,
-  <span class='no'>variables</span>,
-  <span class='kw'>operation</span> <span class='kw'>=</span> <span class='st'>"replicate_correlation"</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>variable_importance</span><span class='op'>(</span>
+  <span class='va'>sample</span>,
+  <span class='va'>variables</span>,
+  operation <span class='op'>=</span> <span class='st'>"replicate_correlation"</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,7 +154,10 @@
     </tr>
     <tr>
       <th>operation</th>
-      <td><p>optional character string specifying method for computing variable importance. Currently, only <code>"replicate_correlation"</code> (default) is implemented.</p></td>
+      <td><p>optional character string specifying method for computing
+variable importance. This must be one of the strings
+<code>"replicate_correlation"</code> (default) or <code>"svd_entropy"</code>.
+is implemented.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -165,54 +170,71 @@
     <p>data frame containing variable importance measures.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>123</span>)
-<span class='no'>x1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>10</span>)
-<span class='no'>x2</span> <span class='kw'>&lt;-</span> <span class='no'>x1</span> + <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>10</span>) / <span class='fl'>100</span>
-<span class='no'>y1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>10</span>)
-<span class='no'>y2</span> <span class='kw'>&lt;-</span> <span class='no'>y1</span> + <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>10</span>) / <span class='fl'>10</span>
-<span class='no'>z1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>10</span>)
-<span class='no'>z2</span> <span class='kw'>&lt;-</span> <span class='no'>z1</span> + <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>10</span>) / <span class='fl'>1</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span>
+<span class='va'>x1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>
+<span class='va'>x2</span> <span class='op'>&lt;-</span> <span class='va'>x1</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span> <span class='op'>/</span> <span class='fl'>100</span>
+<span class='va'>y1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>
+<span class='va'>y2</span> <span class='op'>&lt;-</span> <span class='va'>y1</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span> <span class='op'>/</span> <span class='fl'>10</span>
+<span class='va'>z1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>
+<span class='va'>z2</span> <span class='op'>&lt;-</span> <span class='va'>z1</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span> <span class='op'>/</span> <span class='fl'>1</span>
 
-<span class='no'>batch</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>5</span>), <span class='fl'>2</span>)
+<span class='va'>batch</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, each <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>, <span class='fl'>2</span><span class='op'>)</span>
 
-<span class='no'>treatment</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>2</span>)
+<span class='va'>treatment</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>2</span><span class='op'>)</span>
 
-<span class='no'>replicate_id</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='va'>replicate_id</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, each <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
 
-<span class='no'>sample</span> <span class='kw'>&lt;-</span>
-  <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(
-    <span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>x1</span>, <span class='no'>x2</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>y1</span>, <span class='no'>y2</span>), <span class='kw'>z</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>z1</span>, <span class='no'>z2</span>),
-    <span class='kw'>Metadata_treatment</span> <span class='kw'>=</span> <span class='no'>treatment</span>,
-    <span class='kw'>Metadata_replicate_id</span> <span class='kw'>=</span> <span class='no'>replicate_id</span>,
-    <span class='kw'>Metadata_batch</span> <span class='kw'>=</span> <span class='no'>batch</span>
-  )
+<span class='va'>sample</span> <span class='op'>&lt;-</span>
+  <span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>
+    x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>x1</span>, <span class='va'>x2</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>y1</span>, <span class='va'>y2</span><span class='op'>)</span>, z <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>z1</span>, <span class='va'>z2</span><span class='op'>)</span>,
+    Metadata_treatment <span class='op'>=</span> <span class='va'>treatment</span>,
+    Metadata_replicate_id <span class='op'>=</span> <span class='va'>replicate_id</span>,
+    Metadata_batch <span class='op'>=</span> <span class='va'>batch</span>
+  <span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>sample</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 6 x 6</span><span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>sample</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 6</span><span>
 #&gt;         x      y      z Metadata_treatment Metadata_replicate_id Metadata_batch
-#&gt;     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> -</span><span style='color: #BB0000;'>0.560</span><span>  -</span><span style='color: #BB0000;'>1.07</span><span>  -</span><span style='color: #BB0000;'>0.695</span><span>                  1                     1              1
-#&gt; </span><span style='color: #555555;'>2</span><span> -</span><span style='color: #BB0000;'>0.230</span><span>  -</span><span style='color: #BB0000;'>0.218</span><span> -</span><span style='color: #BB0000;'>0.208</span><span>                  2                     1              1
-#&gt; </span><span style='color: #555555;'>3</span><span>  1.56   -</span><span style='color: #BB0000;'>1.03</span><span>  -</span><span style='color: #BB0000;'>1.27</span><span>                   3                     1              1
-#&gt; </span><span style='color: #555555;'>4</span><span>  0.070</span><span style='text-decoration: underline;'>5</span><span> -</span><span style='color: #BB0000;'>0.729</span><span>  2.17                   4                     1              1
-#&gt; </span><span style='color: #555555;'>5</span><span>  0.129  -</span><span style='color: #BB0000;'>0.625</span><span>  1.21                   5                     1              1
-#&gt; </span><span style='color: #555555;'>6</span><span>  1.72   -</span><span style='color: #BB0000;'>1.69</span><span>  -</span><span style='color: #BB0000;'>1.12</span><span>                   6                     1              2</div><div class='input'>
+#&gt;     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>                 </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> -</span><span style='color: #BB0000;'>0.560</span><span>  -</span><span style='color: #BB0000;'>1.07</span><span>  -</span><span style='color: #BB0000;'>0.695</span><span>                  1                     1              1
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> -</span><span style='color: #BB0000;'>0.230</span><span>  -</span><span style='color: #BB0000;'>0.218</span><span> -</span><span style='color: #BB0000;'>0.208</span><span>                  2                     1              1
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span>  1.56   -</span><span style='color: #BB0000;'>1.03</span><span>  -</span><span style='color: #BB0000;'>1.27</span><span>                   3                     1              1
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span>  0.070</span><span style='text-decoration: underline;'>5</span><span> -</span><span style='color: #BB0000;'>0.729</span><span>  2.17                   4                     1              1
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span>  0.129  -</span><span style='color: #BB0000;'>0.625</span><span>  1.21                   5                     1              1
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span>  1.72   -</span><span style='color: #BB0000;'>1.69</span><span>  -</span><span style='color: #BB0000;'>1.12</span><span>                   6                     1              2</div><div class='input'>
 <span class='co'># `replicate_correlation`` returns the median, min, and max</span>
 <span class='co'># replicate correlation (across batches) per variable</span>
-<span class='fu'>variable_importance</span>(
-  <span class='kw'>sample</span> <span class='kw'>=</span> <span class='no'>sample</span>,
-  <span class='kw'>variables</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"x"</span>, <span class='st'>"y"</span>, <span class='st'>"z"</span>),
-  <span class='kw'>operation</span> <span class='kw'>=</span> <span class='st'>"replicate_correlation"</span>,
-  <span class='kw'>strata</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Metadata_treatment"</span>),
-  <span class='kw'>replicates</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>split_by</span> <span class='kw'>=</span> <span class='st'>"Metadata_batch"</span>,
-  <span class='kw'>replicate_by</span> <span class='kw'>=</span> <span class='st'>"Metadata_replicate_id"</span>,
-  <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>1</span>
-)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 3 x 4</span><span>
+<span class='fu'>variable_importance</span><span class='op'>(</span>
+  sample <span class='op'>=</span> <span class='va'>sample</span>,
+  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x"</span>, <span class='st'>"y"</span>, <span class='st'>"z"</span><span class='op'>)</span>,
+  operation <span class='op'>=</span> <span class='st'>"replicate_correlation"</span>,
+  strata <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Metadata_treatment"</span><span class='op'>)</span>,
+  replicates <span class='op'>=</span> <span class='fl'>2</span>,
+  split_by <span class='op'>=</span> <span class='st'>"Metadata_batch"</span>,
+  replicate_by <span class='op'>=</span> <span class='st'>"Metadata_replicate_id"</span>,
+  cores <span class='op'>=</span> <span class='fl'>1</span>
+<span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 3 x 4</span><span>
 #&gt;   variable median   min   max
-#&gt; </span><span style='color: #555555;'>*</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> x         1.00  1.00  1.00 
-#&gt; </span><span style='color: #555555;'>2</span><span> y         0.996 0.993 0.999
-#&gt; </span><span style='color: #555555;'>3</span><span> z         0.627 0.290 0.964</div></span></pre>
+#&gt; </span><span style='color: #BCBCBC;'>*</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> x         1.00  1.00  1.00 
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> y         0.996 0.993 0.999
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> z         0.627 0.290 0.964</div><div class='input'>
+<span class='co'># `svd_entropy`` measures the contribution of each variable in decreasing</span>
+<span class='co'># the data entropy.</span>
+
+<span class='fu'>variable_importance</span><span class='op'>(</span>
+  sample <span class='op'>=</span> <span class='va'>sample</span>,
+  variables <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x"</span>, <span class='st'>"y"</span>, <span class='st'>"z"</span><span class='op'>)</span>,
+  operation <span class='op'>=</span> <span class='st'>"svd_entropy"</span>,
+  cores <span class='op'>=</span> <span class='fl'>1</span>
+<span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 3 x 2</span><span>
+#&gt;   variable svd_entropy
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> x              0.143
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> y              0.157
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> z              0.158</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -228,7 +250,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

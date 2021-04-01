@@ -79,7 +79,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -105,7 +105,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/cytomining/cytominer/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -190,89 +190,97 @@
 <h2 class="hasAnchor">
 <a href="#aggregate" class="anchor"></a>Aggregate</h2>
 <p>Aggregate data based on given grouping.</p>
-<div class="sourceCode" id="cb1"><html><pre class="r"><span class="no">aggregate</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">population</span>, <span class="no">variables</span>, <span class="no">strata</span>,
-                      <span class="no">operation</span> <span class="kw">=</span> <span class="st">"mean"</span>,
-                      <span class="no">univariate</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="no">...</span>) { <span class="no">...</span> }</pre></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">aggregate</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">population</span>, <span class="va">variables</span>, <span class="va">strata</span>, 
+                      <span class="va">operation</span> <span class="op">=</span> <span class="st">"mean"</span>,
+                      <span class="va">univariate</span> <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span> <span class="va">...</span> <span class="op">}</span></code></pre></div>
 <p><code>univariate</code> is a boolean specifying whether the aggregation function is univariate or multivariate.</p>
 <div id="example" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h3>
-<div class="sourceCode" id="cb2"><html><pre class="r"><span class="no">population</span> <span class="kw">&lt;-</span> <span class="kw pkg">tibble</span><span class="kw ns">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/deprecated.html">data_frame</a></span>(
-   <span class="kw">Metadata_group</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"control"</span>, <span class="st">"control"</span>, <span class="st">"control"</span>, <span class="st">"control"</span>,
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">population</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/deprecated.html">data_frame</a></span><span class="op">(</span>
+   Metadata_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"control"</span>, <span class="st">"control"</span>, <span class="st">"control"</span>,
                       <span class="st">"experiment"</span>, <span class="st">"experiment"</span>, <span class="st">"experiment"</span>,
-                      <span class="st">"experiment"</span>),
-   <span class="kw">Metadata_batch</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"b"</span>, <span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"b"</span>),
-   <span class="kw">AreaShape_Area</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">10</span>, <span class="fl">12</span>, <span class="fl">15</span>, <span class="fl">16</span>, <span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">7</span>, <span class="fl">7</span>)
- )
-<span class="no">variables</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"AreaShape_Area"</span>)
-<span class="no">strata</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Metadata_group"</span>, <span class="st">"Metadata_batch"</span>)
-<span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span>(<span class="no">population</span>, <span class="no">variables</span>, <span class="no">strata</span>, <span class="kw">operation</span> <span class="kw">=</span> <span class="st">"mean"</span>)</pre></html></div>
+                      <span class="st">"experiment"</span><span class="op">)</span>,
+   Metadata_batch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"b"</span>, <span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"b"</span><span class="op">)</span>,
+   AreaShape_Area <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">12</span>, <span class="fl">15</span>, <span class="fl">16</span>, <span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">7</span>, <span class="fl">7</span><span class="op">)</span>
+ <span class="op">)</span>
+<span class="va">variables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"AreaShape_Area"</span><span class="op">)</span>
+<span class="va">strata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Metadata_group"</span>, <span class="st">"Metadata_batch"</span><span class="op">)</span>
+<span class="fu"><a href="reference/aggregate.html">aggregate</a></span><span class="op">(</span><span class="va">population</span>, <span class="va">variables</span>, <span class="va">strata</span>, operation <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="normalize" class="section level2">
 <h2 class="hasAnchor">
 <a href="#normalize" class="anchor"></a>Normalize</h2>
 <p>Normalize observation variables based on the specified normalization method.</p>
-<div class="sourceCode" id="cb3"><html><pre class="r"><span class="no">normalize</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">population</span>, <span class="no">variables</span>, <span class="no">strata</span>, <span class="no">sample</span>,
-                      <span class="no">operation</span> <span class="kw">=</span> <span class="st">"standardize"</span>, <span class="no">...</span>) { <span class="no">...</span> }</pre></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">normalize</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">population</span>, <span class="va">variables</span>, <span class="va">strata</span>, <span class="va">sample</span>,
+                      <span class="va">operation</span> <span class="op">=</span> <span class="st">"standardize"</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span> <span class="va">...</span> <span class="op">}</span></code></pre></div>
 <div id="example-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-1" class="anchor"></a>Example</h3>
-<div class="sourceCode" id="cb4"><html><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressMessages</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/warning.html">suppressWarnings</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">magrittr</span>)))
-<span class="no">population</span> <span class="kw">&lt;-</span> <span class="kw pkg">tibble</span><span class="kw ns">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/deprecated.html">data_frame</a></span>(
-   <span class="kw">Metadata_group</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"control"</span>, <span class="st">"control"</span>, <span class="st">"control"</span>, <span class="st">"control"</span>,
-                      <span class="st">"experiment"</span>, <span class="st">"experiment"</span>, <span class="st">"experiment"</span>, <span class="st">"experiment"</span>),
-   <span class="kw">Metadata_batch</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"b"</span>, <span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"b"</span>),
-   <span class="kw">AreaShape_Area</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">10</span>, <span class="fl">12</span>, <span class="fl">15</span>, <span class="fl">16</span>, <span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">7</span>, <span class="fl">7</span>)
- )
-<span class="no">variables</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'AreaShape_Area'</span>)
-<span class="no">strata</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'Metadata_batch'</span>)
-<span class="no">sample</span> <span class="kw">&lt;-</span> <span class="no">population</span> <span class="kw">%&gt;%</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">Metadata_group</span> <span class="kw">==</span> <span class="st">'control'</span>)
-<span class="kw pkg">cytominer</span><span class="kw ns">::</span><span class="fu">normalize</span>(<span class="no">population</span>, <span class="no">variables</span>, <span class="no">strata</span>, <span class="no">sample</span>, <span class="kw">operation</span> <span class="kw">=</span> <span class="st">"standardize"</span>)</pre></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressMessages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/warning.html">suppressWarnings</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="va">population</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/deprecated.html">data_frame</a></span><span class="op">(</span>
+   Metadata_group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"control"</span>, <span class="st">"control"</span>, <span class="st">"control"</span>,
+                      <span class="st">"experiment"</span>, <span class="st">"experiment"</span>, <span class="st">"experiment"</span>, <span class="st">"experiment"</span><span class="op">)</span>,
+   Metadata_batch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"b"</span>, <span class="st">"a"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"b"</span><span class="op">)</span>,
+   AreaShape_Area <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">12</span>, <span class="fl">15</span>, <span class="fl">16</span>, <span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">7</span>, <span class="fl">7</span><span class="op">)</span>
+ <span class="op">)</span>
+<span class="va">variables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'AreaShape_Area'</span><span class="op">)</span>
+<span class="va">strata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'Metadata_batch'</span><span class="op">)</span>
+<span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">population</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Metadata_group</span> <span class="op">==</span> <span class="st">'control'</span><span class="op">)</span>
+<span class="fu">cytominer</span><span class="fu">::</span><span class="fu"><a href="reference/normalize.html">normalize</a></span><span class="op">(</span><span class="va">population</span>, <span class="va">variables</span>, <span class="va">strata</span>, <span class="va">sample</span>, operation <span class="op">=</span> <span class="st">"standardize"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="transform" class="section level2">
 <h2 class="hasAnchor">
 <a href="#transform" class="anchor"></a>Transform</h2>
 <p>Transform observation variables based on the specified transformation method.</p>
-<div class="sourceCode" id="cb5"><html><pre class="r"><span class="no">transform</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">population</span>, <span class="no">variables</span>,
-                      <span class="no">operation</span> <span class="kw">=</span> <span class="st">"generalized_log"</span>, <span class="no">...</span>) { <span class="no">...</span> }</pre></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">transform</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">population</span>, <span class="va">variables</span>,
+                      <span class="va">operation</span> <span class="op">=</span> <span class="st">"generalized_log"</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span> <span class="va">...</span> <span class="op">}</span></code></pre></div>
 <div id="example-2" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-2" class="anchor"></a>Example</h3>
-<div class="sourceCode" id="cb6"><html><pre class="r"><span class="no">population</span> <span class="kw">&lt;-</span> <span class="kw pkg">tibble</span><span class="kw ns">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/deprecated.html">data_frame</a></span>(
-   <span class="kw">Metadata_Well</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"A01"</span>, <span class="st">"A02"</span>, <span class="st">"B01"</span>, <span class="st">"B02"</span>),
-   <span class="kw">Intensity_DNA</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">8</span>, <span class="fl">20</span>, <span class="fl">12</span>, <span class="fl">32</span>)
- )
-<span class="no">variables</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Intensity_DNA"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/transform.html">transform</a></span>(<span class="no">population</span>, <span class="no">variables</span>, <span class="kw">operation</span> <span class="kw">=</span> <span class="st">"generalized_log"</span>)</pre></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">population</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/deprecated.html">data_frame</a></span><span class="op">(</span>
+   Metadata_Well <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A01"</span>, <span class="st">"A02"</span>, <span class="st">"B01"</span>, <span class="st">"B02"</span><span class="op">)</span>,
+   Intensity_DNA <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">20</span>, <span class="fl">12</span>, <span class="fl">32</span><span class="op">)</span>
+ <span class="op">)</span>
+<span class="va">variables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Intensity_DNA"</span><span class="op">)</span>
+<span class="fu"><a href="reference/transform.html">transform</a></span><span class="op">(</span><span class="va">population</span>, <span class="va">variables</span>, operation <span class="op">=</span> <span class="st">"generalized_log"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="variable-select" class="section level2">
 <h2 class="hasAnchor">
 <a href="#variable-select" class="anchor"></a>Variable select</h2>
 <p>Select observation variables based on the specified variable selection method.</p>
-<div class="sourceCode" id="cb7"><html><pre class="r"><span class="no">variable_select</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">population</span>, <span class="no">variables</span>,
-                            <span class="no">sample</span> <span class="kw">=</span> <span class="kw">NULL</span>,
-                            <span class="no">operation</span> <span class="kw">=</span> <span class="st">"variance_threshold"</span>, <span class="no">...</span>) { <span class="no">...</span> }</pre></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">variable_select</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">population</span>, <span class="va">variables</span>,
+                            <span class="va">sample</span> <span class="op">=</span> <span class="cn">NULL</span>,
+                            <span class="va">operation</span> <span class="op">=</span> <span class="st">"variance_threshold"</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span> <span class="va">...</span> <span class="op">}</span></code></pre></div>
 <div id="example-3" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-3" class="anchor"></a>Example</h3>
-<div class="sourceCode" id="cb8"><html><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressMessages</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/warning.html">suppressWarnings</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">magrittr</span>)))
-<span class="no">population</span> <span class="kw">&lt;-</span> <span class="kw pkg">tibble</span><span class="kw ns">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/deprecated.html">data_frame</a></span>(
-   <span class="kw">x</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">100</span>),
-   <span class="kw">y</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">100</span>)/<span class="fl">1000</span>
- )
-<span class="no">population</span> <span class="kw">%&lt;&gt;%</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">z</span> <span class="kw">=</span> <span class="no">x</span> + <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">100</span>) / <span class="fl">10</span>)
-<span class="no">sample</span> <span class="kw">&lt;-</span> <span class="no">population</span> <span class="kw">%&gt;%</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="fl">1</span>:<span class="fl">30</span>)
-<span class="no">variables</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span>)
-<span class="no">operation</span> <span class="kw">&lt;-</span> <span class="st">"correlation_threshold"</span>
-<span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span>(<span class="no">sample</span>)
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressMessages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/warning.html">suppressWarnings</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="va">population</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/deprecated.html">data_frame</a></span><span class="op">(</span>
+   x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>,
+   y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">/</span><span class="fl">1000</span>
+ <span class="op">)</span>  
+<span class="va">population</span> <span class="op">%&lt;&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>z <span class="op">=</span> <span class="va">x</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span> <span class="op">/</span> <span class="fl">10</span><span class="op">)</span>
+<span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">population</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">30</span><span class="op">)</span> 
+<span class="va">variables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span>
+<span class="va">operation</span> <span class="op">&lt;-</span> <span class="st">"correlation_threshold"</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">sample</span><span class="op">)</span>
 
 <span class="co"># `x` and `z` are highly correlated; one of them will be removed</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">population</span>)
-<span class="kw pkg">futile.logger</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/futile.logger/man/flog.threshold.html">flog.threshold</a></span>(<span class="kw pkg">futile.logger</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/futile.logger/man/logger.options.html">ERROR</a></span>)
-<span class="fu">variable_select</span>(<span class="no">population</span>, <span class="no">variables</span>, <span class="no">sample</span>, <span class="no">operation</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()</pre></html></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span>
+<span class="fu">futile.logger</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/futile.logger/man/flog.threshold.html">flog.threshold</a></span><span class="op">(</span><span class="fu">futile.logger</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/futile.logger/man/logger.options.html">ERROR</a></span><span class="op">)</span>
+<span class="fu"><a href="reference/variable_select.html">variable_select</a></span><span class="op">(</span><span class="va">population</span>, <span class="va">variables</span>, <span class="va">sample</span>, <span class="va">operation</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 </div>
@@ -296,7 +304,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

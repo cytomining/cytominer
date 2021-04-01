@@ -9,7 +9,8 @@ extract_subpopulations(population, reference, variables, k)
 \arguments{
 \item{population}{tbl with grouping (metadata) and observation variables.}
 
-\item{reference}{tbl with grouping (metadata) and observation variables. Columns of \code{population} and \code{reference} should be identical.}
+\item{reference}{tbl with grouping (metadata) and observation variables.
+Columns of \code{population} and \code{reference} should be identical.}
 
 \item{variables}{character vector specifying observation variables.}
 
@@ -18,8 +19,8 @@ extract_subpopulations(population, reference, variables, k)
 \value{
 list containing clusters centers (\code{subpop_centers}), two
 normalized histograms specifying frequency of each clusters in population
-and reference (\code{subpop_profiles}), and cluster prediction and distance to
-the predicted cluster for all input data (\code{population_clusters} and
+and reference (\code{subpop_profiles}), and cluster prediction and distance
+to the predicted cluster for all input data (\code{population_clusters} and
 \code{reference_clusters}).
 }
 \description{

@@ -79,7 +79,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -105,7 +105,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/cytomining/cytominer/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -136,7 +136,7 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <h2 id="section-common-workflow-operations" class="hasAnchor"><a href="#section-common-workflow-operations" class="anchor"></a>Common workflow operations</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -154,51 +154,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="correlation_threshold.html">correlation_threshold()</a></code> </p>
+          <p><code><a href="transform.html">transform()</a></code> </p>
         </td>
-        <td><p>Remove redundant variables.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="count_na_rows.html">count_na_rows()</a></code> </p>
-        </td>
-        <td><p>Count the number of <code>NA</code>s per variable.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="covariance.html">covariance()</a></code> </p>
-        </td>
-        <td><p>Compute covariance matrix and vectorize.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="drop_na_columns.html">drop_na_columns()</a></code> </p>
-        </td>
-        <td><p>Remove variables with NA values.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="drop_na_rows.html">drop_na_rows()</a></code> </p>
-        </td>
-        <td><p>Drop rows that are <code>NA</code> in all specified variables.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="extract_subpopulations.html">extract_subpopulations()</a></code> </p>
-        </td>
-        <td><p>Extract subpopulations.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="generalized_log.html">generalized_log()</a></code> </p>
-        </td>
-        <td><p>Generalized log transform data.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="generate_component_matrix.html">generate_component_matrix()</a></code> </p>
-        </td>
-        <td><p>A sparse matrix for sparse random projection.</p></td>
+        <td><p>Transform observation variables.</p></td>
       </tr><tr>
         
         <td>
@@ -208,27 +166,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="replicate_correlation.html">replicate_correlation()</a></code> </p>
+          <p><code><a href="variable_select.html">variable_select()</a></code> </p>
         </td>
-        <td><p>Measure replicate correlation of variables.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sparse_random_projection.html">sparse_random_projection()</a></code> </p>
-        </td>
-        <td><p>Reduce the dimensionality of a population using sparse random projection.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="svd_entropy.html">svd_entropy()</a></code> </p>
-        </td>
-        <td><p>Feature importance based on data entropy.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="transform.html">transform()</a></code> </p>
-        </td>
-        <td><p>Transform observation variables.</p></td>
+        <td><p>Select observation variables.</p></td>
       </tr><tr>
         
         <td>
@@ -238,21 +178,159 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="variable_select.html">variable_select()</a></code> </p>
+          <p><code><a href="drop_na_rows.html">drop_na_rows()</a></code> </p>
         </td>
-        <td><p>Select observation variables.</p></td>
+        <td><p>Drop rows that are <code>NA</code> in all specified variables.</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-variable-selection-methods" class="hasAnchor"><a href="#section-variable-selection-methods" class="anchor"></a>Variable selection methods</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="correlation_threshold.html">correlation_threshold()</a></code> </p>
+        </td>
+        <td><p>Remove redundant variables.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="drop_na_columns.html">drop_na_columns()</a></code> </p>
+        </td>
+        <td><p>Remove variables with NA values.</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="variance_threshold.html">variance_threshold()</a></code> </p>
         </td>
         <td><p>Remove variables with near-zero variance.</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-aggregation-methods" class="hasAnchor"><a href="#section-aggregation-methods" class="anchor"></a>Aggregation methods</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="covariance.html">covariance()</a></code> </p>
+        </td>
+        <td><p>Compute covariance matrix and vectorize.</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-transformation-methods" class="hasAnchor"><a href="#section-transformation-methods" class="anchor"></a>Transformation methods</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="generalized_log.html">generalized_log()</a></code> </p>
+        </td>
+        <td><p>Generalized log transform data.</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="whiten.html">whiten()</a></code> </p>
+          <p><code><a href="sparse_random_projection.html">sparse_random_projection()</a></code> </p>
         </td>
-        <td><p>Whiten data.</p></td>
+        <td><p>Reduce the dimensionality of a population using sparse random projection.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="spherize.html">spherize()</a></code> </p>
+        </td>
+        <td><p>Spherize data.</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-variable-importance-methods" class="hasAnchor"><a href="#section-variable-importance-methods" class="anchor"></a>Variable importance methods</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="replicate_correlation.html">replicate_correlation()</a></code> </p>
+        </td>
+        <td><p>Measure replicate correlation of variables.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="svd_entropy.html">svd_entropy()</a></code> </p>
+        </td>
+        <td><p>Feature importance based on data entropy.</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-higher-order-profiling-methods" class="hasAnchor"><a href="#section-higher-order-profiling-methods" class="anchor"></a>Higher-order profiling methods</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="extract_subpopulations.html">extract_subpopulations()</a></code> </p>
+        </td>
+        <td><p>Extract subpopulations.</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-internal" class="hasAnchor"><a href="#section-internal" class="anchor"></a>Internal</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="count_na_rows.html">count_na_rows()</a></code> </p>
+        </td>
+        <td><p>Count the number of <code>NA</code>s per variable.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="generate_component_matrix.html">generate_component_matrix()</a></code> </p>
+        </td>
+        <td><p>A sparse matrix for sparse random projection.</p></td>
       </tr>
     </tbody>
     </table>
@@ -272,7 +350,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -11,7 +11,9 @@ transform(population, variables, operation = "generalized_log", ...)
 
 \item{variables}{character vector specifying observation variables.}
 
-\item{operation}{optional character string specifying method for transform. This must be one of the strings \code{"generalized_log"} (default), \code{"whiten"}.}
+\item{operation}{optional character string specifying method for transform.
+This must be one of the strings \code{"generalized_log"} (default),
+\code{"spherize"}, or \code{"sparse_random_projection"}.}
 
 \item{...}{arguments passed to transformation operation.}
 }
@@ -19,13 +21,19 @@ transform(population, variables, operation = "generalized_log", ...)
 transformed data of the same class as \code{population}.
 }
 \description{
-\code{transform} transforms observation variables based on the specified transformation method.
+\code{transform} transforms observation variables based on the specified
+transformation method.
 }
 \examples{
 population <- tibble::tibble(
   Metadata_Well = c("A01", "A02", "B01", "B02"),
-  Intensity_DNA = c(8, 20, 12, 32)
+  Intensity_DNA = c(8, 20, 12, 32),
+  Intensity_RNA = c(1, 12, -1, 4),
+  Intensity_AGP = c(-2, 5, -5, -2),
+  Intensity_ER  = c(-12, 15, -25, 24)
 )
-variables <- c("Intensity_DNA")
+variables <- c("Intensity_DNA", "Intensity_RNA", "Intensity_AGP", "Intensity_ER")
 transform(population, variables, operation = "generalized_log")
+transform(population, variables, sample = population, operation = "spherize")
+transform(population, variables, n_components = 2, operation = "sparse_random_projection")
 }

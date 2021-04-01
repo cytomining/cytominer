@@ -1,0 +1,33 @@
+reference:
+- title: "Common workflow operations"
+- contents:
+  - aggregate
+  - transform
+  - normalize
+  - variable_select
+  - variable_importance
+  - drop_na_rows
+- title: "Variable selection methods"
+- contents:
+  - correlation_threshold
+  - drop_na_columns
+  - variance_threshold
+- title: "Aggregation methods"
+- contents:
+  - covariance
+- title: "Transformation methods"
+- contents:
+  - generalized_log
+  - sparse_random_projection
+  - spherize
+- title: "Variable importance methods"
+- contents:
+  - replicate_correlation
+  - svd_entropy
+- title: "Higher-order profiling methods"
+- contents:
+  - extract_subpopulations
+- title: "Internal"
+- contents:
+  - count_na_rows
+  - generate_component_matrix

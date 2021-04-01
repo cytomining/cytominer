@@ -1,11 +1,15 @@
-#' Whiten data.
+#' Spherize data.
 #'
-#' \code{whiten} transforms specified observation variables by estimating a whitening transformation on a sample and applying it to the population.
+#' \code{spherize} transforms specified observation variables by estimating a
+#' sphering transformation on a sample and applying it to the population.
 #'
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param variables character vector specifying observation variables.
-#' @param sample tbl containing sample that is used by the method to estimate whitening parameters. \code{sample} has same structure as \code{population}. Typically, \code{sample} corresponds to controls in the experiment.
-#' @param regularization_param optional parameter used in whitening to offset eigenvalues to avoid division by zero.
+#' @param sample tbl containing sample that is used by the method to estimate
+#'   sphering parameters. \code{sample} has same structure as \code{population}.
+#'   Typically, \code{sample} corresponds to controls in the experiment.
+#' @param regularization_param optional parameter used in sphering to offset
+#'   eigenvalues to avoid division by zero.
 #'
 #' @return transformed data of the same class as \code{population}.
 #'
@@ -16,13 +20,13 @@
 #'   Texture_DNA = c(5, 2, 43, 13)
 #' )
 #' variables <- c("Intensity_DNA", "Texture_DNA")
-#' whiten(population, variables, population, 0.01)
+#' spherize(population, variables, population, 0.01)
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @importFrom rlang :=
 #' @importFrom stats cov
 #' @export
-whiten <- function(population, variables, sample, regularization_param = 1) {
+spherize <- function(population, variables, sample, regularization_param = 1) {
   sample %<>%
     dplyr::collect()
 
@@ -46,11 +50,11 @@ whiten <- function(population, variables, sample, regularization_param = 1) {
   # eigen decomposition \Sigma = E * \Lambda * E'
   eig_decomp <- eigen(sample_cov)
 
-  # compute whitening transformation, which is {\Lambda + \epsilon}^.5 x E'
+  # compute sphering transformation, which is {\Lambda + \epsilon}^.5 x E'
   W <- diag((eig_decomp$values + regularization_param)^-0.5) %*%
     t(eig_decomp$vectors)
 
-  # apply whitening transformation, which is (X - \mu) * W'
+  # apply sphering transformation, which is (X - \mu) * W'
   transformed_population_data <- sweep(population_data, 2, sample_mean) %*% t(W)
 
   colnames(transformed_population_data) <- paste0("PC", 1:NCOL(W))

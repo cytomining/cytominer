@@ -17,9 +17,10 @@ sparse_random_projection(population, variables, n_components)
 Dimensionality reduced \code{population}.
 }
 \description{
-\code{sparse_random_projection} reduces the dimensionality of a population by projecting
-the original data with a sparse random matrix. Generally more efficient and faster to
-compute than a Gaussian random projection matrix, while providing similar embedding quality.
+\code{sparse_random_projection} reduces the dimensionality of a population
+by projecting the original data with a sparse random matrix. Generally more
+efficient and faster to compute than a Gaussian random projection matrix,
+while providing similar embedding quality.
 }
 \examples{
 population <- tibble::tibble(

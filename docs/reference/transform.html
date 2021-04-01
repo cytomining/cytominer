@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Transform observation variables. — transform" />
-<meta property="og:description" content="transform transforms observation variables based on the specified transformation method." />
+<meta property="og:description" content="transform transforms observation variables based on the specified
+transformation method." />
 
 
 
@@ -80,7 +81,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -106,7 +107,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/cytomining/cytominer/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -129,10 +130,11 @@
     </div>
 
     <div class="ref-description">
-    <p><code>transform</code> transforms observation variables based on the specified transformation method.</p>
+    <p><code>transform</code> transforms observation variables based on the specified
+transformation method.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/base/transform.html'>transform</a></span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='kw'>operation</span> <span class='kw'>=</span> <span class='st'>"generalized_log"</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>transform</span><span class='op'>(</span><span class='va'>population</span>, <span class='va'>variables</span>, operation <span class='op'>=</span> <span class='st'>"generalized_log"</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,7 +149,9 @@
     </tr>
     <tr>
       <th>operation</th>
-      <td><p>optional character string specifying method for transform. This must be one of the strings <code>"generalized_log"</code> (default), <code>"whiten"</code>.</p></td>
+      <td><p>optional character string specifying method for transform.
+This must be one of the strings <code>"generalized_log"</code> (default),
+<code>"spherize"</code>, or <code>"sparse_random_projection"</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -160,18 +164,36 @@
     <p>transformed data of the same class as <code>population</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>population</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(
-  <span class='kw'>Metadata_Well</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A01"</span>, <span class='st'>"A02"</span>, <span class='st'>"B01"</span>, <span class='st'>"B02"</span>),
-  <span class='kw'>Intensity_DNA</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>8</span>, <span class='fl'>20</span>, <span class='fl'>12</span>, <span class='fl'>32</span>)
-)
-<span class='no'>variables</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Intensity_DNA"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/transform.html'>transform</a></span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='kw'>operation</span> <span class='kw'>=</span> <span class='st'>"generalized_log"</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 4 x 2</span><span>
-#&gt;   Metadata_Well Intensity_DNA
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> A01                    2.08
-#&gt; </span><span style='color: #555555;'>2</span><span> A02                    3.00
-#&gt; </span><span style='color: #555555;'>3</span><span> B01                    2.49
-#&gt; </span><span style='color: #555555;'>4</span><span> B02                    3.47</div></span></pre>
+    <pre class="examples"><div class='input'><span class='va'>population</span> <span class='op'>&lt;-</span> <span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>
+  Metadata_Well <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A01"</span>, <span class='st'>"A02"</span>, <span class='st'>"B01"</span>, <span class='st'>"B02"</span><span class='op'>)</span>,
+  Intensity_DNA <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>8</span>, <span class='fl'>20</span>, <span class='fl'>12</span>, <span class='fl'>32</span><span class='op'>)</span>,
+  Intensity_RNA <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>12</span>, <span class='op'>-</span><span class='fl'>1</span>, <span class='fl'>4</span><span class='op'>)</span>,
+  Intensity_AGP <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>5</span>, <span class='op'>-</span><span class='fl'>5</span>, <span class='op'>-</span><span class='fl'>2</span><span class='op'>)</span>,
+  Intensity_ER  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>12</span>, <span class='fl'>15</span>, <span class='op'>-</span><span class='fl'>25</span>, <span class='fl'>24</span><span class='op'>)</span>
+<span class='op'>)</span>
+<span class='va'>variables</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Intensity_DNA"</span>, <span class='st'>"Intensity_RNA"</span>, <span class='st'>"Intensity_AGP"</span>, <span class='st'>"Intensity_ER"</span><span class='op'>)</span>
+<span class='fu'>transform</span><span class='op'>(</span><span class='va'>population</span>, <span class='va'>variables</span>, operation <span class='op'>=</span> <span class='st'>"generalized_log"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 4 x 5</span><span>
+#&gt;   Metadata_Well Intensity_DNA Intensity_RNA Intensity_AGP Intensity_ER
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                 </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> A01                    2.08         0.188         -</span><span style='color: #BB0000;'>2.14</span><span>        -</span><span style='color: #BB0000;'>3.87</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> A02                    3.00         2.49           1.62         2.71
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> B01                    2.49        -</span><span style='color: #BB0000;'>1.57</span><span>          -</span><span style='color: #BB0000;'>3.01</span><span>        -</span><span style='color: #BB0000;'>4.61</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> B02                    3.47         1.40          -</span><span style='color: #BB0000;'>2.14</span><span>         3.18</div><div class='input'><span class='fu'>transform</span><span class='op'>(</span><span class='va'>population</span>, <span class='va'>variables</span>, sample <span class='op'>=</span> <span class='va'>population</span>, operation <span class='op'>=</span> <span class='st'>"spherize"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 4 x 5</span><span>
+#&gt;   Metadata_Well    PC1    PC2    PC3       PC4
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> A01            0.622 -</span><span style='color: #BB0000;'>0.427</span><span>  1.21   8.33</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-15</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> A02           -</span><span style='color: #BB0000;'>0.626</span><span> -</span><span style='color: #BB0000;'>1.17</span><span>  -</span><span style='color: #BB0000;'>0.631</span><span>  3.66</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-15</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> B01            1.05   0.576 -</span><span style='color: #BB0000;'>0.836</span><span> -</span><span style='color: #BB0000;'>1.20</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-14</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> B02           -</span><span style='color: #BB0000;'>1.05</span><span>   1.02   0.255 -</span><span style='color: #BB0000;'>2.22</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-16</span><span></div><div class='input'><span class='fu'>transform</span><span class='op'>(</span><span class='va'>population</span>, <span class='va'>variables</span>, n_components <span class='op'>=</span> <span class='fl'>2</span>, operation <span class='op'>=</span> <span class='st'>"sparse_random_projection"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 4 x 3</span><span>
+#&gt;   Metadata_Well    R1    R2
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> A01              21     1
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> A02             -</span><span style='color: #BB0000;'>12</span><span>   -</span><span style='color: #BB0000;'>42</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> B01              43     9
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> B02               6   -</span><span style='color: #BB0000;'>62</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -187,7 +209,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

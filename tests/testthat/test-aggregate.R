@@ -14,22 +14,8 @@ test_that("`aggregate` aggregates data", {
 
   data <- dplyr::copy_to(db, data)
 
-  expect_equal(
-    aggregate(
-      population = data,
-      variables = c("x", "y"),
-      strata = c("g"),
-      operation = "median"
-    ) %>%
-      dplyr::collect(),
-    data %>%
-      dplyr::group_by(g) %>%
-      dplyr::summarise_at(
-        .funs = ~ MEDIAN(.),
-        .vars = c("x", "y")
-      ) %>%
-      dplyr::collect()
-  )
+  # TODO: Migrate to `dplyr::across` once this issue is fixed
+  # https://github.com/tidyverse/dbplyr/issues/480#issuecomment-811814636
 
   expect_equal(
     aggregate(
@@ -47,6 +33,29 @@ test_that("`aggregate` aggregates data", {
       ) %>%
       dplyr::collect()
   )
+
+  # TODO: Migrate to `dplyr::across` once this issue is fixed
+  # https://github.com/tidyverse/dbplyr/issues/480#issuecomment-811814636
+
+  expect_equal(
+    aggregate(
+      population = data,
+      variables = c("x", "y"),
+      strata = c("g"),
+      operation = "median"
+    ) %>%
+      dplyr::collect(),
+    data %>%
+      dplyr::group_by(g) %>%
+      dplyr::summarise_at(
+        .funs = ~ MEDIAN(.),
+        .vars = c("x", "y")
+      ) %>%
+      dplyr::collect()
+  )
+
+  # TODO: Migrate to `dplyr::across` once this issue is fixed
+  # https://github.com/tidyverse/dbplyr/issues/480#issuecomment-811814636
 
   expect_equal(
     aggregate(

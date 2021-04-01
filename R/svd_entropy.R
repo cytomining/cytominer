@@ -1,14 +1,16 @@
 utils::globalVariables(c(".", "i"))
 #' Feature importance based on data entropy.
 #'
-#' \code{svd_entropy} measures the contribution of each feature in decreasing the data entropy.
+#' \code{svd_entropy} measures the contribution of each feature in decreasing
+#' the data entropy.
 #'
 #' @param variables character vector specifying observation variables.
 #' @param sample tbl containing sample used to estimate parameters.
-#' @param cores optional integer specifying number of CPU cores used for parallel computing using \code{doParallel}.
+#' @param cores optional integer specifying number of CPU cores used for
+#'   parallel computing using \code{doParallel}.
 #'
-#' @return data frame specifying the contribution of each feature in decreasing the data entropy.
-#' Higher values indicate more information.
+#' @return data frame specifying the contribution of each feature in decreasing
+#'   the data entropy. Higher values indicate more information.
 #'
 #' @importFrom foreach %dopar%
 #' @importFrom magrittr %>%
@@ -20,9 +22,9 @@ utils::globalVariables(c(".", "i"))
 #'   AreaShape_Area = c(245, 151, 231, 179, 50, 112, 53, 73, 164, 529)
 #' )
 #' variables <- c("AreaShape_MinorAxisLength", "AreaShape_MajorAxisLength", "AreaShape_Area")
-#' svd_entropy(variables, sample, cores = 1)
+#' svd_entropy(sample, variables, cores = 1)
 #' @export
-svd_entropy <- function(variables, sample, cores = NULL) {
+svd_entropy <- function(sample, variables, cores = NULL) {
   doParallel::registerDoParallel(cores = cores)
 
   sample %<>%

@@ -5,11 +5,16 @@ utils::globalVariables(c("n", ".", "variable"))
 #'
 #' @param sample tbl containing sample used to estimate parameters.
 #' @param variables character vector specifying observation variables.
-#' @param strata character vector specifying grouping variables for grouping prior to normalization.
+#' @param strata character vector specifying grouping variables for grouping
+#'   prior to normalization.
 #' @param replicates number of replicates.
-#' @param replicate_by optional character string specifying column containing the replicate id.
-#' @param split_by optional character string specifying column  by which to split the sample into batches; replicate correlations will be calculate per batch.
-#' @param cores optional integer specifying number of CPU cores used for parallel computing using \code{doParallel}.
+#' @param replicate_by optional character string specifying column containing
+#'   the replicate id.
+#' @param split_by optional character string specifying column  by which to
+#'   split the sample into batches; replicate correlations will be calculate
+#'   per batch.
+#' @param cores optional integer specifying number of CPU cores used for
+#'   parallel computing using \code{doParallel}.
 #'
 #' @examples
 #' set.seed(123)
@@ -63,8 +68,6 @@ replicate_correlation <-
            cores = NULL) {
     doParallel::registerDoParallel(cores = cores)
 
-    .strata <- rlang::syms(strata)
-
     if (is.null(split_by)) {
       sample %<>% dplyr::mutate(col_split_by = 0)
 
@@ -75,17 +78,16 @@ replicate_correlation <-
       replicate_by <- "col_replicate_by"
 
       sample %<>%
-        dplyr::count(!!!.strata) %>%
+        dplyr::count(across(all_of(strata))) %>%
         dplyr::filter(n == replicates) %>%
         dplyr::inner_join(sample) %>%
-        dplyr::group_by(!!!.strata) %>%
+        dplyr::group_by(across(all_of(strata))) %>%
         dplyr::mutate(col_replicate_by = dplyr::row_number(n)) %>%
         dplyr::select(-n) %>%
         dplyr::ungroup()
 
       strata <- c(strata, replicate_by)
 
-      .strata <- rlang::syms(strata)
     }
 
     result <-
@@ -99,7 +101,7 @@ replicate_correlation <-
 
               correlation_matrix <-
                 sample_split %>%
-                dplyr::arrange(!!!.strata) %>%
+                dplyr::arrange(across(all_of(strata))) %>%
                 dplyr::select(c(strata, variable, replicate_by)) %>%
                 tidyr::spread_(replicate_by, variable) %>%
                 dplyr::select(-strata_no_replicate_by) %>%
@@ -112,6 +114,9 @@ replicate_correlation <-
       tidyr::gather_(replicate_by, "pearson", setdiff(names(.), "variable")) %>%
       dplyr::group_by(variable) %>%
       dplyr::summarize_at("pearson", c("median", "min", "max"))
+
+    # TODO: Migrate to `dplyr::across` once this issue is fixed
+    # https://github.com/tidyverse/dbplyr/issues/480#issuecomment-811814636
 
     doParallel::stopImplicitCluster()
 

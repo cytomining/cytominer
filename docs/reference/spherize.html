@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Whiten data. — whiten • cytominer</title>
+<title>Spherize data. — spherize • cytominer</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Whiten data. — whiten" />
-<meta property="og:description" content="whiten transforms specified observation variables by estimating a whitening transformation on a sample and applying it to the population." />
+<meta property="og:title" content="Spherize data. — spherize" />
+<meta property="og:description" content="spherize transforms specified observation variables by estimating a
+sphering transformation on a sample and applying it to the population." />
 
 
 
@@ -80,7 +81,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -106,7 +107,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/cytomining/cytominer/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -123,16 +124,17 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Whiten data.</h1>
+    <h1>Spherize data.</h1>
     <small class="dont-index">Source: <a href='https://github.com/cytomining/cytominer/blob/master/R/whiten.R'><code>R/whiten.R</code></a></small>
-    <div class="hidden name"><code>whiten.Rd</code></div>
+    <div class="hidden name"><code>spherize.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>whiten</code> transforms specified observation variables by estimating a whitening transformation on a sample and applying it to the population.</p>
+    <p><code>spherize</code> transforms specified observation variables by estimating a
+sphering transformation on a sample and applying it to the population.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>whiten</span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='no'>sample</span>, <span class='kw'>regularization_param</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>spherize</span><span class='op'>(</span><span class='va'>population</span>, <span class='va'>variables</span>, <span class='va'>sample</span>, regularization_param <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,11 +149,14 @@
     </tr>
     <tr>
       <th>sample</th>
-      <td><p>tbl containing sample that is used by the method to estimate whitening parameters. <code>sample</code> has same structure as <code>population</code>. Typically, <code>sample</code> corresponds to controls in the experiment.</p></td>
+      <td><p>tbl containing sample that is used by the method to estimate
+sphering parameters. <code>sample</code> has same structure as <code>population</code>.
+Typically, <code>sample</code> corresponds to controls in the experiment.</p></td>
     </tr>
     <tr>
       <th>regularization_param</th>
-      <td><p>optional parameter used in whitening to offset eigenvalues to avoid division by zero.</p></td>
+      <td><p>optional parameter used in sphering to offset
+eigenvalues to avoid division by zero.</p></td>
     </tr>
     </table>
 
@@ -160,19 +165,20 @@
     <p>transformed data of the same class as <code>population</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>population</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(
-  <span class='kw'>Metadata_Well</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A01"</span>, <span class='st'>"A02"</span>, <span class='st'>"B01"</span>, <span class='st'>"B02"</span>),
-  <span class='kw'>Intensity_DNA</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>8</span>, <span class='fl'>20</span>, <span class='fl'>12</span>, <span class='fl'>32</span>),
-  <span class='kw'>Texture_DNA</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>2</span>, <span class='fl'>43</span>, <span class='fl'>13</span>)
-)
-<span class='no'>variables</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Intensity_DNA"</span>, <span class='st'>"Texture_DNA"</span>)
-<span class='fu'>whiten</span>(<span class='no'>population</span>, <span class='no'>variables</span>, <span class='no'>population</span>, <span class='fl'>0.01</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 4 x 3</span><span>
+    <pre class="examples"><div class='input'><span class='va'>population</span> <span class='op'>&lt;-</span> <span class='fu'>tibble</span><span class='fu'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>
+  Metadata_Well <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A01"</span>, <span class='st'>"A02"</span>, <span class='st'>"B01"</span>, <span class='st'>"B02"</span><span class='op'>)</span>,
+  Intensity_DNA <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>8</span>, <span class='fl'>20</span>, <span class='fl'>12</span>, <span class='fl'>32</span><span class='op'>)</span>,
+  Texture_DNA <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>2</span>, <span class='fl'>43</span>, <span class='fl'>13</span><span class='op'>)</span>
+<span class='op'>)</span>
+<span class='va'>variables</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Intensity_DNA"</span>, <span class='st'>"Texture_DNA"</span><span class='op'>)</span>
+<span class='fu'>spherize</span><span class='op'>(</span><span class='va'>population</span>, <span class='va'>variables</span>, <span class='va'>population</span>, <span class='fl'>0.01</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 4 x 3</span><span>
 #&gt;   Metadata_Well    PC1     PC2
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> A01           -</span><span style='color: #BB0000;'>0.474</span><span>  1.13  
-#&gt; </span><span style='color: #555555;'>2</span><span> A02           -</span><span style='color: #BB0000;'>0.734</span><span>  0.026</span><span style='text-decoration: underline;'>0</span><span>
-#&gt; </span><span style='color: #555555;'>3</span><span> B01            1.47   0.144 
-#&gt; </span><span style='color: #555555;'>4</span><span> B02           -</span><span style='color: #BB0000;'>0.264</span><span> -</span><span style='color: #BB0000;'>1.30</span><span>  </div></span></pre>
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> A01           -</span><span style='color: #BB0000;'>0.474</span><span>  1.13  
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> A02           -</span><span style='color: #BB0000;'>0.734</span><span>  0.026</span><span style='text-decoration: underline;'>0</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> B01            1.47   0.144 
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> B02           -</span><span style='color: #BB0000;'>0.264</span><span> -</span><span style='color: #BB0000;'>1.30</span><span>  </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -188,7 +194,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

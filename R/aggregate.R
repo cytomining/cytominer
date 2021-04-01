@@ -23,11 +23,15 @@ utils::globalVariables("data")
 #'     "experiment"
 #'   ),
 #'   Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
-#'   AreaShape_Area = c(10, 12, 15, 16, 8, 8, 7, 7)
+#'   Area = c(10, 12, 15, 16, 8, 8, 7, 7),
+#'   Intensity = c(3, -3, 35, -3, 3, 0, 9, -7)
 #' )
-#' variables <- c("AreaShape_Area")
+#' variables <- c("Area", "Intensity")
 #' strata <- c("Metadata_group", "Metadata_batch")
 #' aggregate(population, variables, strata, operation = "mean")
+#' aggregate(population, variables, strata, operation = "mean+sd")
+#' aggregate(population, variables, strata, operation = "median")
+#' aggregate(population, variables, strata, operation = "covariance", univariate = FALSE)
 #' @importFrom utils find
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
@@ -66,8 +70,6 @@ aggregate <- function(population, variables, strata, operation = "mean",
   ) {
     error <- paste0("undefined operation '", operation, "'")
 
-    futile.logger::flog.error(msg = error)
-
     stop(error)
   }
 
@@ -105,6 +107,9 @@ aggregate <- function(population, variables, strata, operation = "mean",
         purrr::map(stats::as.formula)
     }
   }
+
+  # TODO: Migrate to `dplyr::across` once this issue is fixed
+  # https://github.com/tidyverse/dbplyr/issues/480#issuecomment-811814636
 
   population %>%
     dplyr::group_by(!!!strata) %>%

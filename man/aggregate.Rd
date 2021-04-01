@@ -43,9 +43,13 @@ population <- tibble::tibble(
     "experiment"
   ),
   Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
-  AreaShape_Area = c(10, 12, 15, 16, 8, 8, 7, 7)
+  Area = c(10, 12, 15, 16, 8, 8, 7, 7),
+  Intensity = c(3, -3, 35, -3, 3, 0, 9, -7)
 )
-variables <- c("AreaShape_Area")
+variables <- c("Area", "Intensity")
 strata <- c("Metadata_group", "Metadata_batch")
 aggregate(population, variables, strata, operation = "mean")
+aggregate(population, variables, strata, operation = "mean+sd")
+aggregate(population, variables, strata, operation = "median")
+aggregate(population, variables, strata, operation = "covariance", univariate = FALSE)
 }

@@ -4,21 +4,23 @@
 \alias{svd_entropy}
 \title{Feature importance based on data entropy.}
 \usage{
-svd_entropy(variables, sample, cores = NULL)
+svd_entropy(sample, variables, cores = NULL)
 }
 \arguments{
-\item{variables}{character vector specifying observation variables.}
-
 \item{sample}{tbl containing sample used to estimate parameters.}
 
-\item{cores}{optional integer specifying number of CPU cores used for parallel computing using \code{doParallel}.}
+\item{variables}{character vector specifying observation variables.}
+
+\item{cores}{optional integer specifying number of CPU cores used for
+parallel computing using \code{doParallel}.}
 }
 \value{
-data frame specifying the contribution of each feature in decreasing the data entropy.
-Higher values indicate more information.
+data frame specifying the contribution of each feature in decreasing
+  the data entropy. Higher values indicate more information.
 }
 \description{
-\code{svd_entropy} measures the contribution of each feature in decreasing the data entropy.
+\code{svd_entropy} measures the contribution of each feature in decreasing
+the data entropy.
 }
 \examples{
 sample <- tibble::tibble(
@@ -27,5 +29,5 @@ sample <- tibble::tibble(
   AreaShape_Area = c(245, 151, 231, 179, 50, 112, 53, 73, 164, 529)
 )
 variables <- c("AreaShape_MinorAxisLength", "AreaShape_MajorAxisLength", "AreaShape_Area")
-svd_entropy(variables, sample, cores = 1)
+svd_entropy(sample, variables, cores = 1)
 }

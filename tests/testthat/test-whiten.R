@@ -1,6 +1,6 @@
-context("whiten")
+context("spherize")
 
-test_that("`whiten` whiten data", {
+test_that("`spherize` spherizes data", {
   data <- data.frame(id = 1:10, x = rnorm(10), y = rnorm(10), z = rnorm(10))
 
   db <- DBI::dbConnect(RSQLite::SQLite(),
@@ -11,7 +11,7 @@ test_that("`whiten` whiten data", {
   data <- dplyr::copy_to(db, data)
 
   expect_equal(
-    whiten(
+    spherize(
       population = data,
       variables = c("x", "y", "z"),
       sample = data,

@@ -6,14 +6,15 @@ utils::globalVariables(c("type", "cluster_id"))
 #' two sets.
 #'
 #' @param population tbl with grouping (metadata) and observation variables.
-#' @param reference tbl with grouping (metadata) and observation variables. Columns of \code{population} and \code{reference} should be identical.
+#' @param reference tbl with grouping (metadata) and observation variables.
+#'   Columns of \code{population} and \code{reference} should be identical.
 #' @param variables character vector specifying observation variables.
 #' @param k scalar specifying number of clusters.
 #'
 #' @return list containing clusters centers (\code{subpop_centers}), two
 #' normalized histograms specifying frequency of each clusters in population
-#' and reference (\code{subpop_profiles}), and cluster prediction and distance to
-#' the predicted cluster for all input data (\code{population_clusters} and
+#' and reference (\code{subpop_profiles}), and cluster prediction and distance
+#' to the predicted cluster for all input data (\code{population_clusters} and
 #' \code{reference_clusters}).
 
 #' @examples
