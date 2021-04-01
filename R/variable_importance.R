@@ -1,10 +1,14 @@
 #' Measure variable importance.
 #'
-#' \code{variable_importance} measures importance of variables based on specified methods.
+#' \code{variable_importance} measures importance of variables based on
+#' specified methods.
 #'
 #' @param sample tbl containing sample used to estimate parameters.
 #' @param variables character vector specifying observation variables.
-#' @param operation optional character string specifying method for computing variable importance. Currently, only \code{"replicate_correlation"} (default) is implemented.
+#' @param operation optional character string specifying method for computing
+#'   variable importance. This must be one of the strings
+#'   \code{"replicate_correlation"} (default) or \code{"svd_entropy"}.
+#'   is implemented.
 #' @param ... arguments passed to variable importance operation.
 #'
 #' @return data frame containing variable importance measures.
@@ -46,6 +50,16 @@
 #'   replicate_by = "Metadata_replicate_id",
 #'   cores = 1
 #' )
+#'
+#' # `svd_entropy`` measures the contribution of each variable in decreasing
+#' # the data entropy.
+#'
+#' variable_importance(
+#'   sample = sample,
+#'   variables = c("x", "y", "z"),
+#'   operation = "svd_entropy",
+#'   cores = 1
+#' )
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @export
@@ -53,6 +67,8 @@ variable_importance <- function(sample, variables,
                                 operation = "replicate_correlation", ...) {
   if (operation == "replicate_correlation") {
     importance <- replicate_correlation(sample, variables, ...)
+  } else if (operation == "svd_entropy") {
+    importance <- svd_entropy(sample, variables, ...)
   } else {
     error <- paste0("undefined operation '", operation, "'")
 
