@@ -5,11 +5,16 @@ utils::globalVariables(c("n", ".", "variable"))
 #'
 #' @param sample tbl containing sample used to estimate parameters.
 #' @param variables character vector specifying observation variables.
-#' @param strata character vector specifying grouping variables for grouping prior to normalization.
+#' @param strata character vector specifying grouping variables for grouping
+#'   prior to normalization.
 #' @param replicates number of replicates.
-#' @param replicate_by optional character string specifying column containing the replicate id.
-#' @param split_by optional character string specifying column  by which to split the sample into batches; replicate correlations will be calculate per batch.
-#' @param cores optional integer specifying number of CPU cores used for parallel computing using \code{doParallel}.
+#' @param replicate_by optional character string specifying column containing
+#'   the replicate id.
+#' @param split_by optional character string specifying column  by which to
+#'   split the sample into batches; replicate correlations will be calculate
+#'   per batch.
+#' @param cores optional integer specifying number of CPU cores used for
+#'   parallel computing using \code{doParallel}.
 #'
 #' @examples
 #' set.seed(123)

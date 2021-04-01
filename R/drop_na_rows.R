@@ -6,7 +6,8 @@ utils::globalVariables(c("key", "value", "rowname_temp", "rowid", "coalesce"))
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param variables character vector specifying observation variables.
 #'
-#' @return \code{population} without rows that have \code{NA} in all specified variables.
+#' @return \code{population} without rows that have \code{NA} in all specified
+#' variables.
 #'
 #' @examples
 #' population <- tibble::tibble(

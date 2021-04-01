@@ -19,15 +19,20 @@ replicate_correlation(
 
 \item{variables}{character vector specifying observation variables.}
 
-\item{strata}{character vector specifying grouping variables for grouping prior to normalization.}
+\item{strata}{character vector specifying grouping variables for grouping
+prior to normalization.}
 
 \item{replicates}{number of replicates.}
 
-\item{replicate_by}{optional character string specifying column containing the replicate id.}
+\item{replicate_by}{optional character string specifying column containing
+the replicate id.}
 
-\item{split_by}{optional character string specifying column  by which to split the sample into batches; replicate correlations will be calculate per batch.}
+\item{split_by}{optional character string specifying column  by which to
+split the sample into batches; replicate correlations will be calculate
+per batch.}
 
-\item{cores}{optional integer specifying number of CPU cores used for parallel computing using \code{doParallel}.}
+\item{cores}{optional integer specifying number of CPU cores used for
+parallel computing using \code{doParallel}.}
 }
 \value{
 data frame of variable quality measurements

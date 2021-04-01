@@ -11,13 +11,15 @@ drop_na_columns(population, variables, cutoff = 0.05)
 
 \item{variables}{character vector specifying observation variables.}
 
-\item{cutoff}{threshold between [0,1]. Variables with an \code{NA} frequency > \code{cutoff} are returned.}
+\item{cutoff}{threshold between [0,1]. Variables with an \code{NA}
+frequency > \code{cutoff} are returned.}
 }
 \value{
 character vector specifying observation variables to be excluded.
 }
 \description{
-\code{drop_na_columns} returns list of variables which have greater than a specified threshold number of \code{NA}s.
+\code{drop_na_columns} returns list of variables which have greater than a
+specified threshold number of \code{NA}s.
 }
 \examples{
 population <- tibble::tibble(

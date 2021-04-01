@@ -17,9 +17,12 @@ variable_select(
 
 \item{variables}{character vector specifying observation variables.}
 
-\item{sample}{tbl containing sample that is used by some variable selection methods. \code{sample} has same structure as \code{population}.}
+\item{sample}{tbl containing sample that is used by some variable selection
+methods. \code{sample} has same structure as \code{population}.}
 
-\item{operation}{optional character string specifying method for variable selection. This must be one of the strings \code{"variance_threshold"}, \code{"correlation_threshold"}, \code{"drop_na_columns"}.}
+\item{operation}{optional character string specifying method for variable
+ selection. This must be one of the strings \code{"variance_threshold"},
+\code{"correlation_threshold"}, \code{"drop_na_columns"}.}
 
 \item{...}{arguments passed to selection operation.}
 }
@@ -27,7 +30,8 @@ variable_select(
 variable-selected data of the same class as \code{population}.
 }
 \description{
-\code{variable_select} selects observation variables based on the specified variable selection method.
+\code{variable_select} selects observation variables based on the specified
+variable selection method.
 }
 \examples{
 

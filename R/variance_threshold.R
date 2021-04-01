@@ -1,9 +1,10 @@
 #' Remove variables with near-zero variance.
 #'
-#' \code{variance_threshold} returns list of variables that have near-zero variance.
+#' \code{variance_threshold} returns list of variables that have near-zero
+#' variance.
 #'
-#' \code{variance_threshold} is a reimplementation of \code{caret::nearZeroVar}, using
-#' the default values for \code{freqCut} and \code{uniqueCut}.
+#' \code{variance_threshold} is a reimplementation of \code{caret::nearZeroVar},
+#' using the default values for \code{freqCut} and \code{uniqueCut}.
 #'
 #' @param variables character vector specifying observation variables.
 #' @param sample tbl containing sample used to estimate parameters.

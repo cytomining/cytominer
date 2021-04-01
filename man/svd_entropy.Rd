@@ -11,14 +11,16 @@ svd_entropy(variables, sample, cores = NULL)
 
 \item{sample}{tbl containing sample used to estimate parameters.}
 
-\item{cores}{optional integer specifying number of CPU cores used for parallel computing using \code{doParallel}.}
+\item{cores}{optional integer specifying number of CPU cores used for
+parallel computing using \code{doParallel}.}
 }
 \value{
-data frame specifying the contribution of each feature in decreasing the data entropy.
-Higher values indicate more information.
+data frame specifying the contribution of each feature in decreasing
+  the data entropy. Higher values indicate more information.
 }
 \description{
-\code{svd_entropy} measures the contribution of each feature in decreasing the data entropy.
+\code{svd_entropy} measures the contribution of each feature in decreasing
+the data entropy.
 }
 \examples{
 sample <- tibble::tibble(

@@ -1,11 +1,15 @@
 #' Spherize data.
 #'
-#' \code{spherize} transforms specified observation variables by estimating a sphering transformation on a sample and applying it to the population.
+#' \code{spherize} transforms specified observation variables by estimating a
+#' sphering transformation on a sample and applying it to the population.
 #'
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param variables character vector specifying observation variables.
-#' @param sample tbl containing sample that is used by the method to estimate sphering parameters. \code{sample} has same structure as \code{population}. Typically, \code{sample} corresponds to controls in the experiment.
-#' @param regularization_param optional parameter used in sphering to offset eigenvalues to avoid division by zero.
+#' @param sample tbl containing sample that is used by the method to estimate
+#'   sphering parameters. \code{sample} has same structure as \code{population}.
+#'   Typically, \code{sample} corresponds to controls in the experiment.
+#' @param regularization_param optional parameter used in sphering to offset
+#'   eigenvalues to avoid division by zero.
 #'
 #' @return transformed data of the same class as \code{population}.
 #'

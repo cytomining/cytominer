@@ -11,15 +11,19 @@ spherize(population, variables, sample, regularization_param = 1)
 
 \item{variables}{character vector specifying observation variables.}
 
-\item{sample}{tbl containing sample that is used by the method to estimate sphering parameters. \code{sample} has same structure as \code{population}. Typically, \code{sample} corresponds to controls in the experiment.}
+\item{sample}{tbl containing sample that is used by the method to estimate
+sphering parameters. \code{sample} has same structure as \code{population}.
+Typically, \code{sample} corresponds to controls in the experiment.}
 
-\item{regularization_param}{optional parameter used in sphering to offset eigenvalues to avoid division by zero.}
+\item{regularization_param}{optional parameter used in sphering to offset
+eigenvalues to avoid division by zero.}
 }
 \value{
 transformed data of the same class as \code{population}.
 }
 \description{
-\code{spherize} transforms specified observation variables by estimating a sphering transformation on a sample and applying it to the population.
+\code{spherize} transforms specified observation variables by estimating a
+sphering transformation on a sample and applying it to the population.
 }
 \examples{
 population <- tibble::tibble(

@@ -11,7 +11,9 @@ transform(population, variables, operation = "generalized_log", ...)
 
 \item{variables}{character vector specifying observation variables.}
 
-\item{operation}{optional character string specifying method for transform. This must be one of the strings \code{"generalized_log"} (default), \code{"spherize"}.}
+\item{operation}{optional character string specifying method for transform.
+This must be one of the strings \code{"generalized_log"} (default),
+\code{"spherize"}.}
 
 \item{...}{arguments passed to transformation operation.}
 }
@@ -19,7 +21,8 @@ transform(population, variables, operation = "generalized_log", ...)
 transformed data of the same class as \code{population}.
 }
 \description{
-\code{transform} transforms observation variables based on the specified transformation method.
+\code{transform} transforms observation variables based on the specified
+transformation method.
 }
 \examples{
 population <- tibble::tibble(

@@ -1,8 +1,9 @@
 #' Reduce the dimensionality of a population using sparse random projection.
 #'
-#' \code{sparse_random_projection} reduces the dimensionality of a population by projecting
-#' the original data with a sparse random matrix. Generally more efficient and faster to
-#' compute than a Gaussian random projection matrix, while providing similar embedding quality.
+#' \code{sparse_random_projection} reduces the dimensionality of a population
+#' by projecting the original data with a sparse random matrix. Generally more
+#' efficient and faster to compute than a Gaussian random projection matrix,
+#' while providing similar embedding quality.
 #'
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param variables character vector specifying observation variables.

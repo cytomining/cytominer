@@ -12,7 +12,8 @@ drop_na_rows(population, variables)
 \item{variables}{character vector specifying observation variables.}
 }
 \value{
-\code{population} without rows that have \code{NA} in all specified variables.
+\code{population} without rows that have \code{NA} in all specified
+variables.
 }
 \description{
 \code{drop_na_rows} drops rows that are \code{NA} in all specified variables.

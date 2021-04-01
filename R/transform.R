@@ -1,10 +1,13 @@
 #' Transform observation variables.
 #'
-#' \code{transform} transforms observation variables based on the specified transformation method.
+#' \code{transform} transforms observation variables based on the specified
+#' transformation method.
 #'
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param variables character vector specifying observation variables.
-#' @param operation optional character string specifying method for transform. This must be one of the strings \code{"generalized_log"} (default), \code{"spherize"}.
+#' @param operation optional character string specifying method for transform.
+#'   This must be one of the strings \code{"generalized_log"} (default),
+#'   \code{"spherize"}.
 #' @param ... arguments passed to transformation operation.
 #'
 #' @return transformed data of the same class as \code{population}.

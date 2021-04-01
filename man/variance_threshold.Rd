@@ -15,11 +15,12 @@ variance_threshold(variables, sample)
 character vector specifying observation variables to be excluded.
 }
 \description{
-\code{variance_threshold} returns list of variables that have near-zero variance.
+\code{variance_threshold} returns list of variables that have near-zero
+variance.
 }
 \details{
-\code{variance_threshold} is a reimplementation of \code{caret::nearZeroVar}, using
-the default values for \code{freqCut} and \code{uniqueCut}.
+\code{variance_threshold} is a reimplementation of \code{caret::nearZeroVar},
+using the default values for \code{freqCut} and \code{uniqueCut}.
 }
 \examples{
 sample <- tibble::tibble(

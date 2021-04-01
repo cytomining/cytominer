@@ -1,10 +1,12 @@
 #' Remove variables with NA values.
 #'
-#' \code{drop_na_columns} returns list of variables which have greater than a specified threshold number of \code{NA}s.
+#' \code{drop_na_columns} returns list of variables which have greater than a
+#' specified threshold number of \code{NA}s.
 #'
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param variables character vector specifying observation variables.
-#' @param cutoff threshold between [0,1]. Variables with an \code{NA} frequency > \code{cutoff} are returned.
+#' @param cutoff threshold between [0,1]. Variables with an \code{NA}
+#'   frequency > \code{cutoff} are returned.
 #'
 #' @return character vector specifying observation variables to be excluded.
 #'
