@@ -115,6 +115,9 @@ replicate_correlation <-
       dplyr::group_by(variable) %>%
       dplyr::summarize_at("pearson", c("median", "min", "max"))
 
+    # TODO: Migrate to `dplyr::across` once this issue is fixed
+    # https://github.com/tidyverse/dbplyr/issues/480#issuecomment-811814636
+
     doParallel::stopImplicitCluster()
 
     result

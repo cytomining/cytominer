@@ -25,6 +25,8 @@
 #' count_na_rows(population, variables)
 #' @export
 count_na_rows <- function(population, variables) {
+  # TODO: Migrate to `dplyr::across` once this issue is fixed
+  # https://github.com/tidyverse/dbplyr/issues/480#issuecomment-811814636
   population %>%
     dplyr::mutate_at(variables, is.na) %>%
     dplyr::summarize_at(variables, ~ sum(., na.rm = T)) %>%
