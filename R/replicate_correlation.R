@@ -68,8 +68,6 @@ replicate_correlation <-
            cores = NULL) {
     doParallel::registerDoParallel(cores = cores)
 
-    .strata <- rlang::syms(strata)
-
     if (is.null(split_by)) {
       sample %<>% dplyr::mutate(col_split_by = 0)
 
@@ -80,17 +78,16 @@ replicate_correlation <-
       replicate_by <- "col_replicate_by"
 
       sample %<>%
-        dplyr::count(!!!.strata) %>%
+        dplyr::count(across(all_of(strata))) %>%
         dplyr::filter(n == replicates) %>%
         dplyr::inner_join(sample) %>%
-        dplyr::group_by(!!!.strata) %>%
+        dplyr::group_by(across(all_of(strata))) %>%
         dplyr::mutate(col_replicate_by = dplyr::row_number(n)) %>%
         dplyr::select(-n) %>%
         dplyr::ungroup()
 
       strata <- c(strata, replicate_by)
 
-      .strata <- rlang::syms(strata)
     }
 
     result <-
@@ -104,7 +101,7 @@ replicate_correlation <-
 
               correlation_matrix <-
                 sample_split %>%
-                dplyr::arrange(!!!.strata) %>%
+                dplyr::arrange(across(all_of(strata))) %>%
                 dplyr::select(c(strata, variable, replicate_by)) %>%
                 tidyr::spread_(replicate_by, variable) %>%
                 dplyr::select(-strata_no_replicate_by) %>%
