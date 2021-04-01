@@ -1,6 +1,6 @@
 BSD 3-Clause License
 
-Copyright (c) 2015-2017, Broad Institute, Inc.
+Copyright (c) 2015-2021, Broad Institute, Inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
