@@ -48,9 +48,8 @@ test_that("`husk` husks data", {
   expect_equal(
     diag(husked_cov),
     diag(identity_matrix),
-    tolerance = 10 ^ -6
+    tolerance = 10^-6
   )
-
 })
 
 # test_that("`spherize` uses svd consistently", {

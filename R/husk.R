@@ -66,17 +66,17 @@ husk <-
       u2 <- xsvd$u[, 2]
       u1out <- boxplot(u1, plot = FALSE)$out
       u2out <- boxplot(u2, plot = FALSE)$out
-      uout <- c(which(u1 %in% u1out),
-                which(u2 %in% u2out))
+      uout <- c(
+        which(u1 %in% u1out),
+        which(u2 %in% u2out)
+      )
       n_outliers <- length(uout)
 
       X <- X0
       if (n_outliers > 0) {
-        X <- X0[-uout,]
+        X <- X0[-uout, ]
       }
-
     } else {
-
       X <- X0
     }
 
@@ -145,7 +145,8 @@ husk <-
     # Note q is NA if *no* s.d. is less than 1
     q <- which(S < 1)[1]
     futile.logger::flog.debug(glue::glue("{qx} PCs have s.d. > 1",
-                                         qx = ifelse(is.na(q), 0, q)))
+      qx = ifelse(is.na(q), 0, q)
+    ))
 
     if (regularization_param > 0) {
       # - Set the s.d. of the vectors of the null space to the smallest s.d.
@@ -188,7 +189,7 @@ husk <-
     #   - Verify this rationale is sensible (see discussion above)
 
     if (husk) {
-      proj <- proj[q:d,] # husk the signal, keep the white noise
+      proj <- proj[q:d, ] # husk the signal, keep the white noise
     }
 
     # -------------------------
@@ -197,8 +198,9 @@ husk <-
 
     husk_helper <- function(M) {
       scale(M,
-            center = attr(X, "scaled:center"),
-            scale = attr(X, "scaled:scale")) %*% t(proj)
+        center = attr(X, "scaled:center"),
+        scale = attr(X, "scaled:scale")
+      ) %*% t(proj)
     }
 
     # -------------------------
@@ -219,9 +221,10 @@ husk <-
       as.data.frame()
 
     husked <-
-      dplyr::bind_cols(population_metadata,
-                       population_data_transformed)
+      dplyr::bind_cols(
+        population_metadata,
+        population_data_transformed
+      )
 
     husked
-
   }
