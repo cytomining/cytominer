@@ -1,12 +1,7 @@
 context("husk")
 
-test_that("`husk` husks data", {
+test_that("`husk` husks tall data", {
 
-  # TODO:
-  #   - Split into multiple tests
-  #
-
-  # Test tall matrix
   n_dim <- 5
   n_points <- 10000
 
@@ -50,8 +45,58 @@ test_that("`husk` husks data", {
     diag(identity_matrix),
     tolerance = 10^-6
   )
+
 })
 
+
+test_that("`husk` husks wide data", {
+
+  n_dim <- 1000
+  n_points <- 50
+
+  data <- matrix(rnorm(n_points * n_dim), n_points, n_dim)
+  data <-
+    data + abs(matrix(rnorm(n_points * n_dim), n_points, n_dim)) * 50
+
+  stopifnot(qr(data)$rank == n_points)
+
+  data <- as.data.frame(data)
+
+  variables <- names(data)
+
+  population <- data
+  sample <- data
+  regularization_param <- 1e-10
+  husk <- FALSE
+  husk_threshold <- 2
+  remove_outliers <- FALSE
+
+  husked <- husk(
+    population = population,
+    variables = variables,
+    sample = sample,
+    regularization_param = regularization_param,
+    husk = husk,
+    husk_threshold = husk_threshold,
+    remove_outliers = remove_outliers
+  )
+
+  husked_cov <-
+    husked %>%
+    cov() %>%
+    as.matrix() %>%
+    unname()
+
+  identity_matrix <- diag(rep(1, n_dim))
+
+  expect_equal(
+    diag(husked_cov)[1:(n_points-1)],
+    diag(identity_matrix)[1:(n_points-1)],
+    tolerance = 10^-6
+  )
+
+
+})
 # test_that("`spherize` uses svd consistently", {
 #
 #   data <- matrix(rnorm(10 * 100), 10, 100)
