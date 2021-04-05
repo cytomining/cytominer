@@ -2,16 +2,55 @@
 % Please edit documentation in R/husk.R
 \name{husk}
 \alias{husk}
-\title{Title}
+\title{Husk data.}
 \usage{
-husk(population, variables, sample, regularization_param = 1, husk = TRUE)
+husk(
+  population,
+  variables,
+  sample,
+  regularization_param = 1,
+  husk = TRUE,
+  husk_threshold = 1,
+  remove_outliers = TRUE
+)
 }
 \arguments{
-\item{husk}{}
+\item{population}{tbl with grouping (metadata) and observation variables.}
+
+\item{variables}{character vector specifying observation variables.}
+
+\item{sample}{tbl containing sample that is used by the method to estimate
+husking parameters. \code{sample} has same structure as \code{population}.
+Typically, \code{sample} corresponds to controls in the experiment.}
+
+\item{regularization_param}{optional parameter used in husking to offset
+eigenvalues to avoid division by zero. Default is \code{1}.}
+
+\item{husk}{optional boolean specifying whether to fully husk the signal.
+Default is \code{TRUE}.}
+
+\item{husk_threshold}{optional parameter for setting the s.d. threshold above
+which the dimension is husked. Default is \code{1}.}
+
+\item{remove_outliers}{optional boolean specifying whether to remove
+outliers. Default is \code{TRUE}.}
 }
 \value{
-
+transformed data of the same class as \code{population}.
 }
 \description{
-Title
+\code{husk} detects unwanted variation in the sample and removes it from the
+population.
+}
+\examples{
+population <- tibble::tibble(
+  Metadata_Well = c("A01", "A02", "B01", "B02"),
+  Intensity_DNA = c(8, 20, 12, 32),
+  Texture_DNA = c(5, 2, 43, 13)
+)
+variables <- c("Intensity_DNA", "Texture_DNA")
+husk(population, variables, population, 1, husk = TRUE)
+husk(population, variables, population, 1e-5, husk = TRUE)
+husk(population, variables, population, 1, husk = FALSE)
+husk(population, variables, population, 1e-5, husk = FALSE)
 }
