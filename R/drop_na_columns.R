@@ -41,8 +41,9 @@ drop_na_columns <- function(population, variables, cutoff = 0.05) {
     dplyr::summarize_at(variables, ~ sum(., na.rm = T)) %>%
     dplyr::collect() %>%
     tidyr::pivot_longer(everything(),
-                        names_to = "variable",
-                        values_to = "na_count") %>%
+      names_to = "variable",
+      values_to = "na_count"
+    ) %>%
     dplyr::mutate(na_percent = na_count / nrows) %>%
     dplyr::filter(na_percent > cutoff) %>%
     magrittr::extract2("variable")

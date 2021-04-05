@@ -21,7 +21,6 @@
 #' @importFrom rlang :=
 #' @export
 generalized_log <- function(population, variables, offset = 1) {
-
   for (variable in variables) {
     population %<>%
       dplyr::mutate("{variable}" :=

@@ -87,7 +87,6 @@ replicate_correlation <-
         dplyr::ungroup()
 
       strata <- c(strata, replicate_by)
-
     }
 
     result <-

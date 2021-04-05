@@ -18,7 +18,7 @@
 #'   Intensity_DNA = c(8, 20, 12, 32),
 #'   Intensity_RNA = c(1, 12, -1, 4),
 #'   Intensity_AGP = c(-2, 5, -5, -2),
-#'   Intensity_ER  = c(-12, 15, -25, 24)
+#'   Intensity_ER = c(-12, 15, -25, 24)
 #' )
 #' variables <- c("Intensity_DNA", "Intensity_RNA", "Intensity_AGP", "Intensity_ER")
 #' transform(population, variables, operation = "generalized_log")

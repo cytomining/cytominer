@@ -9,7 +9,7 @@ test_that("`drop_na_rows` removes rows have only NAs", {
 
   data <- dplyr::copy_to(db, data)
 
-  #data %<>% dplyr::filter(x != 1)
+  # data %<>% dplyr::filter(x != 1)
 
   drop_na_rows_data_frame <- function(population, variables) {
     # TODO: this is a reimplementation of the code within `drop_na_rows`
