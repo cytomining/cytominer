@@ -1,17 +1,3 @@
-#' Title
-#'
-#' @param population
-#' @param variables
-#' @param sample
-#' @param regularization_param
-#' @param husk
-#'
-#' @return
-#' @export
-#'
-#' @examples
-
-
 #' Husk data.
 #'
 #' \code{husk} detects unwanted variation in the sample and removes it from the
@@ -25,7 +11,11 @@
 #' @param regularization_param optional parameter used in husking to offset
 #'   eigenvalues to avoid division by zero. Default is \code{1}.
 #' @param husk optional boolean specifying whether to fully husk the signal.
-#' Default is \code{TRUE}.
+#'   Default is \code{TRUE}.
+#' @param husk_threshold optional parameter for setting the s.d. threshold above
+#'   which the dimension is husked. Default is \code{1}.
+#' @param remove_outliers optional boolean specifying whether to remove
+#'   outliers. Default is \code{TRUE}.
 #'
 #' @return transformed data of the same class as \code{population}.
 #'
@@ -50,7 +40,9 @@ husk <-
            variables,
            sample,
            regularization_param = 1,
-           husk = TRUE) {
+           husk = TRUE,
+           husk_threshold = 1,
+           remove_outliers = TRUE) {
     # -------------------------
     # Step : Get the sample matrix
     # -------------------------
@@ -61,36 +53,40 @@ husk <-
       as.matrix()
 
     # -------------------------
-    # Step : Find outliers
+    # Step : Find and drop outliers
     # -------------------------
     # Find outliers in the top 2 PCs, using > 1.5IQR rule
     # TODO:
-    #   - Ponder shortcomings and improvement
+    #   - Ponder shortcomings and improvements
 
-    X <- scale(X0, center = TRUE, scale = FALSE)
-    xsvd <- svd(X, nu = 2, nv = 0)
-    u1 <- xsvd$u[, 1]
-    u2 <- xsvd$u[, 2]
-    u1out <- boxplot(u1, plot = FALSE)$out
-    u2out <- boxplot(u2, plot = FALSE)$out
-    uout <- c(
-      which(u1 %in% u1out),
-      which(u2 %in% u2out)
-    )
-    n_outliers <- length(uout)
+    if (remove_outliers) {
+      X <- scale(X0, center = TRUE, scale = FALSE)
+      xsvd <- svd(X, nu = 2, nv = 0)
+      u1 <- xsvd$u[, 1]
+      u2 <- xsvd$u[, 2]
+      u1out <- boxplot(u1, plot = FALSE)$out
+      u2out <- boxplot(u2, plot = FALSE)$out
+      uout <- c(which(u1 %in% u1out),
+                which(u2 %in% u2out))
+      n_outliers <- length(uout)
 
-    # -------------------------
-    # Step : Drop outliers if any
-    # -------------------------
-    #
-    X <- X0
-    if (n_outliers > 0) {
-      X <- X0[-uout, ]
+      X <- X0
+      if (n_outliers > 0) {
+        X <- X0[-uout,]
+      }
+
+    } else {
+
+      X <- X0
     }
+
+    # -------------------------
+    # Step : Center and scale the cleaned data
+    # -------------------------
+
     X <- scale(X, center = TRUE, scale = TRUE)
     d <- ncol(X)
     n <- nrow(X)
-
 
     # -------------------------
     # Step : Stop if rank < min(n-1, d)
@@ -106,7 +102,6 @@ husk <-
     r <- qr(X)$rank
 
     stopifnot((r == n - 1) | (r == d))
-
 
     # -------------------------
     # Step : Compute SVD to get full V
@@ -149,9 +144,8 @@ husk <-
 
     # Note q is NA if *no* s.d. is less than 1
     q <- which(S < 1)[1]
-    futile.logger::flog.debug(
-      glue::glue("{qx} PCs have s.d. > 1", qx = ifelse(is.na(q), 0, q))
-    )
+    futile.logger::flog.debug(glue::glue("{qx} PCs have s.d. > 1",
+                                         qx = ifelse(is.na(q), 0, q)))
 
     if (regularization_param > 0) {
       # - Set the s.d. of the vectors of the null space to the smallest s.d.
@@ -159,7 +153,6 @@ husk <-
       # - Add a regularizer
       # TODO :
       #   - Ponder the rationale for padding
-
 
       if (n <= d) {
         Sr <- c(S[1:r], rep(S[r], d - r))
@@ -185,7 +178,6 @@ husk <-
       # ---------------
     }
 
-
     proj <- diag(1 / Sr) %*% t(V)
 
     # -------------------------
@@ -196,15 +188,8 @@ husk <-
     #   - Verify this rationale is sensible (see discussion above)
 
     if (husk) {
-      proj <- proj[q:d, ] # husk the signal, keep the white noise
+      proj <- proj[q:d,] # husk the signal, keep the white noise
     }
-
-
-    # -------------------------
-    # Step : Get center
-    # -------------------------
-    xcenter <- attr(X, "scaled:center")
-
 
     # -------------------------
     # Step : Create the transformation
@@ -212,11 +197,9 @@ husk <-
 
     husk_helper <- function(M) {
       scale(M,
-        center = xcenter,
-        scale = FALSE
-      ) %*% t(proj)
+            center = attr(X, "scaled:center"),
+            scale = attr(X, "scaled:scale")) %*% t(proj)
     }
-
 
     # -------------------------
     # Step : Transform the population matrix
@@ -236,10 +219,9 @@ husk <-
       as.data.frame()
 
     husked <-
-      bind_cols(
-        population_metadata,
-        population_data_transformed
-      )
+      dplyr::bind_cols(population_metadata,
+                       population_data_transformed)
 
     husked
+
   }
