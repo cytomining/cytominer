@@ -38,8 +38,10 @@ husk <-
     u2 <- xsvd$u[, 2]
     u1out <- boxplot(u1, plot = FALSE)$out
     u2out <- boxplot(u2, plot = FALSE)$out
-    uout <- c(which(u1 %in% u1out),
-              which(u2 %in% u2out))
+    uout <- c(
+      which(u1 %in% u1out),
+      which(u2 %in% u2out)
+    )
     n_outliers <- length(uout)
 
     # -------------------------
@@ -48,7 +50,7 @@ husk <-
     #
     X <- X0
     if (n_outliers > 0) {
-      X <- X0[-uout,]
+      X <- X0[-uout, ]
     }
     X <- scale(X, center = TRUE, scale = TRUE)
     d <- ncol(X)
@@ -113,7 +115,8 @@ husk <-
     # Note q is NA if *no* s.d. is less than 1
     q <- which(S < 1)[1]
     futile.logger::flog.debug(
-      glue::glue("{qx} PCs have s.d. > 1", qx = ifelse(is.na(q), 0, q)))
+      glue::glue("{qx} PCs have s.d. > 1", qx = ifelse(is.na(q), 0, q))
+    )
 
     if (regularization_param > 0) {
       # - Set the s.d. of the vectors of the null space to the smallest s.d.
@@ -130,7 +133,6 @@ husk <-
       }
 
       Sr <- Sr + regularization_param
-
     } else {
       # - Set the s.d. to 1 for all the basis vectors of the null
       #   (when n <= d; there is no null space otherwise)
@@ -146,7 +148,6 @@ husk <-
         }
       }
       # ---------------
-
     }
 
 
@@ -176,8 +177,9 @@ husk <-
 
     spherize_helper <- function(M) {
       scale(M,
-            center = xcenter,
-            scale = FALSE) %*% t(proj)
+        center = xcenter,
+        scale = FALSE
+      ) %*% t(proj)
     }
 
 
@@ -199,8 +201,10 @@ husk <-
       as.data.frame()
 
     husked <-
-      bind_cols(population_metadata,
-                population_data_transformed)
+      bind_cols(
+        population_metadata,
+        population_data_transformed
+      )
 
     husked
   }
