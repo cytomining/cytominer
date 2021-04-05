@@ -12,8 +12,10 @@
 #'   eigenvalues to avoid division by zero. Default is \code{1}.
 #' @param husk optional boolean specifying whether to fully husk the signal.
 #'   Default is \code{TRUE}.
-#' @param husk_threshold optional parameter for setting the s.d. threshold above
-#'   which the dimension is husked. Default is \code{1}.
+#' @param husk_threshold optional parameter for setting the s.d.^2 threshold
+#'   above which the dimension is husked. Default is \code{max(1, d/n)}, where
+#'   \code{n} and \code{d} are the number of row and columns respectively of the
+#'   sample data matrix.
 #' @param remove_outliers optional boolean specifying whether to remove
 #'   outliers. Default is \code{TRUE}.
 #'
@@ -41,7 +43,7 @@ husk <-
            sample,
            regularization_param = 1,
            husk = TRUE,
-           husk_threshold = 1,
+           husk_threshold = max(1, d/n),
            remove_outliers = TRUE) {
     # -------------------------
     # Step : Get the sample matrix
@@ -128,12 +130,20 @@ husk <-
     #   - Ponder the rationale overall
     # -------------------------
 
-    # Find the first scaled singular value (s.d.) that is less than 1.
+    # Find the first s.d.^2 that is less than `husk_threshold`
+    # (default = max(1, d/n))
     # We will later (optionally) do one or both of the following
-    #   - set the s.d. to 1 for all PCs with s.d. < 1
-    #   - drop all PCs that have s.d.'s > 1
+    #   - set the s.d. to `sqrt(husk_threshold)` for all PCs with s.d.^2 <
+    #     `husk_threshold`
+    #   - drop all PCs that have s.d.^2's >= `husk_threshold`
     # TODO:
-    #   - Ponder the rationale of choosing 1. This might be flawed!
+    #   - Ponder the rationale of choosing max(1, d/n) as the default.
+    #   It might be flawed!
+    #
+    #     Update: turns out that the threshold should likely be max(1, d/n)
+    #     based on purely empirical observations.
+    #
+    #     Former rationale:
     #
     #     The rationale is that when PCA is performed on X with unit s.d., (or,
     #     equivalently, when PCA is performed on the correlation matrix instead
@@ -141,10 +151,11 @@ husk <-
     #     contain signal (and should thus be (optionally) dropped, even if they
     #     are scaled down to unit s.d.). We should husk the signal, and keep
     #     the (whitened) noise.
+    #
 
-    # Note q is NA if *no* s.d. is less than 1
-    q <- which(S < 1)[1]
-    futile.logger::flog.debug(glue::glue("{qx} PCs have s.d. > 1",
+    # Note q is NA if *no* s.d. is less than `husk_threshold`
+    q <- which(S^2 < husk_threshold)[1]
+    futile.logger::flog.debug(glue::glue("{qx} PCs have s.d. > {husk_threshold}",
       qx = ifelse(is.na(q), 0, q)
     ))
 
@@ -163,9 +174,9 @@ husk <-
 
       Sr <- Sr + regularization_param
     } else {
-      # - Set the s.d. to 1 for all the basis vectors of the null
-      #   (when n <= d; there is no null space otherwise)
-      # - Set the s.d. to 1 for all PCs with s.d. < 1
+      # - Set the s.d. to `sqrt(husk_threshold)` for all the basis vectors of
+      #   the null (when n <= d; there is no null space otherwise)
+      # - Set the s.d. to `sqrt(husk_threshold)` for all PCs with s.d. < 1
       # - Do not add a regularizer
 
       if (!is.na(q)) {
@@ -173,7 +184,7 @@ husk <-
           Sr <- c(S[1:(q - 1)], rep(1, d - q + 1))
         } else {
           Sr <- S
-          Sr[q:d] <- 1
+          Sr[q:d] <- sqrt(husk_threshold)
         }
       }
       # ---------------
