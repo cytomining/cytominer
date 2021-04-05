@@ -10,6 +10,41 @@
 #' @export
 #'
 #' @examples
+
+
+#' Husk data.
+#'
+#' \code{husk} detects unwanted variation in the sample and removes it from the
+#' population.
+#'
+#' @param population tbl with grouping (metadata) and observation variables.
+#' @param variables character vector specifying observation variables.
+#' @param sample tbl containing sample that is used by the method to estimate
+#'   husking parameters. \code{sample} has same structure as \code{population}.
+#'   Typically, \code{sample} corresponds to controls in the experiment.
+#' @param regularization_param optional parameter used in husking to offset
+#'   eigenvalues to avoid division by zero. Default is \code{1}.
+#' @param husk optional boolean specifying whether to fully husk the signal.
+#' Default is \code{TRUE}.
+#'
+#' @return transformed data of the same class as \code{population}.
+#'
+#' @examples
+#' population <- tibble::tibble(
+#'   Metadata_Well = c("A01", "A02", "B01", "B02"),
+#'   Intensity_DNA = c(8, 20, 12, 32),
+#'   Texture_DNA = c(5, 2, 43, 13)
+#' )
+#' variables <- c("Intensity_DNA", "Texture_DNA")
+#' husk(population, variables, population, 1, husk = TRUE)
+#' husk(population, variables, population, 1e-5, husk = TRUE)
+#' husk(population, variables, population, 1, husk = FALSE)
+#' husk(population, variables, population, 1e-5, husk = FALSE)
+#' @importFrom magrittr %>%
+#' @importFrom magrittr %<>%
+#' @importFrom rlang :=
+#' @importFrom stats cov
+#' @export
 husk <-
   function(population,
            variables,
@@ -175,7 +210,7 @@ husk <-
     # Step : Create the transformation
     # -------------------------
 
-    spherize_helper <- function(M) {
+    husk_helper <- function(M) {
       scale(M,
         center = xcenter,
         scale = FALSE
@@ -189,15 +224,15 @@ husk <-
 
     population_metadata <-
       population %>%
-      select(-all_of(variables))
+      dplyr::select(-all_of(variables))
 
     population_data <-
       population %>%
-      select(all_of(variables)) %>%
+      dplyr::select(all_of(variables)) %>%
       as.matrix()
 
     population_data_transformed <-
-      spherize_helper(population_data) %>%
+      husk_helper(population_data) %>%
       as.data.frame()
 
     husked <-

@@ -18,6 +18,7 @@ reference:
 - title: "Transformation methods"
 - contents:
   - generalized_log
+  - husk
   - sparse_random_projection
   - spherize
 - title: "Variable importance methods"
