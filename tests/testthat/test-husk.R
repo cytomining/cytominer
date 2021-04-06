@@ -81,8 +81,6 @@ test_that("`husk` husks tall data", {
     tolerance = 10^-6
   )
   # ------------------------
-
-
 })
 
 
