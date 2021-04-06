@@ -10,7 +10,8 @@
 #'   Typically, \code{sample} corresponds to controls in the experiment.
 #' @param regularization_param optional parameter used in husking to offset
 #'   eigenvalues to avoid division by zero. Default is \code{1}.
-#' @param husk optional boolean specifying whether to fully husk the signal.
+#' @param husk optional boolean specifying whether to husk the signal instead of
+#'   just scaling it down.
 #'   Default is \code{TRUE}.
 #' @param remove_outliers optional boolean specifying whether to remove
 #'   outliers. Default is \code{TRUE}.
@@ -197,9 +198,7 @@ husk <-
     # -------------------------
     # Optionally trim the projection matrix
     # -------------------------
-    # Rationale: PCs with s.d. > 1 definitely have signal; we should remove them
-    # TODO:
-    #   - Verify this rationale is sensible (see discussion above)
+    # Rationale: PCs with signal should be removed
 
     if (husk) {
       proj <- proj[q:d, ] # husk the signal, keep the white noise
