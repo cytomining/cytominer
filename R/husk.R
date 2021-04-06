@@ -12,10 +12,6 @@
 #'   eigenvalues to avoid division by zero. Default is \code{1}.
 #' @param husk optional boolean specifying whether to fully husk the signal.
 #'   Default is \code{TRUE}.
-#' @param husk_threshold optional parameter for setting the s.d.^2 threshold
-#'   above which the dimension is husked. Default is \code{max(1, d/n)}, where
-#'   \code{n} and \code{d} are the number of row and columns respectively of the
-#'   sample data matrix.
 #' @param remove_outliers optional boolean specifying whether to remove
 #'   outliers. Default is \code{TRUE}.
 #'
@@ -43,10 +39,9 @@ husk <-
            sample,
            regularization_param = 1,
            husk = TRUE,
-           husk_threshold = max(1, d/n),
            remove_outliers = TRUE) {
     # -------------------------
-    # Step : Get the sample matrix
+    # Get the sample matrix
     # -------------------------
 
     X0 <-
@@ -55,8 +50,9 @@ husk <-
       as.matrix()
 
     # -------------------------
-    # Step : Find and drop outliers
+    # Find and drop outliers
     # -------------------------
+    #
     # Find outliers in the top 2 PCs, using > 1.5IQR rule
     # TODO:
     #   - Ponder shortcomings and improvements
@@ -83,15 +79,18 @@ husk <-
     }
 
     # -------------------------
-    # Step : Center and scale the cleaned data
+    # Center and scale the cleaned data
     # -------------------------
+    #
+    # Note that PCA on zero-centered, unit variance data is equivalent to
+    # PCA on the correlation matrix
 
     X <- scale(X, center = TRUE, scale = TRUE)
     d <- ncol(X)
     n <- nrow(X)
 
     # -------------------------
-    # Step : Stop if rank < min(n-1, d)
+    # Stop if rank < min(n-1, d)
     # -------------------------
     #
     # For wide matrices, the maximum rank is n-1 because of mean centering
@@ -106,26 +105,27 @@ husk <-
     stopifnot((r == n - 1) | (r == d))
 
     # -------------------------
-    # Step : Compute SVD to get full V
+    # Compute SVD to get full V
     # -------------------------
+    #
     # Get the full V, not just row space, because we need its null space as well
-    # (for n < d).
-    # Note that we don't need U, just S and V.
-    # Scale the singular value by dividing by sqrt(n-1) to directly get the s.d.
+    # (for n < d). Note that we don't need U, just S and V.
+    # Scale the singular value by dividing by sqrt(n-1) to get the s.d.
     # of the corresponding PC
-    # TODO:
-    #   - Consider faster implementations but note that we do need the full V.
 
     xsvd <- svd(X, nu = 0, nv = d)
     V <- xsvd$v
     S <-
       xsvd$d / sqrt(n - 1) # divide by sqrt(n-1) so as to get the s.d.
 
-    # Note: going forward, we refer to S as the s.d.'s of the PC's (because we
-    # have scaled it to be so)
+    # Recap: S is the s.d. of the PC's
+    # all.equal(
+    #   prcomp(X)$sdev,
+    #   svd(scale(X, center = TRUE, scale = FALSE))$d / sqrt(n-1)
+    # )
 
     # -------------------------
-    # Step : Get projection matrix
+    # Get projection matrix
     # TODO:
     #   - Ponder the rationale overall
     # -------------------------
@@ -138,7 +138,7 @@ husk <-
     #   - drop all PCs that have s.d.^2's >= `husk_threshold`
     # TODO:
     #   - Ponder the rationale of choosing max(1, d/n) as the default.
-    #   It might be flawed!
+    #     It might be flawed!
     #
     #     Update: turns out that the threshold should likely be max(1, d/n)
     #     based on purely empirical observations.
@@ -152,6 +152,8 @@ husk <-
     #     are scaled down to unit s.d.). We should husk the signal, and keep
     #     the (whitened) noise.
     #
+
+    husk_threshold <- max(1, d/n)
 
     # Note q is NA if *no* s.d. is less than `husk_threshold`
     q <- which(S^2 < husk_threshold)[1]
@@ -193,7 +195,7 @@ husk <-
     proj <- diag(1 / Sr) %*% t(V)
 
     # -------------------------
-    # Step : Optionally trim the projection matrix
+    # Optionally trim the projection matrix
     # -------------------------
     # Rationale: PCs with s.d. > 1 definitely have signal; we should remove them
     # TODO:
@@ -204,7 +206,7 @@ husk <-
     }
 
     # -------------------------
-    # Step : Create the transformation
+    # Create the transformation
     # -------------------------
 
     husk_helper <- function(M) {
@@ -215,7 +217,7 @@ husk <-
     }
 
     # -------------------------
-    # Step : Transform the population matrix
+    # Transform the population matrix
     # -------------------------
 
     population_metadata <-
@@ -230,6 +232,10 @@ husk <-
     population_data_transformed <-
       husk_helper(population_data) %>%
       as.data.frame()
+
+    # -------------------------
+    # Assemble the data frame
+    # -------------------------
 
     husked <-
       dplyr::bind_cols(
