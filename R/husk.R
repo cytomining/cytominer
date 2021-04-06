@@ -27,10 +27,10 @@
 #'   Texture_DNA = c(5, 2, 43, 13)
 #' )
 #' variables <- c("Intensity_DNA", "Texture_DNA")
-#' husk(population, variables, population, 1, remove_signal = TRUE)
-#' husk(population, variables, population, 1e-5, remove_signal = TRUE)
-#' husk(population, variables, population, 1, remove_signal = FALSE)
-#' husk(population, variables, population, 1e-5, remove_signal = FALSE)
+#' husk(population, variables, population, epsilon = 1, remove_signal = TRUE)
+#' husk(population, variables, population, epsilon = 1e-5, remove_signal = TRUE)
+#' husk(population, variables, population, epsilon = 1, remove_signal = FALSE)
+#' husk(population, variables, population, epsilon = 1e-5, remove_signal = FALSE)
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %<>%
 #' @importFrom rlang :=
@@ -263,7 +263,7 @@ find_significant_pcs <-
            method = "outlier",
            n = NULL,
            d = NULL) {
-    stopifnot(!is.unsorted(S))
+    stopifnot(!is.unsorted(-S))
 
     stopifnot(method %in% c("outlier"))
 
