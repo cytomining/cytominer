@@ -32,3 +32,4 @@ reference:
 - contents:
   - count_na_rows
   - generate_component_matrix
+  - find_significant_pcs
