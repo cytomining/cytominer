@@ -67,13 +67,15 @@ husk <-
       u2 <- xsvd$u[, 2]
       u1out <- graphics::boxplot(u1, plot = FALSE)$out
       u2out <- graphics::boxplot(u2, plot = FALSE)$out
-      uout <- c(which(u1 %in% u1out),
-                which(u2 %in% u2out))
+      uout <- c(
+        which(u1 %in% u1out),
+        which(u2 %in% u2out)
+      )
       n_outliers <- length(uout)
 
       X <- X0
       if (n_outliers > 0) {
-        X <- X0[-uout,]
+        X <- X0[-uout, ]
       }
     } else {
       X <- X0
@@ -140,10 +142,8 @@ husk <-
     if (n <= d) {
       stopifnot(r == n - 1) # See above ("Stop if rank < min(n-1, d)")
       Sr <- c(S[1:r], rep(S[r], d - r))
-
     } else {
       Sr <- S
-
     }
 
     # -------------------------
@@ -204,8 +204,9 @@ husk <-
 
     husk_helper <- function(M) {
       scale(M,
-            center = attr(X, "scaled:center"),
-            scale = attr(X, "scaled:scale")) %*% projt
+        center = attr(X, "scaled:center"),
+        scale = attr(X, "scaled:scale")
+      ) %*% projt
     }
 
     # -------------------------
@@ -230,8 +231,10 @@ husk <-
     # -------------------------
 
     husked <-
-      dplyr::bind_cols(population_metadata,
-                       population_data_transformed)
+      dplyr::bind_cols(
+        population_metadata,
+        population_data_transformed
+      )
 
     husked
   }
@@ -259,7 +262,6 @@ find_significant_pcs <-
            method = "outlier",
            n = NULL,
            d = NULL) {
-
     stopifnot(!is.unsorted(S))
 
     stopifnot(method %in% c("outlier"))
@@ -269,12 +271,13 @@ find_significant_pcs <-
     }
 
     if (method == "outlier") {
-      q <- which(S ^ 2 < f_outlier_threshold(S ^ 2))[1] - 1
+      q <- which(S^2 < f_outlier_threshold(S^2))[1] - 1
 
       stopifnot(!is.na(q))
 
       futile.logger::flog.debug(
-        glue::glue("Outlier-based approach reports {q} PCs with signal."))
+        glue::glue("Outlier-based approach reports {q} PCs with signal.")
+      )
     }
 
     q
