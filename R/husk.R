@@ -55,7 +55,7 @@ husk <-
     #
     # Find outliers in the top 2 PCs, using > 1.5IQR rule
     # TODO:
-    #   - Ponder shortcomings and improvements
+    #   - Ponder shortcomings and potential improvements
 
     if (remove_outliers) {
       X <- scale(X0, center = TRUE, scale = FALSE)
@@ -93,8 +93,8 @@ husk <-
     # Stop if rank < min(n-1, d)
     # -------------------------
     #
-    # For wide matrices, the maximum rank is n-1 because of mean centering
-    # For tall matrices, the maximum rank is d
+    # For matrices with n <=d, the maximum rank is n-1 because of mean centering
+    # For matrices with n > d, the maximum rank is d
     #
     # TODO:
     #   - Figure out how to handle this edge case
@@ -129,14 +129,15 @@ husk <-
     S <- xsvd$d / sqrt(n - 1)
 
     # -------------------------
-    # Get projection matrix
+    # Extrapolate s.d. for the null space
     # -------------------------
 
     # Set the s.d. of the vectors of the null space to the smallest s.d.
-    # (when n <= d; there is no null space otherwise), and then add a
-    # regularizer
+    # (when n <= d; there is no null space otherwise unless we had a low rank
+    # matrix to start with).
 
     if (n <= d) {
+      stopifnot(r == n - 1) # See above ("Stop if rank < min(n-1, d)")
       Sr <- c(S[1:r], rep(S[r], d - r))
     } else {
       Sr <- S
@@ -150,28 +151,31 @@ husk <-
     proj <- diag(1 / Sr) %*% t(V)
 
     # -------------------------
-    # Find number of PCs to retain to keep the signal
-    # (but we actually later want to throw them out, not keep them)
+    # Find number of PCs that comprise the signal
     # -------------------------
-    # This is a whole subfield in itself, and there are many ways of doing it.
+    # This is a whole subfield in itself, and there are many ways of doing it
     #
-    # Here are things to look up to learn more
-    # - Parallel analysis
-    # - Considering Horn’s Parallel Analysis from a Random Matrix Theory
-    #   Point of View. doi:10.1007/s11336-016-9515-z
+    # For now, we just trim the s.d.'s that are "outliers",
     #
-    # Also consider this word of caution from
-    # https://cran.r-project.org/web/packages/jackstraw/vignettes/jackstraw.pdf
+    # TODO:
+    #   - Choose a more principled way of doing this, most likely parallel
+    #     analysis.
+    #   - Ponder whether a faster, conservative lower bound can be obtained:
+    #     https://en.wikipedia.org/wiki/Wigner_semicircle_distribution
+    #     https://en.wikipedia.org/wiki/Wigner_surmise
+    #     http://www.stats.ox.ac.uk/~cucuring/Lecture_4_PCA_RMTX_Finance.pdf (slide 5)
+    #   - "Considering Horn’s Parallel Analysis from a Random Matrix Theory
+    #     Point of View". doi:10.1007/s11336-016-9515-z
+    #   - Also consider this word of caution from
+    #     https://cran.r-project.org/web/packages/jackstraw/vignettes/jackstraw.pdf
     #
-    #   Determining the number of “statistically significant” PCs is an active
-    #   area of research,and defining a number of significant PCs depends on the
-    #   data structure and the context. Refer to Anderson (1963), Tracy and
-    #   Widom (1996), Johnstone (2001), Leek (2010). We do not advocate the
-    #   blind use of parallel analysis to obtain r_hat [the number of PCs to
-    #   keep]
+    #       Determining the number of “statistically significant” PCs is an active
+    #       area of research,and defining a number of significant PCs depends on the
+    #       data structure and the context. Refer to Anderson (1963), Tracy and
+    #       Widom (1996), Johnstone (2001), Leek (2010). We do not advocate the
+    #       blind use of parallel analysis to obtain r_hat [the number of PCs to
+    #       keep]
     #
-    # But we can take a lazy approach for now and just trim the s.d. that are
-    # "outliers"
 
     f_outlier_threshold <- function(x)  {
       quantile(x, .75) + 1.5 * IQR(x)
