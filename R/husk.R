@@ -10,7 +10,7 @@
 #'   Typically, \code{sample} corresponds to controls in the experiment.
 #' @param remove_outliers optional boolean specifying whether to remove
 #'   outliers. Default is \code{TRUE}.
-#' @param regularization_param optional parameter used in husking to offset
+#' @param epsilon optional parameter used in husking to offset
 #'   eigenvalues to avoid division by zero. Default is \code{1}.
 #' @param remove_signal optional boolean specifying whether to husk the signal
 #'   instead of only scaling it down. Default is \code{TRUE}.
@@ -41,7 +41,7 @@ husk <-
            variables,
            sample,
            remove_outliers = TRUE,
-           regularization_param = 1e-6,
+           epsilon = 1e-6,
            remove_signal = TRUE,
            flatten_noise = TRUE) {
     # -------------------------
@@ -152,9 +152,9 @@ husk <-
     # -------------------------
     #
     # I'm not entirely sure we need to do this, but no harm in doing
-    # so if `regularization_param` is very small
+    # so if `epsilon` is very small
 
-    Sr <- Sr + regularization_param
+    Sr <- Sr + epsilon
 
     # -------------------------
     # Find number of PCs that comprise the signal

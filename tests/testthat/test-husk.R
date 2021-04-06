@@ -1,6 +1,8 @@
 context("husk")
 
 test_that("`husk` husks tall data", {
+  # TODO: split into smaller tests
+
   n_dim <- 5
   n_points <- 10000
 
@@ -14,20 +16,21 @@ test_that("`husk` husks tall data", {
 
   variables <- names(data)
 
+  # ------------------------
   population <- data
   sample <- data
-  regularization_param <- 1e-10
-  remove_signal <- FALSE
   remove_outliers <- FALSE
+  epsilon <- 1e-10
+  remove_signal <- FALSE
 
   futile.logger::flog.threshold(futile.logger::DEBUG)
   husked <- husk(
     population = population,
     variables = variables,
     sample = sample,
-    regularization_param = regularization_param,
-    remove_signal = remove_signal,
-    remove_outliers = remove_outliers
+    remove_outliers = remove_outliers,
+    epsilon = epsilon,
+    remove_signal = remove_signal
   )
   futile.logger::flog.threshold(futile.logger::WARN)
 
@@ -44,6 +47,42 @@ test_that("`husk` husks tall data", {
     diag(identity_matrix),
     tolerance = 10^-6
   )
+  # ------------------------
+  population <- data
+  sample <- data
+  remove_outliers <- FALSE
+  epsilon <- 1e-10
+  remove_signal <- FALSE
+  flatten_noise <- FALSE
+
+  futile.logger::flog.threshold(futile.logger::DEBUG)
+  husked <- husk(
+    population = population,
+    variables = variables,
+    sample = sample,
+    remove_outliers = remove_outliers,
+    epsilon = epsilon,
+    remove_signal = remove_signal,
+    flatten_noise = flatten_noise
+  )
+  futile.logger::flog.threshold(futile.logger::WARN)
+
+  husked_cov <-
+    husked %>%
+    cov() %>%
+    as.matrix() %>%
+    unname()
+
+  identity_matrix <- diag(rep(1, n_dim))
+
+  expect_equal(
+    diag(husked_cov),
+    diag(identity_matrix),
+    tolerance = 10^-6
+  )
+  # ------------------------
+
+
 })
 
 
@@ -63,7 +102,7 @@ test_that("`husk` husks wide data", {
 
   population <- data
   sample <- data
-  regularization_param <- 1e-10
+  epsilon <- 1e-10
   remove_signal <- FALSE
   remove_outliers <- FALSE
 
@@ -71,9 +110,9 @@ test_that("`husk` husks wide data", {
     population = population,
     variables = variables,
     sample = sample,
-    regularization_param = regularization_param,
-    remove_signal = remove_signal,
-    remove_outliers = remove_outliers
+    remove_outliers = remove_outliers,
+    epsilon = epsilon,
+    remove_signal = remove_signal
   )
 
   husked_cov <-
@@ -98,17 +137,17 @@ test_that("`husk` husks wide data", {
 #
 #   variables <- names(data)
 #
-#   regularization_param  <- 0
+#   epsilon  <- 0
 #
 #   spherize_df <-
 #     spherize(
 #       population = data,
 #       variables = variables,
 #       sample = data,
-#       regularization_param = 0
+#       epsilon = 0
 #     )
 #
-#   spherize_test <- function(data, regularization_param)  {
+#   spherize_test <- function(data, epsilon)  {
 #
 #     sample_mean <- colMeans(sample_data)
 #
@@ -124,7 +163,7 @@ test_that("`husk` husks wide data", {
 #     Lambda <- eig_decomp$values
 #
 #     # compute sphering transformation, which is {\Lambda + \epsilon}^.5 x E'
-#     W <- diag((Lambda + regularization_param)^-0.5) %*% E_t
+#     W <- diag((Lambda + epsilon)^-0.5) %*% E_t
 #
 #     # apply sphering transformation, which is (X - \mu) * W'
 #     transformed_data <- sweep(data, 2, sample_mean) %*% t(W)
@@ -148,7 +187,7 @@ test_that("`husk` husks wide data", {
 #       population = data,
 #       variables = c("x", "y", "z"),
 #       sample = data,
-#       regularization_param = 0
+#       epsilon = 0
 #     )
 #   )
 #

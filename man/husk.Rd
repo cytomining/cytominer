@@ -9,7 +9,7 @@ husk(
   variables,
   sample,
   remove_outliers = TRUE,
-  regularization_param = 1e-06,
+  epsilon = 1e-06,
   remove_signal = TRUE,
   flatten_noise = TRUE
 )
@@ -26,7 +26,7 @@ Typically, \code{sample} corresponds to controls in the experiment.}
 \item{remove_outliers}{optional boolean specifying whether to remove
 outliers. Default is \code{TRUE}.}
 
-\item{regularization_param}{optional parameter used in husking to offset
+\item{epsilon}{optional parameter used in husking to offset
 eigenvalues to avoid division by zero. Default is \code{1}.}
 
 \item{remove_signal}{optional boolean specifying whether to husk the signal
