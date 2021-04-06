@@ -143,12 +143,14 @@ husk <-
       Sr <- S
     }
 
+    # -------------------------
     # Regularize
+    # -------------------------
+    #
+    # I'm not entirely sure we need to do this, but no harm in doing
+    # so if `regularization_param` is very small
+
     Sr <- Sr + regularization_param
-
-    # (See comments at the end of the function regularization alternatives)
-
-    proj <- diag(1 / Sr) %*% t(V)
 
     # -------------------------
     # Find number of PCs that comprise the signal
@@ -177,35 +179,50 @@ husk <-
     #       keep]
     #
 
-    f_outlier_threshold <- function(x)  {
-      quantile(x, .75) + 1.5 * IQR(x)
-    }
-
-    q <- which(S^2 < f_outlier_threshold(S^2))[1]
-
-    if(is.na(q)) q <- 0
-
-    futile.logger::flog.debug(glue::glue("There are {q} PCs with signal."))
-
-    # -------------------------
-    # Optionally trim the projection matrix
-    # -------------------------
-    #
-    # Rationale: PCs with signal should be removed
-
     if (remove_signal) {
-      proj <- proj[(q + 1):d, ] # husk the signal, keep the white noise
+
+      find_significant_pcs <- function(S) {
+        f_outlier_threshold <- function(x)  {
+          quantile(x, .75) + 1.5 * IQR(x)
+        }
+
+        q <- which(S^2 < f_outlier_threshold(S^2))[1] - 1
+
+        stopifnot(!is.na(q))
+
+        futile.logger::flog.debug(
+          glue::glue("Outlier-based approach reports {q} PCs with signal.")
+        )
+
+        q
+
+      }
+
+      q <- find_significant_pcs(S)
+
+      if (flatten_noise) {
+
+        Sr[(q + 1):d] <- Sr[q + 1]
+
+      }
+
+      Sr <- Sr[(q + 1):d]
+
+      V  <- V[,(q + 1):d]
     }
+
 
     # -------------------------
     # Create the transformation
     # -------------------------
 
+    projt <- V %*%  diag(1 / Sr)
+
     husk_helper <- function(M) {
       scale(M,
         center = attr(X, "scaled:center"),
         scale = attr(X, "scaled:scale")
-      ) %*% t(proj)
+      ) %*% projt
     }
 
     # -------------------------
