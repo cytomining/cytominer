@@ -15,7 +15,8 @@
 #' @param remove_signal optional boolean specifying whether to husk the signal
 #'   instead of only scaling it down. Default is \code{TRUE}.
 #' @param flatten_noise optional boolean specifying whether to flatten the noise
-#'   instead of scaling it up. Default is \code{TRUE}.
+#'   instead of scaling it up. Default is \code{TRUE}. The parameter is ignored
+#'   if \code{remove_signal} is \code{FALSE}.
 #'
 #' @return transformed data of the same class as \code{population}.
 #'
@@ -175,12 +176,12 @@ husk <-
     #   - Also consider this word of caution from
     #     https://cran.r-project.org/web/packages/jackstraw/vignettes/jackstraw.pdf
     #
-    #       Determining the number of “statistically significant” PCs is an active
-    #       area of research,and defining a number of significant PCs depends on the
-    #       data structure and the context. Refer to Anderson (1963), Tracy and
-    #       Widom (1996), Johnstone (2001), Leek (2010). We do not advocate the
-    #       blind use of parallel analysis to obtain r_hat [the number of PCs to
-    #       keep]
+    #     Determining the number of “statistically significant” PCs is an active
+    #     area of research,and defining a number of significant PCs depends on the
+    #     data structure and the context. Refer to Anderson (1963), Tracy and
+    #     Widom (1996), Johnstone (2001), Leek (2010). We do not advocate the
+    #     blind use of parallel analysis to obtain r_hat [the number of PCs to
+    #     keep]
     #
 
     if (remove_signal) {

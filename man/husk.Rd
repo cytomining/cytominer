@@ -33,7 +33,8 @@ eigenvalues to avoid division by zero. Default is \code{1}.}
 instead of only scaling it down. Default is \code{TRUE}.}
 
 \item{flatten_noise}{optional boolean specifying whether to flatten the noise
-instead of scaling it up. Default is \code{TRUE}.}
+instead of scaling it up. Default is \code{TRUE}. The parameter is ignored
+if \code{remove_signal} is \code{FALSE}.}
 }
 \value{
 transformed data of the same class as \code{population}.
