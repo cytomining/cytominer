@@ -18,17 +18,19 @@ test_that("`husk` husks tall data", {
   population <- data
   sample <- data
   regularization_param <- 1e-10
-  husk <- FALSE
+  remove_signal <- FALSE
   remove_outliers <- FALSE
 
+  futile.logger::flog.threshold(futile.logger::DEBUG)
   husked <- husk(
     population = population,
     variables = variables,
     sample = sample,
     regularization_param = regularization_param,
-    husk = husk,
+    remove_signal = remove_signal,
     remove_outliers = remove_outliers
   )
+  futile.logger::flog.threshold(futile.logger::WARN)
 
   husked_cov <-
     husked %>%
@@ -65,7 +67,7 @@ test_that("`husk` husks wide data", {
   population <- data
   sample <- data
   regularization_param <- 1e-10
-  husk <- FALSE
+  remove_signal <- FALSE
   remove_outliers <- FALSE
 
   husked <- husk(
@@ -73,7 +75,7 @@ test_that("`husk` husks wide data", {
     variables = variables,
     sample = sample,
     regularization_param = regularization_param,
-    husk = husk,
+    remove_signal = remove_signal,
     remove_outliers = remove_outliers
   )
 
