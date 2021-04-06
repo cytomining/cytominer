@@ -1,7 +1,6 @@
 context("husk")
 
 test_that("`husk` husks tall data", {
-
   n_dim <- 5
   n_points <- 10000
 
@@ -45,12 +44,10 @@ test_that("`husk` husks tall data", {
     diag(identity_matrix),
     tolerance = 10^-6
   )
-
 })
 
 
 test_that("`husk` husks wide data", {
-
   n_dim <- 1000
   n_points <- 50
 
@@ -88,12 +85,10 @@ test_that("`husk` husks wide data", {
   identity_matrix <- diag(rep(1, n_dim))
 
   expect_equal(
-    diag(husked_cov)[1:(n_points-1)],
-    diag(identity_matrix)[1:(n_points-1)],
+    diag(husked_cov)[1:(n_points - 1)],
+    diag(identity_matrix)[1:(n_points - 1)],
     tolerance = 10^-6
   )
-
-
 })
 # test_that("`spherize` uses svd consistently", {
 #

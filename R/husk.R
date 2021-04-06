@@ -159,7 +159,7 @@ husk <-
 
     outlier_s <- boxplot(S^2, plot = FALSE)$out
 
-    if(length(outlier_s) == 0) {
+    if (length(outlier_s) == 0) {
       q <- 0
     } else {
       q <- which(S^2 < min(outlier_s))[1]
@@ -174,7 +174,7 @@ husk <-
     # Rationale: PCs with signal should be removed
 
     if (remove_signal) {
-      proj <- proj[(q+1):d, ] # husk the signal, keep the white noise
+      proj <- proj[(q + 1):d, ] # husk the signal, keep the white noise
     }
 
     # -------------------------
