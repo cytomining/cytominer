@@ -19,7 +19,6 @@ test_that("`husk` husks tall data", {
   sample <- data
   regularization_param <- 1e-10
   husk <- FALSE
-  husk_threshold <- 2
   remove_outliers <- FALSE
 
   husked <- husk(
@@ -28,7 +27,6 @@ test_that("`husk` husks tall data", {
     sample = sample,
     regularization_param = regularization_param,
     husk = husk,
-    husk_threshold = husk_threshold,
     remove_outliers = remove_outliers
   )
 
@@ -68,7 +66,6 @@ test_that("`husk` husks wide data", {
   sample <- data
   regularization_param <- 1e-10
   husk <- FALSE
-  husk_threshold <- 2
   remove_outliers <- FALSE
 
   husked <- husk(
@@ -77,7 +74,6 @@ test_that("`husk` husks wide data", {
     sample = sample,
     regularization_param = regularization_param,
     husk = husk,
-    husk_threshold = husk_threshold,
     remove_outliers = remove_outliers
   )
 
