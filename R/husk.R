@@ -162,36 +162,35 @@ husk <-
       qx = ifelse(is.na(q), 0, q)
     ))
 
-    if (regularization_param > 0) {
-      # - Set the s.d. of the vectors of the null space to the smallest s.d.
-      #   (when n <= d; there is no null space otherwise)
-      # - Add a regularizer
-      # TODO :
-      #   - Ponder the rationale for padding
+    # - Set the s.d. of the vectors of the null space to the smallest s.d.
+    #   (when n <= d; there is no null space otherwise)
+    # - Add a regularizer
+    # TODO :
+    #   - Ponder the rationale for padding
 
-      if (n <= d) {
-        Sr <- c(S[1:r], rep(S[r], d - r))
-      } else {
-        Sr <- S
-      }
-
-      Sr <- Sr + regularization_param
+    if (n <= d) {
+      Sr <- c(S[1:r], rep(S[r], d - r))
     } else {
-      # - Set the s.d. to `sqrt(husk_threshold)` for all the basis vectors of
-      #   the null (when n <= d; there is no null space otherwise)
-      # - Set the s.d. to `sqrt(husk_threshold)` for all PCs with s.d. < 1
-      # - Do not add a regularizer
-
-      if (!is.na(q)) {
-        if (n <= d) {
-          Sr <- c(S[1:(q - 1)], rep(1, d - q + 1))
-        } else {
-          Sr <- S
-          Sr[q:d] <- sqrt(husk_threshold)
-        }
-      }
-      # ---------------
+      Sr <- S
     }
+
+    Sr <- Sr + regularization_param
+
+    # I considered this alternative to regularization but abandoned it:
+    # - Set the s.d. to `sqrt(husk_threshold)` for all the basis vectors of
+    #   the null (when n <= d; there is no null space otherwise)
+    # - Set the s.d. to `sqrt(husk_threshold)` for all PCs with s.d. < 1
+    # - Do not add a regularizer
+
+    #  if (!is.na(q)) {
+    #    if (n <= d) {
+    #      Sr <- c(S[1:(q - 1)], rep(1, d - q + 1))
+    #    } else {
+    #      Sr <- S
+    #      Sr[q:d] <- sqrt(husk_threshold)
+    #    }
+    #  }
+
 
     proj <- diag(1 / Sr) %*% t(V)
 
