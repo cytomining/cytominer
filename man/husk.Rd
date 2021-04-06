@@ -8,9 +8,10 @@ husk(
   population,
   variables,
   sample,
+  remove_outliers = TRUE,
   regularization_param = 1e-06,
   remove_signal = TRUE,
-  remove_outliers = TRUE
+  flatten_noise = TRUE
 )
 }
 \arguments{
@@ -22,14 +23,14 @@ husk(
 husking parameters. \code{sample} has same structure as \code{population}.
 Typically, \code{sample} corresponds to controls in the experiment.}
 
+\item{remove_outliers}{optional boolean specifying whether to remove
+outliers. Default is \code{TRUE}.}
+
 \item{regularization_param}{optional parameter used in husking to offset
 eigenvalues to avoid division by zero. Default is \code{1}.}
 
-\item{remove_signal}{optional boolean specifying whether to husk the signal
-instead of only scaling it down. Default is \code{TRUE}.}
-
-\item{remove_outliers}{optional boolean specifying whether to remove
-outliers. Default is \code{TRUE}.}
+\item{remove_signal}{optional boolean specifying whether to flatten the noise
+instead of scaling it up. Default is \code{TRUE}.}
 }
 \value{
 transformed data of the same class as \code{population}.
