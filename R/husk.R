@@ -154,18 +154,34 @@ husk <-
     # (but we actually later want to throw them out, not keep them)
     # -------------------------
     # This is a whole subfield in itself, and there are many ways of doing it.
+    #
+    # Here are things to look up to learn more
+    # - Parallel analysis
+    # - Considering Horn’s Parallel Analysis from a Random Matrix Theory
+    #   Point of View. doi:10.1007/s11336-016-9515-z
+    #
+    # Also consider this word of caution from
+    # https://cran.r-project.org/web/packages/jackstraw/vignettes/jackstraw.pdf
+    #
+    #   Determining the number of “statistically significant” PCs is an active
+    #   area of research,and defining a number of significant PCs depends on the
+    #   data structure and the context. Refer to Anderson (1963), Tracy and
+    #   Widom (1996), Johnstone (2001), Leek (2010). We do not advocate the
+    #   blind use of parallel analysis to obtain r_hat [the number of PCs to
+    #   keep]
+    #
     # But we can take a lazy approach for now and just trim the s.d. that are
     # "outliers"
 
-    outlier_s <- boxplot(S^2, plot = FALSE)$out
-
-    if (length(outlier_s) == 0) {
-      q <- 0
-    } else {
-      q <- which(S^2 < min(outlier_s))[1]
+    f_outlier_threshold <- function(x)  {
+      quantile(x, .75) + 1.5 * IQR(x)
     }
 
-    futile.logger::flog.info(glue::glue("There are {q} PCs with signal."))
+    q <- which(S^2 < f_outlier_threshold(S^2))[1]
+
+    if(is.na(q)) q <- 0
+
+    futile.logger::flog.debug(glue::glue("There are {q} PCs with signal."))
 
     # -------------------------
     # Optionally trim the projection matrix
