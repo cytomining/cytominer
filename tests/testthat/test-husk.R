@@ -4,8 +4,9 @@ test_that("`husk` husks tall data", {
   # TODO: split into smaller tests
 
   n_dim <- 5
-  n_points <- 10000
+  n_points <- 1000
 
+  set.seed(50)
   data <- matrix(rnorm(n_points * n_dim), n_points, n_dim)
   data <-
     data + abs(matrix(rnorm(n_points * n_dim), n_points, n_dim)) * 50
@@ -50,10 +51,10 @@ test_that("`husk` husks tall data", {
   # ------------------------
   population <- data
   sample <- data
-  remove_outliers <- FALSE
+  remove_outliers <- TRUE
   epsilon <- 1e-10
-  remove_signal <- FALSE
-  flatten_noise <- FALSE
+  remove_signal <- TRUE
+  flatten_noise <- TRUE
 
   futile.logger::flog.threshold(futile.logger::DEBUG)
   husked <- husk(
@@ -75,19 +76,24 @@ test_that("`husk` husks tall data", {
 
   identity_matrix <- diag(rep(1, n_dim))
 
+  # It should be almost identity
+  # TODO:
+  #   - This test can sometimes fail because of outlier removal and noise
+  #     flattening. Come up with a better test.
   expect_equal(
     diag(husked_cov),
     diag(identity_matrix),
-    tolerance = 10^-6
+    tolerance = .1
   )
   # ------------------------
 })
 
 
 test_that("`husk` husks wide data", {
-  n_dim <- 1000
-  n_points <- 50
+  n_dim <- 100
+  n_points <- 10
 
+  set.seed(42)
   data <- matrix(rnorm(n_points * n_dim), n_points, n_dim)
   data <-
     data + abs(matrix(rnorm(n_points * n_dim), n_points, n_dim)) * 50
@@ -119,75 +125,16 @@ test_that("`husk` husks wide data", {
     as.matrix() %>%
     unname()
 
-  identity_matrix <- diag(rep(1, n_dim))
-
   expect_equal(
     diag(husked_cov)[1:(n_points - 1)],
-    diag(identity_matrix)[1:(n_points - 1)],
+    rep(1, n_points - 1),
+    tolerance = 10^-6
+  )
+
+  expect_equal(
+    diag(husked_cov)[n_points:n_dim],
+    rep(0, n_dim - n_points + 1),
     tolerance = 10^-6
   )
 })
-# test_that("`spherize` uses svd consistently", {
-#
-#   data <- matrix(rnorm(10 * 100), 10, 100)
-#   data <- data + abs(matrix(rnorm(10 * 100), 10, 100)) * 10
-#   data <- as.data.frame(data)
-#
-#   variables <- names(data)
-#
-#   epsilon  <- 0
-#
-#   spherize_df <-
-#     spherize(
-#       population = data,
-#       variables = variables,
-#       sample = data,
-#       epsilon = 0
-#     )
-#
-#   spherize_test <- function(data, epsilon)  {
-#
-#     sample_mean <- colMeans(sample_data)
-#
-#     sample_cov <- cov(data)
-#
-#     n <- nrow()
-#
-#     # eigen decomposition \Sigma = E * \Lambda * E'
-#     eig_decomp <- eigen(data)
-#
-#     E_t <- t(eig_decomp$vectors)
-#
-#     Lambda <- eig_decomp$values
-#
-#     # compute sphering transformation, which is {\Lambda + \epsilon}^.5 x E'
-#     W <- diag((Lambda + epsilon)^-0.5) %*% E_t
-#
-#     # apply sphering transformation, which is (X - \mu) * W'
-#     transformed_data <- sweep(data, 2, sample_mean) %*% t(W)
-#
-#   }
-#
-#   # ---------------------------------------------------------------------------
-#   # ---------------------------------------------------------------------------
-#
-#   df <- data.frame(svd = Lambda[1:length(Lambda)-1], eig = xLambda[1:length(Lambda)-1])
-#
-#   lm(df, formula = svd ~ eig)
-#
-#   xx <- cor(xtransformed_population_data[,1:(n-1)], transformed_population_data[,1:(n-1)])
-#
-#   plot(diag(xx))
-#
-#
-#   expect_equal(
-#     spherize(
-#       population = data,
-#       variables = c("x", "y", "z"),
-#       sample = data,
-#       epsilon = 0
-#     )
-#   )
-#
-#
-# })
+
