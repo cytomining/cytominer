@@ -29,7 +29,10 @@ outliers. Default is \code{TRUE}.}
 \item{regularization_param}{optional parameter used in husking to offset
 eigenvalues to avoid division by zero. Default is \code{1}.}
 
-\item{remove_signal}{optional boolean specifying whether to flatten the noise
+\item{remove_signal}{optional boolean specifying whether to husk the signal
+instead of only scaling it down. Default is \code{TRUE}.}
+
+\item{flatten_noise}{optional boolean specifying whether to flatten the noise
 instead of scaling it up. Default is \code{TRUE}.}
 }
 \value{

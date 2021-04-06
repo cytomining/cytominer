@@ -24,9 +24,10 @@ Imports:
     magrittr (>= 1.5),
     Matrix (>= 1.2),
     purrr (>= 0.3.3),
-    rlang (>= 0.4.5),  
+    rlang (>= 0.4.5),
     tibble (>= 2.1.3),
-    tidyr (>= 1.0.2)
+    tidyr (>= 1.0.2),
+    glue
 Suggests:
     DBI (>= 0.7),
     dbplyr (>= 1.4.2),

@@ -14,7 +14,7 @@
 #'   eigenvalues to avoid division by zero. Default is \code{1}.
 #' @param remove_signal optional boolean specifying whether to husk the signal
 #'   instead of only scaling it down. Default is \code{TRUE}.
-#' @param remove_signal optional boolean specifying whether to flatten the noise
+#' @param flatten_noise optional boolean specifying whether to flatten the noise
 #'   instead of scaling it up. Default is \code{TRUE}.
 #'
 #' @return transformed data of the same class as \code{population}.
@@ -65,8 +65,8 @@ husk <-
       xsvd <- svd(X, nu = 2, nv = 0)
       u1 <- xsvd$u[, 1]
       u2 <- xsvd$u[, 2]
-      u1out <- boxplot(u1, plot = FALSE)$out
-      u2out <- boxplot(u2, plot = FALSE)$out
+      u1out <- graphics::boxplot(u1, plot = FALSE)$out
+      u2out <- graphics::boxplot(u2, plot = FALSE)$out
       uout <- c(
         which(u1 %in% u1out),
         which(u2 %in% u2out)
@@ -185,7 +185,7 @@ husk <-
     if (remove_signal) {
       find_significant_pcs <- function(S) {
         f_outlier_threshold <- function(x) {
-          quantile(x, .75) + 1.5 * IQR(x)
+          stats::quantile(x, .75) + 1.5 * stats::IQR(x)
         }
 
         q <- which(S^2 < f_outlier_threshold(S^2))[1] - 1
