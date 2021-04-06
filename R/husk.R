@@ -180,9 +180,8 @@ husk <-
     #
 
     if (remove_signal) {
-
       find_significant_pcs <- function(S) {
-        f_outlier_threshold <- function(x)  {
+        f_outlier_threshold <- function(x) {
           quantile(x, .75) + 1.5 * IQR(x)
         }
 
@@ -195,20 +194,17 @@ husk <-
         )
 
         q
-
       }
 
       q <- find_significant_pcs(S)
 
       if (flatten_noise) {
-
         Sr[(q + 1):d] <- Sr[q + 1]
-
       }
 
       Sr <- Sr[(q + 1):d]
 
-      V  <- V[,(q + 1):d]
+      V <- V[, (q + 1):d]
     }
 
 
@@ -216,7 +212,7 @@ husk <-
     # Create the transformation
     # -------------------------
 
-    projt <- V %*%  diag(1 / Sr)
+    projt <- V %*% diag(1 / Sr)
 
     husk_helper <- function(M) {
       scale(M,
