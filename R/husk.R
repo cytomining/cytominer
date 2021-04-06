@@ -67,15 +67,13 @@ husk <-
       u2 <- xsvd$u[, 2]
       u1out <- graphics::boxplot(u1, plot = FALSE)$out
       u2out <- graphics::boxplot(u2, plot = FALSE)$out
-      uout <- c(
-        which(u1 %in% u1out),
-        which(u2 %in% u2out)
-      )
+      uout <- c(which(u1 %in% u1out),
+                which(u2 %in% u2out))
       n_outliers <- length(uout)
 
       X <- X0
       if (n_outliers > 0) {
-        X <- X0[-uout, ]
+        X <- X0[-uout,]
       }
     } else {
       X <- X0
@@ -142,8 +140,10 @@ husk <-
     if (n <= d) {
       stopifnot(r == n - 1) # See above ("Stop if rank < min(n-1, d)")
       Sr <- c(S[1:r], rep(S[r], d - r))
+
     } else {
       Sr <- S
+
     }
 
     # -------------------------
@@ -184,22 +184,6 @@ husk <-
     #
 
     if (remove_signal) {
-      find_significant_pcs <- function(S) {
-        f_outlier_threshold <- function(x) {
-          stats::quantile(x, .75) + 1.5 * stats::IQR(x)
-        }
-
-        q <- which(S^2 < f_outlier_threshold(S^2))[1] - 1
-
-        stopifnot(!is.na(q))
-
-        futile.logger::flog.debug(
-          glue::glue("Outlier-based approach reports {q} PCs with signal.")
-        )
-
-        q
-      }
-
       q <- find_significant_pcs(S)
 
       if (flatten_noise) {
@@ -220,9 +204,8 @@ husk <-
 
     husk_helper <- function(M) {
       scale(M,
-        center = attr(X, "scaled:center"),
-        scale = attr(X, "scaled:scale")
-      ) %*% projt
+            center = attr(X, "scaled:center"),
+            scale = attr(X, "scaled:scale")) %*% projt
     }
 
     # -------------------------
@@ -247,11 +230,52 @@ husk <-
     # -------------------------
 
     husked <-
-      dplyr::bind_cols(
-        population_metadata,
-        population_data_transformed
-      )
+      dplyr::bind_cols(population_metadata,
+                       population_data_transformed)
 
     husked
   }
 
+
+
+#' Find significant PC's given the eigenvalues.
+#'
+#' \code{find_significant_pcs} finds significant PC's given the eigenvalues.
+#'
+#' @param S numeric vector with eigenvalues of covariance matrix, sorted in
+#'   descending order.
+#' @param method optional string specifying method to estimate number of
+#'   significant PCs
+#' @param n optional integer specifying number of rows in the data matrix.
+#'   Default is \code{NULL}
+#' @param d optional integer specifying number of columns in the data matrix.
+#'   Default is \code{NULL}
+#'
+#' @return number of significant PCs
+#'
+#' @export
+find_significant_pcs <-
+  function(S,
+           method = "outlier",
+           n = NULL,
+           d = NULL) {
+
+    stopifnot(!is.unsorted(S))
+
+    stopifnot(method %in% c("outlier"))
+
+    f_outlier_threshold <- function(x) {
+      stats::quantile(x, .75) + 1.5 * stats::IQR(x)
+    }
+
+    if (method == "outlier") {
+      q <- which(S ^ 2 < f_outlier_threshold(S ^ 2))[1] - 1
+
+      stopifnot(!is.na(q))
+
+      futile.logger::flog.debug(
+        glue::glue("Outlier-based approach reports {q} PCs with signal."))
+    }
+
+    q
+  }
