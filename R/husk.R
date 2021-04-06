@@ -168,7 +168,8 @@ husk <-
     #   - Ponder whether a faster, conservative lower bound can be obtained:
     #     https://en.wikipedia.org/wiki/Wigner_semicircle_distribution
     #     https://en.wikipedia.org/wiki/Wigner_surmise
-    #     http://www.stats.ox.ac.uk/~cucuring/Lecture_4_PCA_RMTX_Finance.pdf (slide 5)
+    #     http://www.stats.ox.ac.uk/~cucuring/Lecture_4_PCA_RMTX_Finance.pdf
+    #       (slide 5, 35 are particularly interesting)
     #   - "Considering Horn’s Parallel Analysis from a Random Matrix Theory
     #     Point of View". doi:10.1007/s11336-016-9515-z
     #   - Also consider this word of caution from
@@ -254,17 +255,3 @@ husk <-
     husked
   }
 
-# I considered this alternative to regularization but abandoned it:
-# - Set the s.d. to `sqrt(husk_threshold)` for all the basis vectors of
-#   the null (when n <= d; there is no null space otherwise)
-# - Set the s.d. to `sqrt(husk_threshold)` for all PCs with s.d. < 1
-# - Do not add a regularizer
-
-#  if (!is.na(q)) {
-#    if (n <= d) {
-#      Sr <- c(S[1:(q - 1)], rep(1, d - q + 1))
-#    } else {
-#      Sr <- S
-#      Sr[q:d] <- sqrt(husk_threshold)
-#    }
-#  }
