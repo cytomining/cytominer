@@ -1,4 +1,4 @@
-utils::globalVariables(c("is_outlier"))
+utils::globalVariables(c("is_outlier", "has_na"))
 #' Husk data.
 #'
 #' \code{husk} detects unwanted variation in the sample and removes it from the
@@ -65,6 +65,7 @@ husk <-
 
     sample <-
       sample %>%
+      dplyr::rowwise() %>%
       dplyr::mutate(has_na = any(is.na(dplyr::c_across(all_of(variables))))) %>%
       dplyr::filter(!has_na) %>%
       dplyr::select(-has_na)
