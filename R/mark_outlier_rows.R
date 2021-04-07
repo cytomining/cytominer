@@ -38,12 +38,12 @@ utils::globalVariables(c("strata_col_dummy"))
 #' sample <- population %>% dplyr::filter(Metadata_type == "control")
 #' population_marked <-
 #'   cytominer::mark_outlier_rows(
-#'   population,
-#'   variables,
-#'   sample,
-#'   strata,
-#'   operation = "svd+iqr"
-#' )
+#'     population,
+#'     variables,
+#'     sample,
+#'     strata,
+#'     operation = "svd+iqr"
+#'   )
 #' population_marked %>%
 #'   group_by(is_outlier) %>%
 #'   sample_n(3)
