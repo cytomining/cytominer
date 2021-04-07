@@ -1,6 +1,6 @@
-context("drop_outlier_rows")
+context("mark_outlier_rows")
 
-test_that("`drop_outlier_rows` works", {
+test_that("`mark_outlier_rows` works", {
   set.seed(123)
 
   generate_matrix <- function(n = 30) {
