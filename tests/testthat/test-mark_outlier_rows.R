@@ -3,7 +3,7 @@ context("mark_outlier_rows")
 test_that("`mark_outlier_rows` works", {
   set.seed(123)
 
-  generate_matrix <- function(n = 30) {
+  generate_matrix <- function(n = 30, n_out = 5) {
     m <- matrix(rnorm(n * 2), n, 2) %>% scale(.)
 
     cvec <- matrix(rnorm(2), 1, 2) * 2
@@ -15,12 +15,10 @@ test_that("`mark_outlier_rows` works", {
       sweep(., 2, svec, FUN = "*") %>%
       sweep(., 2, cvec, FUN = "+")
 
-    n_out <- sample(ceiling(n / 20), 1)
-
     for (k in seq(n_out)) {
       i <- sample(n, 1)
 
-      m[i, ] <- m[i, ] * 5
+      m[i,] <- m[i,] * 5
     }
 
     n_na <- sample(ceiling(n / 20), 1)
@@ -37,15 +35,17 @@ test_that("`mark_outlier_rows` works", {
   }
 
   n <- 1000
+  n_out <- 50
+
   data <-
     dplyr::bind_rows(
-      generate_matrix(n) %>%
+      generate_matrix(n, n_out) %>%
         dplyr::mutate(g1 = "a", g2 = "x"),
-      generate_matrix(n) %>%
+      generate_matrix(n, n_out) %>%
         dplyr::mutate(g1 = "a", g2 = "y"),
-      generate_matrix(n) %>%
+      generate_matrix(n, n_out) %>%
         dplyr::mutate(g1 = "b", g2 = "x"),
-      generate_matrix(n) %>%
+      generate_matrix(n, n_out) %>%
         dplyr::mutate(g1 = "b", g2 = "y")
     )
 
@@ -64,21 +64,43 @@ test_that("`mark_outlier_rows` works", {
       operation = "svd+iqr"
     )
 
-  ggplot2::ggplot(
-    data,
-    ggplot2::aes(x, y, color = interaction(g1, g2))
-  ) +
-    ggplot2::geom_point() +
-    ggplot2::coord_equal()
+  data_cleaned_no_strata <-
+    mark_outlier_rows(
+      population = data,
+      variables = c("x", "y"),
+      sample = data,
+      operation = "svd+iqr"
+    )
 
-
-  ggplot2::ggplot(
-    data_cleaned,
-    ggplot2::aes(x, y, color = is_outlier)
-  ) +
+  ggplot2::ggplot(na.omit(data_cleaned),
+                  ggplot2::aes(x, y, color = is_outlier)) +
     ggplot2::geom_point() +
     ggplot2::facet_grid(g1 ~ g2) +
     ggplot2::coord_equal()
 
-  expect_true(nrow(data_cleaned) > 0)
+  ggplot2::ggplot(na.omit(data_cleaned_no_strata),
+                  ggplot2::aes(x, y, color = is_outlier)) +
+    ggplot2::geom_point() +
+    ggplot2::coord_equal()
+
+  expect_true(
+    data_cleaned %>%
+      dplyr::group_by(g1, g2, is_outlier) %>%
+      dplyr::tally(name = "n_outliers") %>%
+      dplyr::filter(is_outlier) %>%
+      dplyr::mutate(check = n_outliers > n_out) %>%
+      dplyr::ungroup() %>%
+      dplyr::summarise(check = all(check)) %>%
+      dplyr::pull(check)
+  )
+
+  expect_true(
+    data_cleaned %>%
+      dplyr::group_by(is_outlier) %>%
+      dplyr::tally(name = "n_outliers") %>%
+      dplyr::filter(is_outlier) %>%
+      dplyr::mutate(check = n_outliers > n_out * 4) %>%
+      dplyr::pull(check)
+  )
+
 })
