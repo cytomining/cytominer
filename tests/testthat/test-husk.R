@@ -24,7 +24,7 @@ test_that("`husk` husks tall data", {
   epsilon <- 1e-10
   remove_signal <- FALSE
 
-  futile.logger::flog.threshold(futile.logger::DEBUG)
+  #futile.logger::flog.threshold(futile.logger::DEBUG)
   husked <- husk(
     population = population,
     variables = variables,
@@ -33,7 +33,7 @@ test_that("`husk` husks tall data", {
     epsilon = epsilon,
     remove_signal = remove_signal
   )
-  futile.logger::flog.threshold(futile.logger::WARN)
+  #futile.logger::flog.threshold(futile.logger::WARN)
 
   husked_cov <-
     husked %>%
@@ -56,7 +56,7 @@ test_that("`husk` husks tall data", {
   remove_signal <- TRUE
   flatten_noise <- TRUE
 
-  futile.logger::flog.threshold(futile.logger::DEBUG)
+  #futile.logger::flog.threshold(futile.logger::DEBUG)
   husked <- husk(
     population = population,
     variables = variables,
@@ -66,7 +66,7 @@ test_that("`husk` husks tall data", {
     remove_signal = remove_signal,
     flatten_noise = flatten_noise
   )
-  futile.logger::flog.threshold(futile.logger::WARN)
+  #futile.logger::flog.threshold(futile.logger::WARN)
 
   husked_cov <-
     husked %>%
