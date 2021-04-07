@@ -44,46 +44,34 @@ husk <-
            epsilon = 1e-6,
            remove_signal = TRUE,
            flatten_noise = TRUE) {
+
+    # -------------------------
+    # Find and drop outliers
+    # -------------------------
+
+    if (remove_outliers) {
+      sample <- mark_outlier_rows(
+        population = sample,
+        variables = variables,
+        sample = sample,
+        operation = "svd+iqr"
+      ) %>%
+        dplyr::filter(!is_outlier) %>%
+        dplyr::select(-is_outlier)
+
+    }
+
     # -------------------------
     # Get the sample matrix
     # -------------------------
 
-    X0 <-
+    X <-
       sample %>%
       dplyr::select(all_of(variables)) %>%
       as.matrix()
 
     # -------------------------
-    # Find and drop outliers
-    # -------------------------
-    #
-    # Find outliers in the top 2 PCs, using > 1.5IQR rule
-    # TODO:
-    #   - Ponder shortcomings and potential improvements
-
-    if (remove_outliers) {
-      X <- scale(X0, center = TRUE, scale = FALSE)
-      xsvd <- svd(X, nu = 2, nv = 0)
-      u1 <- xsvd$u[, 1]
-      u2 <- xsvd$u[, 2]
-      u1out <- graphics::boxplot(u1, plot = FALSE)$out
-      u2out <- graphics::boxplot(u2, plot = FALSE)$out
-      uout <- c(
-        which(u1 %in% u1out),
-        which(u2 %in% u2out)
-      )
-      n_outliers <- length(uout)
-
-      X <- X0
-      if (n_outliers > 0) {
-        X <- X0[-uout, ]
-      }
-    } else {
-      X <- X0
-    }
-
-    # -------------------------
-    # Center and scale the cleaned data
+    # Center and scale the  data
     # -------------------------
     #
     # Note that PCA on zero-centered, unit variance data is equivalent to
@@ -205,9 +193,8 @@ husk <-
 
     husk_helper <- function(M) {
       scale(M,
-        center = attr(X, "scaled:center"),
-        scale = attr(X, "scaled:scale")
-      ) %*% projt
+            center = attr(X, "scaled:center"),
+            scale = attr(X, "scaled:scale")) %*% projt
     }
 
     # -------------------------
@@ -232,10 +219,8 @@ husk <-
     # -------------------------
 
     husked <-
-      dplyr::bind_cols(
-        population_metadata,
-        population_data_transformed
-      )
+      dplyr::bind_cols(population_metadata,
+                       population_data_transformed)
 
     husked
   }
@@ -272,13 +257,11 @@ find_significant_pcs <-
     }
 
     if (method == "outlier") {
-      q <- which(S^2 < f_outlier_threshold(S^2))[1] - 1
+      q <- which(S ^ 2 < f_outlier_threshold(S ^ 2))[1] - 1
 
       stopifnot(!is.na(q))
 
-      futile.logger::flog.debug(
-        glue::glue("Outlier-based approach reports {q} PCs with signal.")
-      )
+      futile.logger::flog.debug(glue::glue("Outlier-based approach reports {q} PCs with signal."))
     }
 
     q
