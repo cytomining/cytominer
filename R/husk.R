@@ -1,3 +1,4 @@
+utils::globalVariables(c("is_outlier", "has_na"))
 #' Husk data.
 #'
 #' \code{husk} detects unwanted variation in the sample and removes it from the
@@ -22,8 +23,10 @@
 #'
 #' @examples
 #' population <- tibble::tibble(
+#'   Metadata_pert_name = c(NA, NA, NA, NA),
 #'   Metadata_Well = c("A01", "A02", "B01", "B02"),
-#'   Intensity_DNA = c(8, 20, 12, 32),
+#'   Intensity_DNA = c(10, 20, 12, 32),
+#'   Granularity_DNA = c(22, 20, NA, 32),
 #'   Texture_DNA = c(5, 2, 43, 13)
 #' )
 #' variables <- c("Intensity_DNA", "Texture_DNA")
@@ -44,46 +47,40 @@ husk <-
            epsilon = 1e-6,
            remove_signal = TRUE,
            flatten_noise = TRUE) {
+
+    # -------------------------
+    # Find and drop outliers
+    # -------------------------
+
+    if (remove_outliers) {
+      sample <- mark_outlier_rows(
+        population = sample,
+        variables = variables,
+        sample = sample,
+        operation = "svd+iqr"
+      ) %>%
+        dplyr::filter(!is_outlier) %>% # NA's will be silently dropped
+        dplyr::select(-is_outlier)
+    }
+
+    sample <-
+      sample %>%
+      dplyr::rowwise() %>%
+      dplyr::mutate(has_na = any(is.na(dplyr::c_across(all_of(variables))))) %>%
+      dplyr::filter(!has_na) %>%
+      dplyr::select(-has_na)
+
     # -------------------------
     # Get the sample matrix
     # -------------------------
 
-    X0 <-
+    X <-
       sample %>%
       dplyr::select(all_of(variables)) %>%
       as.matrix()
 
     # -------------------------
-    # Find and drop outliers
-    # -------------------------
-    #
-    # Find outliers in the top 2 PCs, using > 1.5IQR rule
-    # TODO:
-    #   - Ponder shortcomings and potential improvements
-
-    if (remove_outliers) {
-      X <- scale(X0, center = TRUE, scale = FALSE)
-      xsvd <- svd(X, nu = 2, nv = 0)
-      u1 <- xsvd$u[, 1]
-      u2 <- xsvd$u[, 2]
-      u1out <- graphics::boxplot(u1, plot = FALSE)$out
-      u2out <- graphics::boxplot(u2, plot = FALSE)$out
-      uout <- c(
-        which(u1 %in% u1out),
-        which(u2 %in% u2out)
-      )
-      n_outliers <- length(uout)
-
-      X <- X0
-      if (n_outliers > 0) {
-        X <- X0[-uout, ]
-      }
-    } else {
-      X <- X0
-    }
-
-    # -------------------------
-    # Center and scale the cleaned data
+    # Center and scale the  data
     # -------------------------
     #
     # Note that PCA on zero-centered, unit variance data is equivalent to
@@ -92,6 +89,13 @@ husk <-
     X <- scale(X, center = TRUE, scale = TRUE)
     d <- ncol(X)
     n <- nrow(X)
+
+    # TODO:
+    #   - Do this more elegantly
+    # scaling can result in NA
+    X <- stats::na.omit(X)
+
+    stopifnot(nrow(X) > 1)
 
     # -------------------------
     # Stop if rank < min(n-1, d)
@@ -276,9 +280,7 @@ find_significant_pcs <-
 
       stopifnot(!is.na(q))
 
-      futile.logger::flog.debug(
-        glue::glue("Outlier-based approach reports {q} PCs with signal.")
-      )
+      futile.logger::flog.debug(glue::glue("Outlier-based approach reports {q} PCs with signal."))
     }
 
     q

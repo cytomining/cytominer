@@ -101,6 +101,7 @@ normalize <- function(population, variables, strata, sample,
   sample %<>% dplyr::compute()
   futile.logger::flog.debug("Created temp table for sample")
 
+  # TOD: Below, change to select(across(all_of(strata)))
   groups <-
     sample %>%
     dplyr::select(strata) %>%
