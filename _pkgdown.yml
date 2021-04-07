@@ -18,6 +18,7 @@ reference:
 - title: "Transformation methods"
 - contents:
   - generalized_log
+  - husk
   - sparse_random_projection
   - spherize
 - title: "Variable importance methods"
@@ -31,3 +32,4 @@ reference:
 - contents:
   - count_na_rows
   - generate_component_matrix
+  - find_significant_pcs

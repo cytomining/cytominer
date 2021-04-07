@@ -18,10 +18,12 @@
 #'   Intensity_DNA = c(8, 20, 12, 32),
 #'   Intensity_RNA = c(1, 12, -1, 4),
 #'   Intensity_AGP = c(-2, 5, -5, -2),
-#'   Intensity_ER  = c(-12, 15, -25, 24)
+#'   Intensity_Mito = c(-1, 15, 5, 22),
+#'   Intensity_ER = c(-12, 15, -25, 24)
 #' )
 #' variables <- c("Intensity_DNA", "Intensity_RNA", "Intensity_AGP", "Intensity_ER")
 #' transform(population, variables, operation = "generalized_log")
+#' transform(population, variables, sample = population, operation = "husk")
 #' transform(population, variables, sample = population, operation = "spherize")
 #' transform(population, variables, n_components = 2, operation = "sparse_random_projection")
 #' @importFrom magrittr %>%
@@ -33,6 +35,8 @@ transform <- function(population, variables,
     generalized_log(population, variables, ...)
   } else if (operation == "spherize") {
     spherize(population, variables, ...)
+  } else if (operation == "husk") {
+    husk(population, variables, ...)
   } else if (operation == "sparse_random_projection") {
     sparse_random_projection(population, variables, ...)
   } else {

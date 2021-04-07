@@ -4,6 +4,5 @@
 #' readouts from high-throughput cell experiments.
 #'
 #' @keywords internal
-#' @import rlang
 #' @importFrom dplyr all_of across contains ends_with everything last_col matches num_range starts_with
 "_PACKAGE"

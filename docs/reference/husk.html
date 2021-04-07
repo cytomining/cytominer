@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Spherize data. — spherize • cytominer</title>
+<title>Husk data. — husk • cytominer</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,9 @@
 
 
 
-<meta property="og:title" content="Spherize data. — spherize" />
-<meta property="og:description" content="spherize transforms specified observation variables by estimating a
-sphering transformation on a sample and applying it to the population." />
+<meta property="og:title" content="Husk data. — husk" />
+<meta property="og:description" content="husk detects unwanted variation in the sample and removes it from the
+population." />
 
 
 
@@ -124,17 +124,25 @@ sphering transformation on a sample and applying it to the population." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Spherize data.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/cytomining/cytominer/blob/master/R/spherize.R'><code>R/spherize.R</code></a></small>
-    <div class="hidden name"><code>spherize.Rd</code></div>
+    <h1>Husk data.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/cytomining/cytominer/blob/master/R/husk.R'><code>R/husk.R</code></a></small>
+    <div class="hidden name"><code>husk.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>spherize</code> transforms specified observation variables by estimating a
-sphering transformation on a sample and applying it to the population.</p>
+    <p><code>husk</code> detects unwanted variation in the sample and removes it from the
+population.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>spherize</span><span class='op'>(</span><span class='va'>population</span>, <span class='va'>variables</span>, <span class='va'>sample</span>, regularization_param <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>husk</span><span class='op'>(</span>
+  <span class='va'>population</span>,
+  <span class='va'>variables</span>,
+  <span class='va'>sample</span>,
+  remove_outliers <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  epsilon <span class='op'>=</span> <span class='fl'>1e-06</span>,
+  remove_signal <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  flatten_noise <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,13 +158,29 @@ sphering transformation on a sample and applying it to the population.</p>
     <tr>
       <th>sample</th>
       <td><p>tbl containing sample that is used by the method to estimate
-sphering parameters. <code>sample</code> has same structure as <code>population</code>.
+husking parameters. <code>sample</code> has same structure as <code>population</code>.
 Typically, <code>sample</code> corresponds to controls in the experiment.</p></td>
     </tr>
     <tr>
-      <th>regularization_param</th>
-      <td><p>optional parameter used in sphering to offset
-eigenvalues to avoid division by zero.</p></td>
+      <th>remove_outliers</th>
+      <td><p>optional boolean specifying whether to remove
+outliers. Default is <code>TRUE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>epsilon</th>
+      <td><p>optional parameter used in husking to offset
+eigenvalues to avoid division by zero. Default is <code>1</code>.</p></td>
+    </tr>
+    <tr>
+      <th>remove_signal</th>
+      <td><p>optional boolean specifying whether to husk the signal
+instead of only scaling it down. Default is <code>TRUE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>flatten_noise</th>
+      <td><p>optional boolean specifying whether to flatten the noise
+instead of scaling it up. Default is <code>TRUE</code>. The parameter is ignored
+if <code>remove_signal</code> is <code>FALSE</code>.</p></td>
     </tr>
     </table>
 
@@ -171,14 +195,35 @@ eigenvalues to avoid division by zero.</p></td>
   Texture_DNA <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>2</span>, <span class='fl'>43</span>, <span class='fl'>13</span><span class='op'>)</span>
 <span class='op'>)</span>
 <span class='va'>variables</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Intensity_DNA"</span>, <span class='st'>"Texture_DNA"</span><span class='op'>)</span>
-<span class='fu'>spherize</span><span class='op'>(</span><span class='va'>population</span>, <span class='va'>variables</span>, <span class='va'>population</span>, <span class='fl'>0.01</span><span class='op'>)</span>
+<span class='fu'>husk</span><span class='op'>(</span><span class='va'>population</span>, <span class='va'>variables</span>, <span class='va'>population</span>, epsilon <span class='op'>=</span> <span class='fl'>1</span>, remove_signal <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 4 x 3</span><span>
-#&gt;   Metadata_Well    PC1     PC2
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> A01           -</span><span style='color: #BB0000;'>0.474</span><span>  1.13  
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> A02           -</span><span style='color: #BB0000;'>0.734</span><span>  0.026</span><span style='text-decoration: underline;'>0</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> B01            1.47   0.144 
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> B02           -</span><span style='color: #BB0000;'>0.264</span><span> -</span><span style='color: #BB0000;'>1.30</span><span>  </div></span></pre>
+#&gt;   Metadata_Well     V1     V2
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> A01           -</span><span style='color: #BB0000;'>0.125</span><span> -</span><span style='color: #BB0000;'>0.512</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> A02            0.311 -</span><span style='color: #BB0000;'>0.183</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> B01           -</span><span style='color: #BB0000;'>0.681</span><span>  0.299
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> B02            0.495  0.396</div><div class='input'><span class='fu'>husk</span><span class='op'>(</span><span class='va'>population</span>, <span class='va'>variables</span>, <span class='va'>population</span>, epsilon <span class='op'>=</span> <span class='fl'>1e-5</span>, remove_signal <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 4 x 3</span><span>
+#&gt;   Metadata_Well     V1     V2
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> A01           -</span><span style='color: #BB0000;'>0.239</span><span> -</span><span style='color: #BB0000;'>0.978</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> A02            0.594 -</span><span style='color: #BB0000;'>0.351</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> B01           -</span><span style='color: #BB0000;'>1.30</span><span>   0.571
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> B02            0.947  0.758</div><div class='input'><span class='fu'>husk</span><span class='op'>(</span><span class='va'>population</span>, <span class='va'>variables</span>, <span class='va'>population</span>, epsilon <span class='op'>=</span> <span class='fl'>1</span>, remove_signal <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 4 x 3</span><span>
+#&gt;   Metadata_Well     V1     V2
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> A01           -</span><span style='color: #BB0000;'>0.125</span><span> -</span><span style='color: #BB0000;'>0.568</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> A02            0.311 -</span><span style='color: #BB0000;'>0.203</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> B01           -</span><span style='color: #BB0000;'>0.681</span><span>  0.331
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> B02            0.495  0.440</div><div class='input'><span class='fu'>husk</span><span class='op'>(</span><span class='va'>population</span>, <span class='va'>variables</span>, <span class='va'>population</span>, epsilon <span class='op'>=</span> <span class='fl'>1e-5</span>, remove_signal <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 4 x 3</span><span>
+#&gt;   Metadata_Well     V1     V2
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> A01           -</span><span style='color: #BB0000;'>0.239</span><span> -</span><span style='color: #BB0000;'>1.20</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> A02            0.594 -</span><span style='color: #BB0000;'>0.432</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> B01           -</span><span style='color: #BB0000;'>1.30</span><span>   0.703
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> B02            0.947  0.933</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

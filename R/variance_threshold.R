@@ -22,7 +22,6 @@
 #' @importFrom magrittr %<>%
 #' @export
 variance_threshold <- function(variables, sample) {
-
   near_zero_variance <- function(x) {
 
     # this is no longer needed because dplyr::select
