@@ -1,3 +1,4 @@
+utils::globalVariables(c("strata_col_dummy"))
 #' Mark outlier rows.
 #'
 #' \code{mark_outlier_rows} drops outlier rows.
@@ -69,7 +70,7 @@ mark_outlier_rows <- function(population,
         grDevices::boxplot.stats(x, do.conf = FALSE, do.out = FALSE)$stats[c(1, 5)]
       }
 
-      X0 <- as.matrix(na.omit(dfv))
+      X0 <- as.matrix(stats::na.omit(dfv))
       X <- scale(X0, center = TRUE, scale = TRUE)
       xsvd <- svd(X, nu = 2, nv = 2)
       V <- xsvd$v[, 1:2]
@@ -109,27 +110,7 @@ mark_outlier_rows <- function(population,
       outlier_detector
     } else {
       error <-
-        paste0("undefined operation space '", operation_space, "'")
-
-      stop(error)
-    }
-  }
-
-  mark_outliers <- function(df, outlier_detector) {
-    if (operation_trimmer == "iqr") {
-      X <- scale(X0, center = TRUE, scale = FALSE)
-      xsvd <- svd(X, nu = 2, nv = 0)
-      u1 <- xsvd$u[, 1]
-      u2 <- xsvd$u[, 2]
-      u1out <- graphics::boxplot(u1, plot = FALSE)$out
-      u2out <- graphics::boxplot(u2, plot = FALSE)$out
-      uout <- c(
-        which(u1 %in% u1out),
-        which(u2 %in% u2out)
-      )
-    } else {
-      error <-
-        paste0("undefined operation trimmer '", operation_trimmer, "'")
+        paste0("undefined operation '", operation, "'")
 
       stop(error)
     }

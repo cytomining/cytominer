@@ -1,3 +1,4 @@
+utils::globalVariables(c("is_outlier"))
 #' Husk data.
 #'
 #' \code{husk} detects unwanted variation in the sample and removes it from the
@@ -65,7 +66,7 @@ husk <-
     # TODO: Do this more elegantly. Currently, it drops the row if *any* column
     # has an NA, but it should check only `variables`. cytominer::drop_na_rows
     # can be modified to fit this purpose.
-    sample <- na.omit(sample)
+    sample <- stats::na.omit(sample)
 
     # -------------------------
     # Get the sample matrix
@@ -90,7 +91,7 @@ husk <-
     # TODO:
     #   - Do this more elegantly
     # scaling can result in NA
-    X <- na.omit(X)
+    X <- stats::na.omit(X)
 
     stopifnot(nrow(X) > 1)
 

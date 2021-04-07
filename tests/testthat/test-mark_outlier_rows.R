@@ -72,20 +72,20 @@ test_that("`mark_outlier_rows` works", {
       operation = "svd+iqr"
     )
 
-  ggplot2::ggplot(
-    na.omit(data_cleaned),
-    ggplot2::aes(x, y, color = is_outlier)
-  ) +
-    ggplot2::geom_point() +
-    ggplot2::facet_grid(g1 ~ g2) +
-    ggplot2::coord_equal()
-
-  ggplot2::ggplot(
-    na.omit(data_cleaned_no_strata),
-    ggplot2::aes(x, y, color = is_outlier)
-  ) +
-    ggplot2::geom_point() +
-    ggplot2::coord_equal()
+  # ggplot2::ggplot(
+  #   na.omit(data_cleaned),
+  #   ggplot2::aes(x, y, color = is_outlier)
+  # ) +
+  #   ggplot2::geom_point() +
+  #   ggplot2::facet_grid(g1 ~ g2) +
+  #   ggplot2::coord_equal()
+  #
+  # ggplot2::ggplot(
+  #   na.omit(data_cleaned_no_strata),
+  #   ggplot2::aes(x, y, color = is_outlier)
+  # ) +
+  #   ggplot2::geom_point() +
+  #   ggplot2::coord_equal()
 
   expect_true(
     data_cleaned %>%
