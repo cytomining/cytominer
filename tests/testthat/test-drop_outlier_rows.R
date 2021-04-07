@@ -54,10 +54,6 @@ test_that("`drop_outlier_rows` works", {
     data %>%
     dplyr::rename(x = V1, y = V2)
 
-  ggplot2::ggplot(data,
-                  ggplot2::aes(x, y, color = interaction(g1, g2))) +
-    ggplot2::geom_point() + ggplot2::coord_equal()
-
   data_cleaned <-
     drop_outlier_rows(
       population = data,
@@ -66,6 +62,12 @@ test_that("`drop_outlier_rows` works", {
       sample = data,
       operation = "svd+iqr"
     )
+
+  ggplot2::ggplot(data,
+                  ggplot2::aes(x, y, color = interaction(g1, g2))) +
+    ggplot2::geom_point() + ggplot2::coord_equal()
+
+
   ggplot2::ggplot(data_cleaned,
                   ggplot2::aes(x, y, color = is_outlier)) +
     ggplot2::geom_point() +
