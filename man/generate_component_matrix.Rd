@@ -28,5 +28,6 @@ the elements of the random matrix are drawn from
     \code{sqrt(1 / (density * n_components))}  with probability \code{density / 2}
 }
 \examples{
-generate_component_matrix(500, 100, 0.3)
+M <- generate_component_matrix(500, 100, 0.3)
+M[1:10, 1:10]
 }

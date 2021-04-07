@@ -81,7 +81,8 @@ sparse_random_projection <- function(population, variables, n_components) {
 #' @return A sparse random matrix of size \code{(n_features, n_components)}.
 #'
 #' @examples
-#' generate_component_matrix(500, 100, 0.3)
+#' M <- generate_component_matrix(500, 100, 0.3)
+#' M[1:10, 1:10]
 #' @importFrom Matrix sparseMatrix
 #' @importFrom stats rbinom
 #' @export
