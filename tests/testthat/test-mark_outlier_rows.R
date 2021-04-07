@@ -106,4 +106,11 @@ test_that("`mark_outlier_rows` works", {
       dplyr::mutate(check = n_outliers > n_out * 4) %>%
       dplyr::pull(check)
   )
+
+  expect_true(
+    dplyr::all_equal(
+      data_cleaned %>% stats::na.omit() %>% dplyr::select(-is_outlier) %>% as.data.frame(),
+      data %>% stats::na.omit() %>% as.data.frame()
+    )
+  )
 })

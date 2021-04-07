@@ -46,22 +46,23 @@ Default \code{"is_outlier"}.}
 \examples{
 suppressMessages(suppressWarnings(library(magrittr)))
 population <- tibble::tibble(
-  Metadata_group = c(
-    "control", "control", "control", "control",
-    "experiment", "experiment", "experiment", "experiment"
-  ),
-  Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
-  AreaShape_Area = c(100, 12, 15, 16, 8, 8, 7, 7),
-  AreaShape_Eccentricity = c(1, 5, 2, 1, 3, 8, 70, 4)
+  Metadata_group = sample(c("a", "b"), 100, replace = TRUE),
+  Metadata_type = sample(c("control", "trt"), 100, replace = TRUE),
+  AreaShape_Area = c(rnorm(98), 20, 30),
+  AreaShape_Eccentricity = rnorm(100)
 )
 variables <- c("AreaShape_Area", "AreaShape_Eccentricity")
-strata <- c("Metadata_batch")
-sample <- population \%>\% dplyr::filter(Metadata_group == "control")
-cytominer::mark_outlier_rows(
+strata <- c("Metadata_group")
+sample <- population \%>\% dplyr::filter(Metadata_type == "control")
+population_marked <-
+  cytominer::mark_outlier_rows(
   population,
   variables,
   sample,
   strata,
   operation = "svd+iqr"
 )
+population_marked \%>\%
+  group_by(is_outlier) \%>\%
+  sample_n(3)
 }
