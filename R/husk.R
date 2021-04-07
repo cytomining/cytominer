@@ -56,10 +56,13 @@ husk <-
         sample = sample,
         operation = "svd+iqr"
       ) %>%
-        dplyr::filter(!is_outlier) %>%
+        dplyr::filter(!is_outlier) %>% # NA's will be silently dropped
         dplyr::select(-is_outlier)
 
     }
+
+    # TODO: Do this more elegantly!
+    sample <- na.omit(sample)
 
     # -------------------------
     # Get the sample matrix
