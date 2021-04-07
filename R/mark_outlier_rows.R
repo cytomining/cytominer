@@ -12,6 +12,8 @@
 #'   to estimate parameters. \code{sample} has same structure as
 #'   \code{population}. Typically, \code{sample} corresponds to controls in the
 #'   experiment.
+#' @param outlier_col optional character string specifying name for column
+#'   indicatingd outlier. Default \code{"is_outlier"}.
 #' @param ... arguments passed to outlier removal operation.
 #'
 #' @return \code{population} with an extra column \code{is_outlier}.
@@ -44,6 +46,7 @@ mark_outlier_rows <- function(population,
                               strata,
                               sample,
                               operation = "svd+iqr",
+                              outlier_col = "is_outlier",
                               ...) {
   stopifnot(operation == "svd+iqr")
 
@@ -87,7 +90,7 @@ mark_outlier_rows <- function(population,
             Uc[, 2] < Uw[1, 2] |
             Uc[, 2] > Uw[2, 2]
 
-        df$is_outlier <- Uout
+        df[[outlier_col]] <- Uout
 
         df
       }
