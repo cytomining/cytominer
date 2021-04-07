@@ -23,6 +23,7 @@ utils::globalVariables(c("is_outlier"))
 #'
 #' @examples
 #' population <- tibble::tibble(
+#'   Metadata_pert_name = c(NA, NA, NA, NA),
 #'   Metadata_Well = c("A01", "A02", "B01", "B02"),
 #'   Intensity_DNA = c(10, 20, 12, 32),
 #'   Granularity_DNA = c(22, 20, NA, 32),
@@ -62,10 +63,11 @@ husk <-
         dplyr::select(-is_outlier)
     }
 
-    # TODO: Do this more elegantly. Currently, it drops the row if *any* column
-    # has an NA, but it should check only `variables`. cytominer::drop_na_rows
-    # can be modified to fit this purpose.
-    sample <- stats::na.omit(sample)
+    sample <-
+      sample %>%
+      dplyr::mutate(has_na = any(is.na(dplyr::c_across(all_of(variables))))) %>%
+      dplyr::filter(!has_na) %>%
+      dplyr::select(-has_na)
 
     # -------------------------
     # Get the sample matrix

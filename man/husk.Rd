@@ -45,6 +45,7 @@ population.
 }
 \examples{
 population <- tibble::tibble(
+  Metadata_pert_name = c(NA, NA, NA, NA),
   Metadata_Well = c("A01", "A02", "B01", "B02"),
   Intensity_DNA = c(10, 20, 12, 32),
   Granularity_DNA = c(22, 20, NA, 32),
