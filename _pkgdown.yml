@@ -7,6 +7,7 @@ reference:
   - variable_select
   - variable_importance
   - drop_na_rows
+  - mark_outlier_rows
 - title: "Variable selection methods"
 - contents:
   - correlation_threshold
