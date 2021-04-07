@@ -63,6 +63,6 @@ population_marked <-
     operation = "svd+iqr"
   )
 population_marked \%>\%
-  group_by(is_outlier) \%>\%
-  sample_n(3)
+  dplyr::group_by(is_outlier) \%>\%
+  dplyr::sample_n(3)
 }

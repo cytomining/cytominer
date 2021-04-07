@@ -45,8 +45,8 @@ utils::globalVariables(c("strata_col_dummy"))
 #'     operation = "svd+iqr"
 #'   )
 #' population_marked %>%
-#'   group_by(is_outlier) %>%
-#'   sample_n(3)
+#'   dplyr::group_by(is_outlier) %>%
+#'   dplyr::sample_n(3)
 #' @export
 mark_outlier_rows <- function(population,
                               variables,
