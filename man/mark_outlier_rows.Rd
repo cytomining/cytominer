@@ -8,7 +8,6 @@ mark_outlier_rows(
   population,
   variables,
   sample,
-  strata = NULL,
   operation = "svd+iqr",
   outlier_col = "is_outlier",
   ...
@@ -23,10 +22,6 @@ mark_outlier_rows(
 to estimate parameters. \code{sample} has same structure as
 \code{population}. Typically, \code{sample} corresponds to controls in the
 experiment.}
-
-\item{strata}{optional character vector specifying grouping variables for
-grouping prior to outlier removal. If \code{NULL}, no stratification is
-performed.}
 
 \item{operation}{optional character string specifying method for outlier
 removal. There is currently only one option (\code{"svd_iqr"}).}
@@ -52,14 +47,12 @@ population <- tibble::tibble(
   AreaShape_Eccentricity = rnorm(100)
 )
 variables <- c("AreaShape_Area", "AreaShape_Eccentricity")
-strata <- c("Metadata_group")
 sample <- population \%>\% dplyr::filter(Metadata_type == "control")
 population_marked <-
   cytominer::mark_outlier_rows(
     population,
     variables,
     sample,
-    strata,
     operation = "svd+iqr"
   )
 population_marked \%>\%
