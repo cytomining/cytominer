@@ -11,14 +11,16 @@ test_that("`drop_outlier_rows` works", {
     svec <- c(1, 1 + rnorm(1) / 2)
 
     m <-
-      m %>% sweep(., 2, svec, FUN = "*") %>% sweep(., 2, cvec, FUN = "+")
+      m %>%
+      sweep(., 2, svec, FUN = "*") %>%
+      sweep(., 2, cvec, FUN = "+")
 
     n_out <- sample(ceiling(n / 20), 1)
 
     for (k in seq(n_out)) {
       i <- sample(n, 1)
 
-      m[i,] <- m[i,] * 5
+      m[i, ] <- m[i, ] * 5
     }
 
     n_na <- sample(ceiling(n / 20), 1)
@@ -29,7 +31,6 @@ test_that("`drop_outlier_rows` works", {
       j <- sample(2, 1)
 
       m[i, j] <- NA
-
     }
 
     as.data.frame(m)
@@ -55,7 +56,7 @@ test_that("`drop_outlier_rows` works", {
     dplyr::rename(x = V1, y = V2)
 
   data_cleaned <-
-    drop_outlier_rows(
+    mark_outlier_rows(
       population = data,
       variables = c("x", "y"),
       strata = c("g1", "g2"),
@@ -63,17 +64,21 @@ test_that("`drop_outlier_rows` works", {
       operation = "svd+iqr"
     )
 
-  ggplot2::ggplot(data,
-                  ggplot2::aes(x, y, color = interaction(g1, g2))) +
-    ggplot2::geom_point() + ggplot2::coord_equal()
+  ggplot2::ggplot(
+    data,
+    ggplot2::aes(x, y, color = interaction(g1, g2))
+  ) +
+    ggplot2::geom_point() +
+    ggplot2::coord_equal()
 
 
-  ggplot2::ggplot(data_cleaned,
-                  ggplot2::aes(x, y, color = is_outlier)) +
+  ggplot2::ggplot(
+    data_cleaned,
+    ggplot2::aes(x, y, color = is_outlier)
+  ) +
     ggplot2::geom_point() +
     ggplot2::facet_grid(g1 ~ g2) +
     ggplot2::coord_equal()
 
   expect_true(nrow(data_cleaned) > 0)
-
 })

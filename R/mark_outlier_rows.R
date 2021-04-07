@@ -1,6 +1,6 @@
-#' Drop outlier rows.
+#' Mark outlier rows.
 #'
-#' \code{drop_outlier_rows} drops outlier rows.
+#' \code{mark_outlier_rows} drops outlier rows.
 #'
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param variables character vector specifying observation variables.
@@ -14,7 +14,8 @@
 #'   experiment.
 #' @param ... arguments passed to outlier removal operation.
 #'
-#' @return outlier-removed data of the same class as \code{population}.
+#' @return \code{population} with an extra column \code{is_outlier}.
+#'
 #'
 #' @importFrom magrittr %>%
 #' @importFrom rlang :=
@@ -27,16 +28,16 @@
 #'     "experiment", "experiment", "experiment", "experiment"
 #'   ),
 #'   Metadata_batch = c("a", "a", "b", "b", "a", "a", "b", "b"),
-#'   AreaShape_Area = c(100, 12, 15, 16, 8, 8, 7, 7)
+#'   AreaShape_Area = c(100, 12, 15, 16, 8, 8, 7, 7),
 #'   AreaShape_Eccentricity = c(1, 5, 2, 1, 3, 8, 70, 4)
 #' )
 #' variables <- c("AreaShape_Area", "AreaShape_Eccentricity")
 #' strata <- c("Metadata_batch")
 #' sample <- population %>% dplyr::filter(Metadata_group == "control")
-#' cytominer::drop_outlier_rows(population, variables, strata,
+#' cytominer::mark_outlier_rows(population, variables, strata,
 #'                              sample, operation = "svd_iqr")
 #' @export
-drop_outlier_rows <- function(population,
+mark_outlier_rows <- function(population,
                               variables,
                               strata,
                               sample,

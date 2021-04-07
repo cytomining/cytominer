@@ -137,4 +137,3 @@ test_that("`husk` husks wide data", {
     tolerance = 10^-6
   )
 })
-
