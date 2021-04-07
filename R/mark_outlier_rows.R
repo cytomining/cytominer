@@ -55,7 +55,7 @@ mark_outlier_rows <- function(population,
   if (is.null(strata)) {
     population$strata_col_dummy <- 1
     sample$strata_col_dummy <- 1
-    strata = c("strata_col_dummy")
+    strata <- c("strata_col_dummy")
   }
 
   get_outlier_detector <- function(df) {
@@ -73,8 +73,10 @@ mark_outlier_rows <- function(population,
       U <- xsvd$u[, 1:2]
       Si <- diag(1 / xsvd$d[1:2])
 
-      Uw <- cbind(get_whiskers(U[, 1]),
-                  get_whiskers(U[, 2]))
+      Uw <- cbind(
+        get_whiskers(U[, 1]),
+        get_whiskers(U[, 2])
+      )
       X_center <- attr(X, "scaled:center")
       X_scale <- attr(X, "scaled:scale")
       df_names <- colnames(dfv)
@@ -92,9 +94,9 @@ mark_outlier_rows <- function(population,
 
         Uout <-
           Uc[, 1] < Uw[1, 1] |
-          Uc[, 1] > Uw[2, 1] |
-          Uc[, 2] < Uw[1, 2] |
-          Uc[, 2] > Uw[2, 2]
+            Uc[, 1] > Uw[2, 1] |
+            Uc[, 2] < Uw[1, 2] |
+            Uc[, 2] > Uw[2, 2]
 
         df[[outlier_col]] <- Uout
 
@@ -118,8 +120,10 @@ mark_outlier_rows <- function(population,
       u2 <- xsvd$u[, 2]
       u1out <- graphics::boxplot(u1, plot = FALSE)$out
       u2out <- graphics::boxplot(u2, plot = FALSE)$out
-      uout <- c(which(u1 %in% u1out),
-                which(u2 %in% u2out))
+      uout <- c(
+        which(u1 %in% u1out),
+        which(u2 %in% u2out)
+      )
     } else {
       error <-
         paste0("undefined operation trimmer '", operation_trimmer, "'")
@@ -134,39 +138,46 @@ mark_outlier_rows <- function(population,
     dplyr::distinct()
 
   cleaned <-
-    Reduce(dplyr::union_all,
-           Map(
-             f = function(group) {
-               futile.logger::flog.debug(group)
-               futile.logger::flog.debug("\tstratum")
-               stratum <-
-                 sample %>%
-                 dplyr::inner_join(y = group,
-                                   by = names(group),
-                                   copy = TRUE)
+    Reduce(
+      dplyr::union_all,
+      Map(
+        f = function(group) {
+          futile.logger::flog.debug(group)
+          futile.logger::flog.debug("\tstratum")
+          stratum <-
+            sample %>%
+            dplyr::inner_join(
+              y = group,
+              by = names(group),
+              copy = TRUE
+            )
 
-               futile.logger::flog.debug("\toutlier_stats")
-               outlier_detector <-
-                 stratum %>%
-                 dplyr::select(all_of(variables)) %>%
-                 get_outlier_detector()
+          futile.logger::flog.debug("\toutlier_stats")
+          outlier_detector <-
+            stratum %>%
+            dplyr::select(all_of(variables)) %>%
+            get_outlier_detector()
 
-               futile.logger::flog.debug("\tremove_outliers")
-               cleaned <-
-                 population %>%
-                 dplyr::inner_join(y = group,
-                                   by = names(group),
-                                   copy = TRUE) %>%
-                 outlier_detector()
-               futile.logger::flog.debug("\tcleaned")
+          futile.logger::flog.debug("\tremove_outliers")
+          cleaned <-
+            population %>%
+            dplyr::inner_join(
+              y = group,
+              by = names(group),
+              copy = TRUE
+            ) %>%
+            outlier_detector()
+          futile.logger::flog.debug("\tcleaned")
 
-               cleaned
-             },
-             split(x = groups, f = seq(nrow(groups)))
-           ))
+          cleaned
+        },
+        split(x = groups, f = seq(nrow(groups)))
+      )
+    )
 
-  if ("strata_col_dummy" %in% cleaned)
+  if ("strata_col_dummy" %in% cleaned) {
     cleaned <- cleaned %>% select(-strata_col_dummy)
+  }
 
   cleaned
 }

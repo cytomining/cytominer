@@ -7,9 +7,10 @@
 mark_outlier_rows(
   population,
   variables,
-  strata,
   sample,
+  strata = NULL,
   operation = "svd+iqr",
+  outlier_col = "is_outlier",
   ...
 )
 }
@@ -18,16 +19,21 @@ mark_outlier_rows(
 
 \item{variables}{character vector specifying observation variables.}
 
-\item{strata}{character vector specifying grouping variables for grouping
-prior to outlier removal.}
-
 \item{sample}{tbl containing sample that is used by outlier removal methods
 to estimate parameters. \code{sample} has same structure as
 \code{population}. Typically, \code{sample} corresponds to controls in the
 experiment.}
 
+\item{strata}{optional character vector specifying grouping variables for
+grouping prior to outlier removal. If \code{NULL}, no stratification is
+performed.}
+
 \item{operation}{optional character string specifying method for outlier
 removal. There is currently only one option (\code{"svd_iqr"}).}
+
+\item{outlier_col}{optional character string specifying the name for the
+column that will indicate outliers (in the output).
+Default \code{"is_outlier"}.}
 
 \item{...}{arguments passed to outlier removal operation.}
 }

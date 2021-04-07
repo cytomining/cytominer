@@ -18,7 +18,7 @@ test_that("`mark_outlier_rows` works", {
     for (k in seq(n_out)) {
       i <- sample(n, 1)
 
-      m[i,] <- m[i,] * 5
+      m[i, ] <- m[i, ] * 5
     }
 
     n_na <- sample(ceiling(n / 20), 1)
@@ -72,14 +72,18 @@ test_that("`mark_outlier_rows` works", {
       operation = "svd+iqr"
     )
 
-  ggplot2::ggplot(na.omit(data_cleaned),
-                  ggplot2::aes(x, y, color = is_outlier)) +
+  ggplot2::ggplot(
+    na.omit(data_cleaned),
+    ggplot2::aes(x, y, color = is_outlier)
+  ) +
     ggplot2::geom_point() +
     ggplot2::facet_grid(g1 ~ g2) +
     ggplot2::coord_equal()
 
-  ggplot2::ggplot(na.omit(data_cleaned_no_strata),
-                  ggplot2::aes(x, y, color = is_outlier)) +
+  ggplot2::ggplot(
+    na.omit(data_cleaned_no_strata),
+    ggplot2::aes(x, y, color = is_outlier)
+  ) +
     ggplot2::geom_point() +
     ggplot2::coord_equal()
 
@@ -102,5 +106,4 @@ test_that("`mark_outlier_rows` works", {
       dplyr::mutate(check = n_outliers > n_out * 4) %>%
       dplyr::pull(check)
   )
-
 })
