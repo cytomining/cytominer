@@ -48,7 +48,6 @@ mark_outlier_rows <-
            operation = "svd+iqr",
            outlier_col = "is_outlier",
            ...) {
-
     stopifnot(operation == "svd+iqr")
 
     if (operation == "svd+iqr") {
@@ -69,8 +68,10 @@ mark_outlier_rows <-
       U <- xsvd$u[, 1:2]
       Si <- diag(1 / xsvd$d[1:2])
 
-      Uw <- cbind(get_whiskers(U[, 1]),
-                  get_whiskers(U[, 2]))
+      Uw <- cbind(
+        get_whiskers(U[, 1]),
+        get_whiskers(U[, 2])
+      )
 
       X_center <- attr(X, "scaled:center")
       X_scale <- attr(X, "scaled:scale")
@@ -90,15 +91,13 @@ mark_outlier_rows <-
 
       Uout <-
         Uc[, 1] < Uw[1, 1] |
-        Uc[, 1] > Uw[2, 1] |
-        Uc[, 2] < Uw[1, 2] |
-        Uc[, 2] > Uw[2, 2]
+          Uc[, 1] > Uw[2, 1] |
+          Uc[, 2] < Uw[1, 2] |
+          Uc[, 2] > Uw[2, 2]
 
       population[[outlier_col]] <- Uout
 
       population
-
-
     } else {
       error <-
         paste0("undefined operation '", operation, "'")
