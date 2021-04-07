@@ -38,9 +38,12 @@
 #' variables <- c("AreaShape_Area", "AreaShape_Eccentricity")
 #' strata <- c("Metadata_batch")
 #' sample <- population %>% dplyr::filter(Metadata_group == "control")
-#' cytominer::mark_outlier_rows(population, variables, strata,
+#' cytominer::mark_outlier_rows(
+#'   population,
+#'   variables,
 #'   sample,
-#'   operation = "svd_iqr"
+#'   strata,
+#'   operation = "svd+iqr"
 #' )
 #' @export
 mark_outlier_rows <- function(population,
@@ -176,7 +179,7 @@ mark_outlier_rows <- function(population,
     )
 
   if ("strata_col_dummy" %in% cleaned) {
-    cleaned <- cleaned %>% select(-strata_col_dummy)
+    cleaned <- cleaned %>% dplyr::select(-strata_col_dummy)
   }
 
   cleaned

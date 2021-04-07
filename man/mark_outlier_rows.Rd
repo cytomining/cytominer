@@ -57,8 +57,11 @@ population <- tibble::tibble(
 variables <- c("AreaShape_Area", "AreaShape_Eccentricity")
 strata <- c("Metadata_batch")
 sample <- population \%>\% dplyr::filter(Metadata_group == "control")
-cytominer::mark_outlier_rows(population, variables, strata,
+cytominer::mark_outlier_rows(
+  population,
+  variables,
   sample,
-  operation = "svd_iqr"
+  strata,
+  operation = "svd+iqr"
 )
 }
