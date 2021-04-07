@@ -60,7 +60,6 @@ husk <-
       ) %>%
         dplyr::filter(!is_outlier) %>% # NA's will be silently dropped
         dplyr::select(-is_outlier)
-
     }
 
     # TODO: Do this more elegantly. Currently, it drops the row if *any* column
@@ -207,8 +206,9 @@ husk <-
 
     husk_helper <- function(M) {
       scale(M,
-            center = attr(X, "scaled:center"),
-            scale = attr(X, "scaled:scale")) %*% projt
+        center = attr(X, "scaled:center"),
+        scale = attr(X, "scaled:scale")
+      ) %*% projt
     }
 
     # -------------------------
@@ -233,8 +233,10 @@ husk <-
     # -------------------------
 
     husked <-
-      dplyr::bind_cols(population_metadata,
-                       population_data_transformed)
+      dplyr::bind_cols(
+        population_metadata,
+        population_data_transformed
+      )
 
     husked
   }
@@ -271,7 +273,7 @@ find_significant_pcs <-
     }
 
     if (method == "outlier") {
-      q <- which(S ^ 2 < f_outlier_threshold(S ^ 2))[1] - 1
+      q <- which(S^2 < f_outlier_threshold(S^2))[1] - 1
 
       stopifnot(!is.na(q))
 
