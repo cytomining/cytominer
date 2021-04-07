@@ -13,8 +13,6 @@ test_that("`husk` husks tall data", {
 
   data[1,5] <- NA
 
-  #stopifnot(qr(data)$rank == n_dim)
-
   data <- as.data.frame(data)
 
   variables <- names(data)
@@ -99,8 +97,6 @@ test_that("`husk` husks wide data", {
   data <- matrix(rnorm(n_points * n_dim), n_points, n_dim)
   data <-
     data + abs(matrix(rnorm(n_points * n_dim), n_points, n_dim)) * 50
-
-  stopifnot(qr(data)$rank == n_points)
 
   data <- as.data.frame(data)
 
