@@ -23,7 +23,8 @@
 #' @examples
 #' population <- tibble::tibble(
 #'   Metadata_Well = c("A01", "A02", "B01", "B02"),
-#'   Intensity_DNA = c(8, 20, 12, 32),
+#'   Intensity_DNA = c(10, 20, 12, 32),
+#'   Granularity_DNA = c(22, 20, NA, 32),
 #'   Texture_DNA = c(5, 2, 43, 13)
 #' )
 #' variables <- c("Intensity_DNA", "Texture_DNA")
@@ -61,7 +62,9 @@ husk <-
 
     }
 
-    # TODO: Do this more elegantly!
+    # TODO: Do this more elegantly. Currently, it drops the row if *any* column
+    # has an NA, but it should check only `variables`. cytominer::drop_na_rows
+    # can be modified to fit this purpose.
     sample <- na.omit(sample)
 
     # -------------------------
@@ -83,6 +86,13 @@ husk <-
     X <- scale(X, center = TRUE, scale = TRUE)
     d <- ncol(X)
     n <- nrow(X)
+
+    # TODO:
+    #   - Do this more elegantly
+    # scaling can result in NA
+    X <- na.omit(X)
+
+    stopifnot(nrow(X) > 1)
 
     # -------------------------
     # Stop if rank < min(n-1, d)

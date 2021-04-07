@@ -35,7 +35,7 @@ population <- tibble::tibble(
 )
 variables <- c("Intensity_DNA", "Intensity_RNA", "Intensity_AGP", "Intensity_ER")
 transform(population, variables, operation = "generalized_log")
-transform(population, variables, sample = population, operation = "husk")
+transform(population, variables, sample = population, operation = "husk", remove_outliers = FALSE)
 transform(population, variables, sample = population, operation = "spherize")
 transform(population, variables, n_components = 2, operation = "sparse_random_projection")
 }
