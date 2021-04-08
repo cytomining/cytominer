@@ -54,7 +54,7 @@ test_that("`husk` husks tall data", {
 
   husked <-
     stratify(
-      operation = cytominer::husk,
+      reducer = cytominer::husk,
       population = data,
       variables = variables,
       strata = c("experiment"),

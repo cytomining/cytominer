@@ -61,7 +61,8 @@ stratify <- function(population,
     sample %>%
     dplyr::select(all_of(strata)) %>%
     dplyr::group_by(across(all_of(strata))) %>%
-    dplyr::summarise(reduct(dplyr::cur_group()))
+    dplyr::summarise(reduct(dplyr::cur_group())) %>%
+    dplyr::ungroup()
 
   output
 }
