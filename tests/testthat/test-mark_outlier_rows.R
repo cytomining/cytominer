@@ -55,14 +55,15 @@ test_that("`mark_outlier_rows` works", {
     data %>%
     dplyr::rename(x = V1, y = V2)
 
-  # data_cleaned <-
-  #   mark_outlier_rows(
-  #     population = data,
-  #     variables = c("x", "y"),
-  #     strata = c("g1", "g2"),
-  #     sample = data,
-  #     operation = "svd+iqr"
-  #   )
+  data_cleaned <-
+    stratify(
+      operation = cytominer::mark_outlier_rows,
+      population = data,
+      variables = c("x", "y"),
+      strata = c("g1", "g2"),
+      sample = data,
+      method = "svd+iqr"
+    )
 
   data_cleaned_no_strata <-
     mark_outlier_rows(
