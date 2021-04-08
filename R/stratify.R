@@ -50,22 +50,26 @@ stratify <- function(population,
     dplyr::distinct()
 
   output <-
-    Reduce(dplyr::union_all,
-           Map(
-             f = function(group) {
-               sample_group <-
-                 dplyr::inner_join(sample, group, by = names(group))
+    Reduce(
+      dplyr::union_all,
+      Map(
+        f = function(group) {
+          sample_group <-
+            dplyr::inner_join(sample, group, by = names(group))
 
-               population_group <-
-                 dplyr::inner_join(population, group, by = names(group))
+          population_group <-
+            dplyr::inner_join(population, group, by = names(group))
 
-               operation(population = population_group,
-                         variables = variables,
-                         sample = sample_group,
-                         ...)
-             },
-             split(x = groups, f = seq(nrow(groups)))
-           ))
+          operation(
+            population = population_group,
+            variables = variables,
+            sample = sample_group,
+            ...
+          )
+        },
+        split(x = groups, f = seq(nrow(groups)))
+      )
+    )
 
   output
 }
