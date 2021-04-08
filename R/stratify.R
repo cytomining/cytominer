@@ -27,11 +27,12 @@
 #' sample <- population %>% dplyr::filter(Metadata_type == "control")
 #' population_marked <-
 #'   cytominer::stratify(
-#'     population,
-#'     variables,
-#'     sample,
-#'     strata,
-#'     operation = cytominer::mark_outlier_rows
+#'     operation = cytominer::mark_outlier_rows,
+#'     method = "svd+iqr",
+#'     population = population,
+#'     variables = variables,
+#'     sample = sample,
+#'     strata = strata
 #'   )
 #' population_marked %>%
 #'   dplyr::group_by(is_outlier) %>%
@@ -41,67 +42,30 @@ stratify <- function(population,
                      variables,
                      sample,
                      operation,
-                     strata = NULL,
+                     strata,
                      ...) {
-  population <- impose_strata(population, strata)
-  sample <- impose_strata(sample, strata)
-
   groups <-
     sample %>%
     dplyr::select(all_of(strata)) %>%
     dplyr::distinct()
 
   output <-
-    Reduce(
-      dplyr::union_all,
-      Map(
-        f = function(group) {
-          sample_group <-
-            dplyr::inner_join(sample, group, by = names(group))
+    Reduce(dplyr::union_all,
+           Map(
+             f = function(group) {
+               sample_group <-
+                 dplyr::inner_join(sample, group, by = names(group))
 
-          population_group <-
-            dplyr::inner_join(population, group, by = names(group))
+               population_group <-
+                 dplyr::inner_join(population, group, by = names(group))
 
-          operation(
-            population_group,
-            variables,
-            sample_group,
-            ...
-          )
-        },
-        split(x = groups, f = seq(nrow(groups)))
-      )
-    )
-
-  output <- depose_strata(output)
+               operation(population = population_group,
+                         variables = variables,
+                         sample = sample_group,
+                         ...)
+             },
+             split(x = groups, f = seq(nrow(groups)))
+           ))
 
   output
-}
-
-
-#' Create a dummy stratum variable if it doesn't exist.
-#'
-#' @param df tbl
-#' @param strata character vector
-#'
-#' @return \code{df} with a stratum variable added if it doesn't exist
-#' @noRd
-impose_strata <- function(df, strata) {
-  if (is.null(strata)) {
-    df$stratum_col_dummy <- 1
-  }
-  df
-}
-
-#' Drop the dummy stratum variable if was created.
-#'
-#' @param df tbl
-#'
-#' @return \code{df} with the dummy stratum variable dropped.
-#' @noRd
-depose_strata <- function(df) {
-  if ("strata_col_dummy" %in% df) {
-    df <- df %>% dplyr::select(-strata_col_dummy)
-  }
-  df
 }
