@@ -8,6 +8,7 @@
 #'   stratification. If \code{NULL}, no stratification is performed.
 #' @param sample tbl containing sample that is used by operations to estimate
 #'   parameters. \code{sample} has same structure as \code{population}.
+#' @param operation operation that is to applied in a stratified manner.
 #' @param ... arguments passed to operation.
 #'
 #' @return \code{population} with potentially extra columns.
