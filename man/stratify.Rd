@@ -4,7 +4,7 @@
 \alias{stratify}
 \title{Stratify operations.}
 \usage{
-stratify(population, variables, sample, operation, strata = NULL, ...)
+stratify(population, variables, sample, operation, strata, ...)
 }
 \arguments{
 \item{population}{tbl with grouping (metadata) and observation variables.}
@@ -38,11 +38,12 @@ strata <- c("Metadata_group")
 sample <- population \%>\% dplyr::filter(Metadata_type == "control")
 population_marked <-
   cytominer::stratify(
-    population,
-    variables,
-    sample,
-    strata,
-    operation = cytominer::mark_outlier_rows
+    operation = cytominer::mark_outlier_rows,
+    method = "svd+iqr",
+    population = population,
+    variables = variables,
+    sample = sample,
+    strata = strata
   )
 population_marked \%>\%
   dplyr::group_by(is_outlier) \%>\%
