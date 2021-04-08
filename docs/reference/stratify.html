@@ -132,7 +132,7 @@
     <p><code>stratify</code> stratifies operations.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>stratify</span><span class='op'>(</span><span class='va'>population</span>, <span class='va'>variables</span>, <span class='va'>sample</span>, <span class='va'>operation</span>, <span class='va'>strata</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>stratify</span><span class='op'>(</span><span class='va'>population</span>, <span class='va'>sample</span>, <span class='va'>reducer</span>, <span class='va'>strata</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,22 +142,18 @@
       <td><p>tbl with grouping (metadata) and observation variables.</p></td>
     </tr>
     <tr>
-      <th>variables</th>
-      <td><p>character vector specifying observation variables.</p></td>
-    </tr>
-    <tr>
       <th>sample</th>
-      <td><p>tbl containing sample that is used by operations to estimate
-parameters. <code>sample</code> has same structure as <code>population</code>.</p></td>
+      <td><p>tbl with the same structure as <code>population</code>. This is
+typically used by operations to estimate parameters.</p></td>
     </tr>
     <tr>
-      <th>operation</th>
+      <th>reducer</th>
       <td><p>operation that is to applied in a stratified manner.</p></td>
     </tr>
     <tr>
       <th>strata</th>
       <td><p>optional character vector specifying grouping variables for
-stratification. If <code>NULL</code>, no stratification is performed.</p></td>
+stratification.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -182,7 +178,7 @@ stratification. If <code>NULL</code>, no stratification is performed.</p></td>
 <span class='va'>sample</span> <span class='op'>&lt;-</span> <span class='va'>population</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Metadata_type</span> <span class='op'>==</span> <span class='st'>"control"</span><span class='op'>)</span>
 <span class='va'>population_marked</span> <span class='op'>&lt;-</span>
   <span class='fu'>cytominer</span><span class='fu'>::</span><span class='fu'>stratify</span><span class='op'>(</span>
-    operation <span class='op'>=</span> <span class='fu'>cytominer</span><span class='fu'>::</span><span class='va'><a href='mark_outlier_rows.html'>mark_outlier_rows</a></span>,
+    reducer <span class='op'>=</span> <span class='fu'>cytominer</span><span class='fu'>::</span><span class='va'><a href='mark_outlier_rows.html'>mark_outlier_rows</a></span>,
     method <span class='op'>=</span> <span class='st'>"svd+iqr"</span>,
     population <span class='op'>=</span> <span class='va'>population</span>,
     variables <span class='op'>=</span> <span class='va'>variables</span>,
@@ -196,12 +192,12 @@ stratification. If <code>NULL</code>, no stratification is performed.</p></td>
 #&gt; </span><span style='color: #949494;'># Groups:   is_outlier [2]</span><span>
 #&gt;   Metadata_group Metadata_type AreaShape_Area AreaShape_Eccentricity is_outlier
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>                  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> b              trt                   1.11                    0.118 FALSE     
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> a              control               0.214                  -</span><span style='color: #BB0000;'>0.219</span><span> FALSE     
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> a              trt                   0.084</span><span style='text-decoration: underline;'>7</span><span>                  0.134 FALSE     
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> a              trt                  30                       0.274 TRUE      
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> a              trt                   2.00                   -</span><span style='color: #BB0000;'>0.577</span><span> TRUE      
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span> b              control              -</span><span style='color: #BB0000;'>0.521</span><span>                  -</span><span style='color: #BB0000;'>2.47</span><span>  TRUE      </div></span></pre>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> a              control                0.244                 2.04   FALSE     
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> b              control               -</span><span style='color: #BB0000;'>0.476</span><span>                -</span><span style='color: #BB0000;'>1.05</span><span>   FALSE     
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> b              control                2.20                  0.021</span><span style='text-decoration: underline;'>0</span><span> FALSE     
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> b              control               20                     0.651  TRUE      
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> b              trt                    0.601                 2.00   TRUE      
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span> a              trt                    1.96                  1.34   TRUE      </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

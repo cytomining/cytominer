@@ -43,7 +43,6 @@ stratify <- function(population,
                      reducer,
                      strata,
                      ...) {
-
   reduct <- function(partition) {
     sample_partition <-
       dplyr::inner_join(sample, partition, by = names(partition))
