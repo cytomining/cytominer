@@ -97,30 +97,30 @@ test_that("`mark_outlier_rows` works", {
   #   ggplot2::geom_point() +
   #   ggplot2::coord_equal()
 
-  # expect_true(
-  #   data_cleaned %>%
-  #     dplyr::group_by(g1, g2, is_outlier) %>%
-  #     dplyr::tally(name = "n_outliers") %>%
-  #     dplyr::filter(is_outlier) %>%
-  #     dplyr::mutate(check = n_outliers > n_out) %>%
-  #     dplyr::ungroup() %>%
-  #     dplyr::summarise(check = all(check)) %>%
-  #     dplyr::pull(check)
-  # )
-  #
-  # expect_true(
-  #   data_cleaned %>%
-  #     dplyr::group_by(is_outlier) %>%
-  #     dplyr::tally(name = "n_outliers") %>%
-  #     dplyr::filter(is_outlier) %>%
-  #     dplyr::mutate(check = n_outliers > n_out * 4) %>%
-  #     dplyr::pull(check)
-  # )
-  #
-  # expect_true(
-  #   dplyr::all_equal(
-  #     data_cleaned %>% stats::na.omit() %>% dplyr::select(-is_outlier) %>% as.data.frame(),
-  #     data %>% stats::na.omit() %>% as.data.frame()
-  #   )
-  # )
+  expect_true(
+    data_cleaned %>%
+      dplyr::group_by(g1, g2, is_outlier) %>%
+      dplyr::tally(name = "n_outliers") %>%
+      dplyr::filter(is_outlier) %>%
+      dplyr::mutate(check = n_outliers > n_out) %>%
+      dplyr::ungroup() %>%
+      dplyr::summarise(check = all(check)) %>%
+      dplyr::pull(check)
+  )
+
+  expect_true(
+    data_cleaned %>%
+      dplyr::group_by(is_outlier) %>%
+      dplyr::tally(name = "n_outliers") %>%
+      dplyr::filter(is_outlier) %>%
+      dplyr::mutate(check = n_outliers > n_out * 4) %>%
+      dplyr::pull(check)
+  )
+
+  expect_true(
+    dplyr::all_equal(
+      data_cleaned %>% stats::na.omit() %>% dplyr::select(-is_outlier) %>% as.data.frame(),
+      data %>% stats::na.omit() %>% as.data.frame()
+    )
+  )
 })
