@@ -3,12 +3,11 @@
 #' \code{stratify} stratifies operations.
 #'
 #' @param population tbl with grouping (metadata) and observation variables.
-#' @param variables character vector specifying observation variables.
 #' @param strata optional character vector specifying grouping variables for
-#'   stratification. If \code{NULL}, no stratification is performed.
-#' @param sample tbl containing sample that is used by operations to estimate
-#'   parameters. \code{sample} has same structure as \code{population}.
-#' @param operation operation that is to applied in a stratified manner.
+#'   stratification.
+#' @param sample tbl with the same structure as \code{population}. This is
+#'   typically used by operations to estimate parameters.
+#' @param reducer operation that is to applied in a stratified manner.
 #' @param ... arguments passed to operation.
 #'
 #' @return \code{population} with potentially extra columns.
@@ -28,7 +27,7 @@
 #' sample <- population %>% dplyr::filter(Metadata_type == "control")
 #' population_marked <-
 #'   cytominer::stratify(
-#'     operation = cytominer::mark_outlier_rows,
+#'     reducer = cytominer::mark_outlier_rows,
 #'     method = "svd+iqr",
 #'     population = population,
 #'     variables = variables,
@@ -40,37 +39,30 @@
 #'   dplyr::sample_n(3)
 #' @export
 stratify <- function(population,
-                     variables,
                      sample,
-                     operation,
+                     reducer,
                      strata,
                      ...) {
-  groups <-
-    sample %>%
-    dplyr::select(all_of(strata)) %>%
-    dplyr::distinct()
+
+  reduct <- function(partition) {
+    sample_partition <-
+      dplyr::inner_join(sample, partition, by = names(partition))
+
+    population_partition <-
+      dplyr::inner_join(population, partition, by = names(partition))
+
+    reducer(
+      population = population_partition,
+      sample = sample_partition,
+      ...
+    )
+  }
 
   output <-
-    Reduce(
-      dplyr::union_all,
-      Map(
-        f = function(group) {
-          sample_group <-
-            dplyr::inner_join(sample, group, by = names(group))
-
-          population_group <-
-            dplyr::inner_join(population, group, by = names(group))
-
-          operation(
-            population = population_group,
-            variables = variables,
-            sample = sample_group,
-            ...
-          )
-        },
-        split(x = groups, f = seq(nrow(groups)))
-      )
-    )
+    sample %>%
+    dplyr::select(all_of(strata)) %>%
+    dplyr::group_by(across(all_of(strata))) %>%
+    dplyr::summarise(reduct(dplyr::cur_group()))
 
   output
 }

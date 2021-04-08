@@ -57,7 +57,7 @@ test_that("`mark_outlier_rows` works", {
 
   data_cleaned <-
     stratify(
-      operation = cytominer::mark_outlier_rows,
+      reducer = cytominer::mark_outlier_rows,
       population = data,
       variables = c("x", "y"),
       strata = c("g1", "g2"),
