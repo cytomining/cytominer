@@ -29,6 +29,9 @@ reference:
 - title: "Higher-order profiling methods"
 - contents:
   - extract_subpopulations
+- title: "Meta operations"
+- contents:
+  - stratify
 - title: "Internal"
 - contents:
   - count_na_rows

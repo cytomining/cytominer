@@ -57,7 +57,7 @@ husk <-
         population = sample,
         variables = variables,
         sample = sample,
-        operation = "svd+iqr"
+        method = "svd+iqr"
       ) %>%
         dplyr::filter(!is_outlier) %>% # NA's will be silently dropped
         dplyr::select(-is_outlier)

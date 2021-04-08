@@ -56,12 +56,13 @@ test_that("`mark_outlier_rows` works", {
     dplyr::rename(x = V1, y = V2)
 
   data_cleaned <-
-    mark_outlier_rows(
+    stratify(
+      operation = cytominer::mark_outlier_rows,
       population = data,
       variables = c("x", "y"),
       strata = c("g1", "g2"),
       sample = data,
-      operation = "svd+iqr"
+      method = "svd+iqr"
     )
 
   data_cleaned_no_strata <-
@@ -71,6 +72,15 @@ test_that("`mark_outlier_rows` works", {
       sample = data,
       operation = "svd+iqr"
     )
+
+  expect_true(
+    data_cleaned_no_strata %>%
+      dplyr::group_by(is_outlier) %>%
+      dplyr::tally(name = "n_outliers") %>%
+      dplyr::filter(is_outlier) %>%
+      dplyr::mutate(check = n_outliers > n_out * 4 * .75) %>%
+      dplyr::pull(check)
+  )
 
   # ggplot2::ggplot(
   #   na.omit(data_cleaned),

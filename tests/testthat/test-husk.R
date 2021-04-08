@@ -17,18 +17,18 @@ test_that("`husk` husks tall data", {
 
   variables <- names(data)
 
+  data$experiment <- sample(c("a", "b"), 1000, replace = TRUE)
+
   # ------------------------
-  population <- data
-  sample <- data
   remove_outliers <- FALSE
   epsilon <- 1e-10
   remove_signal <- FALSE
 
   # futile.logger::flog.threshold(futile.logger::DEBUG)
   husked <- husk(
-    population = population,
+    population = data,
     variables = variables,
-    sample = sample,
+    sample = data,
     remove_outliers = remove_outliers,
     epsilon = epsilon,
     remove_signal = remove_signal
@@ -37,6 +37,7 @@ test_that("`husk` husks tall data", {
 
   husked_cov <-
     husked %>%
+    dplyr::select(all_of(variables)) %>%
     cov(use = "complete.obs") %>%
     as.matrix() %>%
     unname()
@@ -48,9 +49,39 @@ test_that("`husk` husks tall data", {
     diag(identity_matrix),
     tolerance = 10^-6
   )
+
   # ------------------------
-  population <- data
-  sample <- data
+
+  husked <-
+    stratify(
+      operation = cytominer::husk,
+      population = data,
+      variables = variables,
+      strata = c("experiment"),
+      sample = data,
+      remove_outliers = remove_outliers,
+      epsilon = epsilon,
+      remove_signal = remove_signal
+    )
+
+  husked_cov <-
+    husked %>%
+    dplyr::filter(experiment == "a") %>%
+    dplyr::select(all_of(variables)) %>%
+    cov(use = "complete.obs") %>%
+    as.matrix() %>%
+    unname()
+
+  identity_matrix <- diag(rep(1, n_dim))
+
+  expect_equal(
+    diag(husked_cov),
+    diag(identity_matrix),
+    tolerance = 10^-6
+  )
+
+  # ------------------------
+
   remove_outliers <- TRUE
   epsilon <- 1e-10
   remove_signal <- TRUE
@@ -58,9 +89,9 @@ test_that("`husk` husks tall data", {
 
   # futile.logger::flog.threshold(futile.logger::DEBUG)
   husked <- husk(
-    population = population,
+    population = data,
     variables = variables,
-    sample = sample,
+    sample = data,
     remove_outliers = remove_outliers,
     epsilon = epsilon,
     remove_signal = remove_signal,
@@ -70,6 +101,7 @@ test_that("`husk` husks tall data", {
 
   husked_cov <-
     husked %>%
+    dplyr::select(all_of(variables)) %>%
     cov(use = "complete.obs") %>%
     as.matrix() %>%
     unname()
@@ -102,16 +134,14 @@ test_that("`husk` husks wide data", {
 
   variables <- names(data)
 
-  population <- data
-  sample <- data
   epsilon <- 1e-10
   remove_signal <- FALSE
   remove_outliers <- FALSE
 
   husked <- husk(
-    population = population,
+    population = data,
     variables = variables,
-    sample = sample,
+    sample = data,
     remove_outliers = remove_outliers,
     epsilon = epsilon,
     remove_signal = remove_signal

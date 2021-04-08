@@ -5,25 +5,20 @@ utils::globalVariables(c("strata_col_dummy"))
 #'
 #' @param population tbl with grouping (metadata) and observation variables.
 #' @param variables character vector specifying observation variables.
-#' @param strata optional character vector specifying grouping variables for
-#'   grouping prior to outlier removal. If \code{NULL}, no stratification is
-#'   performed.
-#' @param operation optional character string specifying method for outlier
-#'   removal. There is currently only one option (\code{"svd_iqr"}).
 #' @param sample tbl containing sample that is used by outlier removal methods
 #'   to estimate parameters. \code{sample} has same structure as
 #'   \code{population}. Typically, \code{sample} corresponds to controls in the
 #'   experiment.
+#' @param method optional character string specifying method for outlier
+#'   removal. There is currently only one option (\code{"svd_iqr"}).
 #' @param outlier_col optional character string specifying the name for the
 #'   column that will indicate outliers (in the output).
 #'   Default \code{"is_outlier"}.
-#' @param ... arguments passed to outlier removal operation.
+#' @param ... arguments passed to outlier removal method.
 #'
 #' @return \code{population} with an extra column \code{is_outlier}.
 #'
-#'
 #' @importFrom magrittr %>%
-#' @importFrom rlang :=
 #'
 #' @examples
 #' suppressMessages(suppressWarnings(library(magrittr)))
@@ -34,45 +29,40 @@ utils::globalVariables(c("strata_col_dummy"))
 #'   AreaShape_Eccentricity = rnorm(100)
 #' )
 #' variables <- c("AreaShape_Area", "AreaShape_Eccentricity")
-#' strata <- c("Metadata_group")
 #' sample <- population %>% dplyr::filter(Metadata_type == "control")
 #' population_marked <-
 #'   cytominer::mark_outlier_rows(
 #'     population,
 #'     variables,
 #'     sample,
-#'     strata,
-#'     operation = "svd+iqr"
+#'     method = "svd+iqr"
 #'   )
 #' population_marked %>%
 #'   dplyr::group_by(is_outlier) %>%
 #'   dplyr::sample_n(3)
 #' @export
-mark_outlier_rows <- function(population,
-                              variables,
-                              sample,
-                              strata = NULL,
-                              operation = "svd+iqr",
-                              outlier_col = "is_outlier",
-                              ...) {
-  stopifnot(operation == "svd+iqr")
+mark_outlier_rows <-
+  function(population,
+           variables,
+           sample,
+           method = "svd+iqr",
+           outlier_col = "is_outlier",
+           ...) {
+    stopifnot(method == "svd+iqr")
 
-  if (is.null(strata)) {
-    population$strata_col_dummy <- 1
-    sample$strata_col_dummy <- 1
-    strata <- c("strata_col_dummy")
-  }
-
-  get_outlier_detector <- function(df) {
-    dfv <- df %>% dplyr::select(all_of(variables))
-
-    if (operation == "svd+iqr") {
+    if (method == "svd+iqr") {
       get_whiskers <- function(x) {
         grDevices::boxplot.stats(x, do.conf = FALSE, do.out = FALSE)$stats[c(1, 5)]
       }
 
-      X0 <- as.matrix(stats::na.omit(dfv))
-      X <- scale(X0, center = TRUE, scale = TRUE)
+      # ------------------------------
+      # Learn model to detect outliers
+      # ------------------------------
+      sample_vars <-
+        sample %>% dplyr::select(all_of(variables))
+
+      X <- as.matrix(stats::na.omit(sample_vars))
+      X <- scale(X, center = TRUE, scale = TRUE)
       xsvd <- svd(X, nu = 2, nv = 2)
       V <- xsvd$v[, 1:2]
       U <- xsvd$u[, 1:2]
@@ -82,87 +72,36 @@ mark_outlier_rows <- function(population,
         get_whiskers(U[, 1]),
         get_whiskers(U[, 2])
       )
+
       X_center <- attr(X, "scaled:center")
       X_scale <- attr(X, "scaled:scale")
-      df_names <- colnames(dfv)
 
-      outlier_detector <- function(df) {
-        dfv <- df %>% dplyr::select(all_of(variables))
+      # ------------------------------
+      # Apply model
+      # ------------------------------
 
-        stopifnot(df_names == colnames(dfv))
+      population_vars <-
+        population %>% dplyr::select(all_of(variables))
 
-        M <- as.matrix(dfv)
+      Y <- as.matrix(population_vars)
 
-        Ms <- scale(M, center = X_center, scale = X_scale)
+      Y <- scale(Y, center = X_center, scale = X_scale)
 
-        Uc <- Ms %*% V %*% Si
+      Uc <- Y %*% V %*% Si
 
-        Uout <-
-          Uc[, 1] < Uw[1, 1] |
-            Uc[, 1] > Uw[2, 1] |
-            Uc[, 2] < Uw[1, 2] |
-            Uc[, 2] > Uw[2, 2]
+      Uout <-
+        Uc[, 1] < Uw[1, 1] |
+          Uc[, 1] > Uw[2, 1] |
+          Uc[, 2] < Uw[1, 2] |
+          Uc[, 2] > Uw[2, 2]
 
-        df[[outlier_col]] <- Uout
+      population[[outlier_col]] <- Uout
 
-        df
-      }
-
-      outlier_detector
+      population
     } else {
       error <-
-        paste0("undefined operation '", operation, "'")
+        paste0("undefined method '", method, "'")
 
       stop(error)
     }
   }
-
-  groups <-
-    sample %>%
-    dplyr::select(all_of(strata)) %>%
-    dplyr::distinct()
-
-  cleaned <-
-    Reduce(
-      dplyr::union_all,
-      Map(
-        f = function(group) {
-          futile.logger::flog.debug(group)
-          futile.logger::flog.debug("\tstratum")
-          stratum <-
-            sample %>%
-            dplyr::inner_join(
-              y = group,
-              by = names(group),
-              copy = TRUE
-            )
-
-          futile.logger::flog.debug("\toutlier_stats")
-          outlier_detector <-
-            stratum %>%
-            dplyr::select(all_of(variables)) %>%
-            get_outlier_detector()
-
-          futile.logger::flog.debug("\tremove_outliers")
-          cleaned <-
-            population %>%
-            dplyr::inner_join(
-              y = group,
-              by = names(group),
-              copy = TRUE
-            ) %>%
-            outlier_detector()
-          futile.logger::flog.debug("\tcleaned")
-
-          cleaned
-        },
-        split(x = groups, f = seq(nrow(groups)))
-      )
-    )
-
-  if ("strata_col_dummy" %in% cleaned) {
-    cleaned <- cleaned %>% dplyr::select(-strata_col_dummy)
-  }
-
-  cleaned
-}

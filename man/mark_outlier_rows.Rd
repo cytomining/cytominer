@@ -8,8 +8,7 @@ mark_outlier_rows(
   population,
   variables,
   sample,
-  strata = NULL,
-  operation = "svd+iqr",
+  method = "svd+iqr",
   outlier_col = "is_outlier",
   ...
 )
@@ -24,18 +23,14 @@ to estimate parameters. \code{sample} has same structure as
 \code{population}. Typically, \code{sample} corresponds to controls in the
 experiment.}
 
-\item{strata}{optional character vector specifying grouping variables for
-grouping prior to outlier removal. If \code{NULL}, no stratification is
-performed.}
-
-\item{operation}{optional character string specifying method for outlier
+\item{method}{optional character string specifying method for outlier
 removal. There is currently only one option (\code{"svd_iqr"}).}
 
 \item{outlier_col}{optional character string specifying the name for the
 column that will indicate outliers (in the output).
 Default \code{"is_outlier"}.}
 
-\item{...}{arguments passed to outlier removal operation.}
+\item{...}{arguments passed to outlier removal method.}
 }
 \value{
 \code{population} with an extra column \code{is_outlier}.
@@ -52,15 +47,13 @@ population <- tibble::tibble(
   AreaShape_Eccentricity = rnorm(100)
 )
 variables <- c("AreaShape_Area", "AreaShape_Eccentricity")
-strata <- c("Metadata_group")
 sample <- population \%>\% dplyr::filter(Metadata_type == "control")
 population_marked <-
   cytominer::mark_outlier_rows(
     population,
     variables,
     sample,
-    strata,
-    operation = "svd+iqr"
+    method = "svd+iqr"
   )
 population_marked \%>\%
   dplyr::group_by(is_outlier) \%>\%
