@@ -4,20 +4,18 @@
 \alias{stratify}
 \title{Stratify operations.}
 \usage{
-stratify(population, variables, sample, operation, strata, ...)
+stratify(population, sample, reducer, strata, ...)
 }
 \arguments{
 \item{population}{tbl with grouping (metadata) and observation variables.}
 
-\item{variables}{character vector specifying observation variables.}
+\item{sample}{tbl with the same structure as \code{population}. This is
+typically used by operations to estimate parameters.}
 
-\item{sample}{tbl containing sample that is used by operations to estimate
-parameters. \code{sample} has same structure as \code{population}.}
-
-\item{operation}{operation that is to applied in a stratified manner.}
+\item{reducer}{operation that is to applied in a stratified manner.}
 
 \item{strata}{optional character vector specifying grouping variables for
-stratification. If \code{NULL}, no stratification is performed.}
+stratification.}
 
 \item{...}{arguments passed to operation.}
 }
@@ -40,7 +38,7 @@ strata <- c("Metadata_group")
 sample <- population \%>\% dplyr::filter(Metadata_type == "control")
 population_marked <-
   cytominer::stratify(
-    operation = cytominer::mark_outlier_rows,
+    reducer = cytominer::mark_outlier_rows,
     method = "svd+iqr",
     population = population,
     variables = variables,
