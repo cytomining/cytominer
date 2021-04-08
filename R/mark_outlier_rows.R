@@ -9,12 +9,12 @@ utils::globalVariables(c("strata_col_dummy"))
 #'   to estimate parameters. \code{sample} has same structure as
 #'   \code{population}. Typically, \code{sample} corresponds to controls in the
 #'   experiment.
-#' @param operation optional character string specifying method for outlier
+#' @param method optional character string specifying method for outlier
 #'   removal. There is currently only one option (\code{"svd_iqr"}).
 #' @param outlier_col optional character string specifying the name for the
 #'   column that will indicate outliers (in the output).
 #'   Default \code{"is_outlier"}.
-#' @param ... arguments passed to outlier removal operation.
+#' @param ... arguments passed to outlier removal method.
 #'
 #' @return \code{population} with an extra column \code{is_outlier}.
 #'
@@ -35,7 +35,7 @@ utils::globalVariables(c("strata_col_dummy"))
 #'     population,
 #'     variables,
 #'     sample,
-#'     operation = "svd+iqr"
+#'     method = "svd+iqr"
 #'   )
 #' population_marked %>%
 #'   dplyr::group_by(is_outlier) %>%
@@ -45,12 +45,12 @@ mark_outlier_rows <-
   function(population,
            variables,
            sample,
-           operation = "svd+iqr",
+           method = "svd+iqr",
            outlier_col = "is_outlier",
            ...) {
-    stopifnot(operation == "svd+iqr")
+    stopifnot(method == "svd+iqr")
 
-    if (operation == "svd+iqr") {
+    if (method == "svd+iqr") {
       get_whiskers <- function(x) {
         grDevices::boxplot.stats(x, do.conf = FALSE, do.out = FALSE)$stats[c(1, 5)]
       }
@@ -100,7 +100,7 @@ mark_outlier_rows <-
       population
     } else {
       error <-
-        paste0("undefined operation '", operation, "'")
+        paste0("undefined method '", method, "'")
 
       stop(error)
     }
