@@ -39,4 +39,3 @@ Example
 -------
 
 See `vignette("cytominer-pipeline")` for basic example of using cytominer to analyze a morphological profiling dataset.
-
