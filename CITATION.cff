@@ -27,4 +27,4 @@ authors:
 title: "Cytominer: Methods for Image-Based Cell Profiling"
 version: 0.2.2
 date-released: 2020-05-09
-url: "https://github.com/cytomining/cytominer"
+url: "https://cran.r-project.org/package=cytominer"
