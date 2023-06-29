@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/cytomining/cytominer.png?branch=master)](https://travis-ci.org/cytomining/cytominer) [![Coverage Status](https://img.shields.io/codecov/c/github/cytomining/cytominer/master.svg)](https://codecov.io/github/cytomining/cytominer?branch=master) [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/cytominer)](https://cran.r-project.org/package=cytominer)
 
-<img height="200" src="https://raw.githubusercontent.com/cytomining/cytominer/main/logo/with-text-for-light-bg.png?raw=true">
+<img height="200" src="https://raw.githubusercontent.com/cytomining/cytominer/master/logo/with-text-for-light-bg.png?raw=true">
 
 cytominer
 =========
